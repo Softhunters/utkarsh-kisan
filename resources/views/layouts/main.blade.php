@@ -152,13 +152,13 @@
                 <span class="menu-name">Search</span>
 
                 </a></li>
-                <li class="menu-item"><a href="{{route('offer-products')}}" class="d-flex flex-column">
+                <li class="menu-item"><a href="" class="d-flex flex-column">
 
                 
                 <img class="sidebaar2 icons" src="{{asset('assets/images/logo/discount05.png')}}" >
                 <span class="menu-name">Offer</span>
                 </a></li>
-                <li class="menu-item"><a href="{{route('user.account')}}" class="d-flex flex-column">
+                <li class="menu-item"><a href="" class="d-flex flex-column">
                 <img class="sidebaar2 icons" src="{{asset('assets/images/logo/account04.png')}}" >
                 <span class="menu-name">Account</span>
                 </a></li>

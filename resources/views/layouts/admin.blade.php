@@ -96,11 +96,11 @@
                                                     class="sa-nav__menu-item-padding"></span><span
                                                     class="sa-nav__title">Sub Category List</span></a>
                                         </li>
-                                        <li class="sa-nav__menu-item">
+                                        {{-- <li class="sa-nav__menu-item">
                                             <a href="{{ route('admin.subsubcategories') }}" class="sa-nav__link"><span
                                                     class="sa-nav__menu-item-padding"></span><span
                                                     class="sa-nav__title">Sub SubCategory List</span></a>
-                                        </li>
+                                        </li> --}}
 
                                     </ul>
                                 </li>
@@ -149,68 +149,45 @@
                                                     class="sa-nav__title">Active Vendor List</span></a>
                                         </li>
                                         <li class="sa-nav__menu-item">
-                                            <a href="{{ route('vendor.list', 'deactivated') }}" class="sa-nav__link"><span
+                                            <a href="{{ route('vendor.list', 'deactivated') }}"
+                                                class="sa-nav__link"><span
                                                     class="sa-nav__menu-item-padding"></span><span
                                                     class="sa-nav__title">Deactivated Vendor List</span></a>
                                         </li>
                                         <li class="sa-nav__menu-item">
-                                            <a href="{{ route('vendor.list', 'unverified') }}" class="sa-nav__link"><span
+                                            <a href="{{ route('vendor.list', 'unverified') }}"
+                                                class="sa-nav__link"><span
                                                     class="sa-nav__menu-item-padding"></span><span
                                                     class="sa-nav__title">Unverified Vendor List</span></a>
                                         </li>
                                     </ul>
                                 </li>
 
-
-
-
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
                                     data-sa-collapse-item="sa-nav__menu-item--open">
                                     <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
                                         <img class="sidebaar2" style="width:20px;"
                                             src="{{ asset('assets/images/logo/4.png') }}">
-                                        <span class="sa-nav__title">Product2</span>
+                                        <span class="sa-nav__title">Product</span>
                                         <i class="fa fa-chevron-right"></i>
                                     </a>
                                     <ul class="sa-nav__menu sa-nav__menu--sub" data-sa-collapse-content="">
                                         <li class="sa-nav__menu-item">
                                             <a href="{{ route('admin.addproduct2') }}" class="sa-nav__link"><span
                                                     class="sa-nav__menu-item-padding"></span><span
-                                                    class="sa-nav__title">Add Product2</span></a>
+                                                    class="sa-nav__title">Add Product</span></a>
                                         </li>
                                         <li class="sa-nav__menu-item">
                                             <a href="{{ route('admin.products2') }}" class="sa-nav__link"><span
                                                     class="sa-nav__menu-item-padding"></span><span
-                                                    class="sa-nav__title">Product List2</span></a>
+                                                    class="sa-nav__title">Product List</span></a>
                                         </li>
 
 
                                     </ul>
                                 </li>
 
-                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
-                                    data-sa-collapse-item="sa-nav__menu-item--open">
-                                    <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
-                                        <img class="sidebaar2" style="width:20px;"
-                                            src="{{ asset('assets/images/logo/5.png') }}">
-                                        <span class="sa-nav__title">Pets</span>
-                                        <i class="fa fa-chevron-right"></i>
-                                    </a>
-                                    <ul class="sa-nav__menu sa-nav__menu--sub" data-sa-collapse-content="">
-                                        <li class="sa-nav__menu-item">
-                                            <a href="{{ route('admin.addpet') }}" class="sa-nav__link"><span
-                                                    class="sa-nav__menu-item-padding"></span><span
-                                                    class="sa-nav__title">Add Pet</span></a>
-                                        </li>
-                                        <li class="sa-nav__menu-item">
-                                            <a href="{{ route('admin.pets') }}" class="sa-nav__link"><span
-                                                    class="sa-nav__menu-item-padding"></span><span
-                                                    class="sa-nav__title">Pet List</span></a>
-                                        </li>
 
-
-                                    </ul>
-                                </li>
 
 
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
@@ -267,7 +244,7 @@
 
 
 
-                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
+                                {{-- <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
                                     data-sa-collapse-item="sa-nav__menu-item--open">
                                     <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
 
@@ -291,9 +268,9 @@
                                         </li>
 
                                     </ul>
-                                </li>
+                                </li> --}}
 
-                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
+                                {{-- <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
                                     data-sa-collapse-item="sa-nav__menu-item--open">
                                     <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
 
@@ -317,8 +294,8 @@
                                         </li>
 
                                     </ul>
-                                </li>
-                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
+                                </li> --}}
+                                {{-- <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
                                     data-sa-collapse-item="sa-nav__menu-item--open">
                                     <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
 
@@ -348,8 +325,8 @@
                                         </li>
 
                                     </ul>
-                                </li>
-                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
+                                </li> --}}
+                                {{-- <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
                                     data-sa-collapse-item="sa-nav__menu-item--open">
                                     <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
 
@@ -375,8 +352,8 @@
                                                     class="sa-nav__title">Questions</span></a>
                                         </li>
                                     </ul>
-                                </li>
-                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
+                                </li> --}}
+                                {{-- <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
                                     data-sa-collapse-item="sa-nav__menu-item--open">
                                     <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
 
@@ -395,7 +372,7 @@
                                         </li>
 
                                     </ul>
-                                </li>
+                                </li> --}}
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
                                     data-sa-collapse-item="sa-nav__menu-item--open">
                                     <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
@@ -470,58 +447,13 @@
 
                                     </ul>
                                 </li>
-                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
-                                    data-sa-collapse-item="sa-nav__menu-item--open">
-                                    <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
-                                        <img class="sidebaar2" style="width:20px;"
-                                            src="{{ asset('assets/images/logo/14.png') }}">
-                                        <span class="sa-nav__title">Breed</span>
-                                        <i class="fa fa-chevron-right"></i>
-                                    </a>
-                                    <ul class="sa-nav__menu sa-nav__menu--sub" data-sa-collapse-content="">
-                                        <li class="sa-nav__menu-item">
-                                            <a href="{{ route('admin.addbreed') }}" class="sa-nav__link"><span
-                                                    class="sa-nav__menu-item-padding"></span><span
-                                                    class="sa-nav__title">Add Breed</span></a>
-                                        </li>
-                                        <li class="sa-nav__menu-item">
-                                            <a href="{{ route('admin.breeds') }}" class="sa-nav__link"><span
-                                                    class="sa-nav__menu-item-padding"></span><span
-                                                    class="sa-nav__title">Breed</span></a>
-                                        </li>
 
-
-                                    </ul>
-                                </li>
-                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
-                                    data-sa-collapse-item="sa-nav__menu-item--open">
-                                    <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
-                                        <img class="sidebaar2" style="width:20px;"
-                                            src="{{ asset('assets/images/logo/15.png') }}">
-                                        <span class="sa-nav__title">Food Type</span>
-                                        <i class="fa fa-chevron-right"></i>
-                                    </a>
-                                    <ul class="sa-nav__menu sa-nav__menu--sub" data-sa-collapse-content="">
-                                        <li class="sa-nav__menu-item">
-                                            <a href="{{ route('admin.addmedtype') }}" class="sa-nav__link"><span
-                                                    class="sa-nav__menu-item-padding"></span><span
-                                                    class="sa-nav__title">Add Food Type </span></a>
-                                        </li>
-                                        <li class="sa-nav__menu-item">
-                                            <a href="{{ route('admin.medtypes') }}" class="sa-nav__link"><span
-                                                    class="sa-nav__menu-item-padding"></span><span
-                                                    class="sa-nav__title">Med Food List</span></a>
-                                        </li>
-
-
-                                    </ul>
-                                </li>
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
-                                    <a href="{{ route('admin.flavours') }}" class="sa-nav__link side1 side2">
+                                    {{-- <a href="{{ route('admin.flavours') }}" class="sa-nav__link side1 side2">
                                         <img class="sidebaar2" style="width:20px;"
                                             src="{{ asset('assets/images/logo/16.png') }}">
                                         <span class="sa-nav__title">Flavours</span>
-                                    </a>
+                                    </a> --}}
                                 </li>
                                 {{-- <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
                                     data-sa-collapse-item="sa-nav__menu-item--open">
@@ -552,15 +484,15 @@
                                                     class="sa-nav__menu-item-padding"></span><span
                                                     class="sa-nav__title">Web site setting </span></a>
                                         </li>
-                                        <li class="sa-nav__menu-item">
+                                        {{-- <li class="sa-nav__menu-item">
                                             <a href="{{ route('admin.rewardsetting') }}" class="sa-nav__link"><span
                                                     class="sa-nav__menu-item-padding"></span><span
                                                     class="sa-nav__title">Reward Point setting </span></a>
-                                        </li>
+                                        </li> --}}
                                     </ul>
                                 </li>
 
-                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
+                                {{-- <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
                                     data-sa-collapse-item="sa-nav__menu-item--open">
                                     <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
                                         <img class="sidebaar2" style="width:20px;"
@@ -582,8 +514,8 @@
 
 
                                     </ul>
-                                </li>
-                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
+                                </li> --}}
+                                {{-- <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
                                     data-sa-collapse-item="sa-nav__menu-item--open">
                                     <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
                                         <img class="sidebaar2" style="width:20px;"
@@ -598,7 +530,7 @@
                                                     class="sa-nav__title">forms</span></a>
                                         </li>
                                     </ul>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
 

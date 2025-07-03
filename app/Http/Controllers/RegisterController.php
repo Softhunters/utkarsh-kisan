@@ -29,7 +29,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'phone' => $data['phone'],
-            'utype' => isset($data['type']) ? $data['type'] : '',
+            'utype' => isset($data['type']) ? $data['type'] : 'USR',
             'referral_code' => $this->ticket_number(),
         ]);
     }

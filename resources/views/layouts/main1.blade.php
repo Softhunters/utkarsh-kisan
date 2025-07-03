@@ -1,5 +1,5 @@
 @php
-    $wdata = webdata();
+    // $wdata = webdata();
 @endphp
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -7,11 +7,11 @@
 <head>
 
     <meta charset="utf-8">
-    <title>{{ $wdata->site_name }}</title>
+    <title>UTKARSH KISAN</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" href="{{ asset('admin/logos') }}/{{ $wdata->favicon }}" type="image/gif" sizes="20x20" />
-    <meta name="description" content="{{ $wdata->site_name }}">
+    <link rel="icon" href="{{ asset('admin/logos') }}" type="image/gif" sizes="20x20" />
+    <meta name="description" content="UTKARSH KISAN">
 
 
     <link rel="stylesheet" href="{{ asset('assets/css/all.css') }}" />
@@ -138,7 +138,7 @@
         <div class="mobile-headers d-lg-none d-md-none d-block">
             <div class="container-fluid theme-container">
                 <ul class="menu-list d-flex justify-content-around">
-                    <li class="menu-item"><a href="{{ route('index') }}" class="d-flex flex-column">
+                    <li class="menu-item"><a href="/" class="d-flex flex-column">
                             <img class="sidebaar2 icons" src="{{ asset('assets/images/logo/home01.png') }}">
                             <span class="menu-name">Home</span>
                         </a></li>
@@ -154,7 +154,7 @@
                             <img class="sidebaar2 icons" src="{{ asset('assets/images/logo/discount05.png') }}">
                             <span class="menu-name">Offer</span>
                         </a></li>
-                    <li class="menu-item"><a href="{{ route('user.account') }}" class="d-flex flex-column">
+                    <li class="menu-item"><a href="" class="d-flex flex-column">
                             <img class="sidebaar2 icons" src="{{ asset('assets/images/logo/account04.png') }}">
                             <span class="menu-name">Account</span>
                         </a></li>
