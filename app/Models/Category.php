@@ -14,6 +14,11 @@ class Category extends Model
         return $this->hasMany(SubCategory::class,'category_id')->where('status',1);
     }
 
+    public function subsubCategories()
+    {
+        return $this->hasMany(SubSubCategory::class,'category_id')->where('status',1);
+    }
+
     public function productcount()
     {
         return $this->hasMany(Product::class,'category_id')->where('status',1);

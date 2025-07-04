@@ -151,7 +151,7 @@
                             @csrf
                         </form>
                     @else
-                        {{-- <a class="primary-btn1 py-1 px-3 border-0" href="{{ route('uloginview') }}">Login</a> --}}
+                        <a class="primary-btn1 py-1 px-3 border-0" href="{{ route('uloginview') }}">Login</a>
                     @endif
                     @endif
                 </ul>

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Product;
 
+use App\Models\AttributeValue;
 use Livewire\Component;
 use App\Models\Product;
 use App\Models\Category;
@@ -44,11 +45,8 @@ class AddProductComponent extends Component
     public $brand_id;
     public $breed_id = [];
     public $prescription;
-    public $age_limit;
+    public $hsn_code;
     public $expiry_date;
-    public $is_baby;
-    public $is_child;
-    public $is_young;
     public $status;
     public $tax_id;
     public $freecancellation;
@@ -193,10 +191,7 @@ class AddProductComponent extends Component
             'scategory_id'=>'required',
             'brand_id'=>'required',
             'breed_id'=>'required',
-            'age_limit' =>'required',
-            'is_baby'=>'required',
-            'is_child'=>'required',
-            'is_young'=>'required',
+            'hsn_code' =>'required',
             'tax_id' =>'required',
             'freecancellation' =>'required' 
         ]);
@@ -206,12 +201,12 @@ class AddProductComponent extends Component
     {
         $categories=Category::where('status','!=',3)->get();
         $scategories = SubCategory::where('category_id',$this->category_id)->where('status','!=',3)->get();
-        // $subcategories = SubSubCategory::where('sub_category_id',$this->s_id)->where('status','!=',3)->get();
+        $subcategories = SubSubCategory::where('sub_category_id',$this->s_id)->where('status','!=',3)->get();
         $attributes = Attribute::where('status','!=',3)->get();
         $brands = Brand::where('status','!=',3)->get();
         $taxs = Tax::where('status','!=',3)->get();
       
-        return view('livewire.admin.product.add-product-component',['categories'=>$categories,'scategories'=>$scategories,'attributes'=>$attributes,'brands'=>$brands,'taxs'=>$taxs
+        return view('livewire.admin.product.add-product-component',['subcategories' =>$subcategories,'categories'=>$categories,'scategories'=>$scategories,'attributes'=>$attributes,'brands'=>$brands,'taxs'=>$taxs
         ])->layout('layouts.admin');
     }
 
@@ -236,10 +231,7 @@ class AddProductComponent extends Component
             'scategory_id'=>'required',
             'brand_id'=>'required',
             //'prescription'=>'required',
-            'age_limit' =>'required',
-            'is_baby'=>'required',
-            'is_child'=>'required',
-            'is_young'=>'required',
+            'hsn_code' =>'required',
             'tax_id' =>'required',
             'freecancellation' =>'required'
         ],[
@@ -286,17 +278,11 @@ class AddProductComponent extends Component
         }
         $product->subsubcategory_id = $this->sbcategory_id;
         $product->brand_id = $this->brand_id;
-        $product->breed_id = json_encode($this->breed_id);
        
-        $product->is_baby = $this->is_baby;
-        $product->is_child = $this->is_child;
-        $product->is_young = $this->is_young;
         $product->tax_id = $this->tax_id;
         $product->freecancellation = $this->freecancellation;
-        $product->flavour_id = $this->flavour_id;
-        $product->veg = $this->veg;
         $product->discount_value = round((($this->regular_price - $this->sale_price)/$this->regular_price)*100, 2);
-        $product->age_limit = $this->age_limit;
+        $product->hsn_code = $this->hsn_code;
         $product->meta_tag = $this->meta_keywords;
         $product->meta_description = $this->meta_description;
         $product->status = '1';
@@ -308,7 +294,7 @@ class AddProductComponent extends Component
             $avalues = explode(",",$attribute_value);
             foreach($avalues as $avalue)
             {
-                $attr_value = new AttributeValue2();
+                $attr_value = new AttributeValue();
                 $attr_value->attribute_id = $key;
                 $attr_value->value = $avalue;
                 $attr_value->product_id = $product->id;
@@ -319,7 +305,7 @@ class AddProductComponent extends Component
         foreach($this->para as $key => $tdata)
         {
             if($key == 0){
-                $product->varaint_detail = $tdata;
+                $product->variant_detail = $tdata;
                 $product->save();
             }
             else{
@@ -342,23 +328,17 @@ class AddProductComponent extends Component
             $product_varaint->subcategory_id = $this->scategory_id;
             $product_varaint->subsubcategory_id = $this->sbcategory_id;
             $product_varaint->brand_id = $this->brand_id;
-            $product_varaint->breed_id = json_encode($this->breed_id);
         
-            $product_varaint->is_baby = $this->is_baby;
-            $product_varaint->is_child = $this->is_child;
-            $product_varaint->is_young = $this->is_young;
             $product_varaint->tax_id = $this->tax_id;
             $product_varaint->freecancellation = $this->freecancellation;
-            $product_varaint->flavour_id = $this->flavour_id;
-            $product_varaint->veg = $this->veg;
             $product_varaint->discount_value = round((($this->mrps[$key] - $this->pris[$key])/$this->mrps[$key])*100, 2);
-            $product_varaint->age_limit = $this->age_limit;
+            $product_varaint->hsn_code = $this->hsn_code;
             $product_varaint->meta_tag = $this->meta_keywords;
             $product_varaint->meta_description = $this->meta_description;
            
             $product_varaint->status = '1';
             $product_varaint->add_by = '1'; //Auth::user()->id;
-            $product_varaint->varaint_detail = $tdata;
+            $product_varaint->variant_detail = $tdata;
             $product_varaint->parent_id = $product->id;
             $product_varaint->save();
             }

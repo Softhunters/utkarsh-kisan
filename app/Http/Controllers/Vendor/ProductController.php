@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Vendor;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
-use App\Models\Product2;
+use App\Models\Product;
 use App\Models\SubCategory;
 use App\Models\VendorProduct;
 use Illuminate\Http\Request;
@@ -40,7 +40,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'product_id' => 'required|exists:product2s,id',
+            'product_id' => 'required|exists:products,id',
             'price' => 'required|numeric|min:1',
             'quantity' => 'required|integer|min:1',
             'additional_info' => 'nullable|string',
@@ -74,7 +74,7 @@ class ProductController extends Controller
         $product = VendorProduct::where('vendor_id', auth()->id())->findOrFail($id);
 
         $request->validate([
-            'product_id' => 'required|exists:product2s,id',
+            'product_id' => 'required|exists:products,id',
             'price' => 'required|integer|min:1',
             'quantity' => 'required|integer|min:1',
         ]);
@@ -117,13 +117,38 @@ class ProductController extends Controller
     }
 
 
+    // public function getProducts(Request $request)
+    // {
+    //     return Product::where('category_id', $request->category_id)
+    //         ->where('subcategory_id', $request->subcategory_id)
+    //         ->when($request->brand_id, fn($q) => $q->where('brand_id', $request->brand_id))
+    //         ->where('status', 1)
+    //         ->get(['id', 'name']);
+    // }
+
     public function getProducts(Request $request)
     {
-        return Product2::where('category_id', $request->category_id)
-            ->where('subcategory_id', $request->subcategory_id)
-            ->when($request->brand_id, fn($q) => $q->where('brand_id', $request->brand_id))
-            ->where('status', 1)
-            ->get(['id', 'name']);
+        $products = VendorProduct::with(['product'])
+            ->when($request->category_id, fn($q) => $q->whereHas('product', fn($q2) => $q2->where('category_id', $request->category_id)))
+            ->when($request->subcategory_id, fn($q) => $q->whereHas('product', fn($q2) => $q2->where('subcategory_id', $request->subcategory_id)))
+            ->when($request->brand_id, fn($q) => $q->whereHas('product', fn($q2) => $q2->where('brand_id', $request->brand_id)))
+            ->with('product')
+            ->get();
+
+        return response()->json(
+            $products->map(function ($item) {
+                return [
+                    'vendor_product_id' => $item->id,
+                    'name' => $item->product->name,
+                    'price' => $item->price,
+                    'quantity' => $item->quantity,
+                    'regular_price' => $item->product->regular_price,
+                    'thumbnail' => $item->product->image,
+                    'discount' => $item->product->sale_price - $item->product->discount_value,
+                ];
+            })
+        );
     }
+
 
 }

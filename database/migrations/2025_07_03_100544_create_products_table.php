@@ -14,9 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('short_description')->nullable();
+            $table->text('short_description')->nullable();
             $table->text('description')->nullable();
-            $table->text('other_details')->nullable();
+            $table->text('manufacturer_details')->nullable();
             $table->decimal('regular_price', 8, 2);
             $table->decimal('sale_price', 8, 2)->nullable();
             $table->string('SKU')->nullable();
@@ -27,6 +27,7 @@ return new class extends Migration {
             $table->text('images')->nullable();
             $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('subcategory_id')->nullable()->constrained('sub_categories')->nullOnDelete();
+            $table->foreignId('subsubcategory_id')->nullable()->constrained('subsub_categories')->nullOnDelete();
             $table->timestamps();
             $table->foreignId('brand_id')->nullable()->constrained()->nullOnDelete();
             $table->string('tags')->nullable();

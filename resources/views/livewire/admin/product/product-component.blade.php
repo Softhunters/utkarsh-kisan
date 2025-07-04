@@ -44,7 +44,6 @@
                                  <th>SLug</th>
                                  <th>Price</th>
                                  <th>Image</th>
-                                 <th>Med Type</th>
                                  <th>Quantity</th>
                                  <th>Category</th>
                                  <th>SubCategory</th>
@@ -62,7 +61,6 @@
                                  <td>{{$product->slug}}</td>
                                  <td><del><span class="product-price regprice">${{$product->regular_price}}</span></del>{{$product->sale_price}}</td>
                                  <td><img src="{{asset('admin/product/feat')}}/{{$product->image}}" width="60" /></td>
-                                 <td>{{$product->MedTypes->medtype}}</td>
                                  <td>{{$product->quantity}}</td>
                                  <td>{{$product->category->name}}</td>
                                  <td>@if(isset($product->subCategories)){{$product->subCategories->name}} @endif</td>

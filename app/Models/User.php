@@ -56,4 +56,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(VendorProfile::class, 'vendor_id');
     }
+
+    public function vendorProducts()
+    {
+        return $this->hasMany(VendorProduct::class, 'vendor_id');
+    }
 }

@@ -93,24 +93,7 @@
                                 <img class="sidebaar1" src="{{ asset('assets/images/logo/3 (2).png') }}">
                             </div>
 
-                            <div class="saw-indicator__body">
-                                <div class="saw-indicator__value"><a href="{{ route('admin.pets') }}"
-                                        class="sa-nav__link">{{ $pets_c }}</a></div>
-                                <div class="saw-indicator__delta saw-indicator__delta--rise">
-                                    <div class="saw-indicator__delta-direction">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9"
-                                            viewBox="0 0 9 9" fill="currentColor">
-                                            <path d="M9,0L8,6.1L2.8,1L9,0z"></path>
-                                            <circle cx="1" cy="8" r="1"></circle>
-                                            <rect x="0" y="4.5"
-                                                transform="matrix(0.7071 -0.7071 0.7071 0.7071 -2.864 4.0858)"
-                                                width="7.1" height="2"></rect>
-                                        </svg>
-                                    </div>
-                                    <div class="saw-indicator__delta-value">27.9%</div>
-                                </div>
-                                <div class="saw-indicator__caption">Compared to April 2021</div>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -173,12 +156,16 @@
                                     @foreach ($brands as $brand)
                                         <tr>
                                             <td>{{ $brand->id }}</td>
-                                            <td><a href="{{ route('brand-products', ['brand_slug' => $brand->brand_slug]) }}"
-                                                    class="text-reset">{{ $brand->brand_name }}</a></td>
-                                            <td><a href="{{ route('brand-products', ['brand_slug' => $brand->brand_slug]) }}"
+                                            <td>
+                                                {{-- <a href="{{ route('brand-products', ['brand_slug' => $brand->brand_slug]) }}"
+                                                    class="text-reset">{{ $brand->brand_name }}</a> --}}
+                                                </td>
+                                            <td>
+                                                {{-- <a href="{{ route('brand-products', ['brand_slug' => $brand->brand_slug]) }}"
                                                     class="text-reset"><img
                                                         src="{{ asset('admin/brand') }}/{{ $brand->brand_image }}"
-                                                        width="60" /></a></td>
+                                                        width="60" /></a> --}}
+                                                    </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -206,8 +193,10 @@
                                     @foreach ($categories as $category)
                                         <tr>
                                             <td>{{ $category->id }}</td>
-                                            <td><a href="{{ route('product.category', ['category_slug' => $category->slug]) }}"
-                                                    class="items">{{ $category->name }}</a></td>
+                                            <td>
+                                                {{-- <a href="{{ route('product.category', ['category_slug' => $category->slug]) }}"
+                                                    class="items">{{ $category->name }}</a> --}}
+                                                </td>
                                             <td>{{ $category->subCategories->count() }}</td>
                                             <td>{{ $category->subsubCategories->count() }}</td>
                                             <td>{{ $category->productcount->count() }}</td>
@@ -218,44 +207,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-lg-4 col-xxl-5 d-flex">
-                    <div class="card flex-grow-1 saw-chart">
-                        <div class="sa-widget-header ">
-                            <h2 class="sa-widget-header__title sad">Recent Pets</h2>
-                        </div>
-                        <div class="saw-table__body sa-widget-table text-wrap">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>is_verified</th>
-                                        <th>Name</th>
-                                        <th>Images</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($pets as $pet)
-                                        <tr>
-                                            <td><a href="{{ route('pet-details', ['slug' => $pet->slug]) }}"
-                                                    class="text-reset">{{ $pet->id }}</a></td>
-                                            <td>
-                                                <div class="d-flex fs-6">
-                                                    <div class="badge badge-sa-primary">Pending</div>
-                                                </div>
-                                            </td>
-                                            <td><a
-                                                    href="{{ route('pet-details', ['slug' => $pet->slug]) }}">{{ $pet->name }}</a>
-                                            </td>
-                                            <td><img src="{{ asset('admin/pet/feat') }}/{{ $pet->image }}"
-                                                    width="60" /></td>
-                                        </tr>
-                                    @endforeach
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                
                 <div class="col-12 col-lg-8 col-xxl-7 d-flex">
                     <div class="card flex-grow-1 saw-table">
                         <div class="sa-widget-header saw-table__header">
@@ -296,15 +248,18 @@
                                 <tbody>
                                     @foreach ($products as $product)
                                         <tr>
-                                            <td><a href="{{ route('product-details', ['slug' => $product->slug]) }}"
-                                                    class="text-reset">{{ $product->id }}</a></td>
+                                            <td>
+                                                {{-- <a href="{{ route('product-details', ['slug' => $product->slug]) }}"
+                                                    class="text-reset">{{ $product->id }}</a> --}}
+                                                </td>
                                             <td>
                                                 <div class="d-flex fs-6">
                                                     <div class="badge badge-sa-primary">Pending</div>
                                                 </div>
                                             </td>
-                                            <td><a
-                                                    href="{{ route('product-details', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
+                                            <td>
+                                                {{-- <a
+                                                    href="{{ route('product-details', ['slug' => $product->slug]) }}">{{ $product->name }}</a> --}}
                                             </td>
                                             <td><img src="{{ asset('admin/product/feat') }}/{{ $product->image }}"
                                                     width="60" /></td>
@@ -343,7 +298,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="saw-table__body sa-widget-table text-nowrap">
+                        {{-- <div class="saw-table__body sa-widget-table text-nowrap">
                             <table>
                                 <thead>
                                     <tr>
@@ -373,7 +328,7 @@
 
                                 </tbody>
                             </table>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
 
