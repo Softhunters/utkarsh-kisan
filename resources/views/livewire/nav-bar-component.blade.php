@@ -24,27 +24,23 @@
                 </div>
             </div>
             <ul class="menu-list">
-                {{-- @foreach ($categorys as $category)
+                @foreach ($categorys as $category)
                     <li class="menu-item">
                         <a href="{{route('product.category',['category_slug'=>$category->slug])}}" class="drop-down">{{$category->name}}</a>
+                        {{-- <a href="#" class="drop-down">{{ $category->name }}</a> --}}
                         <i class="bi bi-plus dropdown-icon"></i>
                         <ul class="sub-menu">
                             @foreach ($category->subCategories as $scategory)
-                                <li><a href="{{route('product.category',['category_slug'=>$category->slug,'scategory_slug'=>$scategory->slug])}}">{{$scategory->name}}</a></li>
+                                <li>
+                                    <a href="{{route('product.category',['category_slug'=>$category->slug,'scategory_slug'=>$scategory->slug])}}">{{$scategory->name}}</a>
+                                    {{-- <a href="#">{{ $scategory->name }}</a> --}}
+                                </li>
                             @endforeach
                         </ul>
                     </li>
                 @endforeach
-                <li class="menu-item">
-                    <a href="{{route('product.brands')}}" class="drop-down">Shop by Brands</a>
-                    <i class="bi bi-plus dropdown-icon"></i>
-                    
-                </li>
-                <li class="menu-item">
-                    <a href="{{route('product.breeds')}}" class="drop-down">Shop by Breeds</a>
-                    <i class="bi bi-plus dropdown-icon"></i>
-                    
-                </li> --}}
+
+
 
             </ul>
             <div class="for-mobile-menu d-lg-none d-block">
@@ -123,11 +119,9 @@
                 </li> -->
                 <li>
                     @livewire('wishlist-count-component')
-
                 </li>
                 <li>
                     @livewire('cart-count-component')
-
                 </li>
 
                 @if (Route::has('login'))

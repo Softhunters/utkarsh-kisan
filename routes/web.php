@@ -10,6 +10,9 @@ use App\Http\Controllers\Vendor\VendorProfileController;
 use App\Livewire\Admin\Attribute\AddAttributeComponent;
 use App\Livewire\Admin\Attribute\AttributeComponent;
 use App\Livewire\Admin\Attribute\EditAttributeComponent;
+use App\Livewire\Admin\Banner\AddBannerComponent;
+use App\Livewire\Admin\Banner\BannerComponent;
+use App\Livewire\Admin\Banner\EditBannerComponent;
 use App\Livewire\Admin\Brand\AddBrandComponent;
 use App\Livewire\Admin\Brand\BrandComponent;
 use App\Livewire\Admin\Brand\EditBrandComponent;
@@ -29,12 +32,17 @@ use App\Livewire\Admin\DashboardComponent;
 use App\Livewire\Admin\Product\AddProductComponent;
 use App\Livewire\Admin\Product\EditProductComponent;
 use App\Livewire\Admin\Product\ProductComponent;
+use App\Livewire\Admin\Slider\AddSliderComponent;
+use App\Livewire\Admin\Slider\EditSliderComponent;
+use App\Livewire\Admin\Slider\SliderComponent;
 use App\Livewire\Admin\Tax\AddTaxComponent;
 use App\Livewire\Admin\Tax\EditTaxComponent;
 use App\Livewire\Admin\Tax\TaxComponent;
 use App\Livewire\Admin\User\UserComponent;
 use App\Livewire\Admin\WebsettingComponent;
+use App\Livewire\Frontend\CategorySearchComponent;
 use App\Livewire\Frontend\HomeComponent;
+use App\Livewire\Frontend\ProductDetailsComponent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,7 +58,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeComponent::class)->name('index');
 
-
+Route::get('/category/{category_slug}/{scategory_slug?}',CategorySearchComponent::class)->name('product.category');
+Route::get('/product-detail/{slug}',ProductDetailsComponent::class)->name('product-details');
 Route::get('/vdrregistor', [RegisterController::class, 'vdrregisterview'])->name('vdrregisterview');
 Route::get('/uregisteor', [RegisterController::class, 'uregisteorview'])->name('udregisteorview');
 Route::post('/uregisteor', [RegisterController::class, 'uregisteor'])->name('udregisteor');
@@ -71,12 +80,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Admin Routes
     Route::middleware(['authadmin'])->prefix('admin')->group(function () {
         Route::get('/dashboard', DashboardComponent::class)->name('admin.dashboard');
-        // Route::get('/sliders', SliderComponent::class)->name('admin.sliders');
-        // Route::get('/slider/add', AddSliderComponent::class)->name('admin.addslider');
-        // Route::get('/slider/edit/{sid}', EditSliderComponent::class)->name('admin.editslider');
-        // Route::get('/banners', BannerComponent::class)->name('admin.banners');
-        // Route::get('/banner/add', AddBannerComponent::class)->name('admin.addbanner');
-        // Route::get('/banner/edit/{bid}', EditBannerComponent::class)->name('admin.editbanner');
+        Route::get('/sliders', SliderComponent::class)->name('admin.sliders');
+        Route::get('/slider/add', AddSliderComponent::class)->name('admin.addslider');
+        Route::get('/slider/edit/{sid}', EditSliderComponent::class)->name('admin.editslider');
+        Route::get('/banners', BannerComponent::class)->name('admin.banners');
+        Route::get('/banner/add', AddBannerComponent::class)->name('admin.addbanner');
+        Route::get('/banner/edit/{bid}', EditBannerComponent::class)->name('admin.editbanner');
         Route::get('/categories', CategoryComponent::class)->name('admin.categories');
         Route::get('/category/add', AddCategoryComponent::class)->name('admin.addcategory');
         Route::get('/category/edit/{category_slug}', EditCategoryComponent::class)->name('admin.editcategory');

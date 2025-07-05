@@ -165,18 +165,18 @@ class HomeComponent extends Component
         //         $this->wishp = array_keys($wish);
         //     }
         // }
-        // $sliders = Slider::where('for','home')->where('status',1)->get();
-        // $categorys = Category::where('is_home',1)->where('status',1)->get();
-        // $subcategorys = SubCategory::where('is_home',1)->where('status',1)->get();
-        // $brands = Brand::where('is_home',1)->where('status',1)->get();
-        // $banners = Banner::where('status',1)->where('for','home')->get();
+        $sliders = Slider::where('for','home')->where('status',1)->get();
+        $categorys = Category::where('is_home',1)->where('status',1)->get();
+        $subcategorys = SubCategory::where('is_home',1)->where('status',1)->get();
+        $brands = Brand::where('is_home',1)->where('status',1)->get();
+        $banners = Banner::where('status',1)->where('for','home')->get();
         // $cbanners = Banner::where('status',1)->where('for','1')->get();
-        // $products = Product2::where('sale_price','>',0)->where('status',1)->where('stock_status','instock')->inRandomOrder()->get()->take(8);
-        // $fproducts=Product2::where('featured',1)->where('status',1)->where('stock_status','instock')->inRandomOrder()->get()->take(8);
+        $products = Product::where('sale_price','>',0)->where('status',1)->where('stock_status','instock')->inRandomOrder()->get()->take(8);
+        $fproducts=Product::where('featured',1)->where('status',1)->where('stock_status','instock')->inRandomOrder()->get()->take(8);
         // // $products = Product2::where('sale_price','>',0)->where('status',1)->where('featured',1)->where('stock_status','instock')->inRandomOrder()->get()->take(12);
-        // $oproducts = Product2::where('sale_price','>',0)->where('status',1)->where('discount_value','>',10)->where('stock_status','instock')->inRandomOrder()->get()->take(12);
+        $oproducts = Product::where('sale_price','>',0)->where('status',1)->where('discount_value','>',10)->where('stock_status','instock')->inRandomOrder()->get()->take(12);
         // $testimonials = Testimonial::where('status',1)->get();
-       // dd($sliders); 
-        return view('livewire.frontend.home-component')->layout('layouts.main');
+    //    dd($sliders); 
+        return view('livewire.frontend.home-component', compact('banners', 'sliders', 'oproducts', 'fproducts', 'categorys', 'subcategorys', 'products', 'brands'))->layout('layouts.main');
     }
 }
