@@ -94,7 +94,8 @@
 
         .badge-secondary {
             color: #fff;
-            background: linear-gradient(90deg, #F86CA7 0%, #FF7F18 100%);
+            /* background: linear-gradient(90deg, #F86CA7 0%, #FF7F18 100%); */
+            background:var(--gradient-color)
         }
 
         .badge {

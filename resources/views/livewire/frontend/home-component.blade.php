@@ -17,9 +17,9 @@
     <div class="hero3 mb-90">
         <div class="background-text">
             <h2 class="marquee_text">
-                <img src="{{ asset('assets/images/icon/marque-foot.svg') }}" alt="image" /><span>Get exciting
-                    Discount</span> Up To 50%<img src="{{ asset('assets/images/icon/marque-foot.svg') }}"
-                    alt="image" /><span>On Your first buying</span> Up To 50%
+                <img src="{{ asset('assets/images/icon/mark-logo.svg') }}" alt="image" class="mark-logo" /><span>Get exciting
+                    Discount</span> Up To 50%<img src="{{ asset('assets/images/icon/mark-logo.svg') }}"
+                    alt="image" class="mark-logo" /><span>On Your first buying</span> Up To 50%
             </h2>
         </div>
         @if (isset($sliders[0]))
@@ -54,10 +54,10 @@
         <div class="container">
             <div class="row mb-60">
                 <div class="col-lg-12 d-flex align-items-center justify-content-between flex-wrap gap-3">
-                    <div class="section-title3">
-                        <h2><img src="{{ asset('assets/images/icon/h3-sec-tt-vect-left.svg') }}" alt /><span
+                    <div class="section-title3 align-items-center  ">
+                        <h2><img class="kishan_left" src="{{ asset('assets/images/icon/utkarsh-kisan_bg.png') }}" width="40" height="40" alt /><span
                                 class="word">Browse By Categories</span><img
-                                src="{{ asset('assets/images/icon/h3-sec-tt-vect-right.svg') }}" alt /></h2>
+                                src="{{ asset('assets/images/icon/utkarsh-kisan_bg.png') }}" width="40" height="40" alt /></h2>
                     </div>
                     <div class="slider-btn-wrap">
                         <div class="slider-btn prev-btn-11">
@@ -289,9 +289,9 @@
             <div class="row mb-60">
                 <div class="col-lg-12 d-flex align-items-center justify-content-between flex-wrap gap-3">
                     <div class="section-title3">
-                        <h2><img src="{{ asset('assets/images/icon/h3-sec-tt-vect-left.svg') }}" alt /><span
+                        <h2><img class="kishan_left" src="{{ asset('assets/images/icon/utkarsh-kisan_bg.png') }}" width="40" height="40" alt /><span
                                 class="word">Featured Items</span><img
-                                src="{{ asset('assets/images/icon/h3-sec-tt-vect-right.svg') }}" alt /></h2>
+                                src="{{ asset('assets/images/icon/utkarsh-kisan_bg.png') }}" width="40" height="40" alt /></h2>
                     </div>
                     <div class="slider-btn-wrap">
                         <div class="slider-btn prev-btn-12">
@@ -354,7 +354,7 @@
                                                     @else
                                                         <a href="#"
                                                             wire:click.prevent="addToWishlist({{ $fproduct->id }},{{ $fproduct->sale_price }})"><img
-                                                                src="{{ asset('assets/images/icon/Icon-favorites2.svg') }}"
+                                                                src="{{ asset('assets/images/icon/Icon-favorites.svg') }}"
                                                                 alt /></a>
                                                     @endif
                                                 </li>
@@ -578,8 +578,8 @@
                         <div class="swiper-slide swiper-slide-duplicate" data-swiper-slide-index="0" role="group"
                             aria-label="1 / 4" style="width: 267px; margin-right: 24px;">
                             <div class="services-card1">
-                                <img class="services-card-vec"
-                                    src="{{ asset('assets/images/bg/services-card-vec.png') }}" alt="" />
+                                <img class="services-card-vec mark-logo"
+                                    src="{{ asset('/assets/images/icon/mark-logo.svg') }}" alt="" />
                                 <div class="icon">
                                     <img src="{{ asset('assets/images/icon/daycare-center2.svg') }}"
                                         alt="" />
@@ -597,8 +597,8 @@
                             data-swiper-slide-index="1" role="group" aria-label="2 / 4"
                             style="width: 267px; margin-right: 24px;">
                             <div class="services-card1 two">
-                                <img class="services-card-vec"
-                                    src="{{ asset('assets/images/bg/services-card-vec.png') }}" alt="" />
+                                <img class="services-card-vec mark-logo"
+                                    src="{{ asset('/assets/images/icon/mark-logo.svg') }}" alt="" />
                                 <div class="icon">
                                     <img src="{{ asset('assets/images/icon/grooming2.svg') }}" alt="" />
                                 </div>
@@ -615,8 +615,8 @@
                             data-swiper-slide-index="2" role="group" aria-label="3 / 4"
                             style="width: 267px; margin-right: 24px;">
                             <div class="services-card1 three">
-                                <img class="services-card-vec"
-                                    src="{{ asset('assets/images/bg/services-card-vec.png') }}" alt="" />
+                                <img class="services-card-vec mark-logo"
+                                    src="{{ asset('/assets/images/icon/mark-logo.svg') }}" alt="" />
                                 <div class="icon">
                                     <img src="{{ asset('assets/images/icon/boarding2.svg') }}" alt="" />
                                 </div>
@@ -631,7 +631,7 @@
                         </div>
                         {{-- <div class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-next" data-swiper-slide-index="3" role="group" aria-label="4 / 4" style="width: 267px; margin-right: 24px;">
                             <div class="services-card1 four">
-                                <img class="services-card-vec" src="{{asset('assets/images/bg/services-card-vec.png')}}" alt="" />
+                                <img class="services-card-vec mark-logo" src="{{asset('/assets/images/bg/inner-Logo_bg.png')}}" alt="" />
                                 <div class="icon">
                                     <img src="{{asset('assets/images/icon/veterinary2.svg')}}" alt="" />
                                 </div>
@@ -645,8 +645,8 @@
                         <div class="swiper-slide" data-swiper-slide-index="0" role="group" aria-label="1 / 4"
                             style="width: 267px; margin-right: 24px;">
                             <div class="services-card1">
-                                <img class="services-card-vec"
-                                    src="{{ asset('assets/images/bg/services-card-vec.png') }}" alt="" />
+                                <img class="services-card-vec mark-logo"
+                                    src="{{ asset('/assets/images/icon/mark-logo.svg') }}" alt="" />
                                 <div class="icon">
                                     <img src="{{ asset('assets/images/icon/daycare-center2.svg') }}"
                                         alt="" />
@@ -663,8 +663,8 @@
                         <div class="swiper-slide swiper-slide-prev" data-swiper-slide-index="1" role="group"
                             aria-label="2 / 4" style="width: 267px; margin-right: 24px;">
                             <div class="services-card1 two">
-                                <img class="services-card-vec"
-                                    src="{{ asset('assets/images/bg/services-card-vec.png') }}" alt="" />
+                                <img class="services-card-vec mark-logo"
+                                    src="{{ asset('/assets/images/icon/mark-logo.svg') }}" alt="" />
                                 <div class="icon">
                                     <img src="{{ asset('assets/images/icon/grooming2.svg') }}" alt="" />
                                 </div>
@@ -680,8 +680,8 @@
                         <div class="swiper-slide swiper-slide-active" data-swiper-slide-index="2" role="group"
                             aria-label="3 / 4" style="width: 267px; margin-right: 24px;">
                             <div class="services-card1 three">
-                                <img class="services-card-vec"
-                                    src="{{ asset('assets/images/bg/services-card-vec.png') }}" alt="" />
+                                <img class="services-card-vec mark-logo"
+                                    src="{{ asset('/assets/images/icon/mark-logo.svg') }}" alt="" />
                                 <div class="icon">
                                     <img src="{{ asset('assets/images/icon/boarding2.svg') }}" alt="" />
                                 </div>
@@ -710,8 +710,8 @@
                         <div class="swiper-slide swiper-slide-duplicate" data-swiper-slide-index="0" role="group"
                             aria-label="1 / 4" style="width: 267px; margin-right: 24px;">
                             <div class="services-card1">
-                                <img class="services-card-vec"
-                                    src="{{ asset('assets/images/bg/services-card-vec.png') }}" alt="" />
+                                <img class="services-card-vec mark-logo"
+                                    src="{{ asset('/assets/images/icon/mark-logo.svg') }}" alt="" />
                                 <div class="icon">
                                     <img src="{{ asset('assets/images/icon/daycare-center2.svg') }}"
                                         alt="" />
@@ -729,8 +729,8 @@
                             data-swiper-slide-index="1" role="group" aria-label="2 / 4"
                             style="width: 267px; margin-right: 24px;">
                             <div class="services-card1 two">
-                                <img class="services-card-vec"
-                                    src="{{ asset('assets/images/bg/services-card-vec.png') }}" alt="" />
+                                <img class="services-card-vec mark-logo"
+                                    src="{{ asset('/assets/images/icon/mark-logo.svg') }}" alt="" />
                                 <div class="icon">
                                     <img src="{{ asset('assets/images/icon/grooming2.svg') }}" alt="" />
                                 </div>
@@ -747,8 +747,8 @@
                             data-swiper-slide-index="2" role="group" aria-label="3 / 4"
                             style="width: 267px; margin-right: 24px;">
                             <div class="services-card1 three">
-                                <img class="services-card-vec"
-                                    src="{{ asset('assets/images/bg/services-card-vec.png') }}" alt="" />
+                                <img class="services-card-vec  mark-logo" 
+                                    src="{{ asset('/assets/images/icon/mark-logo.svg') }}" alt="" />
                                 <div class="icon">
                                     <img src="{{ asset('assets/images/icon/boarding2.svg') }}" alt="" />
                                 </div>
@@ -785,10 +785,10 @@
         <div class="container">
             <div class="row mb-60">
                 <div class="col-lg-12 d-flex align-items-center justify-content-between flex-wrap gap-3">
-                    <div class="section-title3">
-                        <h2><img src="{{ asset('assets/images/icon/h3-sec-tt-vect-left.svg') }}" alt /><span
+                    <div class="section-title3 align-items-center">
+                        <h2><img  class="kishan_left" src="{{ asset('assets/images/icon/utkarsh-kisan_bg.png') }}" width="40" height="40" alt /><span
                                 class="word">Customers Think About Us</span><img
-                                src="{{ asset('assets/images/icon/h3-sec-tt-vect-right.svg') }}" alt /></h2>
+                                src="{{ asset('assets/images/icon/mark-logo.svg') }}" width="40" height="40" alt /></h2>
                     </div>
                     <div class="slider-btn-wrap">
                         <div class="slider-btn prev-btn-12">

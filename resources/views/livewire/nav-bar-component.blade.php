@@ -2,7 +2,7 @@
     <div class="container d-flex justify-content-between align-items-center">
         <div class="header-logo">
             <a href="/"><img alt="image" class="img-fluid foot" style="width:80px;"
-                    src="{{ asset('admin/logos') }}/{{ $setting->web_logo }}" /></a>
+                    src="{{ asset('admin/logos/utkarsh_logo.png') }}" /></a>
         </div>
         <div class="opening-time text-center search-bar-input d-lg-none d-md-none d-block">
             <!-- <p>Free Shipping On Shipment of $80 Or More</p> -->
