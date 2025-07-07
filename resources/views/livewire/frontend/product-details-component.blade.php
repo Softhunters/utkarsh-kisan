@@ -25,9 +25,9 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="banner-img d-lg-block d-none">
-                        <div class="banner-img-bg">
+                        <!-- <div class="banner-img-bg">
                             <img class="img-fluid" src="{{ asset('assets/images/bg/inner-banner-vec.png') }}" alt />
-                        </div>
+                        </div> -->
                         <img class="img-fluid" src="{{ asset('assets/images/bg/inner-banner-img.png') }}" alt />
                     </div>
                 </div>

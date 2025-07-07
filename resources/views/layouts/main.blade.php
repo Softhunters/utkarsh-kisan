@@ -92,7 +92,9 @@
 }
 .badge-secondary {
     color: #fff;
-    background: linear-gradient(90deg, #F86CA7 0%, #FF7F18 100%);
+    /* background: linear-gradient(90deg, #F86CA7 0%, #FF7F18 100%); */
+    background: linear-gradient(90deg, #4a7737 0%, #699a39 50%, #e9ad16 100%) !important;
+;
 }
 .badge {
     display: inline-block; 

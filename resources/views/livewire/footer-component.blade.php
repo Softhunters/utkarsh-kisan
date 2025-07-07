@@ -4,7 +4,7 @@
                 <div class="col-lg-3 col-md-3">
                     <div class="footer-widget">
                         <div class="footer-icon">
-                            <img src="{{asset('admin/logos')}}/{{$setting->web_logo}}" style="width:80px;" class="foot" alt />
+                            <img src="{{asset('admin/logos/utkarsh_logo.png')}}" style="width:100px;" class="foot" alt />
                         </div>
                         <div class="widget-title">
                             <h2>
@@ -101,16 +101,29 @@
                         <div class="social-area ">
                             <ul class="areas">
                             <li>
-                                <a href="{{$setting->facebook}}" target="_blank"><i class="bx bxl-facebook"></i></a>
+                                <a href="{{$setting->facebook}}" target="_blank">
+                                    <!-- <i class="bx bxl-facebook"></i> -->
+                                     <img src="{{asset('assets/images/logo/utkarsh_fb.png')}}" height="30" width="30" alt />
+                                </a>
                             </li>
                             <li>
-                                <a href="{{$setting->twiter}}" target="_blank"><i class="bx bxl-twitter"></i></a>
+                                <a href="{{$setting->twiter}}" target="_blank">
+                                    <!-- <i class="bx bxl-twitter"></i> -->
+                                     <img src="{{asset('assets/images/logo/utkarsh_x.png')}}" height="30" width="30" alt />
+                                </a>
                             </li>
                             <li>
-                                <a href="{{$setting->pinterest}}" target="_blank"><i class="bx bxl-pinterest-alt"></i></a>
+                                <a href="{{$setting->pinterest}}" target="_blank">
+                                    <!-- <i class="bx bxl-pinterest-alt">
+                                    </i> -->
+                                    <img src="{{asset('assets/images/logo/utkarsh_youtube.png')}}" height="30" width="30" alt />
+                                </a>
                             </li>
                             <li>
-                                <a href="{{$setting->instagram}}" target="_blank"><i class="bx bxl-instagram"></i></a>
+                                <a href="{{$setting->instagram}}" target="_blank">
+                                    <!-- <i class="bx bxl-instagram"></i> -->
+                                     <img src="{{asset('assets/images/logo/utkarsh_insta.png')}}" height="30" width="30" alt />
+                            </a>
                             </li>
                         </ul>
                         </div>
