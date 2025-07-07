@@ -46,7 +46,7 @@
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
 }
 </style>
-<a href="#"> 
+<a href="{{route('cart')}}"> 
 <span class="badge badge-secondary">{{$cartcount}}</span>
     <svg width="16" height="13" viewBox="0 0 16 13" xmlns="http://www.w3.org/2000/svg">
         <path

@@ -122,12 +122,11 @@
                             </span>
                         </div>
                         <div class="price-tag d-flex gap-3">
-
                             <h4>₹{{ $product->sale_price }} <del>₹{{ $product->regular_price }}</del></h4>
                             <spna class="percent">({{ $product->discount_value }}% off)</spna>
                         </div>
                         <!--<p>Donec bibendum enim ut elit porta ullamcorper. Vestibulum Nai wekemdini iaculis vitae nulla. Morbi mattis nec mi ac mollis.</p>-->
-                        @if (isset($varaiants[0]))
+                        @if (isset($varaiants[1]))
                             <div class="varient mt-4 ">
                                 <h6 class="font-weight-bold text-dark mb-3">Product Varient</h6>
                                 <div class="row box-checkbox d-flex ">
@@ -167,7 +166,7 @@
                                 <a href="{{ route('cart') }}" class="primary-btn3">Already In Cart</a>
                             @else
                                 <a href="#"
-                                    wire:click.prevent="AddtoCart({{ $product->id }},{{ $product->sale_price }})"
+                                    wire:click.prevent="AddtoCart({{ $product->id }},{{ $product->sale_price }},{{ $product->seller->id??'' }})"
                                     class="primary-btn3">Add to cart</a>
                             @endif
 

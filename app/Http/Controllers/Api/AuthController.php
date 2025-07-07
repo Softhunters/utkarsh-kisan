@@ -16,6 +16,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 
 
+
 class AuthController extends Controller
 
 {
@@ -28,6 +29,7 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'phone' =>$data['phone'],
+            'referral_code' => $this->ticket_number(),
             'device_token' =>$data['device_token'],
         ]);
     }
@@ -97,7 +99,13 @@ class AuthController extends Controller
                     $request->session()->put('auth.password_confirmed_at', time());
                 }
                 
-                Auth::user()->update(['device_token'=>$request->token]);
+                
+                // Auth::user()->update(['device_token'=>$request->token]);
+                User::find(Auth::user()->id)->update(['device_token'=>$request->token]);
+                 if(!isset(Auth::user()->referral_code))
+                    {
+                        User::where('id',Auth::user()->id)->update(['referral_code'=>$this->ticket_number()]);
+                    }
                 $user = Auth::user();
                     return response()->json([
                         'status' => true,
@@ -121,6 +129,49 @@ class AuthController extends Controller
         }
     }
 
+
+    public function ApplyRcode(Request $request)
+    {
+       try {
+            // $validateUser = Validator::make($request->all(), 
+            // [
+            //     'rcode' => ['required', 'string', 'min:6']
+            // ]);
+            
+            // if($validateUser->fails()){
+            //     return response()->json([
+            //         'status' => false,
+            //         'message' => 'validation error',
+            //         'errors' => $validateUser->errors()
+            //     ], 200);
+            // }
+        
+            $check = User::where('referral_code',$request->rcode)->where('id','!=',Auth::user()->id)->first();
+            if(isset($check))
+            {
+                User::where('id',Auth::user()->id)->update(['referral_by' => $request->rcode]);
+                // session()->flash('success', 'Referral Code has been applied successfully');
+                return response()->json([
+                        'status' => true,
+                        'message' => 'Referral Code has been applied successfully',
+                
+                    ], 200);
+            }else{
+                // session()->flash('error','Referral Code not Found!');
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Referral Code not Found!.',
+                ], 200);
+            }
+        
+       } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+    
     public function chnagePassword (Request $request)
     {
         
@@ -264,36 +315,7 @@ class AuthController extends Controller
         ], 200);
     }
     
-    public function ReverifyAccount(Request $request)
-    {
-        
-        $token = Str::random(64);
-  
-        $otp = rand(111111,999999);
-
-        UserVerify::create([
-          'user_id' => Auth::user()->id, 
-          'token' => $token,
-          'mobile_opt'=>$otp
-        ]);
-        
-        $email = Auth::user()->email;
-   
-        $mailData = [
-            'title' => 'Register Request Submit',
-            'name'=> Auth::user()->name,
-            'token' => $token
-        ];
-        $hji= 'demoEmail';
-        $subject = 'Register Request';
-        Mail::to($email)->send(new EmailDemo($mailData,$hji,$subject));
-        
-         return response()->json([
-                    'status' => true,
-                    'message' => 'Verification email sent successfully!!',
-                ], 200);
-    }
-     public function ReverifyAccountOTP(Request $request)
+    public function ReverifyAccountOTP(Request $request)
     {
          try {
         $otp = rand(111111,999999);
@@ -329,7 +351,7 @@ class AuthController extends Controller
     {
         
          $verifyUser = UserVerify::where('mobile_opt', $request->token)->where('user_id',Auth::user()->id)->first();
-//   dd($verifyUser);
+        //   dd($verifyUser);
 
         $message = 'Sorry Your OTP does not matched.';
   
@@ -379,6 +401,123 @@ class AuthController extends Controller
                     'status' => true,
                     'message' => 'User Deleted Successfully !'
                 ], 200);
+            
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+    
+    function ticket_number()
+    {
+        do {
+            $rcode = Str::random(6);;
+        } while (User::where("referral_code", "=", $rcode)->first());
+    
+        return $rcode;
+    }
+    
+    
+    public function GenrateOtp(Request $request)
+    {
+        try {
+            $validateUser = Validator::make($request->all(), 
+                    [
+                        'number' => 'required'
+                    ]);
+
+                    if($validateUser->fails()){
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'validation error',
+                            'errors' => $validateUser->errors()
+                        ], 200);
+                    }
+
+            $user = User::where('phone',$request->number)->first();
+            if(isset($user))
+            {
+                $otp= rand(100000, 999999);
+                User::where('phone',$request->number)->update(['otp'=>$otp]);
+                
+                return response()->json([
+                    'status' => true,
+                    'message' => '6 digit Otp send to your registor mobile number!',
+                    'otp' => $otp
+                ], 200);
+            }else{
+                
+            
+                return response()->json([
+                    'status' => false,
+                    'message' => 'This Mobile is number not registor!'
+                ], 200);
+            }
+            
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+    
+    public function OtpLogin (Request $request)
+    {
+        try {
+            $validateUser = Validator::make($request->all(), 
+                    [
+                        'number' => 'required',
+                        'otp' =>'required',
+                        'device_token'=>'required',
+                    ]);
+
+                    if($validateUser->fails()){
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'validation error',
+                            'errors' => $validateUser->errors()
+                        ], 200);
+                    }
+
+            $userc = User::where('phone',$request->number)->first();
+            if(isset($userc))
+            {
+                if($userc->otp == $request->otp)
+                {
+                    Auth::login($userc);
+                    
+                    User::find(Auth::user()->id)->update(['device_token'=>$request->token,'otp'=>null]);
+                     if(!isset(Auth::user()->referral_code))
+                        {
+                            User::where('id',Auth::user()->id)->update(['referral_code'=>$this->ticket_number()]);
+                        }
+                    $user = Auth::user();
+                        return response()->json([
+                            'status' => true,
+                            'message' => 'User Logged In Successfully',
+                            'token' => $user->createToken("API TOKEN")->plainTextToken
+                        ], 200);
+                    
+                }else{
+                     return response()->json([
+                    'status' => false,
+                    'message' => 'This Otp is Wrong!'
+                ], 200);
+                    
+                }
+                
+            }else{
+                
+                return response()->json([
+                    'status' => false,
+                    'message' => 'This Mobile is number not registor!'
+                ], 200);
+            }
             
 
         } catch (\Throwable $th) {

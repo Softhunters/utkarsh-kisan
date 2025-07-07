@@ -161,7 +161,7 @@ class ProductDetailsComponent extends Component
         }
         // return;
     }
-    public function AddtoCart(Request $request, $product_id, $product_price)
+    public function AddtoCart(Request $request, $product_id, $product_price, $seller_id=null)
     {
         $id = $product_id;
         // dd($id);
@@ -181,6 +181,7 @@ class ProductDetailsComponent extends Component
                 $cart->product_image = $product->image;
                 $cart->price = $product->sale_price;
                 $cart->quantity = $this->quntiti;
+                $cart->seller_id = $seller_id;
                 $cart->save();
                 session()->flash('success', 'Item added to cart!');
                 // $this->dispatch('wishlist-count-component','refreshComponent');
@@ -197,7 +198,8 @@ class ProductDetailsComponent extends Component
                 'product_name' => $product->name,
                 'product_image' => $product->image,
                 'quantity' => $this->quntiti,
-                'price' => $product->sale_price
+                'price' => $product->sale_price,
+                'seller_id' => $seller_id
             ];
             Session()->put('cart', $cart);
             session()->flash('success', 'Item added to cart!');
@@ -210,16 +212,15 @@ class ProductDetailsComponent extends Component
     public function render(Request $request)
     {
         if (!$this->variant_id) {
-            $product = Product::where('slug', $this->slug)->first();
+            $product = Product::with('seller')->where('slug', $this->slug)->first();
         } else {
-            $product = Product::where('id', $this->variant_id)->first();
+            $product = Product::with('seller')->where('id', $this->variant_id)->first();
         }
         if ($product->parent_id) {
             $varaiants = Product::where('parent_id', $product->parent_id)->orWhere('id', $product->parent_id)->get();
         } else {
             $varaiants = Product::where('parent_id', $product->id)->orWhere('id', $product->id)->get();
         }
-        //dd($varaiants);
         if (Auth::check()) {
             // $this->cartp = Cart::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
             // $this->wishp = Wishlist::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();

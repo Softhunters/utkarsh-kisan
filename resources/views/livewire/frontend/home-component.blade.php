@@ -161,19 +161,19 @@
                                             <!--<a href="#"><img src="{{ asset('assets/images/icon/Icon-cart3.svg') }}" alt /></a>-->
                                         @else
                                             <a href="#"
-                                                wire:click.prevent="AddtoCart({{ $product->id }},{{ $product->sale_price }})"><img
+                                                wire:click.prevent="AddtoCart({{ $product->id }},{{ $product->sale_price }},{{$product->seller->vendor_id??''}})"><img
                                                     src="{{ asset('assets/images/icon/Icon-cart3.svg') }}" alt /></a>
                                         @endif
                                     </li>
                                     <li>
                                         @if (in_array($product->id, $wishp))
                                             <a href="#"
-                                                wire:click.prevent="removeFromWishlist({{ $product->id }},{{ $product->sale_price }})"><img
+                                                wire:click.prevent="removeFromWishlist({{ $product->id }},{{$product->seller->vendor_id??''}})"><img
                                                     src="{{ asset('assets/images/icon/Icon-favorites3.svg') }}"
                                                     alt /></a>
                                         @else
                                             <a href="#"
-                                                wire:click.prevent="addToWishlist({{ $product->id }},{{ $product->sale_price }})"><img
+                                                wire:click.prevent="addToWishlist({{ $product->id }},{{ $product->sale_price }},{{$product->seller->vendor_id??''}})"><img
                                                     src="{{ asset('assets/images/icon/Icon-favorites2.svg') }}"
                                                     alt /></a>
                                         @endif

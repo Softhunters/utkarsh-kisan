@@ -40,9 +40,12 @@ use App\Livewire\Admin\Tax\EditTaxComponent;
 use App\Livewire\Admin\Tax\TaxComponent;
 use App\Livewire\Admin\User\UserComponent;
 use App\Livewire\Admin\WebsettingComponent;
+use App\Livewire\Frontend\CartComponent;
 use App\Livewire\Frontend\CategorySearchComponent;
 use App\Livewire\Frontend\HomeComponent;
 use App\Livewire\Frontend\ProductDetailsComponent;
+use App\Livewire\Frontend\ShopComponent;
+use App\Livewire\Frontend\WishlistComponent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,6 +61,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeComponent::class)->name('index');
 
+Route::get('/wishlist',WishlistComponent::class)->name('wishlist');
+Route::get('/cart',CartComponent::class)->name('cart');
+
+Route::get('/shop',ShopComponent::class)->name('shop');
 Route::get('/category/{category_slug}/{scategory_slug?}',CategorySearchComponent::class)->name('product.category');
 Route::get('/product-detail/{slug}',ProductDetailsComponent::class)->name('product-details');
 Route::get('/vdrregistor', [RegisterController::class, 'vdrregisterview'])->name('vdrregisterview');
@@ -68,6 +75,7 @@ Route::post('/ulogin', [LoginController::class, 'uloginauth'])->name('ulogin');
 Route::get('/vendorlogin', [LoginController::class, 'vendorlogin']);
 Route::get('/adminlogin', [LoginController::class, 'adminlogin']);
 Route::post('/adminlogin', [LoginController::class, 'adminloginauth'])->name('adminlogin');
+
 
 Auth::routes();
 
