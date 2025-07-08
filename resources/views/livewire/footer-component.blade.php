@@ -12,9 +12,9 @@
                                 your pet Food, <span>our Shop</span>?
                             </h2>
                         </div> -->
-                        <div class="footer-btn">
+                        <!-- <div class="footer-btn">
                             <a class="primary-btn6" href="#">Shop Now</a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6">
@@ -28,11 +28,11 @@
                                 <li><a href="#">About Us</a></li>
                                 <!-- <li><a href="#">Shop</a></li> -->
                                 <li><a href="{{route('contact-us')}}">Contact Us</a></li>
-                                <li><a href="{{route('vdrregisterview')}}">Vendor Registration</a></li>
-                                <!-- <li><a href="#">My Account</a></li>
-                                <li><a href="#">Order Tracking</a></li>
-                                <li><a href="#">Blogs
-                                </a></li> -->
+                                <li><a href="{{route('vdrregisterview')}}">Kisan Registration</a></li>
+                                 <li><a href="#">My Account</a></li>
+                                <!-- <li><a href="#">Order Tracking</a></li>
+                                <li><a href="#">Blogs -->
+                                </a></li> 
                             </ul>
                         </div>
                     </div>
@@ -50,6 +50,7 @@
                                 <li><a href="#">Return & Refund Policy</a></li>
                                 <li><a href="#">Terms & Conditions</a></li>
                                 <li><a href="#">Shipping & Delivery Policy </a></li>
+                                <li><a href="#">Vendor Terms & Conditions </a></li>
                             </ul>
                         </div>
                     </div>
@@ -135,7 +136,7 @@
             <div class="row border-top align-items-center lower-footer">
                 <div class="col-lg-6 col-md-6">
                     <div class="copyright-area">
-                        <p>© 2024, utkarsh kishan - All Rights Reserved | Developed by Softhunters Technology</p>
+                        <p>© 2025, utkarsh kisan - All Rights Reserved | Developed by Softhunters Technology</p>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 d-flex justify-content-md-end justify-content-center">
