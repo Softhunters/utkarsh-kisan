@@ -76,7 +76,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="shop-widget">
+                                {{--<div class="shop-widget">
                                     <div class="check-box-item">
                                         <h5 class="shop-widget-title">Breed</h5>
                                         <div class="checkbox-container">
@@ -90,8 +90,8 @@
                                             
                                         </div>
                                     </div>
-                                </div>
-                                <div class="shop-widget">
+                                </div>--}}
+                               {{-- <div class="shop-widget">
                                     <div class="check-box-item">
                                         <h5 class="shop-widget-title">Flavor</h5>
                                         <div class="checkbox-container">
@@ -107,6 +107,7 @@
                                     </div>
                                 </div>
                             </div>
+                            --}}
                         </div>
                    
              

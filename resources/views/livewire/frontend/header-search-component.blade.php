@@ -26,7 +26,9 @@
             </li>
             <li>
                 <a href="{{$setting->pinterest}}">
-                    <i class="bx bxl-pinterest-alt"></i>
+                    <!-- <i class="bx bxl-pinterest-alt"></i> -->
+                      <i class="bx bxl-youtube"></i>
+
                      <!-- <img src="{{asset('assets/images/logo/utkarsh_youtube.png')}}" height="20" width="20" alt /> -->
                 </a>
             </li>

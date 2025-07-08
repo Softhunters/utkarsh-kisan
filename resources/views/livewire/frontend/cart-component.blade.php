@@ -1,9 +1,9 @@
 <div>
     @include('flash-message')
     <div class="inner-page-banner">
-        <div class="breadcrumb-vec-btm">
+        <!-- <div class="breadcrumb-vec-btm">
             <img class="img-fluid" src="{{ asset('assets/images/bg/inner-banner-btm-vec.png') }}" alt />
-        </div>
+        </div> -->
         <div class="container">
             <div class="row justify-content-center align-items-center text-center">
                 <div class="col-lg-6 align-items-center">
@@ -19,9 +19,9 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="banner-img d-lg-block d-none">
-                        <div class="banner-img-bg">
+                        <!-- <div class="banner-img-bg">
                             <img class="img-fluid" src="{{ asset('assets/images/bg/inner-banner-vec.png') }}" alt />
-                        </div>
+                        </div> -->
                         <img class="img-fluid" src="{{ asset('assets/images/bg/inner-banner-img.png') }}" alt />
                     </div>
                 </div>
@@ -36,7 +36,7 @@
     <div class="cart-section pt-120 pb-120">
         <div class="container">
 
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-lg-8">
                     @if (isset($cart[0]))
                         <div class="coupon-area">
@@ -149,7 +149,7 @@
                         <div class="empty-wishlist text-center">
                             <p style="text-align:center;">No Item Added In CART</p>
                             <a href="{{ route('shop') }}"><button
-                                    class="btn btn-primary"style="background-color: #5b5b5b;border-color:#5b5b5b;">Continue
+                                    class="btn btn-primary wishlist_shopping_btn" >Continue
                                     Shopping</button></a>
 
                         </div>

@@ -13,6 +13,7 @@
     /* --gradient-color: linear-gradient(90deg, #F86CA7 0%, #FF7F18 100%); */
     --gradient-color:linear-gradient(90deg, #4a7737 0%, #699a39 50%, #e9ad16 100%) ;
     --title-color1: #001D23;
+    --btn-hoverbg:#4a7737;
     --title-color2: #253D4E;
     --text-color1: #8A8A8A;
     --text-color2: #1F2124;
@@ -879,7 +880,7 @@ html .ui-button.ui-state-disabled:active:hover {
 
 .primary-btn1:hover {
     color: #fff;
-    background: var(--title-color1);
+    background: var(--btn-hoverbg);
 }
 
 .primary-btn1:hover::before {
@@ -889,14 +890,15 @@ html .ui-button.ui-state-disabled:active:hover {
 .primary-btn2 {
     font-size: 13px;
     font-weight: 700;
-    color: var(--white);
+    color: var(--primary-color3);
     font-family: var(--font-dosis);
     display: inline-block;
-    background-color: #ff553c;
+    background-color: #ffffff;
     border-radius: 5px;
     position: relative;
     z-index: 1;
-    transition: .35s
+    transition: .35s;
+    border:1px solid var(--primary-color3);
 }
 
 /*.primary-btn2::after {*/
@@ -913,7 +915,9 @@ html .ui-button.ui-state-disabled:active:hover {
 /*}*/
 
 .primary-btn2:hover {
-    color: var(--white)
+    color: var(--white);
+    background: var(--primary-color3);
+    
 }
 
 .primary-btn2:hover::after {
@@ -928,13 +932,16 @@ html .ui-button.ui-state-disabled:active:hover {
     color: var(--white);
     font-family: var(--font-dosis);
     display: inline-block;
-    background-color: #25373a;
+    background-color: var(--primary-color3);
     border-radius: 5px;
     position: relative;
     z-index: 1;
     transition: .35s
 }
 
+.primary-btn3:hover{
+    background-color: var(--btn-hoverbg);
+}
 /*.primary-btn3::after {*/
 /*    content: "";*/
 /*    background-color: var(--title-color1);*/
@@ -1027,7 +1034,7 @@ html .ui-button.ui-state-disabled:active:hover {
 }
 
 .primary-btn6:hover {
-    background: var(--title-color1);
+    background: var(--btn-hoverbg);
     color: var(--white)
 }
 
@@ -1696,7 +1703,8 @@ header.style-1 .main-menu ul>li ul.sub-menu {
     opacity: 0;
     visibility: hidden;
     min-width: 220px;
-    background: var(--title-color1);
+    /* background: var(--title-color1); */
+    background :var(--btn-hoverbg) !important;
     text-align: left;
     transform: translateY(20px)
 }
@@ -1756,7 +1764,7 @@ header.style-1 .main-menu ul>li ul.sub-menu>li .sub-menu {
     position: absolute;
     max-width: 230px;
     min-width: 215px;
-    background: #0b0f14;
+    background: var(--btn-hoverbg);
     top: 0
 }
 
@@ -2333,7 +2341,7 @@ header.style-2 .main-menu ul>li ul.sub-menu {
     opacity: 0;
     visibility: hidden;
     min-width: 220px;
-    background: var(--title-color1);
+    background: var(--btn-hoverbg) !important;
     text-align: left;
     transform: translateY(20px)
 }
@@ -2379,12 +2387,12 @@ header.style-2 .main-menu ul>li ul.sub-menu>li a {
 }
 
 header.style-2 .main-menu ul>li ul.sub-menu>li a:hover {
-    color: var(--primary-color2);
+    color: var(--primary-color3);
     font-weight: 500
 }
 
 header.style-2 .main-menu ul>li ul.sub-menu>li a.active {
-    color: var(--primary-color2);
+    color: var(--primary-color3);
     font-weight: 500
 }
 
@@ -2393,7 +2401,7 @@ header.style-2 .main-menu ul>li ul.sub-menu>li .sub-menu {
     position: absolute;
     max-width: 230px;
     min-width: 215px;
-    background: #0b0f14;
+    background: var(--btn-hoverbg);
     top: 0
 }
 
@@ -2555,11 +2563,11 @@ header.style-2 .main-menu ul li.menu-item-has-children>i {
         font-weight: 500
     }
     header.style-2 .main-menu ul li ul.sub-menu>li a:hover {
-        color: var(--primary-color2);
+        color: var(--primary-color1);
         margin-left: 10px
     }
     header.style-2 .main-menu ul li ul.sub-menu>li a.active {
-        color: var(--primary-color2)
+        color: var(--primary-color1)
     }
     header.style-2 .main-menu ul li ul.sub-menu>li i {
         color: var(--text-primary);
@@ -2899,7 +2907,7 @@ header.style-3 .main-menu ul>li ul.sub-menu {
     opacity: 0;
     visibility: hidden;
     min-width: 220px;
-    background: var(--title-color1);
+    background: var(--btn-hoverbg);
     text-align: left;
     transform: translateY(20px)
 }
@@ -2960,7 +2968,7 @@ header.style-3 .main-menu ul>li ul.sub-menu>li .sub-menu {
     position: absolute;
     max-width: 230px;
     min-width: 215px;
-    background: #0b0f14;
+    background: var(--btn-hoverbg);
     top: 0
 }
 
@@ -3149,7 +3157,7 @@ header.style-3 .main-menu ul li.menu-item-has-children>i {
         background-color: #fff
     }
     .header-area .main-menu .for-mobile-menu .mobile-menu-form .input-with-btn .primary-btn1:hover {
-        color: var(--title-color1)
+        color: var(--btn-hoverbg)
     }
     .header-area .main-menu .for-mobile-menu .hotline .hotline-info {
         text-align: center
@@ -11907,7 +11915,13 @@ footer.style2 .social-area ul li:hover a i {
 .location-map iframe {
     height: 440px;
     width: 100%;
-    filter: grayscale(199%) invert(98%) contrast(122%)
+    /* filter: grayscale(199%) invert(98%) contrast(122%); */
+
+    
+  /* background-color: #699a39;   */
+   
+
+
 }
 
 .shop-sidebar .shop-widget-title {
@@ -12071,12 +12085,16 @@ footer.style2 .social-area ul li:hover a i {
     align-items: center;
     border: 1px solid;
     border-color: rgba(0, 29, 35, .1);
-    border-radius: 5px
+    border-radius: 5px;
+    background-color: var(--white) !important;
+
 }
 
 .shop-sidebar .shop-widget .range-widget .nice-number button {
     display: none;
-    visibility: hidden
+    visibility: hidden;
+    background-color: var(--white) !important;
+
 }
 
 .shop-sidebar .shop-widget .range-widget .nice-number input {
@@ -12084,7 +12102,7 @@ footer.style2 .social-area ul li:hover a i {
     box-sizing: content-box;
     margin: 0;
     text-align: center;
-    background-color: transparent;
+    background-color: white !important;
     color: var(--title-color1);
     font-family: cabin;
     font-style: normal;
@@ -12097,7 +12115,9 @@ footer.style2 .social-area ul li:hover a i {
 .shop-sidebar .shop-widget .range-widget .nice-number input::-webkit-inner-spin-button,
 .shop-sidebar .shop-widget .range-widget .nice-number input::-webkit-outer-spin-button {
     -webkit-appearance: none;
-    margin: 0
+    margin: 0;
+    background: var(--white);
+    
 }
 
 .shop-sidebar .shop-widget .containerss {
@@ -12544,7 +12564,9 @@ footer.style2 .social-area ul li:hover a i {
 }
 
 .shop-details-page .shop-details-content .buy-now-btn a:hover {
-    color: var(--white)
+    color: var(--white);
+    background: var(--primary-color3);
+    
 }
 
 .shop-details-page .shop-details-content .buy-now-btn a:hover::after {
@@ -12636,7 +12658,7 @@ footer.style2 .social-area ul li:hover a i {
 }
 
 .shop-details-page .nav2 .nav-link.active {
-    background-color: var(--title-color1);
+    background-color: var(--primary-color3);
     border-color: var(--primary-color3);
     color: var(--white)
 }
@@ -13011,7 +13033,7 @@ footer.style2 .social-area ul li:hover a i {
     height: 35px;
     width: 35px;
     line-height: 35px;
-    border: 1px solid #f46f30;
+    border: 1px solid var(--primary-color3);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -13021,7 +13043,7 @@ footer.style2 .social-area ul li:hover a i {
 
 .shop-details-page .swiper-btn-wrap .slider-btn i {
     font-size: 20px;
-    color: #f46f30;
+    color: var(--primary-color3);
     transition: .35s
 }
 
@@ -13420,7 +13442,8 @@ footer.style2 .social-area ul li:hover a i {
 }
 
 .coupon-area .coupon-input button:hover {
-    color: #fff
+    color: #fff;
+    background-color: var(--btn-hoverbg);
 }
 
 .coupon-area .coupon-input button:hover::before {
@@ -14431,7 +14454,7 @@ footer.style2 .social-area ul li:hover a i {
 }
 
 .form-wrapper .account-btn:hover::after {
-    background: var(--title-color1);
+    background: var(--btn-hoverbg);
     opacity: 1
 }
 
@@ -15527,4 +15550,78 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
 
 .mark-logo{
     opacity: 0.1;
+}
+
+
+header.style-3 .main-menu ul > li ul.sub-menu > li a:hover{
+    color:var(--title-color1);
+}
+
+
+.btn-outline-dark:hover {
+  color: #fff;
+  background-color: var(--primary-color3);
+  border-color: white;
+
+}
+
+ 
+
+
+.nice_num1{
+    width: 4ch !important;
+}
+
+.nice_num2{
+    width:15ch !important
+}
+
+.wishlist_shopping_btn{
+    background-color: var(--primary-color3);
+    border:none !important
+}
+
+.wishlist_shopping_btn:hover{
+     background-color: var(--btn-hoverbg);
+    border:none !important
+
+}
+
+.wishlist_shopping_btn:focus{
+    box-shadow: none !important;
+}
+
+
+.styled-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+  font-size: 16px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.styled-table th, .styled-table td {
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.styled-table th {
+  background-color: var(--primary-color3);
+  color: #fff;
+  font-weight: bold;
+}
+
+.styled-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+
+.number-of-review .bi{
+    color: #ffc226;
+
+}
+
+.btn-outline-dark:active:focus,.btn-outline-dark:focus {
+  box-shadow: none !important;
 }

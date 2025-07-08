@@ -46,6 +46,7 @@ use App\Livewire\Frontend\HomeComponent;
 use App\Livewire\Frontend\ProductDetailsComponent;
 use App\Livewire\Frontend\ShopComponent;
 use App\Livewire\Frontend\WishlistComponent;
+use App\Livewire\Frontend\ContactUsComponent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -63,6 +64,7 @@ Route::get('/', HomeComponent::class)->name('index');
 
 Route::get('/wishlist',WishlistComponent::class)->name('wishlist');
 Route::get('/cart',CartComponent::class)->name('cart');
+Route::get('/contact-us',ContactUsComponent::class)->name('contact-us');
 
 Route::get('/shop',ShopComponent::class)->name('shop');
 Route::get('/category/{category_slug}/{scategory_slug?}',CategorySearchComponent::class)->name('product.category');
