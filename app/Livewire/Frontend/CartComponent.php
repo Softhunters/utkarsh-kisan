@@ -337,6 +337,7 @@ class CartComponent extends Component
                 session()->flash('info', 'Cart Qunatity is out of stock please! change qunatity');
                 return;
             }
+            
             return redirect()->route('check-out');
         } else {
             session()->flash('cmessage', 'Login First');

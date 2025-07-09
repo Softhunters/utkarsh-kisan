@@ -26,7 +26,7 @@
                             <ul>
                                 <li><a href="/">Home</a></li>
                                 <li><a href="#">Shop</a></li>
-                                <li><a href="#">Contact Us</a></li>
+                                <li><a href="{{route('contact-us')}}">Contact Us</a></li>
                                 <li><a href="{{route('vdrregisterview')}}">Vendor Registration</a></li>
                                 <li><a href="#">My Account</a></li>
                                 <li><a href="#">Order Tracking</a></li>

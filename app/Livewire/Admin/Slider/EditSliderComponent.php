@@ -75,7 +75,7 @@ class EditSliderComponent extends Component
         {
             if($slider->images)
             {
-                unlink('admin/slider'.'/'.$slider->images);  
+                // unlink('admin/slider'.'/'.$slider->images);  
             }
             
             $imgName = Carbon::now()->timestamp.'.'.$this->newimages->extension();

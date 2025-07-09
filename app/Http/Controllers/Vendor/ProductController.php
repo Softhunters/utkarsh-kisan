@@ -45,7 +45,6 @@ class ProductController extends Controller
             'quantity' => 'required|integer|min:1',
             'additional_info' => 'nullable|string',
         ]);
-
         // Create Vendor Product
         $vendorProduct = new VendorProduct();
         $vendorProduct->product_id = $request->product_id;
@@ -126,29 +125,61 @@ class ProductController extends Controller
     //         ->get(['id', 'name']);
     // }
 
+    // public function getProducts(Request $request)
+    // {
+    //     $products = VendorProduct::with(['product'])
+    //         ->when($request->category_id, fn($q) => $q->whereHas('product', fn($q2) => $q2->where('category_id', $request->category_id)))
+    //         ->when($request->subcategory_id, fn($q) => $q->whereHas('product', fn($q2) => $q2->where('subcategory_id', $request->subcategory_id)))
+    //         ->when($request->brand_id, fn($q) => $q->whereHas('product', fn($q2) => $q2->where('brand_id', $request->brand_id)))
+    //         ->get();
+
+    //     return response()->json(
+    //         $products->map(function ($item) {
+    //             return [
+    //                 'vendor_product_id' => $item->id,
+    //                 'name' => $item->product->name,
+    //                 'slug' => $item->product->slug,
+    //                 'price' => $item->price,
+    //                 'quantity' => $item->quantity,
+    //                 'regular_price' => $item->product->regular_price,
+    //                 'thumbnail' => $item->product->image,
+    //                 'discount' => $item->product->sale_price - $item->product->discount_value,
+    //             ];
+    //         })
+    //     );
+    // }
+
     public function getProducts(Request $request)
     {
-        $products = VendorProduct::with(['product'])
-            ->when($request->category_id, fn($q) => $q->whereHas('product', fn($q2) => $q2->where('category_id', $request->category_id)))
-            ->when($request->subcategory_id, fn($q) => $q->whereHas('product', fn($q2) => $q2->where('subcategory_id', $request->subcategory_id)))
-            ->when($request->brand_id, fn($q) => $q->whereHas('product', fn($q2) => $q2->where('brand_id', $request->brand_id)))
-            ->with('product')
+        $vendorId = Auth::id();
+
+        $products = Product::query()
+            ->when($request->category_id, fn($q) => $q->where('category_id', $request->category_id))
+            ->when($request->subcategory_id, fn($q) => $q->where('subcategory_id', $request->subcategory_id))
+            ->when($request->brand_id, fn($q) => $q->where('brand_id', $request->brand_id))
+            ->whereDoesntHave('vendorProducts', function ($query) use ($vendorId) {
+                $query->where('vendor_id', $vendorId);
+            })
             ->get();
 
         return response()->json(
-            $products->map(function ($item) {
+            $products->map(function ($product) {
                 return [
-                    'vendor_product_id' => $item->id,
-                    'name' => $item->product->name,
-                    'price' => $item->price,
-                    'quantity' => $item->quantity,
-                    'regular_price' => $item->product->regular_price,
-                    'thumbnail' => $item->product->image,
-                    'discount' => $item->product->sale_price - $item->product->discount_value,
+                    'product_id' => $product->id,
+                    'name' => $product->name,
+                    'slug' => $product->slug,
+                    'regular_price' => $product->regular_price,
+                    'price' => $product->sale_price,
+                    'discount_value' => $product->discount_value,
+                    'discount' => $product->regular_price - $product->sale_price,
+                    'thumbnail' => $product->image,
+                    'quantity' => $product->quantity,
+                    'vendor_product_id' => null,
                 ];
             })
         );
     }
+
 
 
 }

@@ -57,6 +57,10 @@ class Product extends Model
 
     public function seller()
     {
-        return $this->hasOne(VendorProduct::class, 'vendor_id');
+        return $this->hasOne(VendorProduct::class, 'product_id');
+    }
+    public function sellerAll()
+    {
+        return $this->hasMany(VendorProduct::class, 'product_id');
     }
 }
