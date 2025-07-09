@@ -45,10 +45,13 @@ use App\Livewire\Frontend\CategorySearchComponent;
 use App\Livewire\Frontend\CheckOutComponent;
 use App\Livewire\Frontend\ContactUsComponent;
 use App\Livewire\Frontend\HomeComponent;
+use App\Livewire\Frontend\OrderDetailsComponent;
+use App\Livewire\Frontend\OrdersComponent;
 use App\Livewire\Frontend\ProductDetailsComponent;
 use App\Livewire\Frontend\ShopComponent;
 use App\Livewire\Frontend\WishlistComponent;
-// use App\Livewire\Frontend\ContactUsComponent;
+
+use App\Livewire\ThankyouComponent;
 use Illuminate\Support\Facades\Route;
 
 use App\Livewire\User\AccountComponent;
@@ -85,6 +88,8 @@ Route::get('/wishlist',WishlistComponent::class)->name('wishlist');
 Route::get('/cart',CartComponent::class)->name('cart');
 
 Route::get('/check-out',CheckOutComponent::class)->name('check-out');
+Route::get('/thankyou',ThankyouComponent::class)->name('thankyou');
+
 
 Route::get('/contact-us',ContactUsComponent::class)->name('contact-us');
 
@@ -109,8 +114,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
-    // Route::get('/user/orders', OrdersComponent::class)->name('orders');
-    // Route::get('/order/{id}', OrderDetailsComponent::class)->name('order-details');
+    Route::get('/user/orders', OrdersComponent::class)->name('orders');
+    Route::get('/order/{id}', OrderDetailsComponent::class)->name('order-details');
 
 
     // Admin Routes

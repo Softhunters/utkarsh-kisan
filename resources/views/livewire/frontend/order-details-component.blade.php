@@ -1,4 +1,5 @@
 <div>
+
     @section('page_css')
         <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
@@ -13,6 +14,8 @@
             crossorigin="anonymous" referrerpolicy="no-referrer" />
     @endsection
     @include('flash-message')
+
+   
     <main class="h1-story-area mb-120">
         <div class="accounnt_header">
             <div class="container">
@@ -23,8 +26,8 @@
                                 <li class="breadcrumb-item">
                                     <a class="text-nowrap" href="index.html"><i class="fa fa-home mr-2"></i>Home</a>
                                 </li>
-                                <li class="breadcrumb-item text-nowrap"><a href="account.html"><i
-                                            class="fa fa-user mr-2"></i>Account</a>
+
+                                <li class="breadcrumb-item text-nowrap"><a href="account.html"><i class="fa fa-user mr-2"></i>Account</a>
                                 </li>
                                 <li class="breadcrumb-item text-nowrap active" aria-current="page">Order</li>
                             </ol>
@@ -42,6 +45,7 @@
                     <div class="col-lg-4 col-md-4 col-12">
                         <nav class="navbar navbar-expand-md mb-5 mb-lg-0 sidenav">
                             <!-- Menu -->
+
                             <a class="d-xl-none d-lg-none d-md-none text-inherit fw-bold" href="#">Sidebar
                                 Menu</a>
                             <!-- Button -->
@@ -110,11 +114,13 @@
                                     </ul>
                                 </div>
                             </div>
+
                         </nav>
                     </div>
                     <div class="col-lg-8 col-md-8 col-12">
                         <div class="ml-0 ml-md-4 mt-md-n3">
                             <div class="d-none d-md-block">
+
                                 <div class="row mb-md-5">
                                     <div class="col">
                                         <h5 class="mb-1 text-orange">Order Details</h5>
@@ -170,14 +176,17 @@
                                                                             href="#">Post Review</a>
                                                                     @endif
                                                                 </div>
+
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+
                                         @endforeach
 
                                     </div>
+
 
                                     <div class="row mt-4">
                                         <div class="col-lg-12">
@@ -185,6 +194,7 @@
                                                 <h5 class="details">Order Info</h5>
                                                 <div class="row no-gutters">
                                                     <div class="col-auto">
+
                                                         <i class="bx bxs-map orderDetailICon mr-2"></i>
 
                                                         <!-- <i class="ti-map-alt text-secondary mr-2"></i> -->
@@ -193,6 +203,7 @@
                                                         <p class="text-muted small mb-2"> <strong>Delevery
                                                                 Address:</strong> {{ $order->line1 }},
                                                             {{ $order->line2 }},{{ $order->zipcode }}</p>
+
                                                     </div>
                                                 </div>
                                                 <div class="row no-gutters">
@@ -232,6 +243,7 @@
                                                         <p class="text-muted small mb-2"><strong>Order Receive
                                                                 On:</strong> {{ $order->created_at->format('d M Y') }}
                                                         </p>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -240,11 +252,13 @@
                                     <ul class="timeline mt-4">
                                         <li class="timeline-item active">
                                             <div class="timeline-figure">
+
                                                 <span class="tile tile-circle tile-sm">
                                                     <!-- <i class="ti-arrow-circle-down"></i> -->
                                                     <i class="bx bxs-box  "></i>
 
                                                 </span>
+
                                             </div>
                                             <div class="timeline-body">
                                                 <div class="media">
@@ -254,12 +268,15 @@
                                                         </h6>
                                                     </div>
                                                     <div class="d-none d-sm-block">
+
                                                         <span
                                                             class="timeline-date">{{ $order->created_at->format('d M Y') }}</span>
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </li>
+
 
                                         <li class="timeline-item @if ($order->status == 'accepted') active @endif">
                                             <div class="timeline-figure">
@@ -274,6 +291,7 @@
                                                     <div class="media-body">
                                                         <h6 class="timeline-heading">
                                                             <a href="#" class="text-link  ">Order Accepted</a>
+
                                                         </h6>
                                                     </div>
                                                     <div class="d-none d-sm-block">
@@ -282,6 +300,7 @@
                                                 </div>
                                             </div>
                                         </li>
+
 
                                         @if ($order->status == 'delivered')
                                             <li class="timeline-item @if ($order->status == 'delivered') active @endif">
@@ -328,6 +347,7 @@
                                             </li>
                                         @endif
 
+
                                     </ul>
                                 </div><!-- /.card-body -->
                             </div>
@@ -337,6 +357,7 @@
             </div>
         </div>
     </main>
+
     <div wire:ignore.self class="modal fade" id="productPreviewModal" data-bs-backdrop="static"
         data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <style>

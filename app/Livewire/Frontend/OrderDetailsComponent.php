@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\Product2;
+use App\Models\Product;
 use App\Models\review;
 use Carbon\Carbon;
 use Livewire\WithFileUploads;
@@ -30,7 +30,8 @@ class OrderDetailsComponent extends Component
 
     }
     public function preview($id){
-        $product=Product2::where('id',$id)->first();
+
+        $product=Product::where('id',$id)->first();
         $this->pid=$id;
         $this->pname=$product->name;
         $this->dispatch('openproductPreviewModal');

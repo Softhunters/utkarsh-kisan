@@ -124,6 +124,7 @@
                         <div class="price-tag d-flex gap-3">
                             <h4>₹{{ $product->sale_price }} <del>₹{{ $product->regular_price }}</del></h4>
                             <spna class="percent">({{ $product->discount_value }}% off)</spna>
+                            <spna class="percent">Inclusive of all taxes</spna>
                         </div>
                         <!--<p>Donec bibendum enim ut elit porta ullamcorper. Vestibulum Nai wekemdini iaculis vitae nulla. Morbi mattis nec mi ac mollis.</p>-->
                         @if (isset($varaiants[1]))
@@ -145,7 +146,7 @@
                                                 <input tabindex="-1" type="checkbox"
                                                     @if ($av->id == $product->id) checked @endif name="" />
                                                 <div class="icon-box">
-                                                    <div class="label">{{ $av->varaint_detail }}</div>
+                                                    <div class="label">{{ $av->variant_detail }}</div>
                                                     <span class="value">₹{{ $av->sale_price }}</span>
                                                 </div>
                                             </label>
@@ -679,7 +680,7 @@
                                     @foreach ($product->vendorProducts as $vp)
                                         <tr>
                                             <td>{{ $vp->vendor->name ?? 'N/A' }}</td>
-                                            <td>${{ number_format($vp->price) }}</td>
+                                            <td>₹{{ number_format($vp->price) }}</td>
                                             <td>{{ $vp->quantity }}</td>
                                             <td>{!! $vp->additional_info !!}</td>
                                         </tr>
