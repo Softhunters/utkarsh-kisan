@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\VendorProduct;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Str;
@@ -134,6 +135,13 @@ class ApiController extends Controller
         }
         $result['shareButtons'] = \Share::page(route('product-details', ['slug' => $result['product']->slug]))->facebook()->twitter()->linkedin()->telegram()->whatsapp()->reddit();
         $result['reviews'] = review::where('product_id', $result['product']->id)->with(['user'])->get();
+        $result['seller_list'] = VendorProduct::leftJoin('users', 'vendor_products.vendor_id', '=', 'users.id')
+            ->where('vendor_products.product_id', $result['product']->id)
+            ->select('vendor_products.*', 'users.name as seller_name')
+            ->get();
+        $result['seller_cart_list'] = Cart::where('product_id', $result['product']->id)
+            ->where('user_id', Auth::id())
+            ->select('seller_id')->get();
         return response()->json([
             'status' => true,
             'result' => $result
@@ -1072,13 +1080,14 @@ class ApiController extends Controller
             } else {
 
                 // $rewardpoint = $this->rewardingpoints();
-                $reward = RewardPonitSetting::where('cart_value', '<=', $request->subtotal)->where('status', '1')->orderby('cart_value', 'DESC')->first();
+                // $reward = RewardPonitSetting::where('cart_value', '<=', $request->subtotal)->where('status', '1')->orderby('cart_value', 'DESC')->first();
                 if (isset($reward)) {
                     $rewardpoint = (floor($request->subtotal / $reward->cart_value)) * $reward->value;
                 } else {
                     $rewardpoint = 0;
                 }
                 $ship = ShippingAddress::where('user_id', Auth::user()->id)->where('id', $request->shipping_id)->first();
+
                 $order = new Order();
                 $order->user_id = Auth::user()->id;
                 $order->subtotal = $request->subtotal;
@@ -1100,8 +1109,9 @@ class ApiController extends Controller
                 $order->zipcode = $ship->zipcode;
                 $order->order_number = Carbon::now()->timestamp;
                 $order->status = 'ordered';
-                $order->save();
-                $carts = Cart::where('user_id', Auth::user()->id)->get();
+                // $order->save();
+                $carts = Cart::with(['product', 'sellerProduct'])->where('user_id', Auth::user()->id)->get();
+                dd($carts);
                 foreach ($carts as $item) {
                     $orderItem = new OrderItem();
                     $orderItem->product_id = $item->product_id;
