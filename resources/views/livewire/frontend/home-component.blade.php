@@ -53,7 +53,7 @@
     <div class="home3-categoty-area pt-40 mb-40">
         <div class="container">
             <div class="row mb-60">
-                <div class="col-lg-12 d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div class="col-lg-12 d-flex align-items-center justify-content-between flex-wrap gap-3 utkrsh_title">
                     <div class="section-title3 align-items-center  ">
                         <h2><img class="kishan_left" src="{{ asset('assets/images/icon/utkarsh-kisan_bg.png') }}" width="40" height="40" alt /><span
                                 class="word">Browse By Categories</span><img
@@ -287,7 +287,7 @@
     <div class="essential-items-area mb-40">
         <div class="container">
             <div class="row mb-60">
-                <div class="col-lg-12 d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div class="col-lg-12 d-flex align-items-center justify-content-between flex-wrap gap-3 utkrsh_title">
                     <div class="section-title3">
                         <h2><img class="kishan_left" src="{{ asset('assets/images/icon/utkarsh-kisan_bg.png') }}" width="40" height="40" alt /><span
                                 class="word">Featured Items</span><img
@@ -784,7 +784,7 @@
     <div class="home3-testimonial-area mb-40">
         <div class="container">
             <div class="row mb-60">
-                <div class="col-lg-12 d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div class="col-lg-12 d-flex align-items-center justify-content-between flex-wrap gap-3 utkrsh_title">
                     <div class="section-title3 align-items-center">
                         <h2><img  class="kishan_left" src="{{ asset('assets/images/icon/utkarsh-kisan_bg.png') }}" width="40" height="40" alt /><span
                                 class="word">Customers Think About Us</span><img

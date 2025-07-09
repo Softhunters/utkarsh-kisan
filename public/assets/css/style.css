@@ -880,7 +880,7 @@ html .ui-button.ui-state-disabled:active:hover {
 }
 
 .primary-btn1:hover {
-    color: #fff;
+    color: #fff !important;
     background: var(--btn-hoverbg);
 }
 
@@ -13142,8 +13142,17 @@ footer.style2 .social-area ul li:hover a i {
     font-size:13px;
 }
 
+.table-wrapper .eg-table tbody tr td a{
+    font-size: 20px ;
+}
+
 .table-wrapper .eg-table tbody tr td a:hover {
     color: var(--primary-color1)
+
+}
+
+.table-wrapper .eg-table tbody tr td a:focus {
+   box-shadow: none !important;
 }
 
 @media(max-width:767px) {
@@ -15629,4 +15638,13 @@ header.style-3 .main-menu ul > li ul.sub-menu > li a:hover{
 
 .btn-outline-dark:active:focus,.btn-outline-dark:focus {
   box-shadow: none !important;
+}
+
+
+
+@media screen and (max-width:766px){
+    .utkrsh_title{
+        justify-content: center !important;
+    }
+    
 }

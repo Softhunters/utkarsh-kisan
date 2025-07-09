@@ -3,6 +3,7 @@
     @section('page_css')
     <link href="{{asset('assets/css/theme.css')}}" rel="stylesheet" type="text/css" media="all" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
     @endsection
       @include('flash-message')
     <div class="accounnt_header">
@@ -68,18 +69,20 @@
                                             <a class="nav-link" href="{{route('user.address')}}"><i class="bx bxs-book"></i>
                                                 Address <i class="fa-solid fa-chevron-right arrowo"></i></a></a>
                                         </li>
-                                        <li class="nav-item">
+                                       <li class="nav-item">
                                             <a class="nav-link" href="{{route('orders')}}"><i class="bx bxs-cart"></i>
                                                 Order <i class="fa-solid fa-chevron-right arrowo"></i></a></a>
                                         </li>
+                                        
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{route('wishlist')}}"><i class="bx bxs-heart"></i>
                                                 Wishlist <i class="fa-solid fa-chevron-right arrowo"></i></a></a>
                                         </li>
-                                        <li class="nav-item">
+                                      {{--  <li class="nav-item">
                                             <a class="nav-link" href="{{route('user.invite_earn')}}"><i class="bx bxs-heart"></i>
                                                 Invite & Earn<i class="fa-solid fa-chevron-right arrowo"></i></a>
                                         </li>
+                                        --}}
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{ route('logout') }}"
                                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -104,7 +107,7 @@
                                         </p>
                                     </div>
                                     <div class="col-auto">
-                                    <a href="#" wire:click.prevent="adddress"  class="btn btn-primary btn-sm"> Add New Address</a>
+                                    <a href="#" wire:click.prevent="adddress"  class="btn btn-primary btn-sm edit_btn"> Add New Address</a>
                                     </div>
                                 </div>
                             </div>
@@ -192,7 +195,7 @@
                                 <div class="mb-4">
                                     <label class="form-label" class="form-control" for="locality">Country</label>
                                     <!-- <input type="text" required class="form-control" name="country_id" id="locality" wire:model="country_id"> -->
-                                    <select id="conutry" wire:model="country_id" class="form-control" wire:change="changecountry">
+                                    <select id="conutry" wire:model="country_id" class="form-control custom-select" wire:change="changecountry">
                                         <option value="">Select country</option>
                                         @foreach($countries as $country)
                                         <option value="{{$country->id}}">{{$country->name}}</option>
@@ -205,7 +208,7 @@
                                 <div class="mb-4">
                                     <label class="form-label" for="administrative_area_level_1">State</label>
                                     
-                                    <select id="state" wire:model="state_id"class="form-control" wire:change="changestate">
+                                    <select id="state" wire:model="state_id" class="form-control custom-select" wire:change="changestate">
                                         <option value="">Select State</option>
                                         @foreach($states as $state)
                                         <option value="{{$state->id}}">{{$state->name}}</option>
@@ -218,7 +221,7 @@
                                 <div class="mb-4">
                                     <label class="form-label" for="locality">City</label>
                                     
-                                    <select id="city" class="form-control" wire:model="city_id">
+                                    <select id="city" class="form-control custom-select" wire:model="city_id">
                                         <option value="">Select City</option>
                                         @foreach($cities as $city)
                                         <option value="{{$city->id}}">{{$city->name}}</option>
@@ -239,7 +242,7 @@
                             <div class="col-lg-12">
                                 <div class="mb-4">
                                     <label class="form-label" for="country">Address Type</label>
-                                    <div class="d-flex gap-4">
+                                    <div class="d-flex gap-4 align-items-center">
                                     <input type="radio" name="address_type" value="home"  wire:model="address_type">For Home
                                     <input type="radio" name="address_type" value="office"  wire:model="address_type">For Office
                                     <input type="radio" name="address_type" value="other"  wire:model="address_type">For Other
@@ -249,14 +252,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                                <div class="mb-4 d-flex gap-3">
+                        <div class="col-md-12 default_myaddress">
+                                <div class="mb-4 d-flex gap-3 align-items-center">
                                     <!-- <label class="form-label" for="postal_code">make My default address</label> -->
                                     <input type="checkbox" id="vehicle1" name="default_address" value="1" wire:model="default_address"> 
                                     <label for="vehicle1"> Make my default address</label><br>
                                 </div>
                             </div>
-                        <button type="submit" id="address_btn" name="submit" class="btn btn-primary btn-full btn-medium rounded">Add Address</button>
+                        <button type="submit" id="address_btn" name="submit" class="btn btn-primary btn-full btn-medium rounded edit_btn">Add Address</button>
                     </form>
                 </div>
             </div>
@@ -267,7 +270,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Delete Confirmation</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="close">
+                    <button type="button" class="close cancel_btn" data-dismiss="modal" aria-label="Close" wire:click="close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
@@ -276,7 +279,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-sm btn-primary" wire:click="cancel()" data-dismiss="modal" aria-label="Close">Cancel</button>
-                    <button class="btn btn-sm btn-danger" wire:click="deletePostData()">Yes! Delete</button>
+                    <button class="btn btn-sm btn-danger edit_btn" wire:click="deletePostData()">Yes! Delete</button>
                 </div>
             </div>
         </div>

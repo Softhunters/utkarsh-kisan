@@ -2706,16 +2706,17 @@ fieldset:disabled a.btn {
 }
 .btn-primary:hover {
     color: #fff;
-    background-color: #5cac0a;
-    border-color: #1c79fc;
+    background-color: var(--btn-hoverbg);
+    /* border-color: #1c79fc; */
+    color: var(--white) !important;
 }
 .btn-primary:focus,
 .btn-primary.focus {
     color: #fff;
     background-color: #5cac0a;
-    border-color: #1c79fc;
-    -webkit-box-shadow: 0 0 0 0.2rem rgba(105, 167, 253, 0.5);
-    box-shadow: 0 0 0 0.2rem rgba(105, 167, 253, 0.5);
+    /* border-color: #1c79fc; */
+    /* -webkit-box-shadow: 0 0 0 0.2rem rgba(105, 167, 253, 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(105, 167, 253, 0.5); */
 }
 .btn-primary.disabled,
 .btn-primary:disabled {
@@ -2727,14 +2728,14 @@ fieldset:disabled a.btn {
 .btn-primary:not(:disabled):not(.disabled).active,
 .show > .btn-primary.dropdown-toggle {
     color: #fff;
-    background-color: #1c79fc;
-    border-color: #0f72fc;
+    /* background-color: #1c79fc;
+    border-color: #0f72fc; */
 }
 .btn-primary:not(:disabled):not(.disabled):active:focus,
 .btn-primary:not(:disabled):not(.disabled).active:focus,
 .show > .btn-primary.dropdown-toggle:focus {
-    -webkit-box-shadow: 0 0 0 0.2rem rgba(105, 167, 253, 0.5);
-    box-shadow: 0 0 0 0.2rem rgba(105, 167, 253, 0.5);
+    /* -webkit-box-shadow: 0 0 0 0.2rem rgba(105, 167, 253, 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(105, 167, 253, 0.5); */
 }
 .btn-secondary {
     color: #fff;
@@ -2751,8 +2752,8 @@ fieldset:disabled a.btn {
     color: #fff;
     background-color: #5a6268;
     border-color: #545b62;
-    -webkit-box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5);
-    box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5);
+    /* -webkit-box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5); */
 }
 .btn-secondary.disabled,
 .btn-secondary:disabled {
@@ -2848,18 +2849,18 @@ fieldset:disabled a.btn {
     box-shadow: 0 0 0 0.2rem rgba(58, 176, 195, 0.5);
 }
 .btn-warning {
-    color: #212529;
+   color:var(--white);
     background-color: #ffc107;
     border-color: #ffc107;
 }
 .btn-warning:hover {
-    color: #212529;
+    color:var(--white) !important;
     background-color: #e0a800;
     border-color: #d39e00;
 }
 .btn-warning:focus,
 .btn-warning.focus {
-    color: #212529;
+    color:var(--white);
     background-color: #e0a800;
     border-color: #d39e00;
     -webkit-box-shadow: 0 0 0 0.2rem rgba(222, 170, 12, 0.5);
@@ -2867,14 +2868,14 @@ fieldset:disabled a.btn {
 }
 .btn-warning.disabled,
 .btn-warning:disabled {
-    color: #212529;
+    color:var(--white);
     background-color: #ffc107;
     border-color: #ffc107;
 }
 .btn-warning:not(:disabled):not(.disabled):active,
 .btn-warning:not(:disabled):not(.disabled).active,
 .show > .btn-warning.dropdown-toggle {
-    color: #212529;
+    color:var(--white);
     background-color: #d39e00;
     border-color: #c69500;
 }
@@ -22607,6 +22608,8 @@ html:not([dir="rtl"]) .range-slider-ui.noUi-horizontal .noUi-handle {
     border-radius: 0.2rem;
     background-color: #d6efd0;
     text-align: center;
+    display: flex;
+    align-items: center;
 }
 .cart_product .cart_item .cart_item_image img {
     width: 65px;
@@ -23075,6 +23078,104 @@ html:not([dir="rtl"]) .range-slider-ui.noUi-horizontal .noUi-handle {
     background: var(--btn-hoverbg);
 }
 
+.edit_btn:not(:disabled):not(.disabled):active{
+    color: #fff;
+ 
+    background-color: var(--primary-color3);
+    border-color:var(--primary-color3)
+}
+
+.edit_btn:focus-visible , .edit_btn:focus{
+    outline: none !important;
+    box-shadow: none !important;
+}
+
  /* input[type="file"].photo_upload {
         display: none !important;
     } */
+
+.fa-trash::before {
+  content: "\f1f8";
+  color: var(--primary-color3);
+}
+
+
+/* Style the <select> element */
+/* .custom-select {
+    background-color: var(--light-theme);
+    color: white;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    width: 100%;
+    appearance: none;  
+    cursor: pointer;
+} */
+
+/* Optional: add custom arrow (basic support only) */
+.custom-select:after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Style the <option> elements */
+.custom-select option {
+    background-color: var(--white);
+    color: var(--primary-color3);
+    padding: 10px;
+}
+
+/* .custom-select option:hover {
+    background-color: var(--light-theme);
+    color: var(--btn-hoverbg);
+    padding: 10px;
+} */
+
+
+ .custom-select option:checked {
+  background-color: var(--primary-color3);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+  background-color: var(--primary-color3); /* for custom styles */
+  accent-color: var(--primary-color3);     /* for modern browsers */
+  border-color: var(--primary-color3);     /* optional */
+}
+
+.default_myaddress{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+
+.cancel_btn{
+    background-color: var(--light-theme) !important;
+}
+
+ 
+
+.btn-primary:active, .show > .btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: var(--primary-color3);
+  border-color: var(--primary-color3);
+}
+.btn-primary:focus{
+    box-shadow: none !important;
+}
+
+a:hover {
+  color: var(--primary-color3)!important;
+  text-decoration: none !important;
+}
+
+.orderDetailICon{
+    color: var(--primary-color3);
+}
+

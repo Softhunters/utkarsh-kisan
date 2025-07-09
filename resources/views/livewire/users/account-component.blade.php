@@ -68,10 +68,10 @@
                                             <a class="nav-link" href="{{route('user.address')}}"><i class="bx bxs-book"></i>
                                                 Address <i class="fa-solid fa-chevron-right arrowo"></i></a>
                                         </li>
-                                     {{--   <li class="nav-item">
+                                        <li class="nav-item">
                                             <a class="nav-link" href="{{route('orders')}}"><i class="bx bxs-cart"></i>
                                                 Order <i class="fa-solid fa-chevron-right arrowo"></i></a>
-                                        </li> --}}
+                                        </li> 
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{route('wishlist')}}"><i class="bx bxs-heart"></i>
                                                 Wishlist <i class="fa-solid fa-chevron-right arrowo"></i></a>
