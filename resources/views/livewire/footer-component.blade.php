@@ -4,17 +4,17 @@
                 <div class="col-lg-3 col-md-3">
                     <div class="footer-widget">
                         <div class="footer-icon">
-                            <img src="{{asset('admin/logos/utkarsh_logo.png')}}" style="width:100px;" class="foot" alt />
+                            <img src="{{asset('admin/logos/utkarsh_logo.png')}}" style="width:200px;" class="foot" alt />
                         </div>
-                        <div class="widget-title">
+                        <!-- <div class="widget-title">
                             <h2>
                                 want <span>to Take</span><br />
                                 your pet Food, <span>our Shop</span>?
                             </h2>
-                        </div>
-                        <div class="footer-btn">
+                        </div> -->
+                        <!-- <div class="footer-btn">
                             <a class="primary-btn6" href="#">Shop Now</a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6">
@@ -25,13 +25,14 @@
                         <div class="menu-container">
                             <ul>
                                 <li><a href="/">Home</a></li>
-                                <li><a href="#">Shop</a></li>
-                                <li><a href="#">Contact Us</a></li>
-                                <li><a href="{{route('vdrregisterview')}}">Vendor Registration</a></li>
-                                <li><a href="#">My Account</a></li>
-                                <li><a href="#">Order Tracking</a></li>
-                                <li><a href="#">Blogs
-                                </a></li>
+                                <li><a href="#">About Us</a></li>
+                                <!-- <li><a href="#">Shop</a></li> -->
+                                <li><a href="{{route('contact-us')}}">Contact Us</a></li>
+                                <li><a href="{{route('vdrregisterview')}}">Kisan Registration</a></li>
+                                 <li><a href="#">My Account</a></li>
+                                <!-- <li><a href="#">Order Tracking</a></li>
+                                <li><a href="#">Blogs -->
+                                </a></li> 
                             </ul>
                         </div>
                     </div>
@@ -43,12 +44,13 @@
                         </div>
                         <div class="menu-container">
                             <ul>
-                                <li><a href="#">About Us</a></li>
-                                <li><a href="#">FAQs</a></li>
+                                <!-- <li><a href="#">About Us</a></li>
+                                <li><a href="#">FAQs</a></li> -->
                                 <li><a href="#">Privacy Policy</a></li>
                                 <li><a href="#">Return & Refund Policy</a></li>
                                 <li><a href="#">Terms & Conditions</a></li>
                                 <li><a href="#">Shipping & Delivery Policy </a></li>
+                                <li><a href="#">Vendor Terms & Conditions </a></li>
                             </ul>
                         </div>
                     </div>
@@ -102,27 +104,28 @@
                             <ul class="areas">
                             <li>
                                 <a href="{{$setting->facebook}}" target="_blank">
-                                    <!-- <i class="bx bxl-facebook"></i> -->
-                                     <img src="{{asset('assets/images/logo/utkarsh_fb.png')}}" height="30" width="30" alt />
+                                    <i class="bx bxl-facebook"></i>
+                                     <!-- <img src="{{asset('assets/images/logo/utkarsh_fb.png')}}" height="30" width="30" alt /> -->
                                 </a>
                             </li>
                             <li>
                                 <a href="{{$setting->twiter}}" target="_blank">
-                                    <!-- <i class="bx bxl-twitter"></i> -->
-                                     <img src="{{asset('assets/images/logo/utkarsh_x.png')}}" height="30" width="30" alt />
+                                    <i class="bx bxl-twitter"></i>
+                                     <!-- <img src="{{asset('assets/images/logo/utkarsh_x.png')}}" height="30" width="30" alt /> -->
                                 </a>
                             </li>
                             <li>
                                 <a href="{{$setting->pinterest}}" target="_blank">
-                                    <!-- <i class="bx bxl-pinterest-alt">
-                                    </i> -->
-                                    <img src="{{asset('assets/images/logo/utkarsh_youtube.png')}}" height="30" width="30" alt />
+                                     <!-- <i class="bx bxl-pinterest-alt"></i>  -->
+                                      <i class="bx bxl-youtube"></i>
+
+                                    <!-- <img src="{{asset('assets/images/logo/utkarsh_youtube.png')}}" height="30" width="30" alt /> -->
                                 </a>
                             </li>
                             <li>
                                 <a href="{{$setting->instagram}}" target="_blank">
-                                    <!-- <i class="bx bxl-instagram"></i> -->
-                                     <img src="{{asset('assets/images/logo/utkarsh_insta.png')}}" height="30" width="30" alt />
+                                    <i class="bx bxl-instagram"></i>
+                                     <!-- <img src="{{asset('assets/images/logo/utkarsh_insta.png')}}" height="30" width="30" alt /> -->
                             </a>
                             </li>
                         </ul>
@@ -133,7 +136,7 @@
             <div class="row border-top align-items-center lower-footer">
                 <div class="col-lg-6 col-md-6">
                     <div class="copyright-area">
-                        <p>© 2024, MeraDog - All Rights Reserved | Developed by Softhunters Technology</p>
+                        <p>© 2025, utkarsh kisan - All Rights Reserved | Developed by Softhunters Technology</p>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 d-flex justify-content-md-end justify-content-center">

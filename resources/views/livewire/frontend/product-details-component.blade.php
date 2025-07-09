@@ -7,9 +7,9 @@
     </style>
     @include('flash-message')
     <div class="inner-page-banner">
-        <div class="breadcrumb-vec-btm">
+        <!-- <div class="breadcrumb-vec-btm">
             <img class="img-fluid" src="{{ asset('assets/images/bg/inner-banner-btm-vec.png') }}" alt />
-        </div>
+        </div> -->
         <div class="container">
             <div class="row justify-content-center align-items-center text-center">
                 <div class="col-lg-6 align-items-center">
@@ -197,10 +197,11 @@
                                             wire:click.prevent="removeFromWishlist({{ $product->id }})">
                                             <span>
                                                 <svg width="14" height="13" viewBox="0 0 14 13"
-                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    xmlns="http://www.w3.org/2000/svg"  fill="#699a39">
                                                     <path
                                                         d="M12.4147 1.51371C11.0037 0.302997 8.92573 0.534835 7.61736 1.87434L7.12993 2.38954L6.61684 1.87434C5.33413 0.534835 3.23047 0.302997 1.81948 1.51371C0.203258 2.90473 0.126295 5.37767 1.56294 6.87174L6.53988 12.0237C6.84773 12.3586 7.38647 12.3586 7.69433 12.0237L12.6713 6.87174C14.1079 5.37767 14.0309 2.90473 12.4147 1.51371Z" />
-                                                </svg>
+                                                        
+                                                    </svg>
                                             </span> Remove form wishlist
                                         </a>
                                     @else
@@ -269,13 +270,13 @@
                             </div>
                             <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
                                 aria-labelledby="v-pills-profile-tab">
-                                <div class="addithonal-information">
+                                <div class="addithonal-information  ">
                                     <p>{!! $product->short_description !!}</p>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="v-pills-manufact" role="tabpanel"
                                 aria-labelledby="v-pills-manufact-tab">
-                                <div class="addithonal-information">
+                                <div class="addithonal-information styled-table">
                                     <p>{!! $product->manufacturer_details !!}</p>
                                 </div>
                             </div>
@@ -597,12 +598,12 @@
                                                 @if (in_array($fproduct->id, $wishp))
                                                     <a href="#"
                                                         wire:click.prevent="removeFromWishlist({{ $fproduct->id }},{{ $fproduct->sale_price }})"><img
-                                                            src="{{ asset('assets/images/icon/Icon-favorites3.svg') }}"
+                                                            src="{{ asset('assets/images/icon/Icon-favorites.svg') }}"
                                                             alt /></a>
                                                 @else
                                                     <a href="#"
                                                         wire:click.prevent="FaddToWishlist({{ $fproduct->id }},{{ $fproduct->sale_price }})"><img
-                                                            src="{{ asset('assets/images/icon/Icon-favorites2.svg') }}"
+                                                            src="{{ asset('assets/images/icon/Icon-favorites.svg') }}"
                                                             alt /></a>
                                                 @endif
                                             </li>

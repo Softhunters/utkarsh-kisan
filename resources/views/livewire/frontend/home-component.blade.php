@@ -173,8 +173,8 @@
                                                     alt /></a>
                                         @else
                                             <a href="#"
-                                                wire:click.prevent="addToWishlist({{ $product->id }},{{ $product->sale_price }},{{$product->seller->vendor_id??''}})"><img
-                                                    src="{{ asset('assets/images/icon/Icon-favorites2.svg') }}"
+                                                wire:click.prevent="addToWishlist({{ $product->id }},{{ $product->sale_price }})"><img
+                                                    src="{{ asset('assets/images/icon/Icon-favorites.svg') }}"
                                                     alt /></a>
                                         @endif
                                     </li>
@@ -492,7 +492,7 @@
                                                     @else
                                                         <a href="#"
                                                             wire:click.prevent="addToWishlist({{ $fproduct->id }},{{ $fproduct->sale_price }})"><img
-                                                                src="{{ asset('assets/images/icon/Icon-favorites2.svg') }}"
+                                                                src="{{ asset('assets/images/icon/Icon-favorites.svg') }}"
                                                                 alt /></a>
                                                     @endif
                                                 </li>

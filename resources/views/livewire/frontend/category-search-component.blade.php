@@ -46,8 +46,8 @@
                                 <div id="slider-range" class="price-filter-range" ></div>
                                 <div class="mt-25 d-flex justify-content-between gap-4">
 
-                                    <input type="number" min="10" max="{{$max -1}}" oninput="validity.valid||(value='10');" id="min_price" class="price-range-field rans" />
-                                    <input type="number" min="10" max="{{$max}}" oninput="validity.valid||(value={{$max}});" id="max_price" class="price-range-field rans" />
+                                    <input type="number" min="10" max="{{$max -1}}" oninput="validity.valid||(value='10');" id="min_price" class="price-range-field rans nice_num1" />
+                                    <input type="number" min="10" max="{{$max}}" oninput="validity.valid||(value={{$max}});" id="max_price" class="price-range-field rans nice_num2" />
                                 </div>
                             </div>
                         </div>
@@ -149,7 +149,7 @@
                                                 @if(in_array($product->id, $wishp))
                                                     <a href="#" wire:click.prevent="removeFromWishlist({{$product->id}},{{$product->sale_price}})"><img src="{{asset('assets/images/icon/Icon-favorites3.svg')}}" alt /></a>
                                                 @else
-                                                    <a href="#" wire:click.prevent="addToWishlist({{$product->id}},{{$product->sale_price}})"><img src="{{asset('assets/images/icon/Icon-favorites2.svg')}}" alt /></a>
+                                                    <a href="#" wire:click.prevent="addToWishlist({{$product->id}},{{$product->sale_price}})"><img src="{{asset('assets/images/icon/Icon-favorites.svg')}}" alt /></a>
                                                 @endif
                                             </li>
                                         </ul>
