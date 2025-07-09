@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="format-detection" content="telephone=no" />
-    <title>Pet Shope</title>
+    <title>Utkarsh Kisan</title>
     <!-- icon -->
     <!-- {{asset('admin/css/animate.css')}} -->
     <link rel="icon" type="image/png" href="{{asset('admin1/images/favicon.png')}}" />
@@ -49,12 +49,13 @@
         <!-- sa-app__sidebar -->
         <div class="sa-app__sidebar">
             <div class="sa-sidebar">
-                <div class="sa-sidebar__header" style="height:10%;">
+                <div class="sa-sidebar__header" >
                     <a class="sa-sidebar__logo" href="{{route('admin.dashboard')}}">
                         <!-- logo -->
-                        <div class="sa-sidebar-logo">
-                        <img src="{{asset('assets/images/header2-logo (1).png')}}" alt="images" style="width: 180px;height: 100px;">
-                            
+                        <div class="sa-sidebar-logo text-center">
+                            <img src="{{ asset('admin/logos/utkarsh_logo.png') }}" alt="images"
+                                style="width: 80px;height: 49px;">
+
                         </div>
                         <!-- logo / end -->
                     </a>
@@ -97,7 +98,7 @@
                                     </ul>
                                 </li> 
                                 
-                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
+                                {{-- <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
                                     data-sa-collapse-item="sa-nav__menu-item--open">
                                     <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger=""> 
                                        <img class="sidebaar2" style="width:20px;" src="{{asset('assets/images/logo/18.png')}}" >
@@ -111,7 +112,7 @@
                                                     class="sa-nav__title">Web site setting </span></a>
                                         </li>
                                     </ul>
-                                </li>
+                                </li> --}}
 
                                 
 
@@ -204,8 +205,8 @@
                         </button>
                         <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
                             <li><a class="dropdown-item" href="{{route('vendor.profile.edit')}}">Profile</a></li>
-                            <li><a class="dropdown-item" href="app-inbox-list.html">Inbox</a></li>
-                            <li><a class="dropdown-item" href="app-settings-toc.html">Settings</a></li>
+                            {{-- <li><a class="dropdown-item" href="app-inbox-list.html">Inbox</a></li>
+                            <li><a class="dropdown-item" href="app-settings-toc.html">Settings</a></li> --}}
                             <li>
                                 <hr class="dropdown-divider" />
                             </li>
@@ -232,9 +233,9 @@
             <!-- sa-app__body / end -->
             <!-- sa-app__footer -->
             <div class="sa-app__footer d-block d-md-flex">
-                <!-- copyright -->Stroyka Admin — eCommerce Dashboard Template © 2021
+                <!-- copyright -->Utkarsh Kisan Admin © {{date('Y')}}
                 <div class="m-auto"></div>
-                <div>Powered by HTML — Design by <a href="https://themeforest.net/user/kos9/portfolio">Kos</a></div>
+                {{-- <div>Powered by HTML — Design by <a href="https://themeforest.net/user/kos9/portfolio">Kos</a></div> --}}
                 <!-- copyright / end -->
             </div>
             <!-- sa-app__footer / end -->

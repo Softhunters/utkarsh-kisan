@@ -57,7 +57,7 @@
 									<div class="alert alert-danger" role="alert">{{Session::get('stripe_error')}}</div>
 								@endif
                                 <div id="accordion">
-                                    <div class="accordion-item">
+                                    {{-- <div class="accordion-item">
                                         <div class="accordion-title" id="cc">
                                             <h5 class="mb-0" data-toggle="collapse" data-target="#collapseOne"
                                             @if($payment_type == 'cc')  aria-expanded="true" @endif wire:click.prevent="paymentmethod('cc')"> Pay with Credit Card <i class="fa-solid  @if($payment_type == 'cc') fa-chevron-down @else fa-chevron-right @endif arrowos"></i></h5>
@@ -98,8 +98,8 @@
                                                 </form>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="accordion-item">
+                                    </div> --}}
+                                    {{-- <div class="accordion-item">
                                         <!-- accordion Title -->
                                         <div class="accordion-title" id="paypal">
                                             <h5 class="mb-0" data-toggle="collapse" data-target="#collapseTwo" @if($payment_type =='paypal')  aria-expanded="true" @endif wire:click.prevent="paymentmethod('paypal')">Pay with EasyBuzz <i class="fa-solid @if($payment_type == 'paypal') fa-chevron-down @else fa-chevron-right @endif arrowos"></i></h5>
@@ -111,7 +111,7 @@
                                                 <a href="#" wire:click.prevent="placeordereasybuzz" class="btn btn-primary">Checkout with PayPal</a>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="accordion-item">
                                         <!-- accordion Title -->
                                         <div class="accordion-title" id="cod">

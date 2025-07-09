@@ -126,7 +126,7 @@ class Coupon2Component extends Component
     public function render()
     {
         $coupons = Coupon::all();
-        $categorys = Category::all();
+        $categorys = Category::where('status', 1)->where('is_home', 1)->where('status', '!=', 3)->get();
         return view('livewire.admin.coupon.coupon2-component',['coupons'=>$coupons,'categorys'=>$categorys])->layout('livewire.layouts.base');
     }
 

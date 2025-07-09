@@ -55,7 +55,7 @@ class AddCouponComponent extends Component
     }
     public function render()
     {
-        $categorys = Category::all();
+        $categorys = Category::where('status', 1)->where('is_home', 1)->where('status', '!=', 3)->get();
         return view('livewire.admin.coupon.add-coupon-component',['categorys'=>$categorys])->layout('layouts.admin');
     }
 }

@@ -17,8 +17,8 @@ class NavBarComponent extends Component
     public  $wishcount;
     public function render()
     {
-        $categorys = Category::all();
-        $subcategorys = SubCategory::all();
+        $categorys = Category::where('status', 1)->where('is_home', 1)->where('status', '!=', 3)->get();
+        $subcategorys = SubCategory::where('status', 1)->where('is_home', 1)->where('status', '!=', 3)->get();
         $this->wishcount = 0;
         $this->cartcount = 0;
         // if(Auth::check())

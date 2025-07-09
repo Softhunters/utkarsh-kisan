@@ -45,7 +45,7 @@ class ApiController extends Controller
     {
 
         $result['sliders'] = Slider::where('for', 'home')->where('status', 1)->get();
-        $result['categorys'] = Category::where('status', '1')->get();
+        $result['categorys'] = Category::where('status', '1')->where('is_home', '1')->get();
         $result['subcategorys'] = SubCategory::leftJoin('categories', 'categories.id', 'sub_categories.category_id')->select('sub_categories.*', 'categories.slug as cname')->where('sub_categories.is_home', 1)->where('sub_categories.status', 1)->get();
         $result['brands'] = Brand::where('is_home', 1)->where('status', 1)->get();
         $result['banners'] = Banner::where('status', 1)->where('for', 'home')->get();
@@ -137,6 +137,7 @@ class ApiController extends Controller
         $result['reviews'] = review::where('product_id', $result['product']->id)->with(['user'])->get();
         $result['seller_list'] = VendorProduct::leftJoin('users', 'vendor_products.vendor_id', '=', 'users.id')
             ->where('vendor_products.product_id', $result['product']->id)
+            ->whereNot('vendor_products.vendor_id', $result['product']->seller->vendor_id??1)
             ->select('vendor_products.*', 'users.name as seller_name')
             ->get();
         $result['seller_cart_list'] = Cart::where('product_id', $result['product']->id)
@@ -381,12 +382,6 @@ class ApiController extends Controller
         if ($request->brandtype != null) {
             $query = $query->whereIn('brand_id', $request->brandtype);
         }
-        if ($request->breedtype != null) {
-            $query = $query->whereIn('breed_id', $request->breedtype);
-        }
-        if ($request->flavourtype != null) {
-            $query = $query->whereIn('flavour_id', $request->flavourtype);
-        }
         if ($request->discount != null) {
             $query = $query->where('discount_value', '>', max($request->discount));
         }
@@ -572,7 +567,7 @@ class ApiController extends Controller
     {
         $id = $request->oid;
         $result['order'] = Order::where('id', $id)->with(['transaction'])->first();
-        $result['orderitem'] = OrderItem::where('order_id', $id)->with(['product'])->get();
+        $result['orderitem'] = OrderItem::where('order_id', $id)->with(['product', 'seller'])->get();
 
         return response()->json([
             'status' => true,
@@ -742,24 +737,39 @@ class ApiController extends Controller
         // $count = 0;
         // $subtotalc = 0;
         // $taxtotalc = 0;
+
+
+                
+                // dd($carts);
+
         // $savelater = [];
         // $uploadper = 0;
         $pricesoff = 0;
         // $discount = 0;
         $cartlsit = Cart::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
-        $result['cart'] = $cart = Product::whereIn('id', $cartlsit)->get();
-        $catlistnumber = Product::whereIn('id', $cartlsit)->pluck('category_id')->toArray();
+        $result['cart'] = $cart = Cart::with(['product'])->where('user_id', Auth::user()->id)->get();
+        // $catlistnumber = Product::whereIn('id', $cartlsit)->pluck('category_id')->toArray();
         $count = Cart::where('user_id', Auth::user()->id)->get()->count();
         $subtotalc = 0;
         $taxtotalc = 0;
         foreach ($cart as $item) {
-            $dffg = Cart::where('user_id', Auth::user()->id)->where('product_id', $item->id)->first();
-            $item['qty'] = $dffg->quantity;
+            $dffg = Cart::where('id', $item->id)->first();
+                    
+                if (isset($item->sellerProduct) && !empty($item->sellerProduct)) {
+                    $price = $item->sellerProduct->price;
+                    $mprice = $item->product->regular_price;
+
+                } else {
+                    $price = $item->product->sale_price;
+                    $mprice = $item->product->regular_price;
+                }
+            
+                    $item['qty'] = $dffg->quantity;
 
 
-            $subtotalc = $subtotalc + $item->sale_price * $dffg->quantity;
-            $taxtotalc = $taxtotalc + (($item->taxslab->value * $item->sale_price) * ($dffg->quantity) / 100);
-            $pricesoff = $pricesoff + (($item->regular_price - $item->sale_price) * ($dffg->quantity));
+            $subtotalc = $subtotalc + $price * $dffg->quantity;
+            $taxtotalc = $taxtotalc + (($item->product->taxslab->value * $price) * ($dffg->quantity) / 100);
+            $pricesoff = $pricesoff + (($mprice - $price) * ($dffg->quantity));
 
         }
         // dd($subtotalc,$taxtotalc);
@@ -1109,22 +1119,32 @@ class ApiController extends Controller
                 $order->zipcode = $ship->zipcode;
                 $order->order_number = Carbon::now()->timestamp;
                 $order->status = 'ordered';
-                // $order->save();
-                $carts = Cart::with(['product', 'sellerProduct'])->where('user_id', Auth::user()->id)->get();
-                dd($carts);
+                $order->save();
+                $carts = Cart::with(['product'])->where('user_id', Auth::user()->id)->get();
+                // dd($carts);
                 foreach ($carts as $item) {
+
                     $orderItem = new OrderItem();
+                    if (isset($item->sellerProduct) && !empty($item->sellerProduct)) {
+                        $orderItem->price = $item->sellerProduct->price;
+                        $orderItem->seller_id = $item->seller_id;
+
+                    } else {
+                        $orderItem->price = $item->product->sale_price;
+                        $orderItem->seller_id = 1;
+                    }
                     $orderItem->product_id = $item->product_id;
                     $orderItem->order_id = $order->id;
-                    $orderItem->price = $item->product->sale_price;
+                    $orderItem->mrp_price = $item->product->regular_price;
+                    $orderItem->gst = $item->product->taxslab->value;
                     $orderItem->quantity = $item->quantity;
                     $orderItem->options = $item->product->tax_id;
                     $orderItem->save();
                 }
-                $this->rewardingpoints($order->id, $rewardpoint);
+                // $this->rewardingpoints($order->id, $rewardpoint);
                 $this->makeTransaction($order->id, 'pending', 'cod', null, '0');
                 $this->resetCart();
-                $this->sendOrderConfirmationMail($order);
+                // $this->sendOrderConfirmationMail($order);
 
                 return response()->json([
                     'status' => true,
