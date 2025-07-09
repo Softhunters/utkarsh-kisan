@@ -42,6 +42,8 @@ use App\Livewire\Admin\User\UserComponent;
 use App\Livewire\Admin\WebsettingComponent;
 use App\Livewire\Frontend\CartComponent;
 use App\Livewire\Frontend\CategorySearchComponent;
+use App\Livewire\Frontend\CheckOutComponent;
+use App\Livewire\Frontend\ContactUsComponent;
 use App\Livewire\Frontend\HomeComponent;
 use App\Livewire\Frontend\ProductDetailsComponent;
 use App\Livewire\Frontend\ShopComponent;
@@ -64,6 +66,9 @@ Route::get('/', HomeComponent::class)->name('index');
 
 Route::get('/wishlist',WishlistComponent::class)->name('wishlist');
 Route::get('/cart',CartComponent::class)->name('cart');
+
+Route::get('/check-out',CheckOutComponent::class)->name('check-out');
+
 Route::get('/contact-us',ContactUsComponent::class)->name('contact-us');
 
 Route::get('/shop',ShopComponent::class)->name('shop');
@@ -87,6 +92,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
+    // Route::get('/user/orders', OrdersComponent::class)->name('orders');
+    // Route::get('/order/{id}', OrderDetailsComponent::class)->name('order-details');
+
+
     // Admin Routes
     Route::middleware(['authadmin'])->prefix('admin')->group(function () {
         Route::get('/dashboard', DashboardComponent::class)->name('admin.dashboard');
@@ -107,7 +116,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/subsubcategory/edit/{scategory_slug}', EditSubSubCategoryComponent::class)->name('admin.editsubsubcategory');
 
         Route::get('/admin/users', UserComponent::class)->name('admin.users');
-
 
         Route::get('/brands', BrandComponent::class)->name('admin.brands');
         Route::get('/brands/add', AddBrandComponent::class)->name('admin.addbrand');
@@ -141,7 +149,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     });
 
 
-    
     // Vendor Routes
     Route::middleware(['authvendor'])->prefix('vendor')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('vendor.dashboard');

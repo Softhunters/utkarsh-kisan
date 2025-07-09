@@ -12,6 +12,9 @@
     <div class="sa-app__body">
         <div class="container py-4">
             <div class="card shadow">
+                @if (Session::has('message'))
+                    <div class="alert alert-success" role="alert">{{ Session::get('message') }}</div>
+                @endif
                 <div class="card-body">
                     <h3 class="mb-4">Filter Products</h3>
                     <form id="productFilterForm" class="row g-3">
@@ -49,6 +52,41 @@
             <div id="productList" class="mt-4">
                 <!-- Product results will be shown here -->
             </div>
+        </div>
+    </div>
+    <!-- Add Product Modal -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form action="{{ route('vendor.products.store') }}" method="POST" id="addProductForm">
+                @csrf
+                <input type="hidden" name="product_id" id="modalProductId">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Product: <span id="modalProductName"></span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Price <span class="text-danger">*</span></label>
+                            <input type="number" name="price" class="form-control" required min="1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Quantity <span class="text-danger">*</span></label>
+                            <input type="number" name="quantity" class="form-control" required min="1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="additional_info" class="form-label">Additional Info</label>
+                            <textarea name="additional_info" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 @endsection
@@ -90,42 +128,35 @@
                     html += `
                         <div class="col-md-3 col-sm-6 mb-4">
                             <div class="card product-card position-relative shadow-sm h-100 border-0">
-                                
-                                <!-- Discount Badge -->
-                                <div class="badge bg-danger text-white position-absolute top-0 start-0 m-2 px-2 py-1" style="font-size: 0.75rem;">
-                                    ${product.discount}% Off
-                                </div>
+
+                        
 
                                 <!-- Plus Icon -->
                                 <div class="position-absolute top-0 end-0 m-2">
-                                    <a href="/vendor/products/${product.vendor_product_id}" class="btn btn-sm btn-warning rounded-circle">
+                                    <button class="btn btn-sm btn-warning rounded-circle openAddModal"
+                                        data-id="${product.product_id}"
+                                        data-name="${product.name}">
                                         <i class="fas fa-plus"></i>
-                                    </a>
+                                    </button>
                                 </div>
 
                                 <!-- Thumbnail -->
                                 <img src="${url}/${product.thumbnail ?? 'default.png'}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="${product.name}">
 
                                 <div class="card-body text-center">
-                                    <!-- Product Name -->
                                     <h6 class="mb-1 text-truncate">
-                                        <a href="/vendor/products/${product.vendor_product_id}" class="text-dark text-decoration-none">
+                                        <a href="/product-detail/${product.slug}" target="_blank" class="text-dark text-decoration-none">
                                             ${product.name}
                                         </a>
                                     </h6>
 
-                                    <!-- Price -->
                                     <div class="text-danger fw-bold">₹${product.price}
                                         <small class="text-muted text-decoration-line-through ms-1">₹${product.regular_price}</small>
                                     </div>
 
-                                    <!-- Rating -->
                                     <div class="text-warning small">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i><i class="far fa-star"></i>
                                         <span class="text-muted">0.00 (0)</span>
                                     </div>
 
@@ -133,10 +164,22 @@
                                 </div>
                             </div>
                         </div>`;
+
                 });
                 html += `</div>`;
                 $('#productList').html(html);
             });
+        });
+
+        $(document).on('click', '.openAddModal', function() {
+            const productId = $(this).data('id');
+            const productName = $(this).data('name');
+
+            $('#modalProductId').val(productId);
+            $('#modalProductName').text(productName);
+
+            const modal = new bootstrap.Modal(document.getElementById('addProductModal'));
+            modal.show();
         });
     </script>
 @endpush

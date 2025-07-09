@@ -24,6 +24,7 @@ class HomeComponent extends Component
     public function addToWishlist(Request $request,$product_id,$product_price,$seller_id=null)
     {
         $id= $product_id;
+        $seller_id = $seller_id ?? 1;
         if(Auth::check())
         {
             $wproduct = Wishlist::where('product_id',$product_id)->where('user_id',Auth::user()->id)
@@ -74,6 +75,7 @@ class HomeComponent extends Component
     
     public function removeFromWishlist(Request $request,$product_id,$seller_id=null)
     {
+        $seller_id = $seller_id ?? 1;
         if(Auth::check()){
                 $wishlist = Wishlist::where('product_id',$product_id)->where('user_id',Auth::user()->id)
                 ->where('seller_id',$seller_id)->first();
@@ -103,6 +105,7 @@ class HomeComponent extends Component
     public function AddtoCart(Request $request,$product_id,$product_price,$seller_id=null)
     {
         $id= $product_id;
+        $seller_id = $seller_id ?? 1;
         if(Auth::check())
         {
             $wproduct = Cart::where('product_id',$product_id)->where('user_id',Auth::user()->id)
