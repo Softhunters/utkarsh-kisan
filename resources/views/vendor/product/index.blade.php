@@ -65,7 +65,7 @@
 
                                         <td>{{ $p->id }}</td>
                                         <td>{{ $product->name }}</td>
-                                        <td><span class="product-price">${{ $p->price }}</span>
+                                        <td><span class="product-price">₹{{ $p->price }}</span>
                                         </td>
                                         <td>{{ $p->quantity }}</td>
                                         <td>{{ $product->brands->brand_name }}</td>

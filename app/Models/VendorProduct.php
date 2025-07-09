@@ -17,6 +17,9 @@ class VendorProduct extends Model
     public function product(){
         return $this->belongsTo(Product::class, 'product_id');
     }
+    public function productApi(){
+        return $this->belongsTo(Product::class, 'product_id')->select('products.id', 'products.name', 'products.slug','products.image','products.regular_price');
+    }
 
     public function vendor(){
         return $this->belongsTo(User::class, 'vendor_id');

@@ -461,7 +461,7 @@ dd($this->cvc, $this->card_no,$this->card_name,$this->exp_year,$this->exp_month)
     }
     public function sendOrderConfirmationMail($order)
     {
-        Mail::to(Auth::user()->email)->send(new OrderMail($order));
+        // Mail::to(Auth::user()->email)->send(new OrderMail($order));
     }
     public function close()
     {
