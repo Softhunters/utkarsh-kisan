@@ -2232,7 +2232,7 @@ pre code {
 }
 .form-control:disabled,
 .form-control[readonly] {
-    background-color: #e9ecef;
+    background-color: var(--white);
     opacity: 1;
 }
 select.form-control:focus::-ms-value {
@@ -18829,7 +18829,7 @@ img.flex-fill {
     -webkit-appearance: none;
     font-family: "Poppins", sans-serif;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
     position: relative;
 }
 .form-control:focus {
@@ -19193,7 +19193,7 @@ select:not(.ignore) {
     color: #ffd55a;
 }
 .btn-soft-primary {
-    color: #ff7e22;
+    color: var(--primary-color3);
     background-color: rgba(78, 151, 253, 0.1);
     border-color: transparent;
 }
@@ -22814,7 +22814,7 @@ html:not([dir="rtl"]) .range-slider-ui.noUi-horizontal .noUi-handle {
     padding-top: 40px;
     padding-bottom: 40px;
     /*background-color: #343a40;*/
-    background-color: #fef1dd;
+    background-color: #ecfce6;
     color: #fff;
     margin-bottom: 40px;
 }
@@ -22823,10 +22823,15 @@ html:not([dir="rtl"]) .range-slider-ui.noUi-horizontal .noUi-handle {
 }
 .accounnt_header .breadcrumb .breadcrumb-item {
     /*color: inherit;*/
-    color:#fe7d24;
+    color:var(--primary-color3);
+    text-decoration: none;
+}
+.accounnt_header .breadcrumb .breadcrumb-item a {
+     
+    text-decoration: none !important;
 }
 .text-orange{
-    color:#fe7d24;
+    color:var(--primary-color3);
 }
 .accounnt_header .breadcrumb .breadcrumb-item a {
     color: inherit;
@@ -22855,7 +22860,7 @@ html:not([dir="rtl"]) .range-slider-ui.noUi-horizontal .noUi-handle {
 }
 .accounnt_body .sidenav.navbar .navbar-nav .nav-item.active > .nav-link {
     opacity: 1;
-    color: #ff7662;
+    color: var(--primary-color3);
 }
 .accounnt_body .sidenav.navbar .navbar-nav .nav-item .nav-link {
     padding: 15px 25px;
@@ -22891,7 +22896,7 @@ html:not([dir="rtl"]) .range-slider-ui.noUi-horizontal .noUi-handle {
 
 .accounnt_body .sidenav.navbar .navbar-nav .nav-item .nav-link:hover {
     opacity: 1;
-    color: #343a40;
+    color: var(--primary-color3);
 }
 .accounnt_body .sidenav.navbar .navbar-nav .nav-item .nav-link .nav-icon {
     opacity: 0.6;
@@ -23055,3 +23060,21 @@ html:not([dir="rtl"]) .range-slider-ui.noUi-horizontal .noUi-handle {
 
 
 
+.photo_upload{
+    background-color: var(--white) !important;
+    color:var(--primary-color-1);
+    border: 1px solid #dee2e6;
+    
+}
+
+.edit_btn{
+    background: var(--primary-color3);
+}
+
+.edit_btn:hover{
+    background: var(--btn-hoverbg);
+}
+
+ /* input[type="file"].photo_upload {
+        display: none !important;
+    } */

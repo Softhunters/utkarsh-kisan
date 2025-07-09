@@ -11,6 +11,7 @@
     /* --primary-color3: #F46F30; */
     --primary-color3: #699a39;
     /* --gradient-color: linear-gradient(90deg, #F86CA7 0%, #FF7F18 100%); */
+    --light-theme:#ecfce6;
     --gradient-color:linear-gradient(90deg, #4a7737 0%, #699a39 50%, #e9ad16 100%) ;
     --title-color1: #001D23;
     --btn-hoverbg:#4a7737;
@@ -8707,7 +8708,8 @@ footer.style2 .social-area ul li:hover a i {
 }
 
 .collection-card .collection-content .price h6 {
-    font-size: 1.25rem;
+    /* font-size: 1.25rem; */
+    font-size: 1rem;
     font-weight: 700;
     color: var(--primary-color3);
     font-family: var(--font-cabin)
@@ -9777,7 +9779,8 @@ footer.style2 .social-area ul li:hover a i {
 .inner-page-banner .banner-content .breadcrumb .breadcrumb-item {
     font-family: var(--font-cabin);
     font-weight: 400;
-    font-size: 1.125rem;
+    /* font-size: 1.125rem; */
+    font-size: 1rem;
     line-height: 22px;
     text-transform: capitalize;
     color: var(--title-color1)
@@ -9789,6 +9792,10 @@ footer.style2 .social-area ul li:hover a i {
     -webkit-text-fill-color: transparent;
     background-clip: text
 }
+/* .inner-page-banner .banner-content .breadcrumb .breadcrumb-item a::after {
+     content: url(../images/icon/breadcumb-vec.svg);
+    padding-right: .625rem;
+} */
 
 .inner-page-banner .banner-content .breadcrumb .breadcrumb-item+.breadcrumb-item {
     padding-left: .625rem

@@ -18,7 +18,7 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{ route('index') }}">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">{{ $product->name }}</li>
+                                <li class="breadcrumb-item active d-flex flex-wrap" aria-current="page">{{ $product->name }}</li>
                             </ol>
                         </nav>
                     </div>
@@ -264,13 +264,13 @@
                         <div class="tab-content tab-content2" id="v-pills-tabContent2">
                             <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel"
                                 aria-labelledby="v-pills-home-tab">
-                                <div class="description">
+                                <div class="description styled-table">
                                     <p>{!! $product->description !!}</p>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
                                 aria-labelledby="v-pills-profile-tab">
-                                <div class="addithonal-information  ">
+                                <div class="addithonal-information styled-table ">
                                     <p>{!! $product->short_description !!}</p>
                                 </div>
                             </div>

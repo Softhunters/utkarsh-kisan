@@ -49,6 +49,14 @@ use App\Livewire\Frontend\WishlistComponent;
 use App\Livewire\Frontend\ContactUsComponent;
 use Illuminate\Support\Facades\Route;
 
+use App\Livewire\User\AccountComponent;
+use App\Livewire\User\AddressComponent;
+use App\Livewire\User\ChangePasswordComponent;
+use App\Livewire\ThankyouComponent;
+use App\Livewire\User\InviteEarnComponent;
+// use App\Livewire\Frontend\OrdersComponent;
+// use App\Livewire\Frontend\OrderDetailsComponent;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -59,6 +67,15 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::middleware(['auth:sanctum','verified'])->group(function(){
+    Route::get('/user/account', AccountComponent::class)->name('user.account');
+    Route::get('/user/address', AddressComponent::class)->name('user.address');
+    Route::get('/user/changePassword', ChangePasswordComponent::class)->name('user.change-password');
+    // Route::get('/user/orders',OrdersComponent::class)->name('orders');
+    // Route::get('/order/{id}', OrderDetailsComponent::class)->name('order-details');
+    // Route::get('/user/invite_earn', InviteEarnComponent::class)->name('user.invite_earn');
+    
+});
 
 Route::get('/', HomeComponent::class)->name('index');
 
