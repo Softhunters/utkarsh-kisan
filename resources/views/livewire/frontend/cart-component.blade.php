@@ -77,12 +77,15 @@
                                             <td data-label="Quantity">
                                                 @if (Auth::check())
                                                     @if ($item->stock_status === 'instock')
-                                                        <div class="qty-input btn mt-4 mt-md-0 d-flex">
+                                                        <div class="qty-input btn mt-4 mt-md-0 d-flex align-items-center">
                                                             <a class="btn btn-increase" href="#"
                                                                 wire:click.prevent="decreaseQuantity('{{ $item->id }}')">-</a>
                                                             <input class="form-control me-0" type="text"
                                                                 name="product-quatity" value="{{ $item->qty }}"
-                                                                data-max="5" pattern="[0-9]*">
+                                                                data-max="5" pattern="[0-9]*" 
+                                                                style="width:100px !important"
+                                                                >
+
                                                             @if ($item->quantity - $item->qty > 3)
                                                                 <a class="btn btn-increase" href="#"
                                                                     wire:click.prevent="increaseQuantity('{{ $item->id }}')">+</a>

@@ -30,6 +30,7 @@ class OrderDetailsComponent extends Component
 
     }
     public function preview($id){
+
         $product=Product::where('id',$id)->first();
         $this->pid=$id;
         $this->pname=$product->name;

@@ -75,10 +75,13 @@
                                             <a class="nav-link" href="{{route('wishlist')}}"><i class="bx bxs-heart"></i>
                                                 Wishlist <i class="fa-solid fa-chevron-right arrowo"></i></a></a>
                                         </li>
-                                        <li class="nav-item">
+
+                                       {{-- <li class="nav-item">
                                             <a class="nav-link" href="{{route('user.invite_earn')}}"><i class="bx bxs-heart"></i>
                                                 Invite & Earn<i class="fa-solid fa-chevron-right arrowo"></i></a>
                                         </li>
+                                        --}}
+
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{ route('logout') }}"
                                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
