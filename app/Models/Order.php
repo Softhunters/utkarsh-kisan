@@ -18,6 +18,9 @@ class Order extends Model
     public function orderItems(){
         return $this->hasMany(OrderItem::class);
     }
+    public function orderItemsApi(){
+        return $this->hasMany(OrderItem::class);
+    }
     public function shipping(){
         return $this->hasOne(ShippingAddress::class);
     }

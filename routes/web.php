@@ -29,6 +29,10 @@ use App\Livewire\Admin\Coupon\AddCouponComponent;
 use App\Livewire\Admin\Coupon\CouponComponent;
 use App\Livewire\Admin\Coupon\EditCouponComponent;
 use App\Livewire\Admin\DashboardComponent;
+use App\Livewire\Admin\Order\OrderComponent;
+use App\Livewire\Admin\Order\OrderDetailComponent;
+use App\Livewire\Admin\Order\VendorOrderComponent;
+use App\Livewire\Admin\Order\VendorOrderComponentDetail;
 use App\Livewire\Admin\Product\AddProductComponent;
 use App\Livewire\Admin\Product\EditProductComponent;
 use App\Livewire\Admin\Product\ProductComponent;
@@ -57,10 +61,7 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\User\AccountComponent;
 use App\Livewire\User\AddressComponent;
 use App\Livewire\User\ChangePasswordComponent;
-use App\Livewire\ThankyouComponent;
 use App\Livewire\User\InviteEarnComponent;
-use App\Livewire\Frontend\OrdersComponent;
-use App\Livewire\Frontend\OrderDetailsComponent;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,30 +73,30 @@ use App\Livewire\Frontend\OrderDetailsComponent;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::middleware(['auth:sanctum','verified'])->group(function(){
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/user/account', AccountComponent::class)->name('user.account');
     Route::get('/user/address', AddressComponent::class)->name('user.address');
     Route::get('/user/changePassword', ChangePasswordComponent::class)->name('user.change-password');
-    Route::get('/user/orders',OrdersComponent::class)->name('orders');
+    Route::get('/user/orders', OrdersComponent::class)->name('orders');
     Route::get('/order/{id}', OrderDetailsComponent::class)->name('order-details');
     // Route::get('/user/invite_earn', InviteEarnComponent::class)->name('user.invite_earn');
-    
+
 });
 
 Route::get('/', HomeComponent::class)->name('index');
 
-Route::get('/wishlist',WishlistComponent::class)->name('wishlist');
-Route::get('/cart',CartComponent::class)->name('cart');
+Route::get('/wishlist', WishlistComponent::class)->name('wishlist');
+Route::get('/cart', CartComponent::class)->name('cart');
 
-Route::get('/check-out',CheckOutComponent::class)->name('check-out');
-Route::get('/thankyou',ThankyouComponent::class)->name('thankyou');
+Route::get('/check-out', CheckOutComponent::class)->name('check-out');
+Route::get('/thankyou', ThankyouComponent::class)->name('thankyou');
 
 
-Route::get('/contact-us',ContactUsComponent::class)->name('contact-us');
+Route::get('/contact-us', ContactUsComponent::class)->name('contact-us');
 
-Route::get('/shop',ShopComponent::class)->name('shop');
-Route::get('/category/{category_slug}/{scategory_slug?}',CategorySearchComponent::class)->name('product.category');
-Route::get('/product-detail/{slug}',ProductDetailsComponent::class)->name('product-details');
+Route::get('/shop', ShopComponent::class)->name('shop');
+Route::get('/category/{category_slug}/{scategory_slug?}', CategorySearchComponent::class)->name('product.category');
+Route::get('/product-detail/{slug}', ProductDetailsComponent::class)->name('product-details');
 Route::get('/vdrregistor', [RegisterController::class, 'vdrregisterview'])->name('vdrregisterview');
 Route::get('/uregisteor', [RegisterController::class, 'uregisteorview'])->name('udregisteorview');
 Route::post('/uregisteor', [RegisterController::class, 'uregisteor'])->name('udregisteor');
@@ -168,6 +169,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/vendor/{id}/show', [VendorController::class, 'show'])->name('vendor.profile.show');
         Route::patch('/admin/vendor/{id}/toggle-varification', [VendorController::class, 'toggleVerification'])->name('admin.vendor.toggleVerification');
         Route::patch('/admin/vendor/{id}/toggle-status', [VendorController::class, 'toggleStatus'])->name('admin.vendor.toggleStatus');
+
+        Route::get('/orders', OrderComponent::class)->name('admin.orders');
+        Route::get('/order/detail/{id}', OrderDetailComponent::class)->name('admin.order-detail');
+
     });
 
 
@@ -194,6 +199,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         //fetch state and city
         Route::get('/getstates/{c}', [ApiController::class, 'StateData']);
         Route::get('/getcities/{s}', [ApiController::class, 'CityData']);
+
+        //orders
+        Route::get('/orders', VendorOrderComponent::class)->name('vendor.orders');
+        Route::get('/order/detail/{id}', VendorOrderComponentDetail::class)->name('vendor.order-detail');
     });
 
 

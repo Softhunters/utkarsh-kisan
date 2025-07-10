@@ -95,4 +95,14 @@ Route::middleware(['auth:sanctum'])->prefix('vendor')->group(function () {
 
     Route::get('/variant', [ApiVendorController::class, 'variant']);
     Route::post('/variant/create', [ApiVendorController::class, 'addVariant']);
+    Route::post('/variant/update', [ApiVendorController::class, 'updateVariant']);
+    Route::post('/variant/stock-status-toggle', [ApiVendorController::class, 'stockStatusToggle']);
+
+    Route::get('/product-detail/{id}', [ApiVendorController::class, 'ProductData']);
+
+    Route::get('/order-list', [ApiVendorController::class, 'orderList']);
+    Route::get('/order-detail/{id}', [ApiVendorController::class, 'orderDetails']);
+
+    Route::get('/edit-variant/{id}', [ApiVendorController::class, 'editVariant']);
+
 });

@@ -370,7 +370,7 @@
                                         </li>
                                     </ul> 
                                 </li> --}}
-                                {{-- <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
+                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
                                     data-sa-collapse-item="sa-nav__menu-item--open">
                                     <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
 
@@ -389,7 +389,7 @@
                                         </li>
 
                                     </ul>
-                                </li> --}}
+                                </li>
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
                                     data-sa-collapse-item="sa-nav__menu-item--open">
                                     <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
