@@ -130,7 +130,7 @@
                         @if (isset($varaiants[1]))
                             <div class="varient mt-4 ">
                                 <h6 class="font-weight-bold text-dark mb-3">Product Varient</h6>
-                                <div class="row box-checkbox d-flex ">
+                                <div class="row box-checkbox d-flex gap-3">
                                     <!-- <label tabindex="0" class="wi">
                                         <input tabindex="-1" type="checkbox" checked name=""  wire:click.prevent="changeparameter({{ $product->id }})"/>
                                         <div class="icon-box">

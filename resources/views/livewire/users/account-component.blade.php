@@ -113,29 +113,29 @@
                                     <div>
                                         <form class="row align-items-end" enctype="multipart/form-data"   wire:submit.prevent="UpdateINfo">
                                             <!-- First name -->
-                                            <div class="mb-3 col-12 col-md-6">
+                                            <div class="mb-3 col-12 col-lg-6">
                                                 <label class="form-label" for="fname">Name</label>
                                                 <input type="text" id="fname" class="form-control" placeholder="First Name" wire:model="name">
                                             </div>
                                             <!-- Last name -->
-                                            <div class="mb-3 col-12 col-md-6">
+                                            <div class="mb-3 col-12 col-lg-6">
                                                 <label class="form-label" for="fname">Number</label>
                                                 <input type="text" id="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="Phone"  wire:model="phone">
                                                 @error('phone') <span class="invalid-feedback" role="alert"> <strong>{{ $message }}</strong></span>    @enderror
                                             </div>
                                             
-                                            <div class="mb-3 col-12 col-md-6">
+                                            <div class="mb-3 col-12 col-lg-6">
                                                 <label class="form-label" for="fname">Email</label>
                                                 <input type="email" id="fname" class="form-control" placeholder="Email" value="{{Auth::user()->email}}" readonly>
                                             </div>
-                                            <div class="mb-3 col-12 col-md-6">
+                                            <div class="mb-3 col-12 col-lg-6">
                                                 <label class="form-label custom-upload-btn" for="lname" >Photo Upload</label>
-                                                <div class="d-lg-flex d-md-flex ">
+                                                <div class="d-lg-flex d-md-flex  ">
                                                 <input type="file" id="lname" style="background-color:#5b5b5b;height: 47px;padding: 7px;" class=" @error('newprofile') is-invalid @enderror mb-lg-0 mb-mt-0 mb-4  photo_upload" wire:model="newprofile" >
                                                 @if($newprofile)
-                                                    <img src="{{$newprofile->temporaryUrl()}}" style="width:85px;" /> 
+                                                    <img src="{{$newprofile->temporaryUrl()}}" style="width:50px;height:45px" /> 
                                                 @else
-                                                    <img src="{{asset('admin/profilespic')}}/{{$profile}}"  style="width:85px;" />
+                                                    <img src="{{asset('admin/profilespic')}}/{{$profile}}"  style="width:50px;height:45px" />
                                                 @endif
                                                 </div>
                                                 

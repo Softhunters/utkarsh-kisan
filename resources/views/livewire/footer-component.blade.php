@@ -65,28 +65,28 @@
                         </div>
                         <div class="menu-container">
                              <ul class="details">
-                                <li class="d-flex">
+                                <li class="d-flex contact_foot">
                                     <div class="hotline-icon">
                                     <img src="{{asset('assets/images/phone-icon.svg')}}" alt>
                                     </div>
-                                    <div class="hotline-info ms-2">
+                                    <div class="hotline-info ms-2 text-center">
                                     <h6 ><a >{{$setting->phone}}</a></h6>
                                     </div>
                                 </li>
-                                <li class="d-flex ">
+                                <li class="d-flex contact_foot">
                                     <div class="email-icon">
                                         
                                     <img src="{{asset('assets/images/envelope.svg')}}" alt>
                                     </div>
-                                    <div class="email-info ms-2">
+                                    <div class="email-info ms-2 text-center">
                                     <h6 ><a>{{$setting->email}}</a></h6>
                                     </div>
                                 </li>
-                                <li class="d-flex ">
+                                <li class="d-flex contact_foot">
                                     <div class="email-icon">
                                     <img src="{{asset('assets/images/location.svg')}}" alt>
                                     </div>
-                                    <div class="email-info ms-2">
+                                    <div class="email-info ms-2 text-center">
                                     <h6 ><a>{{$setting->address}}</a></h6>
                                     </div>
                                 </li>
