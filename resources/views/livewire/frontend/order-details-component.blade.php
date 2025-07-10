@@ -136,7 +136,7 @@
                                                 style="margin-left:20px" class="btn btn-warning pull-right">Cancel
                                                 Order</a>
                                         @endif
-                                    </div>
+                                    </div> 
                                 </div>
                             </div>
                             <div class="card">

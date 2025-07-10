@@ -67,7 +67,7 @@
                                                     href="{{ route('product-details', ['slug' => $item->slug]) }}">{{ $item->name }}</a>
                                             </td>
                                            
-                                            <td data-label="seller name">{{ $item->seller_name??'' }}</td>
+                                            <td data-label="seller name" class="seller_data">{{ $item->seller_name??'' }}</td>
                                             <td data-label="Unite Price"><del>₹{{ $item->regular_price }}</del></td>
                                             <td data-label="Discount Price">₹{{ $item->sale_price }}</td>
                                             <td data-label="Quantity">
