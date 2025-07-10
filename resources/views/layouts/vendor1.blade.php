@@ -253,7 +253,7 @@
 
 
 
-            @yield('content')
+           {{$slot}}
 
 
 
