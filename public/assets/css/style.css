@@ -4509,7 +4509,7 @@ a.ui-button:active,
 }
 
 .h1-story-area::before {
-    content: url(../images/bg/frem-02.png);
+    /* content: url(../images/bg/frem-02.png); */
     position: absolute;
     left: 0;
     bottom: 0;
@@ -12116,7 +12116,7 @@ footer.style2 .social-area ul li:hover a i {
     font-weight: 400;
     font-size: 14px;
     padding-left: 0;
-    min-width: 57px
+    /* min-width: 57px */
 }
 
 .shop-sidebar .shop-widget .range-widget .nice-number input::-webkit-inner-spin-button,
@@ -14644,7 +14644,7 @@ footer.style2 .footer-widget .widget-title h2 {
 @media (max-width:1024px){
     .cart-btn-group {
     display: flex;
-    gap: 2px !important;}
+    gap: 15px !important;}
 }
 
 @media(max-width:992px){
@@ -14704,7 +14704,7 @@ footer.style2 .footer-widget .widget-title h2 {
     line-height: 1;
   }
 .foot{
-    width:56px!important;
+    width:150px!important;
 }
 
 footer.style2 .footer-widget .widget-title h2 {
@@ -14782,8 +14782,9 @@ footer.style2 .footer-widget .widget-title h2 {
     padding: 0;
     list-style: none;
     display: flex;
-    justify-content: end;
+    justify-content: center;
     gap: 30px;
+    margin-top: 10px;
 }
 .collection-card .collection-content .price h6 {
     font-size: 14px;}
@@ -14792,7 +14793,8 @@ footer.style2 .footer-widget .widget-title h2 {
     transition: .5s;
 }
 .foot{
-    width:56px!important;
+    /* width:56px!important; */
+    width: 100px;
 }
 
 footer.style2 .footer-widget .widget-title h2 {
@@ -14868,7 +14870,7 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
 }
 .box-checkbox label .icon-box {
     border-radius: 4px !important;
-    padding: 10px 18px;
+    padding: 5px 10px;
     margin: 0;
     text-align: center;
     font-size: 12px;
@@ -15121,6 +15123,9 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
     padding-top:2px!important;
 }
 @media (max-width:768px){
+    .contact_foot{
+        justify-content: center !important;
+      }
     .clean_modal .close {
         position: absolute !important;
         right: 5px!important;
@@ -15146,13 +15151,17 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
         margin-top: 10px;
       }
       .details {
-        width: 70% !important;
-        padding-left: 130px !important;
+        /* width: 70% !important; */
+        /* padding-left: 130px !important; */
+      }
+
+      .contact_foot{
+        justify-content: center !important;
       }
     .table-wrapper .eg-table tbody tr td a {
         color: var(--title-color1);
         transition: .35s;
-        font-size: 13px;
+        font-size: 20px;
         width: 62% !important;
         overflow: hidden !important;
         display: inline-block !important;
@@ -15206,7 +15215,7 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
                 padding: 5px 15px 80px 15px !important;
     }
     .areas {
-        padding-right: 28% !important;
+        /* padding-right: 28% !important; */
       }
     .collection-card .collection-content .review ul {
   margin: 0;
@@ -15247,9 +15256,9 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
         align-items: center;
         gap: 3px;
       }
-      .areas {
+      /* .areas {
         padding-right: 28% !important;
-      }
+      } */
     .lower-footer{
         padding: 5px 15px 80px 15px !important;
       }
@@ -15307,7 +15316,7 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
         gap: 3px;
       }
       .areas {
-        padding-right: 28% !important;
+        /* padding-right: 28% !important; */
       }
     .lower-footer{
         padding: 5px 15px 80px 15px !important;
@@ -15371,7 +15380,7 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
         gap: 3px;
       }
       .areas {
-        padding-right: 28% !important;
+        /* padding-right: 28% !important; */
       }
     .lower-footer{
         padding: 5px 15px 80px 15px !important;
@@ -15419,7 +15428,7 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
         gap: 3px;
       }
       .areas {
-        padding-right: 28% !important;
+        /* padding-right: 28% !important; */
       }
     .lower-footer{
         padding: 5px 15px 80px 15px !important;
@@ -15482,9 +15491,9 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
         align-items: center;
         gap: 3px;
       }
-      .areas {
+      /* .areas {
         padding-right: 28% !important;
-      }
+      } */
     .lower-footer{
         padding: 5px 15px 80px 15px !important;
       }
@@ -15645,6 +15654,30 @@ header.style-3 .main-menu ul > li ul.sub-menu > li a:hover{
 @media screen and (max-width:766px){
     .utkrsh_title{
         justify-content: center !important;
+    }
+    
+}
+
+
+@media (min-width: 768px) {
+  .container, .container-md, .container-sm {
+    max-width: 100% !important;
+  }
+}
+
+
+@media screen  and (max-width:992px){
+
+    .Address_btn{
+        text-align: center !important;
+    }
+    
+}
+
+
+@media screen and (max-width:767px) {
+    .seller_data{
+        height: 40px;
     }
     
 }

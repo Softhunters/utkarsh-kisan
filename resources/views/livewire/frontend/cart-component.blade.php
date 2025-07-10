@@ -77,7 +77,7 @@
                                             <td data-label="Quantity">
                                                 @if (Auth::check())
                                                     @if ($item->stock_status === 'instock')
-                                                        <div class="qty-input btn mt-4 mt-md-0 d-flex align-items-center">
+                                                        <div class="qty-input btn mt-4 mt-md-0 d-flex align-items-center  ">
                                                             <a class="btn btn-increase" href="#"
                                                                 wire:click.prevent="decreaseQuantity('{{ $item->id }}')">-</a>
                                                             <input class="form-control me-0" type="text"
@@ -110,12 +110,14 @@
                                                         <!--</div>-->
 
 
-                                                        <div class="qty-input btn mt-4 mt-md-0 d-flex">
+                                                        <div class="qty-input btn mt-4 mt-md-0 d-flex align-items-center">
                                                             <a class="btn btn-increase" href="#"
                                                                 wire:click.prevent="decreaseQuantity('{{ $item->id }}')">-</a>
                                                             <input type="text" class="form-control me-0"
                                                                 name="product-quatity" value="{{ $item->qty }}"
-                                                                data-max="5" pattern="[0-9]*">
+                                                                data-max="5" pattern="[0-9]*" 
+                                                                style="width:100px !important"
+                                                                >
                                                             <a class="btn btn-increase" href="#"
                                                                 wire:click.prevent="increaseQuantity('{{ $item->id }}')">+</a>
                                                         </div>
@@ -149,7 +151,7 @@
                             </table>
                         </div>
                     @else
-                        <div class="empty-wishlist text-center">
+                        <div class="empty-wishlist text-center mb-3">
                             <p style="text-align:center;">No Item Added In CART</p>
                             <a href="{{ route('shop') }}"><button
                                     class="btn btn-primary wishlist_shopping_btn" >Continue

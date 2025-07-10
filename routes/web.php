@@ -51,7 +51,8 @@ use App\Livewire\Frontend\ProductDetailsComponent;
 use App\Livewire\Frontend\ShopComponent;
 use App\Livewire\Frontend\WishlistComponent;
 
-use App\Livewire\ThankyouComponent;
+// use App
+// \Livewire\ThankyouComponent;
 use Illuminate\Support\Facades\Route;
 
 use App\Livewire\User\AccountComponent;
@@ -59,8 +60,8 @@ use App\Livewire\User\AddressComponent;
 use App\Livewire\User\ChangePasswordComponent;
 use App\Livewire\ThankyouComponent;
 use App\Livewire\User\InviteEarnComponent;
-use App\Livewire\Frontend\OrdersComponent;
-use App\Livewire\Frontend\OrderDetailsComponent;
+// use App\Livewire\Frontend\OrdersComponent;
+// use App\Livewire\Frontend\OrderDetailsComponent;
 
 /*
 |--------------------------------------------------------------------------

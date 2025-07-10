@@ -37,12 +37,12 @@
                                         
                                         
                                     </div>
-                                    <div class="text-right mt-4">
-                                        <a href="#" data-toggle="modal" data-dismiss="modal" data-target="#address_model"  wire:click.prevent="addressmodal"  class="btn btn-primary btn-sm"> Add Another Address</a>
+                                    <div class="text-lg-right  mt-4">
+                                        <a href="#" data-toggle="modal" data-dismiss="modal" data-target="#address_model"  wire:click.prevent="addressmodal"  class="btn btn-primary btn-sm edit_btn Address_btn"> Add Another Address</a>
                                     </div>
                                 @else
                                     <div class="text-center mb-4">
-                                        <a href="#" data-toggle="modal" data-dismiss="modal" data-target="#address_model"  wire:click.prevent="addressmodal" class="btn btn-primary btn-sm"> Add Your First Addres</a>
+                                        <a href="#" data-toggle="modal" data-dismiss="modal" data-target="#address_model"  wire:click.prevent="addressmodal" class="btn btn-primary btn-sm edit_btn"> Add Your First Addres</a>
                                     </div>
                                 @endif 
                                                           
@@ -123,7 +123,7 @@
                                             <div class="accordion-content-inner">
                                                 <p class="pt-4 mb-0 pb-3"><span class="font-weight-bold">Cash On Delevary</span> -Buy Now Pay Later for all your shopping</p>
                                                                 
-                                                <a href="#"  wire:click.prevent="placeordercod" class="btn btn-medium"><button class="btn btn-primary">Place order</button></a>
+                                                <a href="#"  wire:click.prevent="placeordercod" class="btn btn-medium "><button class="btn btn-primary edit_btn">Place order</button></a>
                                                 
                                             </div>
                                         </div>
@@ -215,7 +215,7 @@
                                 <div class="mb-4">
                                     <label class="form-label" class="form-control" for="locality">Country</label>
                                     <!-- <input type="text" required class="form-control" name="country_id" id="locality" wire:model="country_id"> -->
-                                    <select id="conutry" wire:model="country_id" class="form-control" wire:change="changecountry">
+                                    <select id="conutry" wire:model="country_id" class="form-control custom-select" wire:change="changecountry">
                                         <option value="">Select country</option>
                                         @foreach($countries as $country)
                                         <option value="{{$country->id}}">{{$country->name}}</option>
@@ -228,7 +228,7 @@
                                 <div class="mb-4">
                                     <label class="form-label" for="administrative_area_level_1">State</label>
                                     
-                                    <select id="state" wire:model="state_id"class="form-control" wire:change="changestate">
+                                    <select id="state" wire:model="state_id"class="form-control custom-select" wire:change="changestate">
                                         <option value="">Select State</option>
                                         @foreach($states as $state)
                                         <option value="{{$state->id}}">{{$state->name}}</option>
@@ -241,7 +241,7 @@
                                 <div class="mb-4">
                                     <label class="form-label" for="locality">City</label>
                                     
-                                    <select id="city" class="form-control" wire:model="city_id">
+                                    <select id="city" class="form-control custom-select" wire:model="city_id">
                                         <option value="">Select State</option>
                                         @foreach($cities as $city)
                                         <option value="{{$city->id}}">{{$city->name}}</option>
@@ -261,8 +261,8 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="mb-4">
-                                    <label class="form-label" for="country">Address Type</label>
-                                    <div class="d-flex gap-4">
+                                    <label class="form-label " for="country">Address Type</label>
+                                    <div class="d-flex gap-4 align-items-center">
                                     <input type="radio" name="address_type" value="home"  wire:model="address_type">For Home
                                     <input type="radio" name="address_type" value="office"  wire:model="address_type">For Office
                                     <input type="radio" name="address_type" value="other"  wire:model="address_type">For Other
@@ -272,14 +272,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                                <div class="mb-4 d-flex gap-3">
+                        <div class="col-md-12" style="padding-left:0px !important; padding-right:0px !important">
+                                <div class="mb-4 d-flex gap-3 align-items-center">
                                     <!-- <label class="form-label" for="postal_code">make My default address</label> -->
                                     <input type="checkbox" id="vehicle1" name="default_address" value="1" wire:model="default_address"> 
-                                    <label for="vehicle1"> Make my default address</label><br>
+                                    <label for="vehicle1" class="mb-0"> Make my default address</label><br>
                                 </div>
                             </div>
-                        <button type="submit" id="address_btn" name="submit" class="btn btn-primary btn-full btn-medium rounded">Add Address</button>
+                        <button type="submit" id="address_btn" name="submit" class="btn btn-primary btn-full btn-medium rounded edit_btn">Add Address</button>
                     </form>
                 </div>
             </div>

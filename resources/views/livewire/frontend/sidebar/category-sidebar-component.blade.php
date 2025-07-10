@@ -48,8 +48,8 @@
                                 <div id="slider-rangem" class="price-filter-range" ></div>
                                 <div class="mt-25 d-flex justify-content-between gap-4">
 
-                                    <input type="number" min="10" max="{{$max -1}}" oninput="validity.valid||(value='10');" id="min_pricem" class="price-range-field rans" />
-                                    <input type="number" min="10" max="{{$max}}" oninput="validity.valid||(value={{$max}});" id="max_pricem" class="price-range-field rans" />
+                                    <input type="number" min="10" max="{{$max -1}}" oninput="validity.valid||(value='10');" id="min_pricem" class="price-range-field rans nice_num1" />
+                                    <input type="number" min="10" max="{{$max}}" oninput="validity.valid||(value={{$max}});" id="max_pricem" class="price-range-field rans nice_num2" />
                                 </div>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                                 <h5 class="shop-widget-title">Category</h5>
                                 <div class="checkbox-container">
                                     @foreach($categorys as $category)
-                                    <a href="{{route('product.category',['category_slug'=>$category->slug])}}"><label class="containerss">
+                                    <a href="{{route('product.category',['category_slug'=>$CATegory->slug,'scategory_slug'=>$category->slug])}}"><label class="containerss">
                                             {{$category->name}}
                                             
                                             

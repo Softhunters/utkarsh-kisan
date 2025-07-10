@@ -138,7 +138,7 @@
         </div>
         
 <section>
-    <div class="mobile-headers d-lg-none d-md-none d-block">
+    <div class="mobile-headers d-lg-none d-md-none d-none">
         <div class="container-fluid theme-container">
             <ul class="menu-list d-flex justify-content-around">
                 <li class="menu-item"><a href="{{route('index')}}" class="d-flex flex-column">
