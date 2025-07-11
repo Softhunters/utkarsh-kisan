@@ -44,6 +44,7 @@ use App\Livewire\Admin\Tax\EditTaxComponent;
 use App\Livewire\Admin\Tax\TaxComponent;
 use App\Livewire\Admin\User\UserComponent;
 use App\Livewire\Admin\WebsettingComponent;
+use App\Livewire\Frontend\AboutUsComponent;
 use App\Livewire\Frontend\CartComponent;
 use App\Livewire\Frontend\CategorySearchComponent;
 use App\Livewire\Frontend\CheckOutComponent;
@@ -53,10 +54,11 @@ use App\Livewire\Frontend\OrderDetailsComponent;
 use App\Livewire\Frontend\OrdersComponent;
 use App\Livewire\Frontend\ProductDetailsComponent;
 use App\Livewire\Frontend\ShopComponent;
+use App\Livewire\Frontend\VendorProductComponent;
 use App\Livewire\Frontend\WishlistComponent;
 
 // use App
-// \Livewire\ThankyouComponent;
+use App\Livewire\ThankyouComponent;
 use Illuminate\Support\Facades\Route;
 
 use App\Livewire\User\AccountComponent;
@@ -95,8 +97,11 @@ Route::get('/thankyou', ThankyouComponent::class)->name('thankyou');
 
 
 Route::get('/contact-us', ContactUsComponent::class)->name('contact-us');
+Route::get('/about-us',AboutUsComponent::class)->name('about-us');
+
 
 Route::get('/shop', ShopComponent::class)->name('shop');
+Route::get('/vendor/products', VendorProductComponent::class)->name('vendorProduct');
 Route::get('/category/{category_slug}/{scategory_slug?}', CategorySearchComponent::class)->name('product.category');
 Route::get('/product-detail/{slug}', ProductDetailsComponent::class)->name('product-details');
 Route::get('/vdrregistor', [RegisterController::class, 'vdrregisterview'])->name('vdrregisterview');

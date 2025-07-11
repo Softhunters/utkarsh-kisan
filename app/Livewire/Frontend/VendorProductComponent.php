@@ -4,63 +4,47 @@ namespace App\Livewire\Frontend;
 
 use Livewire\Component;
 use App\Models\Brand;
-use App\Models\Breed;
-use App\Models\Product;
-use App\Models\SubCategory;
 use App\Models\Category;
+use App\Models\Product;
 use Livewire\WithPagination;
 use App\Models\Wishlist;
 use App\Models\Cart;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Session;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Flavour;
 
-class CategorySearchComponent extends Component
+class VendorProductComponent extends Component
 {
     use WithPagination;
     public $sorting;
     public $pagesize;
     public $min_price;
     public $max_price;
-    
-    public $category_slug;
-    public $scategory_slug;
+    public $max,$min;
     public $brandtype=[];
     public $breedtype=[];
     public $discount =[];
-    public $cartp=[];
     public $wishp=[];
-    public $max,$min;
+    public $cartp=[];
     public $flavourtype =[];
     
-    
-    public function mount($category_slug,$scategory_slug=null)
+
+    public function mount()
     {
         $this->sorting="default";
         $this->pagesize="12";
-        $this->category_slug = $category_slug;
-       $this->min =Product::where('status',1)->min('regular_price');
+        $this->min =Product::where('status',1)->min('regular_price');
         $this->max =Product::where('status',1)->max('regular_price');
         $this->min_price =$this->min;
         $this->max_price=$this->max;
-        $this->scategory_slug = $scategory_slug;
     }
 
     public function render(Request $request)
     {
-        $category_id = null;
-        $category_name = "";
-        $filter= "";
-        $category = "";
-        $scategory = [];
-        $scategory_id =null;
-        $scategory_name="";
-        
         if(Auth::check())
         {
-            // $this->cartp = Cart::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
-            // $this->wishp = Wishlist::where('user_id', Auth::user()->id)->pluck('product_id')->toArray(); 
+            $this->cartp = Cart::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
+            $this->wishp = Wishlist::where('user_id', Auth::user()->id)->pluck('product_id')->toArray(); 
         }else{
              if (Session::has('cart')){
                 $cartlist = $request->session()->get('cart');
@@ -71,29 +55,10 @@ class CategorySearchComponent extends Component
                 $this->wishp = array_keys($wish);
             }
         }
-        
-        if($this->scategory_slug)
-        {
-            $scategory = Subcategory::where('slug',$this->scategory_slug)->first();
-            $scategory_id = $scategory->id;
-            $scategory_name = $scategory->name;
-            $filter= "sub";
-        }
-        if($this->category_slug){
-            $category=Category::where('slug',$this->category_slug)->first();
-            $category_id= $category->id;
-            $category_name =$category->name;
-            $filter= "";
-        }
-        $query = Product::whereBetween('regular_price',[$this->min_price,$this->max_price])->where('status',1)->whereNull('parent_id');
-        if($this->category_slug){
-            $query=$query->where('category_id',$category->id);
-        }
-        if($this->scategory_slug){
-            $query=$query->where('subcategory_id',$scategory->id);
-        }
+     // dd($this->pagesize);
+        $query = Product::whereBetween('regular_price',[$this->min_price,$this->max_price])->where('status',1);
        if($this->sorting=="date"){
-        $query=$query->orderBy('created_at','DESC');
+        $query=$query->orderBy('products.created_at','DESC');
        }
        if($this->sorting=="price"){
         $query=$query->orderBy('regular_price','ASC');
@@ -109,24 +74,30 @@ class CategorySearchComponent extends Component
        {
         $query=$query->whereIn('breed_id',$this->breedtype);
        }
-       if($this->discount != null)
-       {
-        $query=$query->where('discount_value','>=', (int) min($this->discount));
-       }
-         if($this->flavourtype != null)
+        if($this->flavourtype != null)
        {
         $query=$query->whereIn('flavour_id',$this->flavourtype);
        }
-        $query=$query->distinct()->select('products.*');
+
+    //    $query=$query->distinct()->select('products.*',DB::raw('((products.regular_price - products.sale_price)/products.regular_price)*100 as offerdiscount'));
+       if($this->discount != null)
+       {
+        //dd($this->discount);
+        $query=$query->where('discount_value','>=',(int) min($this->discount));
+        
+       }
+       
+        //dd($this->discount);
+         $query=$query->distinct()->select('products.*');
+       
         $products=$query->paginate($this->pagesize);
-
-        $categorys = Subcategory::where('category_id',$category_id)->where('status',1)->get();
+// dd($products);
+        $categorys = Category::where('status',1)->get();
         $brands = Brand::where('status',1)->get();
-      
-
-        return view('livewire.frontend.category-search-component',['categorys'=>$categorys,'brands'=>$brands,
-        'category_name'=>$category_name,'scategory'=>$scategory,'CATegory'=>$category,'products'=>$products])->layout('layouts.main');
+       
+        return view('livewire.frontend.vendor-product-component',['categorys'=>$categorys,'brands'=>$brands,'products'=>$products])->layout('layouts.main');
     }
+
 
     public function brandseletc()
     {
@@ -136,10 +107,11 @@ class CategorySearchComponent extends Component
     {
        // dd($this->brandtype);
     }
-     public function flavourselect()
+    public function flavourselect()
     {
        // dd($this->brandtype);
     }
+    
     public function addToWishlist(Request $request,$product_id,$product_price)
     {
         $id= $product_id;
@@ -147,7 +119,7 @@ class CategorySearchComponent extends Component
         {
             $wproduct = Wishlist::where('product_id',$product_id)->where('user_id',Auth::user()->id)->first();
             if($wproduct){
-                session()->flash('info','Item alreday added to wishlist');;
+                session()->flash('info','Item alreday added to Wishlist');
                 return;
             }else{
                 $product = Product::where('id', $product_id)->first();
@@ -179,6 +151,7 @@ class CategorySearchComponent extends Component
                     Session()->put('wishlist', $wishlist);
                    
                     session()->flash('success','Item added to Wishlist!');
+
                 $this->dispatch('wishlist_add');
 
         }
@@ -193,7 +166,7 @@ class CategorySearchComponent extends Component
                 $wishlist = Wishlist::where('product_id',$product_id)->where('user_id',Auth::user()->id)->first();
                 if($wishlist){
                     $wishlist->delete();
-                    session()->flash('warning','Item remove from wishlist!');
+                    session()->flash('warning','Item remove from Wishlist!');
                     // $this->dispatch('wishlist-count-component','refreshComponent');
                     $this->dispatch('wishlist_add');
                     return;
@@ -204,11 +177,11 @@ class CategorySearchComponent extends Component
                 $wishlistdf = $request->session()->get('wishlist');
                 unset($wishlistdf[$product_id]);
                 Session()->put('wishlist', $wishlistdf);
-                // dd($wishlistdf);
-                session()->flash('warning','Item remove from wishlist!');
-                // $this->dispatch('wishlist-count-component','refreshComponent');
-                $this->dispatch('wishlist_add');
-                return;
+            // dd($wishlistdf);
+            session()->flash('warning','Item remove from Wishlist!');
+            // $this->dispatch('wishlist-count-component','refreshComponent');
+            $this->dispatch('wishlist_add');
+            return;
 
             }
         }
@@ -238,7 +211,7 @@ class CategorySearchComponent extends Component
                 $cart->price = $product->sale_price;
                 $cart->quantity = '1';
                 $cart->save();
-                session()->flash('success','Item added to cart!');
+                session()->flash('success','Item added to Cart!');
                 // $this->dispatch('wishlist-count-component','refreshComponent');
                 $this->dispatch('cart_add');
                 return;
@@ -257,10 +230,9 @@ class CategorySearchComponent extends Component
                         'price' => $product->sale_price
                     ];
                     Session()->put('cart', $cart);
-                   
-                    session()->flash('success','Item added to cart!');
-                
-                $this->dispatch('cart_add');
+                    session()->flash('success','Item added to Cart!');
+
+                 $this->dispatch('cart_add');
         }
       
         //  $this->dispatch('wishlist-count-component','refreshComponent');

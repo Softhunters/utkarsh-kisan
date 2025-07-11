@@ -729,6 +729,66 @@ class ApiController extends Controller
             'result' => $result
         ], 200);
     }
+    public function vendorProducts(Request $request, $vid)
+    {
+        $result['per_page'] = $per_page = 20;
+        $mip = Product::where('status', 1)->min('regular_price');
+        $map = Product::where('status', 1)->max('regular_price');
+        if ($request->has('per_page'))
+            $per_page = $request->per_page;
+        if ($request->has('mip'))
+            $mip = $request->mip;
+        if ($request->has('map'))
+            $map = $request->map;
+
+
+        $query = Product::whereHas('vendorProducts', function ($query) use($vid) {
+            $query->where('vendor_products.vendor_id', $vid);
+            })->whereBetween('regular_price', [$mip, $map])->where('status', 1);
+
+        if ($request->sorting == "date") {
+            $query = $query->orderBy('created_at', 'DESC');
+        }
+        if ($request->sorting == "price") {
+            $query = $query->orderBy('regular_price', 'ASC');
+        }
+        if ($request->sorting == "price-desc") {
+            $query = $query->orderBy('regular_price', 'DESC');
+        }
+        if ($request->brandtype != null) {
+            $query = $query->whereIn('brand_id', $request->brandtype);
+        }
+        if ($request->breedtype != null) {
+            $query = $query->whereIn('breed_id', $request->breedtype);
+        }
+        if ($request->flavourtype != null) {
+            $query = $query->whereIn('flavour_id', $request->flavourtype);
+        }
+
+        if ($request->discount != null) {
+            $query = $query->where('discount_value', '>', max($request->discount));
+
+        }
+
+        $query = $query->distinct()->select('products.*')->with(['brands', 'seller'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withCount('reviews')->withAvg('cart', 'user_id');
+
+        $result['products'] = $query->paginate($per_page);
+
+
+
+
+
+
+
+
+
+        // $result['products'] = Product::where('status',1)->with(['reviews','questions','category','subCategories','brands'])->withAvg('wishlist','user_id')->withAvg('cart','user_id')->withAvg('reviews', 'rating')->paginate($per_page);
+
+        return response()->json([
+            'status' => true,
+            'result' => $result
+        ], 200);
+    }
 
 
     public function Checkout(Request $request)

@@ -34,6 +34,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/home', [ApiController::class, 'home']);
 
+    Route::get('/vedndor-products/{vid}', [ApiController::class, 'vendorProducts']);
+
+
     Route::get('/category/{id}/{sid?}', [ApiController::class, 'CategoryData']);
     Route::get('/product-detail/{id}', [ApiController::class, 'ProductData']);
     Route::get('/product/brands', [ApiController::class, 'BrandData']);
@@ -93,6 +96,10 @@ Route::post('/vendor/mobile-login', [AuthController::class, 'OtpLogin']);
 Route::middleware(['auth:sanctum'])->prefix('vendor')->group(function () {
     Route::get('/dashboard', [ApiVendorController::class, 'home']);
 
+    Route::get('profile', [ApiVendorController::class, 'Profile']);
+    Route::post('profile/update', [ApiVendorController::class, 'profileUpdate']);
+
+
     Route::get('/variant', [ApiVendorController::class, 'variant']);
     Route::post('/variant/create', [ApiVendorController::class, 'addVariant']);
     Route::post('/variant/update', [ApiVendorController::class, 'updateVariant']);
@@ -104,5 +111,6 @@ Route::middleware(['auth:sanctum'])->prefix('vendor')->group(function () {
     Route::get('/order-detail/{id}', [ApiVendorController::class, 'orderDetails']);
 
     Route::get('/edit-variant/{id}', [ApiVendorController::class, 'editVariant']);
+
 
 });
