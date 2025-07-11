@@ -27,7 +27,7 @@
                                 <li><a href="/">Home</a></li>
 
 
-                                <li><a href="#">About Us</a></li>
+                                <li><a href="{{route('about-us')}}">About Us</a></li>
                                 <!-- <li><a href="#">Shop</a></li> -->
                                 <li><a href="{{route('contact-us')}}">Contact Us</a></li>
                                 <li><a href="{{route('vdrregisterview')}}">Kisan Registration</a></li>

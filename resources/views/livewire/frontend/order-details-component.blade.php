@@ -15,7 +15,7 @@
     @endsection
     @include('flash-message')
 
-   
+
     <main class="h1-story-area mb-120">
         <div class="accounnt_header">
             <div class="container">
@@ -27,7 +27,8 @@
                                     <a class="text-nowrap" href="index.html"><i class="fa fa-home mr-2"></i>Home</a>
                                 </li>
 
-                                <li class="breadcrumb-item text-nowrap"><a href="account.html"><i class="fa fa-user mr-2"></i>Account</a>
+                                <li class="breadcrumb-item text-nowrap"><a href="account.html"><i
+                                            class="fa fa-user mr-2"></i>Account</a>
                                 </li>
                                 <li class="breadcrumb-item text-nowrap active" aria-current="page">Order</li>
                             </ol>
@@ -136,7 +137,7 @@
                                                 style="margin-left:20px" class="btn btn-warning pull-right">Cancel
                                                 Order</a>
                                         @endif
-                                    </div> 
+                                    </div>
                                 </div>
                             </div>
                             <div class="card">
@@ -174,6 +175,26 @@
                                                                         <a class="btn btn-rounded btn-primary"
                                                                             wire:click.prevent="preview({{ $orderitem->product->id }})"
                                                                             href="#">Post Review</a>
+                                                                    @else
+                                                                        @if ($orderitem->rstatus != 1)
+                                                                            <a href="#"
+                                                                                class="btned btn-rounded btn-primary"
+                                                                                wire:click.prevent="cancelOrderItem({{ $orderitem->id }})">
+                                                                                <img src="{{ asset('img/logo/tras.png') }}"
+                                                                                    alt=""
+                                                                                    style="width:20px;">
+                                                                                Cancel Item
+                                                                            </a>
+                                                                        @else
+                                                                            <a href="#"
+                                                                                class="btned btn-rounded btn-primary"
+                                                                                >
+                                                                                <img src="{{ asset('img/logo/tras.png') }}"
+                                                                                    alt=""
+                                                                                    style="width:20px;">
+                                                                                Canceled
+                                                                            </a>
+                                                                        @endif
                                                                     @endif
                                                                 </div>
 
@@ -182,7 +203,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                         @endforeach
 
                                     </div>
