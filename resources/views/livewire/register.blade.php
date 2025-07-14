@@ -117,9 +117,7 @@
                                         <div class="form-group">
 
                                             <input type="checkbox" name="checkbox" value ="1" id="html" />
-
-
-
+ 
                                             <label for="html">I agree to the Terms & Condition</label>
 
                                         </div>

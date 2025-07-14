@@ -10,8 +10,6 @@
     <div class="container pb-60">
         <div class="row">
             <div class="col-md-12 text-center">
-           
-                
                 
                 <div class="empty-wishlist text-center">
                 <img src="assets/images/logo/happy_dog.png" alt="">
