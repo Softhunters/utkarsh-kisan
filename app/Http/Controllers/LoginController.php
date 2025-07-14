@@ -19,31 +19,31 @@ class LoginController extends Controller
     public function uloginauth(Request $request)
     {
         //dd($request);
-        $valid=Validator::make($request->all(),[
-            'email'=>'required',
-            'password'=>'required',       
-            ],[
-                'email.required'=>'The Email field is required.',
-                'password.required'=>'The Password field is required.',
-            ]);
-        if(!$valid->passes()){
-            return response()->json(['status'=>'error','msg'=>'Email and password field are required']);
+        $valid = Validator::make($request->all(), [
+            'email' => 'required',
+            'password' => 'required',
+        ], [
+            'email.required' => 'The Email field is required.',
+            'password.required' => 'The Password field is required.',
+        ]);
+        if (!$valid->passes()) {
+            return response()->json(['status' => 'error', 'msg' => 'Email and password field are required']);
         }
 
         if ($this->attemptLogin($request)) {
+
             if ($request->hasSession()) {
                 $request->session()->put('auth.password_confirmed_at', time());
             }
-            if(!isset(Auth::user()->referral_code))
-            {
-                User::where('id',Auth::user()->id)->update(['referral_code'=>$this->ticket_number()]);
+            if (!isset(Auth::user()->referral_code)) {
+                User::where('id', Auth::user()->id)->update(['referral_code' => $this->ticket_number()]);
             }
             // $this->movewishlist($request);
             // $this->movecart($request);
 
-            return response()->json(['status'=>'success','msg'=>'msg']);
-        }else{
-            return response()->json(['status'=>'error','msg'=>'Email and password are not matched']);
+            return response()->json(['status' => 'success', 'msg' => 'msg']);
+        } else {
+            return response()->json(['status' => 'error', 'msg' => 'Email and password are not matched']);
         }
 
     }
@@ -65,7 +65,7 @@ class LoginController extends Controller
 
     public function adminloginauth(Request $request)
     {
-       // dd($request);
+        // dd($request);
         $this->validateLogin($request);
 
         if ($this->attemptLogin($request)) {
@@ -74,14 +74,21 @@ class LoginController extends Controller
             }
             //dd(Auth::user());
             //return $this->sendLoginResponse($request);
+            $user = Auth::user();
 
-            if(!isset(Auth::user()->referral_code))
-            {
-                User::where('id',Auth::user()->id)->update(['referral_code'=>$this->ticket_number()]);
+            if ($user->status == 0 || $user->is_active == 3) {
+                Auth::logout();
+                return redirect()->back()->withErrors([
+                    'email' => 'Your account is blocked or deactivated. Please contact support.',
+                ]);
+            }
+
+            if (!isset(Auth::user()->referral_code)) {
+                User::where('id', Auth::user()->id)->update(['referral_code' => $this->ticket_number()]);
                 // Auth::user()->referral_code =  $this->ticket_number();
             }
 
-            if(Auth::user()->utype == 'VDR'){
+            if (Auth::user()->utype == 'VDR') {
                 return redirect('vendor/dashboard');
             }
 
@@ -97,7 +104,7 @@ class LoginController extends Controller
     // {
     //     if (Session::has('wishlist')){
     //         foreach (Session::get('wishlist') as $id=>$cart){
-            
+
     //             $wproduct = Wishlist::where('product_id',$cart['product_id'])->where('user_id',Auth::user()->id)->first();
     //             if($wproduct){
     //                 // session()->flash('info','Item alreday in wishlist!');
@@ -125,7 +132,7 @@ class LoginController extends Controller
     //         foreach (Session::get('cart') as $id=>$cart){
     //             $wproduct = Cart::where('product_id',$cart['product_id'])->where('user_id', Auth::user()->id)->first();
     //             if($wproduct){
-                    
+
     //                 // session()->flash('info','item alreday in Cart!');
     //                 // return;
     //             }else{
@@ -146,13 +153,14 @@ class LoginController extends Controller
 
     //     return;
     // }
-    
+
     function ticket_number()
     {
         do {
-            $rcode = Str::random(6);;
+            $rcode = Str::random(6);
+            ;
         } while (User::where("referral_code", "=", $rcode)->first());
-    
+
         return $rcode;
     }
 }

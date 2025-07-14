@@ -47,8 +47,8 @@
                                 @else <a href="#" wire:click.prevent='ActiveAttribute({{$attribute->id}})' onclick="confirm('Are you sure you want to active this attribute?') || event.stopImmediatePropagation()">Deactive </a>
                                 @endif</td>
                                 <td>
-                                    <a href="{{route('admin.editattribute',['att_id'=>$attribute->id])}}"><i class="fa fa-edit"></i></a>
-                                    <a href="#" onclick="confirm('Are you sure you want to delete this attribute?') || event.stopImmediatePropagation()" wire:click.prevent="deleteAttribute({{$attribute->id}})" style="margin-left:10px;"><i class="fa fa-times text-danger"></i></a>
+                                    <a href="{{route('admin.editattribute',['att_id'=>$attribute->id])}}" title="Edit"><i class="fa fa-edit"></i></a>
+                                    <a href="#" onclick="confirm('Are you sure you want to delete this attribute?') || event.stopImmediatePropagation()" wire:click.prevent="deleteAttribute({{$attribute->id}})" style="margin-left:10px;" title="Delete"><i class="fa fa-times text-danger"></i></a>
                                 </td>
                              </tr>
                              @endforeach 

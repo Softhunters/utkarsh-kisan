@@ -57,8 +57,8 @@
                                         @endif</td>
                                         <td>{{$coupon->created_at}}</td>
                                         <td>
-                                        <a href="{{route('admin.editcoupon',['cid'=> $coupon->id])}}"><i class="fa fa-edit"></i></a>
-                                                <a href="#" onclick="confirm('Are you sure you want to delete this coupon?') || event.stopImmediatePropagation()" wire:click.prevent="deleteCoupon({{$coupon->id}})" style="margin-left:10px;"><i class="fa fa-times text-danger"></i></a>
+                                        <a href="{{route('admin.editcoupon',['cid'=> $coupon->id])}}" title="Edit"><i class="fa fa-edit"></i></a>
+                                                <a href="#" onclick="confirm('Are you sure you want to delete this coupon?') || event.stopImmediatePropagation()" wire:click.prevent="deleteCoupon({{$coupon->id}})" style="margin-left:10px;" title="Delete"><i class="fa fa-times text-danger"></i></a>
                                         </td>
                                     </tr>
                              @endforeach

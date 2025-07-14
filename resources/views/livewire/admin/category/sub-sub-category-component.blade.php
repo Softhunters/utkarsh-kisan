@@ -30,7 +30,7 @@
                              <tr>
                                  <th>Id</th>
                                  <th>Sub Sub Category Name</th>
-                                 <th>Sub Sub Category Image</th>
+                                 {{-- <th>Sub Sub Category Image</th> --}}
                                  <th>Sub Slug</th>
                                  <th>Sub Icon</th>
                                  <th>Category</th>
@@ -44,7 +44,7 @@
                              <tr>
                                  <td>{{$category->id}}</td>
                                  <td>{{$category->name}}</td>
-                                 <td><img src="{{asset('admin/category')}}/{{$category->categorythum}}" width="60"></td>
+                                 {{-- <td><img src="{{asset('admin/category')}}/{{$category->categorythum}}" width="60"></td> --}}
                                  <td>
                                      <div class="badge badge-sa-success">{{$category->slug}}</div>
                                  </td>

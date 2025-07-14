@@ -251,7 +251,7 @@
                                                                 @enderror
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-4">
+                                                        {{-- <div class="col-md-4">
                                                             <div class="form-group mb-4">
                                                                 <label class="form-label">Sub-Sub-Category</label>
                                                                 <div class="col-md-12">
@@ -269,7 +269,7 @@
                                                                     <p class="text-danger">{{ $message }}</p>
                                                                 @enderror
                                                             </div>
-                                                        </div>
+                                                        </div> --}}
 
                                                     </div>
 

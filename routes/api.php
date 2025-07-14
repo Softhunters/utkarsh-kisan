@@ -26,7 +26,6 @@ Route::post('/get-otp', [AuthController::class, 'GenrateOtp']);
 Route::post('/mobile-login', [AuthController::class, 'OtpLogin']);
 
 
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

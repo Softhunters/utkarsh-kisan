@@ -66,6 +66,7 @@ class ApiVendorController extends Controller
 
             return response()->json([
                 'status' => true,
+                'message' => 'Product Added Successfully!',
                 'result' => $vendorProduct
             ], 200);
         }

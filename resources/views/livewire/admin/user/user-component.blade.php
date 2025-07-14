@@ -10,9 +10,9 @@
                      </nav>
                      <h1 class="h3 m-0">All Users</h1>
                  </div>
-                 <div class="col-auto d-flex">
+                 {{-- <div class="col-auto d-flex">
                      <a href="{{route('admin.addtax')}}" class="btn btn-primary">Add user</a>
-                 </div>
+                 </div> --}}
              </div>
          </div>
      </div>
@@ -35,7 +35,7 @@
                                     <th>User Name</th>
                                     <th>Email Id</th>
                                     <th>Phone Number</th>
-                                    <th>City</th>
+                                    {{-- <th>City</th> --}}
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -47,13 +47,13 @@
                                         <td>{{$user->name}}</td>
                                         <td>{{$user->email}}</td>
                                         <td>{{$user->phone}}</td>
-                                        <td>{{$user->city}}</td>
+                                        {{-- <td>{{$user->city}}</td> --}}
                                         <td>@if($user->is_active == 1)<a href="#" onclick="confirm('Are you sure you want to Deactive this User?') || event.stopImmediatePropagation()" wire:click.prevent='DeactiveUser({{$user->id}})'> Active </a> 
                                         @else <a href="#" onclick="confirm('Are you sure you want to Active this User?') || event.stopImmediatePropagation()" wire:click.prevent='ActiveUser({{$user->id}})'>Deactive </a>
                                         @endif</td>
                                         <td>
-                                            <a href="#"><i class="fa fa-edit"></i></a>
-                                            <a href="#" onclick="confirm('Are you sure, You want to Delete this User?') || event.stopImmediatePropagation()" wire:click.prevent="deleteUser({{$user->id}})" style="margin-left:10px;"><i class="fa fa-times text-danger"></i></a>
+                                            {{-- <a href="#"><i class="fa fa-edit"></i></a> --}}
+                                            <a href="#" onclick="confirm('Are you sure, You want to Delete this User?') || event.stopImmediatePropagation()" wire:click.prevent="deleteUser({{$user->id}})" style="margin-left:10px;" title="Delete"><i class="fa fa-times text-danger"></i></a>
                                             
                                         </td>
                                     </tr>

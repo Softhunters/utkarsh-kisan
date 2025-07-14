@@ -420,52 +420,7 @@ class AuthController extends Controller
     
         return $rcode;
     }
-    
-    
-    public function GenrateOtp(Request $request)
-    {
-        try {
-            $validateUser = Validator::make($request->all(), 
-                    [
-                        'number' => 'required'
-                    ]);
 
-                    if($validateUser->fails()){
-                        return response()->json([
-                            'status' => false,
-                            'message' => 'validation error',
-                            'errors' => $validateUser->errors()
-                        ], 200);
-                    }
-
-            $user = User::where('phone',$request->number)->first();
-            if(isset($user))
-            {
-                $otp= rand(100000, 999999);
-                User::where('phone',$request->number)->update(['otp'=>$otp]);
-                
-                return response()->json([
-                    'status' => true,
-                    'message' => '6 digit Otp send to your registor mobile number!',
-                    'otp' => $otp
-                ], 200);
-            }else{
-                
-            
-                return response()->json([
-                    'status' => false,
-                    'message' => 'This Mobile is number not registor!'
-                ], 200);
-            }
-            
-
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => $th->getMessage()
-            ], 500);
-        }
-    }
     
     public function OtpLogin (Request $request)
     {
@@ -677,8 +632,65 @@ class AuthController extends Controller
             ], 500);
         }
     }
+    public function GenrateOtp(Request $request)
+    {
+        try {
+            $validateUser = Validator::make($request->all(), 
+                    [
+                        'number' => 'required'
+                    ]);
 
-     public function VOtpLogin (Request $request)
+                    if($validateUser->fails()){
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'validation error',
+                            'errors' => $validateUser->errors()
+                        ], 200);
+                    }
+
+            $user = User::where('phone',$request->number)->where('utype','VDR')->first();
+            if(isset($user))
+            {
+                // $otp= rand(100000, 999999);
+                $otp ="123456";
+                User::where('phone',$request->number)->update(['otp'=>$otp]);
+                
+                return response()->json([
+                    'status' => true,
+                    'message' => '6 digit Otp send to your registor mobile number!',
+                    'otp' => $otp
+                ], 200);
+            }else{
+                
+                User::create([
+                    'name' => $request->number,
+                    'email' => $request->number . '@gmail.com',
+                    'phone' => $request->number,
+                    'password' => Hash::make($request->number),
+                ]);
+
+                // $otp= rand(100000, 999999);
+                $otp ="123456";
+                User::where('phone',$request->number)->update(['otp'=>$otp]);
+                
+                return response()->json([
+                    'status' => true,
+                    'message' => '6 digit Otp send to your mobile number!',
+                    'otp' => $otp
+                ], 200);
+                
+            }
+            
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function VOtpLogin (Request $request)
     {
         try {
             $validateUser = Validator::make($request->all(), 
