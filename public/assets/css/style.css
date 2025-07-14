@@ -78,7 +78,7 @@ html {
 
 body {
     font-family: var(--font-dosis);
-    color: var(--text-color1);
+    /* color: var(--text-color1); */
     background: #fbfbfb;
     font-size: 16px;
     margin: 0
@@ -15661,7 +15661,8 @@ header.style-3 .main-menu ul > li ul.sub-menu > li a:hover{
 
 @media (min-width: 768px) {
   .container, .container-md, .container-sm {
-    max-width: 100% !important;
+    /* max-width: 100% !important; */
+    max-width: 90% !important;
   }
 }
 
