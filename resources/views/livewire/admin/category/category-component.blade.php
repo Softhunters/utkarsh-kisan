@@ -33,7 +33,7 @@
                              <tr>
                                  <th>Id</th>
                                  <th>Category Name</th>
-                                 <th>Category Image</th>
+                                 {{-- <th>Category Image</th> --}}
                                  <th>Slug</th>
                                  <th>Icon</th>
                                  <th>SubCategory</th>
@@ -47,7 +47,7 @@
                              <tr>
                                  <td>{{$category->id}}</td>
                                  <td>{{$category->name}}</td>
-                                 <td><img src="{{asset('admin/category')}}/{{$category->categorythum}}" width="60"></td>
+                                 {{-- <td><img src="{{asset('admin/category')}}/{{$category->categorythum}}" width="60"></td> --}}
                                  <td>
                                     <div class="badge badge-sa-success">{{$category->slug}}</div>
                                  </td>
@@ -75,9 +75,9 @@
                                 @else <a href="#" onclick="confirm('Are you sure you want to active this category?') || event.stopImmediatePropagation()" wire:click.prevent='ActiveCategory({{$category->id}})'>Deactive </a>
                                 @endif</td>
                                  <td>
-                                     <a href="{{route('admin.editcategory',['category_slug'=>$category->slug])}}"><i class="fa fa-edit"></i></a>
+                                     <a href="{{route('admin.editcategory',['category_slug'=>$category->slug])}}" title="Edit"><i class="fa fa-edit"></i></a>
                                      <a href="#" onclick="confirm('Are you sure you want to delete this category?') || event.stopImmediatePropagation()"
-                                         wire:click.prevent="deleteCategory({{$category->id}})" style="margin-left:10px;"><i class="fa fa-times ml-1 text-danger"></i></a>
+                                         wire:click.prevent="deleteCategory({{$category->id}})" style="margin-left:10px;" title="Delete"><i class="fa fa-times ml-1 text-danger"></i></a>
                                  </td>
                              </tr>
                              @endforeach

@@ -33,7 +33,7 @@ class UserComponent extends Component
     }
     public function render()
     {
-        $user=User::where('is_active','!=',3)->get();
+        $user=User::where('is_active','!=',3)->where('utype', 'USR')->get();
         return view('livewire.admin.user.user-component',['users'=>$user])->layout('layouts.admin');
     }
 }

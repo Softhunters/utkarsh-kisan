@@ -83,7 +83,7 @@
                                              </div> --}}
                                              <div class="mb-4">
                                                  <div>
-                                                     <label for="form-category/parent-category" class="form-label">For Home(Show in Browser By Categories)</label>
+                                                     <label for="form-category/parent-category" class="form-label">For Home(Show in Browse By Categories)<span class="text-danger"> *</span></label>
 
                                                      <select class="form-select" wire:model="is_home">
                                                          <option value="">Select</option>

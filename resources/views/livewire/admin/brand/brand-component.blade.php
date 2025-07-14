@@ -53,8 +53,8 @@
                                 @endif</td>
                                 <td>{{$brand->created_at}}</td>                                 
                                 <td>
-                                    <a href="{{route('admin.editbrand',['br_id'=>$brand->id])}}"><i class="fa fa-edit"></i></a>
-                                    <a href="#" onclick="confirm('Are you sure you want to delete this brand?') || event.stopImmediatePropagation()" wire:click.prevent="deleteBrand({{$brand->id}})" style="margin-left:10px;"><i class="fa fa-times text-danger"></i></a>
+                                    <a href="{{route('admin.editbrand',['br_id'=>$brand->id])}}" title="Edit"><i class="fa fa-edit"></i></a>
+                                    <a href="#" onclick="confirm('Are you sure you want to delete this brand?') || event.stopImmediatePropagation()" wire:click.prevent="deleteBrand({{$brand->id}})" style="margin-left:10px;" title="Delete"><i class="fa fa-times text-danger"></i></a>
                                 </td>
                              </tr>
                              @endforeach 

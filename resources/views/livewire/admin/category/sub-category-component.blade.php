@@ -30,7 +30,7 @@
                              <tr>
                                  <th>Id</th>
                                  <th>Sub Category Name</th>
-                                 <th>Sub Category Image</th>
+                                 {{-- <th>Sub Category Image</th> --}}
                                  <th>Sub Slug</th>
                                  <th>Sub Icon</th>
                                  <th>Category</th>
@@ -44,7 +44,7 @@
                              <tr>
                                  <td>{{$category->id}}</td>
                                  <td>{{$category->name}}</td>
-                                 <td><img src="{{asset('admin/category')}}/{{$category->categorythum}}" width="60"></td>
+                                 {{-- <td><img src="{{asset('admin/category')}}/{{$category->categorythum}}" width="60"></td> --}}
                                  <td>
                                      <div class="badge badge-sa-success">{{$category->slug}}</div>
                                  </td>
@@ -55,9 +55,9 @@
                                 @else <a href="#" onclick="confirm('Are you sure you want to active this subcategory?') || event.stopImmediatePropagation()" wire:click.prevent='ActiveSubCategory({{$category->id}})'>Deactive </a>
                                 @endif</td>
                                  <td>
-                                     <a href="{{route('admin.editsubcategory',['scategory_slug'=>$category->slug])}}"><i class="fa fa-edit"></i></a>
+                                     <a href="{{route('admin.editsubcategory',['scategory_slug'=>$category->slug])}}" title="Edit"><i class="fa fa-edit"></i></a>
                                      <a href="#" onclick="confirm('Are you sure you want to delete this subcategory?') || event.stopImmediatePropagation()"
-                                         wire:click.prevent="deleteSubCategory({{$category->id}})"  style="margin-left:10px;"><i class="fa fa-times ml-1 text-danger"></i></a>
+                                         wire:click.prevent="deleteSubCategory({{$category->id}})"  style="margin-left:10px;" title="Delete"><i class="fa fa-times ml-1 text-danger"></i></a>
                                  </td>
                              </tr>
                              @endforeach

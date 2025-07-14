@@ -68,9 +68,9 @@
                                 @else <a href="#" onclick="confirm('Are you sure you want to active this product?') || event.stopImmediatePropagation()" wire:click.prevent='ActiveProduct({{$product->id}})'>Deactive </a>
                                 @endif</td>
                                  <td>
-                                     <a href="{{route('admin.editproduct2',['product_slug'=>$product->slug])}}"><i class="fa fa-edit "></i></a>
+                                     <a href="{{route('admin.editproduct2',['product_slug'=>$product->slug])}}" title="Edit"><i class="fa fa-edit "></i></a>
                                      <a href="#" onclick="confirm('Are you sure you want to delete this product?') || event.stopImmediatePropagation()"
-                                         wire:click.prevent="deleteCategory({{$product->id}})" style="margin-left:10px;"><i class="fa fa-times  text-danger ml-2"></i></a>
+                                         wire:click.prevent="deleteCategory({{$product->id}})" style="margin-left:10px;" title="Delete"><i class="fa fa-times  text-danger ml-2"></i></a>
                                  </td>
                              </tr>
                              @endforeach

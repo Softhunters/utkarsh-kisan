@@ -137,7 +137,7 @@ class ApiController extends Controller
         $result['reviews'] = review::where('product_id', $result['product']->id)->with(['user'])->get();
         $result['seller_list'] = VendorProduct::leftJoin('users', 'vendor_products.vendor_id', '=', 'users.id')
             ->where('vendor_products.product_id', $result['product']->id)
-            ->whereNot('vendor_products.vendor_id', $result['product']->seller->vendor_id??1)
+            ->whereNot('vendor_products.vendor_id', $result['product']->seller->vendor_id ?? 1)
             ->select('vendor_products.*', 'users.name as seller_name')
             ->get();
         $result['seller_cart_list'] = Cart::where('product_id', $result['product']->id)
@@ -252,7 +252,7 @@ class ApiController extends Controller
 
     public function GetWishlist(Request $request)
     {
-        $result['wishlist'] = Product::where('user_id', Auth::user()->id)->select('wishlists.*', 'products.slug', 'products.regular_price', 'products.discount_value', 'users.name as seller_name')
+        $result['wishlist'] = Product::where('user_id', Auth::user()->id)->select('wishlists.*', 'products.slug', 'products.regular_price', 'products.discount_value', 'users.name as seller_name', 'users.id as seller_id')
             ->leftJoin('wishlists', 'products.id', '=', 'wishlists.product_id')
             ->leftJoin('users', 'wishlists.seller_id', '=', 'users.id')
             ->withAvg('reviews', 'rating')->get();
@@ -453,16 +453,41 @@ class ApiController extends Controller
 
     public function StoreAddres(Request $request)
     {
-        $valid = Validator::make($request->all(), [
+        $data = $request->all();
+        foreach (['country_id', 'state_id', 'city_id'] as $field) {
+            if ($data[$field] == 'null' || $data[$field] == '' || $data[$field] == "") {
+                $data[$field] = null;
+            }
+        }
+
+        $valid = Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'mobile' => ['required', 'numeric', 'digits:10'],
             'line1' => ['required', 'string', 'max:255'],
             'landmark' => ['required', 'string', 'max:255'],
-            'country_id' => 'required',
-            'state_id' => 'required',
+            'country_id' => ['required', 'not_in:null'],
+            'state_id' => ['required', 'not_in:null'],
+            'city_id' => ['required', 'not_in:null'],
             'zipcode' => ['required', 'string', 'max:6'],
-            'address_type' => 'required'
+            'address_type' => ['required'],
+        ], [
+            'name.required' => 'Name is required.',
+            'mobile.required' => 'Mobile number is required.',
+            'mobile.numeric' => 'Mobile number must be numeric.',
+            'mobile.digits' => 'Mobile number must be exactly 10 digits.',
+            'line1.required' => 'Address line is required.',
+            'landmark.required' => 'Landmark is required.',
+            'country_id.required' => 'Country is required.',
+            'country_id.not_in' => 'Please select a valid country.',
+            'state_id.required' => 'State is required.',
+            'state_id.not_in' => 'Please select a valid state.',
+            'city_id.required' => 'City is required.',
+            'city_id.not_in' => 'Please select a valid city.',
+            'zipcode.required' => 'Zipcode is required.',
+            'zipcode.max' => 'Zipcode must be a maximum of 6 characters.',
+            'address_type.required' => 'Address type is required.',
         ]);
+
         if (!$valid->passes()) {
             return response()->json([
                 'status' => false,
@@ -580,24 +605,27 @@ class ApiController extends Controller
     public function MoveToCart(Request $request)
     {
         $id = $request->id;
-        $wishlist = Wishlist::where('user_id', Auth::user()->id)->where('product_id', $id)->first();
-        // dd($wishlist);
+        $wishlist = Wishlist::findOrFail($id);
+
         if ($wishlist) {
-            $cartcheck = Cart::where('user_id', Auth::user()->id)->where('product_id', $id)->first();
+            $cartcheck = Cart::where('user_id', Auth::user()->id)->where('product_id', $id)->where('seller_id', $wishlist->seller_id)->first();
             if (!isset($cartcheck)) {
                 $cart = new Cart();
                 $cart->user_id = Auth::user()->id;
                 $cart->product_id = $wishlist->product_id;
                 $cart->product_name = $wishlist->product_name;
                 $cart->product_image = $wishlist->product_image;
+                $cart->seller_id = $wishlist->seller_id;
                 $cart->price = $wishlist->price;
                 $cart->quantity = $wishlist->quantity;
                 $cart->save();
                 $wishlist->delete();
-                $msg = "Item Move To Cart successfully!";
+                $msg = "Item moved to cart successfully!";
+            } else {
+                $msg = "Item Already Added to Cart!";
             }
 
-            $msg = "Item Already Added to Cart!";
+
         }
         return response()->json([
             'status' => true,
@@ -611,10 +639,10 @@ class ApiController extends Controller
     public function MoveToWish(Request $request)
     {
         $id = $request->id;
-        $wishlist = Cart::where('user_id', Auth::user()->id)->where('product_id', $id)->first();
+        $wishlist = Cart::findOrFail($id);
         // dd($wishlist);
         if ($wishlist) {
-            $cartcheck = Wishlist::where('user_id', Auth::user()->id)->where('product_id', $id)->first();
+            $cartcheck = Wishlist::where('user_id', Auth::user()->id)->where('product_id', $id)->where('seller_id', $wishlist->seller_id)->first();
             if (!isset($cartcheck)) {
                 $cart = new Wishlist();
                 $cart->user_id = Auth::user()->id;
@@ -622,13 +650,14 @@ class ApiController extends Controller
                 $cart->product_name = $wishlist->product_name;
                 $cart->product_image = $wishlist->product_image;
                 $cart->price = $wishlist->price;
+                $cart->seller_id = $wishlist->seller_id;
                 $cart->quantity = $wishlist->quantity;
                 $cart->save();
                 $wishlist->delete();
-                $msg = "Item Move To WishList successfully!";
+                $msg = "Item added to wishlist successfully!";
+            } else {
+                $msg = "Item Already Added to Wishlist!";
             }
-
-            $msg = "Item Already Added to Wishlist!";
         }
         return response()->json([
             'status' => true,
@@ -742,9 +771,9 @@ class ApiController extends Controller
             $map = $request->map;
 
 
-        $query = Product::whereHas('vendorProducts', function ($query) use($vid) {
+        $query = Product::whereHas('vendorProducts', function ($query) use ($vid) {
             $query->where('vendor_products.vendor_id', $vid);
-            })->whereBetween('regular_price', [$mip, $map])->where('status', 1);
+        })->whereBetween('regular_price', [$mip, $map])->where('status', 1);
 
         if ($request->sorting == "date") {
             $query = $query->orderBy('created_at', 'DESC');
@@ -799,8 +828,8 @@ class ApiController extends Controller
         // $taxtotalc = 0;
 
 
-                
-                // dd($carts);
+
+        // dd($carts);
 
         // $savelater = [];
         // $uploadper = 0;
@@ -814,17 +843,17 @@ class ApiController extends Controller
         $taxtotalc = 0;
         foreach ($cart as $item) {
             $dffg = Cart::where('id', $item->id)->first();
-                    
-                if (isset($item->sellerProduct) && !empty($item->sellerProduct)) {
-                    $price = $item->sellerProduct->price;
-                    $mprice = $item->product->regular_price;
 
-                } else {
-                    $price = $item->product->sale_price;
-                    $mprice = $item->product->regular_price;
-                }
-            
-                    $item['qty'] = $dffg->quantity;
+            if (isset($item->sellerProduct) && !empty($item->sellerProduct)) {
+                $price = $item->sellerProduct->price;
+                $mprice = $item->product->regular_price;
+
+            } else {
+                $price = $item->product->sale_price;
+                $mprice = $item->product->regular_price;
+            }
+
+            $item['qty'] = $dffg->quantity;
 
 
             $subtotalc = $subtotalc + $price * $dffg->quantity;
@@ -835,7 +864,7 @@ class ApiController extends Controller
         // dd($subtotalc,$taxtotalc);
         $result['taxvalue'] = $taxtotalc;
         $result['subtotal'] = $subtotalc;
-        $result['totalamount'] = $taxtotalc + $subtotalc;
+        $result['totalamount'] = $pricesoff + $subtotalc;
 
         if ($result['totalamount'] >= 200) {
             $result['shippingcost'] = 0;
