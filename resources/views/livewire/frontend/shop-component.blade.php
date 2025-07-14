@@ -76,38 +76,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{--<div class="shop-widget">
-                                    <div class="check-box-item">
-                                        <h5 class="shop-widget-title">Breed</h5>
-                                        <div class="checkbox-container">
-                                            @foreach($breeds as $breed)
-                                                <label class="containerss">
-                                                    {{$breed->breed_name}}
-                                                    <input type="checkbox"  wire:model="breedtype" value="{{$breed->id}}"  wire:click="breedseletc"/>
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            @endforeach
-                                            
-                                        </div>
-                                    </div>
-                                </div>--}}
-                               {{-- <div class="shop-widget">
-                                    <div class="check-box-item">
-                                        <h5 class="shop-widget-title">Flavor</h5>
-                                        <div class="checkbox-container">
-                                            @foreach($flavours as $flavour)
-                                            <label class="containerss">
-                                                {{$flavour->name}}
-                                                <input type="checkbox"  wire:model="flavourtype" value="{{$flavour->id}}"  wire:click="flavourselect"/>
-                                                <span class="checkmark"></span>
-                                            </label>
-                                            @endforeach
-                                           
-                                        </div>
-                                    </div>
-                                </div>
+                                
+                                
                             </div>
-                            --}}
                         </div>
                    
              
@@ -143,23 +114,25 @@
                         </div>
                         <div class="row g-4 justify-content-center">
                             @forelse($products as $product)
-                                <div class="col-lg-3 col-md-3 col-6"> 
-                                    <div class="collection-card">
-                                        <div class="offer-card">
-                                            <span>{{$product->discount_value}}% Off</span>
-                                        </div>
-                                        @if($product->stock_status == "outofstock")<span class=" bg-white rounded-sm inline-block text-center solded" >Sold Out</span>@endif
-                                        <div class="collection-img @if($product->stock_status == "outofstock") blured @endif">
-                                            <a href="{{route('product-details',['slug'=>$product->slug])}}"><img class="img-gluid " src="{{asset('admin/product/feat')}}/{{$product->image}}" alt="" width="130px" height="160px" /> </a>
-                                            <div class="view-dt-btn">
-                                                <div class="plus-icon">
-                                                    <i class="bi bi-plus"></i>
-                                                </div>
-                                                <a href="{{route('product-details',['slug'=>$product->slug])}}">View Details</a>
+                               <div class="col-lg-3 col-md-3 col-6">
+                                <div class="collection-card">
+                                    <div class="offer-card">
+                                        <span>{{$product->discount_value}}% Off</span>
+                                    </div>
+                                    @if($product->stock_status == "outofstock")<span class=" bg-white rounded-sm inline-block text-center solded" >Sold Out</span>@endif 
+                                    <div class="collection-img @if($product->stock_status == "outofstock") blured @endif">
+                                        <a href="{{route('product-details',['slug'=>$product->slug])}}"><img class="img-gluid" src="{{asset('admin/product/feat')}}/{{$product->image}}" alt="" width="130px" height="160px" /></a>
+                                        {{-- <a href="#"><img class="img-gluid" src="{{asset('admin/product/feat')}}/{{$product->image}}" alt="" width="130px" height="160px" /></a> --}}
+                                        <div class="view-dt-btn">
+                                            <div class="plus-icon">
+                                                <i class="bi bi-plus"></i>
                                             </div>
-                                            @if($product->stock_status != "outofstock")
-                                            <ul class="cart-icon-list">
-                                               <li>
+                                            <a href="{{route('product-details',['slug'=>$product->slug])}}">View Details</a>
+                                            {{-- <a href="#">View Details</a> --}}
+                                        </div>
+                                        @if($product->stock_status != "outofstock")
+                                        <ul class="cart-icon-list">
+                                            <li>
                                                 @if(in_array($product->id, $cartp))
                                                 <!--<a href="#"><img src="{{asset('assets/images/icon/Icon-cart3.svg')}}" alt /></a>-->
                                                 @else
@@ -170,31 +143,34 @@
                                                 @if(in_array($product->id, $wishp))
                                                     <a href="#" wire:click.prevent="removeFromWishlist({{$product->id}},{{$product->sale_price}})"><img src="{{asset('assets/images/icon/Icon-favorites3.svg')}}" alt /></a>
                                                 @else
-                                                    <a href="#" wire:click.prevent="addToWishlist({{$product->id}},{{$product->sale_price}})"><img src="{{asset('assets/images/icon/Icon-favorites2.svg')}}" alt /></a>
+                                                    <a href="#" wire:click.prevent="addToWishlist({{$product->id}},{{$product->sale_price}})"><img src="{{asset('assets/images/icon/Icon-favorites.svg')}}" alt /></a>
                                                 @endif
-                                                </li>
-                                            </ul>
-                                            @endif
+                                            </li>
+                                        </ul>
+                                        @endif
+                                    </div>
+                                    <div class="collection-content text-center">
+                                        <p class="fixed">
+                                            <a href="{{route('product-details',['slug'=>$product->slug])}}">{{$product->name}}</a>
+                                            {{-- <a href="#">{{$product->name}}</a> --}}
+                                        </p>
+                                        <div class="price priceds">
+                                            <h6>₹{{$product->sale_price}}</h6>
+                                            <del>₹{{$product->regular_price}}</del>
                                         </div>
-                                        <div class="collection-content text-center">
-                                          <p class="fixed"><a href="{{route('product-details',['slug'=>$product->slug])}}">{{$product->name}}</a></p>
-                                            <div class="price priceds">
-                                                <h6>₹{{$product->sale_price}}</h6>
-                                                <del>₹{{$product->regular_price}}</del>
-                                            </div>
-                                            <div class="review">
-                                               @php
-                                                if(isset($product->reviews)){
-                                                    $ratingAvg=$product->reviews->avg('rating');
-                                                    $ratingAv=$ratingAvg;
-                                                    $ratingCount=$product->reviews->count();
-                                                }else{
-                                                    $ratingAvg=0;
-                                                    $ratingCount=0;
-                                                }
-                                                @endphp
-                                                <ul>
-                                                    @foreach(range(1,5) as $i)
+                                        <div class="review">
+                                             @php
+                                            if(isset($product->reviews)){
+                                                $ratingAvg=$product->reviews->avg('rating');
+                                                $ratingAv=$ratingAvg;
+                                                $ratingCount=$product->reviews->count();
+                                            }else{
+                                                $ratingAvg=0;
+                                                $ratingCount=0;
+                                            }
+                                            @endphp
+                                            <ul>
+                                                @foreach(range(1,5) as $i)
                                                         @if($ratingAvg > 0)
                                                             @if($ratingAvg > 0.5)
                                                                 <li><i class="bi bi-star-fill"></i></li>
@@ -205,13 +181,15 @@
                                                             <li><i class="bi bi-star"></i></li>
                                                         @endif 
                                                         @php $ratingAvg--; @endphp
-                                                    @endforeach
+                                                @endforeach
                                                 </ul>
-                                                <span>{{number_format(($ratingAv),2)}}  ({{$ratingCount}})</span>
-                                            </div>
+                                                
+                                                
+                                                {{-- <span>{{number_format(($ratingAv),2)}}  ({{$ratingCount}})</span> --}}
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                             @empty
                             <p class="text-center">No Product Found</p>
                             @endforelse

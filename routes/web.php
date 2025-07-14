@@ -101,7 +101,7 @@ Route::get('/about-us',AboutUsComponent::class)->name('about-us');
 
 
 Route::get('/shop', ShopComponent::class)->name('shop');
-Route::get('/vendor/products', VendorProductComponent::class)->name('vendorProduct');
+Route::get('/vendor/product_list/{slug}', VendorProductComponent::class)->name('vendorProduct');
 Route::get('/category/{category_slug}/{scategory_slug?}', CategorySearchComponent::class)->name('product.category');
 Route::get('/product-detail/{slug}', ProductDetailsComponent::class)->name('product-details');
 Route::get('/vdrregistor', [RegisterController::class, 'vdrregisterview'])->name('vdrregisterview');
@@ -214,3 +214,23 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 
 });
+
+
+
+
+Route::get('/terms-conditions', function () {
+    return view('static-pages.terms-and-conditions');
+})->name('terms-and-conditions');
+
+Route::get('/return-refund-policy', function () {
+    return view('static-pages.return-refund-policy');
+})->name('return-refund-policy');
+Route::get('/privacy-policy', function () {
+    return view('static-pages.privacy-policy');
+})->name('privacy-policy');
+Route::get('/shipping-policy', function () {
+    return view('static-pages.shipping-policy');
+})->name('shipping-policy');
+Route::get('/vendor-terms-conditions', function () {
+    return view('static-pages.vendor-terms-conditions');
+})->name('vendor-terms-and-conditions');

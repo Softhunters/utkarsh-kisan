@@ -86,12 +86,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 
 
-Route::post('/vendor/auth/register', [AuthController::class, 'createUser']);
-Route::post('/vendor/auth/login', [AuthController::class, 'uloginauth']);
+Route::post('/vendor/auth/register', [AuthController::class, 'vcreateUser']);
+Route::post('/vendor/auth/login', [AuthController::class, 'vloginauth']);
 Route::post('/vendor/password/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 Route::get('/vendor/websetting', [ApiController::class, 'WebSetting']);
-Route::post('/vendor/get-otp', [AuthController::class, 'GenrateOtp']);
-Route::post('/vendor/mobile-login', [AuthController::class, 'OtpLogin']);
+Route::post('/vendor/get-otp', [AuthController::class, 'VGenrateOtp']);
+Route::post('/vendor/mobile-login', [AuthController::class, 'VOtpLogin']);
 
 Route::middleware(['auth:sanctum'])->prefix('vendor')->group(function () {
     Route::get('/dashboard', [ApiVendorController::class, 'home']);

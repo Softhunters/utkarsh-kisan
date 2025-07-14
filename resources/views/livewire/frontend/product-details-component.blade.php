@@ -679,7 +679,7 @@
                                 <tbody>
                                     @foreach ($product->vendorProducts as $vp)
                                         <tr>
-                                            <td>{{ $vp->vendor->name ?? 'N/A' }}</td>
+                                            <td><a href="{{route('vendorProduct',['slug'=>$vp->vendor_id])}}">{{ $vp->vendor->name ?? 'N/A' }}</a></td>
                                             <td>₹{{ number_format($vp->price) }}</td>
                                             <td>{{ $vp->quantity }}</td>
                                             <td>{!! $vp->additional_info !!}</td>

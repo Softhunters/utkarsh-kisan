@@ -31,6 +31,7 @@ class AuthController extends Controller
             'phone' =>$data['phone'],
             'referral_code' => $this->ticket_number(),
             'device_token' =>$data['device_token'],
+            'utype' => isset($data['utype']) ? $data['utype'] : 'USR',
         ]);
     }
     
@@ -527,4 +528,216 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+
+
+     public function vcreateUser(Request $request)
+    {
+        try {
+            //Validated
+            
+                $valid=Validator::make($request->all(),[
+                    'name' => ['required', 'string', 'max:255'],
+                    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                    'password' => ['required', 'string', 'min:8'],
+                    'phone'=>['required','numeric','digits:10','unique:users'],
+                    'device_token' =>'required',
+                    'utype'=>'required'
+                ]);
+                if(!$valid->passes()){
+                     return response()->json([
+                            'status' => false,
+                            'message' => 'validation error',
+                            'errors' => $valid->errors()
+                        ], 200);
+                }else{
+                    
+                     event(new Registered($user = $this->create($request->all())));
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'User Created Successfully',
+                         'token' => $user->createToken("API TOKEN")->plainTextToken
+                    ], 200);
+                }
+            
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+
+    public function vloginauth(Request $request)
+    {
+        try {
+            $validateUser = Validator::make($request->all(), 
+            [
+                'email' => 'required|email',
+                'password' => 'required',
+                'device_token'=>'required',
+            ]);
+
+            if($validateUser->fails()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $validateUser->errors()
+                ], 401);
+            }
+            
+            if ( $this->attemptLogin($request)) {
+                if ($request->hasSession()) {
+                    $request->session()->put('auth.password_confirmed_at', time());
+                }
+                
+                if(Auth::user()->utype !== 'VDR')
+                {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Email & Password does not match with our record.',
+                    ], 200);
+            
+                }
+                
+                // Auth::user()->update(['device_token'=>$request->token]);
+                User::find(Auth::user()->id)->update(['device_token'=>$request->token]);
+                 if(!isset(Auth::user()->referral_code))
+                    {
+                        User::where('id',Auth::user()->id)->update(['referral_code'=>$this->ticket_number()]);
+                    }
+                $user = Auth::user();
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'User Logged In Successfully',
+                        'token' => $user->createToken("API TOKEN")->plainTextToken
+                    ], 200);
+            }else{
+
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Email & Password does not match with our record.',
+                ], 200);
+            }
+
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+
+     public function VGenrateOtp(Request $request)
+    {
+        try {
+            $validateUser = Validator::make($request->all(), 
+                    [
+                        'number' => 'required'
+                    ]);
+
+                    if($validateUser->fails()){
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'validation error',
+                            'errors' => $validateUser->errors()
+                        ], 200);
+                    }
+
+            $user = User::where('phone',$request->number)->where('utype','VDR')->first();
+            if(isset($user))
+            {
+                // $otp= rand(100000, 999999);
+                $otp ="123456";
+                User::where('phone',$request->number)->update(['otp'=>$otp]);
+                
+                return response()->json([
+                    'status' => true,
+                    'message' => '6 digit Otp send to your registor mobile number!',
+                    'otp' => $otp
+                ], 200);
+            }else{
+                
+            
+                return response()->json([
+                    'status' => false,
+                    'message' => 'This Mobile is number not registor!'
+                ], 200);
+            }
+            
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+     public function VOtpLogin (Request $request)
+    {
+        try {
+            $validateUser = Validator::make($request->all(), 
+                    [
+                        'number' => 'required',
+                        'otp' =>'required',
+                        'device_token'=>'required',
+                    ]);
+
+                    if($validateUser->fails()){
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'validation error',
+                            'errors' => $validateUser->errors()
+                        ], 200);
+                    }
+
+            $userc = User::where('phone',$request->number)->where('utype','VDR')->first();
+            if(isset($userc))
+            {
+                if($userc->otp == $request->otp)
+                {
+                    Auth::login($userc);
+                    
+                    User::find(Auth::user()->id)->update(['device_token'=>$request->token,'otp'=>null]);
+                     if(!isset(Auth::user()->referral_code))
+                        {
+                            User::where('id',Auth::user()->id)->update(['referral_code'=>$this->ticket_number()]);
+                        }
+                    $user = Auth::user();
+                        return response()->json([
+                            'status' => true,
+                            'message' => 'User Logged In Successfully',
+                            'token' => $user->createToken("API TOKEN")->plainTextToken
+                        ], 200);
+                    
+                }else{
+                     return response()->json([
+                    'status' => false,
+                    'message' => 'This Otp is Wrong!'
+                ], 200);
+                    
+                }
+                
+            }else{
+                
+                return response()->json([
+                    'status' => false,
+                    'message' => 'This Mobile is number not registor!'
+                ], 200);
+            }
+            
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
 }

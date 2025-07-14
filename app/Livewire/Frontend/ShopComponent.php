@@ -115,14 +115,14 @@ class ShopComponent extends Component
        // dd($this->brandtype);
     }
     
-    public function addToWishlist(Request $request,$product_id,$product_price)
+     public function addToWishlist(Request $request,$product_id,$product_price)
     {
         $id= $product_id;
         if(Auth::check())
         {
             $wproduct = Wishlist::where('product_id',$product_id)->where('user_id',Auth::user()->id)->first();
             if($wproduct){
-                session()->flash('info','Item alreday added to Wishlist');
+                session()->flash('info','Item alreday added to wishlist');;
                 return;
             }else{
                 $product = Product::where('id', $product_id)->first();
@@ -154,7 +154,6 @@ class ShopComponent extends Component
                     Session()->put('wishlist', $wishlist);
                    
                     session()->flash('success','Item added to Wishlist!');
-
                 $this->dispatch('wishlist_add');
 
         }
@@ -169,7 +168,7 @@ class ShopComponent extends Component
                 $wishlist = Wishlist::where('product_id',$product_id)->where('user_id',Auth::user()->id)->first();
                 if($wishlist){
                     $wishlist->delete();
-                    session()->flash('warning','Item remove from Wishlist!');
+                    session()->flash('warning','Item remove from wishlist!');
                     // $this->dispatch('wishlist-count-component','refreshComponent');
                     $this->dispatch('wishlist_add');
                     return;
@@ -180,11 +179,11 @@ class ShopComponent extends Component
                 $wishlistdf = $request->session()->get('wishlist');
                 unset($wishlistdf[$product_id]);
                 Session()->put('wishlist', $wishlistdf);
-            // dd($wishlistdf);
-            session()->flash('warning','Item remove from Wishlist!');
-            // $this->dispatch('wishlist-count-component','refreshComponent');
-            $this->dispatch('wishlist_add');
-            return;
+                // dd($wishlistdf);
+                session()->flash('warning','Item remove from wishlist!');
+                // $this->dispatch('wishlist-count-component','refreshComponent');
+                $this->dispatch('wishlist_add');
+                return;
 
             }
         }
@@ -214,7 +213,7 @@ class ShopComponent extends Component
                 $cart->price = $product->sale_price;
                 $cart->quantity = '1';
                 $cart->save();
-                session()->flash('success','Item added to Cart!');
+                session()->flash('success','Item added to cart!');
                 // $this->dispatch('wishlist-count-component','refreshComponent');
                 $this->dispatch('cart_add');
                 return;
@@ -233,9 +232,10 @@ class ShopComponent extends Component
                         'price' => $product->sale_price
                     ];
                     Session()->put('cart', $cart);
-                    session()->flash('success','Item added to Cart!');
-
-                 $this->dispatch('cart_add');
+                   
+                    session()->flash('success','Item added to cart!');
+                
+                $this->dispatch('cart_add');
         }
       
         //  $this->dispatch('wishlist-count-component','refreshComponent');

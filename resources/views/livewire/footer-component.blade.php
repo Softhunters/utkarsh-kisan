@@ -49,11 +49,11 @@
                             <ul>
                                 <!-- <li><a href="#">About Us</a></li>
                                 <li><a href="#">FAQs</a></li> -->
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Return & Refund Policy</a></li>
-                                <li><a href="#">Terms & Conditions</a></li>
-                                <li><a href="#">Shipping & Delivery Policy </a></li>
-                                <li><a href="#">Vendor Terms & Conditions </a></li>
+                                <li><a href="{{route('privacy-policy')}}">Privacy Policy</a></li>
+                                <li><a href="{{route('return-refund-policy')}}">Return & Refund Policy</a></li>
+                                <li><a href="{{route('terms-and-conditions')}}">Terms & Conditions</a></li>
+                                <li><a href="{{route('shipping-policy')}}">Shipping & Delivery Policy </a></li>
+                                <li><a href="{{route('vendor-terms-and-conditions')}}">Vendor Terms & Conditions </a></li>
                             </ul>
                         </div>
                     </div>

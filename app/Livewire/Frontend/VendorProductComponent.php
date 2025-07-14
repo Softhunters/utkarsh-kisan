@@ -11,6 +11,7 @@ use App\Models\Wishlist;
 use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\User;
 use Session;
 
 class VendorProductComponent extends Component
@@ -27,10 +28,13 @@ class VendorProductComponent extends Component
     public $wishp=[];
     public $cartp=[];
     public $flavourtype =[];
+    public $vendor_slug;
     
 
-    public function mount()
+    public function mount($slug)
     {
+        $this->vendor_slug = $slug;
+        
         $this->sorting="default";
         $this->pagesize="12";
         $this->min =Product::where('status',1)->min('regular_price');
@@ -41,6 +45,11 @@ class VendorProductComponent extends Component
 
     public function render(Request $request)
     {
+        $sellerinfo = User::where('id', $this->vendor_slug)->first();
+        if(!isset($sellerinfo))
+        {
+            return redirect()->back();
+        }
         if(Auth::check())
         {
             $this->cartp = Cart::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
@@ -56,7 +65,11 @@ class VendorProductComponent extends Component
             }
         }
      // dd($this->pagesize);
-        $query = Product::whereBetween('regular_price',[$this->min_price,$this->max_price])->where('status',1);
+           
+
+        $query = Product::whereHas('vendorProducts', function ($query)  {
+            $query->where('vendor_products.vendor_id', $this->vendor_slug);
+            })->whereBetween('regular_price',[$this->min_price,$this->max_price])->where('status',1);
        if($this->sorting=="date"){
         $query=$query->orderBy('products.created_at','DESC');
        }
@@ -95,7 +108,7 @@ class VendorProductComponent extends Component
         $categorys = Category::where('status',1)->get();
         $brands = Brand::where('status',1)->get();
        
-        return view('livewire.frontend.vendor-product-component',['categorys'=>$categorys,'brands'=>$brands,'products'=>$products])->layout('layouts.main');
+        return view('livewire.frontend.vendor-product-component',['sellerinfo'=>$sellerinfo,'categorys'=>$categorys,'brands'=>$brands,'products'=>$products])->layout('layouts.main');
     }
 
 
@@ -112,14 +125,14 @@ class VendorProductComponent extends Component
        // dd($this->brandtype);
     }
     
-    public function addToWishlist(Request $request,$product_id,$product_price)
+     public function addToWishlist(Request $request,$product_id,$product_price)
     {
         $id= $product_id;
         if(Auth::check())
         {
             $wproduct = Wishlist::where('product_id',$product_id)->where('user_id',Auth::user()->id)->first();
             if($wproduct){
-                session()->flash('info','Item alreday added to Wishlist');
+                session()->flash('info','Item alreday added to wishlist');;
                 return;
             }else{
                 $product = Product::where('id', $product_id)->first();
@@ -151,7 +164,6 @@ class VendorProductComponent extends Component
                     Session()->put('wishlist', $wishlist);
                    
                     session()->flash('success','Item added to Wishlist!');
-
                 $this->dispatch('wishlist_add');
 
         }
@@ -166,7 +178,7 @@ class VendorProductComponent extends Component
                 $wishlist = Wishlist::where('product_id',$product_id)->where('user_id',Auth::user()->id)->first();
                 if($wishlist){
                     $wishlist->delete();
-                    session()->flash('warning','Item remove from Wishlist!');
+                    session()->flash('warning','Item remove from wishlist!');
                     // $this->dispatch('wishlist-count-component','refreshComponent');
                     $this->dispatch('wishlist_add');
                     return;
@@ -177,11 +189,11 @@ class VendorProductComponent extends Component
                 $wishlistdf = $request->session()->get('wishlist');
                 unset($wishlistdf[$product_id]);
                 Session()->put('wishlist', $wishlistdf);
-            // dd($wishlistdf);
-            session()->flash('warning','Item remove from Wishlist!');
-            // $this->dispatch('wishlist-count-component','refreshComponent');
-            $this->dispatch('wishlist_add');
-            return;
+                // dd($wishlistdf);
+                session()->flash('warning','Item remove from wishlist!');
+                // $this->dispatch('wishlist-count-component','refreshComponent');
+                $this->dispatch('wishlist_add');
+                return;
 
             }
         }
@@ -211,7 +223,7 @@ class VendorProductComponent extends Component
                 $cart->price = $product->sale_price;
                 $cart->quantity = '1';
                 $cart->save();
-                session()->flash('success','Item added to Cart!');
+                session()->flash('success','Item added to cart!');
                 // $this->dispatch('wishlist-count-component','refreshComponent');
                 $this->dispatch('cart_add');
                 return;
@@ -230,9 +242,10 @@ class VendorProductComponent extends Component
                         'price' => $product->sale_price
                     ];
                     Session()->put('cart', $cart);
-                    session()->flash('success','Item added to Cart!');
-
-                 $this->dispatch('cart_add');
+                   
+                    session()->flash('success','Item added to cart!');
+                
+                $this->dispatch('cart_add');
         }
       
         //  $this->dispatch('wishlist-count-component','refreshComponent');
