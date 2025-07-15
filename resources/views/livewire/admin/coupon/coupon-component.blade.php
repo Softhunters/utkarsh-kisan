@@ -48,9 +48,9 @@
                                         <td>{{$coupon->id}}</td>
                                         <td>{{$coupon->coupon_name}}</td>
                                         <td>{{$coupon->code}}</td>
-                                        <td>{{$coupon->value == 1 ? 'Percantage': 'FLat'}}</td>
+                                        <td>{{$coupon->type == 1 ? 'Percantage': 'FLat'}}</td>
                                         <td>{{$coupon->value}}</td>
-                                        <td>@if($coupon->category) {{$coupon->category->category_id}} @endif</td>
+                                        <td>@if($coupon->category) {{$coupon->category->name}} @endif</td>
                                         <td>{{$coupon->cart_value}}</td>
                                         <td>@if($coupon->status == 1)<a href="#" onclick="confirm('Are you sure you want to de-active this coupon?') || event.stopImmediatePropagation()" wire:click.prevent='DeactiveCoupon({{$coupon->id}})'> Active </a> 
                                         @else <a href="#" onclick="confirm('Are you sure you want to active this coupon?') || event.stopImmediatePropagation()" wire:click.prevent='ActiveCoupon({{$coupon->id}})'>Deactive </a>

@@ -68,9 +68,9 @@
                                                     <div class="mb-4">
                                                         <label class="control-label form-label">Additional Info</label>
                                                         <div wire:ignore>
-                                                            <textarea class ="form-control" id="short_description" placeholder="Additional Info" wire:model="short_description">{!! $short_description !!}</textarea>
+                                                            <textarea class ="form-control" id="short_description" placeholder="Additional Info" wire:model="additional_info">{!! $additional_info !!}</textarea>
                                                         </div>
-                                                        @error('short_description')
+                                                        @error('additional_info')
                                                             <p class="text-danger">{{ $message }}</p>
                                                         @enderror
                                                     </div>
@@ -93,7 +93,7 @@
                                                                 <label class="form-label">Regular Price<span
                                                                         class="text-danger"> *</span></label>
                                                                 <div class="input-group input-group--sa-slug">
-                                                                    <input type="text" placeholder="$price"
+                                                                    <input type="text" placeholder="₹price"
                                                                         class="form-control"
                                                                         wire:model="regular_price" />
                                                                 </div>
@@ -511,7 +511,7 @@
         ClassicEditor.create(document.querySelector('#short_description'))
             .then(editor => {
                 editor.model.document.on('change:data', () => {
-                    @this.set('short_description', editor.getData());
+                    @this.set('additional_info', editor.getData());
                 })
             })
             .catch(error => {

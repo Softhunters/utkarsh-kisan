@@ -6702,8 +6702,11 @@ footer.style2 .social-area ul {
     padding: 0;
     list-style: none;
     display: flex;
-    justify-content: end;
-    gap: 50px
+    /* justify-content: end; */
+    gap: 50px;
+
+    margin-left: 0.3rem;
+  margin-top: 0.5rem;
 }
 
 footer.style2 .social-area ul li {
@@ -9187,7 +9190,7 @@ footer.style2 .social-area ul li:hover a i {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-left: 120px
+    padding-left: 60px
 }
 
 @media(max-width:1199px) {
@@ -9223,7 +9226,7 @@ footer.style2 .social-area ul li:hover a i {
 }
 
 .offer-banner-area .offer-banner-card .offer-content h4 a {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 700;
     color: var(--title-color2);
     font-family: var(--font-dosis);
@@ -9279,7 +9282,8 @@ footer.style2 .social-area ul li:hover a i {
         position: relative;
         left: unset;
         top: unset;
-        transform: unset
+        transform: unset;
+        transform: translate(0%, 0%) !important;
     }
 }
 
@@ -9310,7 +9314,8 @@ footer.style2 .social-area ul li:hover a i {
 
 @media(max-width:1399px) {
     .offer-banner-area .offer-banner-card .offer-right .offer-tag {
-        margin-left: 75px
+        /* margin-left: 75px */
+        margin: 1px;
     }
 }
 
@@ -9326,7 +9331,8 @@ footer.style2 .social-area ul li:hover a i {
         width: 140px;
         height: 46px;
         border-radius: 5px;
-        margin: 15px auto 20px
+        margin: 15px auto 20px;
+        color:var(--white);
     }
 }
 
@@ -14948,10 +14954,14 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
     padding: 10px 26px;
     transition: .5s;
 }
+
+.offer-banner-area .offer-banner-card .offer-right {
+    justify-content: center;
+}
 .primary-btn6 {
     font-size: 10px;}
     .offer-banner-area .offer-banner-card .offer-right .offer-tag {
-    margin-left: 0;
+    /* margin-left: 0; */
     width: 110px;
     height: 30px;
 }

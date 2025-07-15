@@ -4,7 +4,7 @@ namespace App\Livewire\Admin\Coupon;
 
 use Livewire\Component;
 use App\Models\Coupon;
-use App\models\Category;
+use App\Models\Category;
 
 class EditCouponComponent extends Component
 {
