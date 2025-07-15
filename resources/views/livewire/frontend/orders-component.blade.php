@@ -12,7 +12,7 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb mb-0">
                                     <li class="breadcrumb-item">
-                                        <a class="text-nowrap" href="index.html"><i class="fa fa-home mr-2"></i>Home</a>
+                                        <a class="text-nowrap" href="/"><i class="fa fa-home mr-2"></i>Home</a>
                                     </li>
                                     <li class="breadcrumb-item text-nowrap"><a href="account.html"><i class="fa fa-user mr-2"></i>Account</a>
                                     </li>

@@ -6702,8 +6702,11 @@ footer.style2 .social-area ul {
     padding: 0;
     list-style: none;
     display: flex;
-    justify-content: end;
-    gap: 50px
+    /* justify-content: end; */
+    gap: 50px;
+
+    margin-left: 0.3rem;
+  margin-top: 0.5rem;
 }
 
 footer.style2 .social-area ul li {
