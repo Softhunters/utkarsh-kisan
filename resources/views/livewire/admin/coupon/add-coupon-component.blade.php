@@ -93,6 +93,9 @@
                                                          <option value="1">Active</option>
                                                      </select>
                                                  </div>
+                                                 @error('status')
+                                                     <p class="text-danger">{{ $message }}</p>
+                                                 @enderror
                                              </div>
 
                                              <div class="mb-4 text-center">

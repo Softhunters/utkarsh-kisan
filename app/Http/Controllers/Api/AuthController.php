@@ -18,51 +18,51 @@ use Illuminate\Auth\Events\Registered;
 
 
 class AuthController extends Controller
-
 {
-     use AuthenticatesUsers;
-     
+    use AuthenticatesUsers;
+
     protected function create(array $data)
     {
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'phone' =>$data['phone'],
+            'phone' => $data['phone'],
             'referral_code' => $this->ticket_number(),
-            'device_token' =>$data['device_token'],
+            'device_token' => $data['device_token'],
             'utype' => isset($data['utype']) ? $data['utype'] : 'USR',
         ]);
     }
-    
+
     public function createUser(Request $request)
     {
         try {
             //Validated
-            
-                $valid=Validator::make($request->all(),[
-                    'name' => ['required', 'string', 'max:255'],
-                    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                    'password' => ['required', 'string', 'min:8'],
-                    'phone'=>['required','numeric','digits:10','unique:users'],
-                    'device_token' =>'required'
-                ]);
-                if(!$valid->passes()){
-                     return response()->json([
-                            'status' => false,
-                            'message' => 'validation error',
-                            'errors' => $valid->errors()
-                        ], 200);
-                }else{
-                    
-                     event(new Registered($user = $this->create($request->all())));
-                    return response()->json([
-                        'status' => true,
-                        'message' => 'User Created Successfully',
-                         'token' => $user->createToken("API TOKEN")->plainTextToken
-                    ], 200);
-                }
-            
+
+            $valid = Validator::make($request->all(), [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => ['required', 'string', 'min:8'],
+                'phone' => ['required', 'numeric', 'digits:10', 'unique:users'],
+                'device_token' => 'required'
+            ]);
+            if (!$valid->passes()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $valid->errors()
+                ], 200);
+            } else {
+
+                event(new Registered($user = $this->create($request->all())));
+                session(['user_id' => $user->id]);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'User Created Successfully',
+                    'token' => $user->createToken("API TOKEN")->plainTextToken
+                ], 200);
+            }
+
 
         } catch (\Throwable $th) {
             return response()->json([
@@ -80,40 +80,51 @@ class AuthController extends Controller
     public function uloginauth(Request $request)
     {
         try {
-            $validateUser = Validator::make($request->all(), 
-            [
-                'email' => 'required|email',
-                'password' => 'required',
-                'device_token'=>'required',
-            ]);
+            $validateUser = Validator::make(
+                $request->all(),
+                [
+                    'email' => 'required|email',
+                    'password' => 'required',
+                    'device_token' => 'required',
+                ]
+            );
 
-            if($validateUser->fails()){
+            if ($validateUser->fails()) {
                 return response()->json([
                     'status' => false,
                     'message' => 'validation error',
                     'errors' => $validateUser->errors()
                 ], 401);
             }
-            
-            if ( $this->attemptLogin($request)) {
+
+            if ($this->attemptLogin($request)) {
+
+                if (Auth::user()->status == 0 || Auth::user()->is_active == 3) {
+                    Auth::logout();
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Your account is blocked or deactivated. Please contact support',
+                    ], 200);
+                }
+
                 if ($request->hasSession()) {
                     $request->session()->put('auth.password_confirmed_at', time());
                 }
-                
-                
+
+
                 // Auth::user()->update(['device_token'=>$request->token]);
-                User::find(Auth::user()->id)->update(['device_token'=>$request->token]);
-                 if(!isset(Auth::user()->referral_code))
-                    {
-                        User::where('id',Auth::user()->id)->update(['referral_code'=>$this->ticket_number()]);
-                    }
+                User::find(Auth::user()->id)->update(['device_token' => $request->token]);
+                if (!isset(Auth::user()->referral_code)) {
+                    User::where('id', Auth::user()->id)->update(['referral_code' => $this->ticket_number()]);
+                }
                 $user = Auth::user();
-                    return response()->json([
-                        'status' => true,
-                        'message' => 'User Logged In Successfully',
-                        'token' => $user->createToken("API TOKEN")->plainTextToken
-                    ], 200);
-            }else{
+                session(['user_id' => Auth::id()]);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'User Logged In Successfully',
+                    'token' => $user->createToken("API TOKEN")->plainTextToken
+                ], 200);
+            } else {
 
                 return response()->json([
                     'status' => false,
@@ -133,12 +144,12 @@ class AuthController extends Controller
 
     public function ApplyRcode(Request $request)
     {
-       try {
+        try {
             // $validateUser = Validator::make($request->all(), 
             // [
             //     'rcode' => ['required', 'string', 'min:6']
             // ]);
-            
+
             // if($validateUser->fails()){
             //     return response()->json([
             //         'status' => false,
@@ -146,98 +157,100 @@ class AuthController extends Controller
             //         'errors' => $validateUser->errors()
             //     ], 200);
             // }
-        
-            $check = User::where('referral_code',$request->rcode)->where('id','!=',Auth::user()->id)->first();
-            if(isset($check))
-            {
-                User::where('id',Auth::user()->id)->update(['referral_by' => $request->rcode]);
+
+            $check = User::where('referral_code', $request->rcode)->where('id', '!=', Auth::user()->id)->first();
+            if (isset($check)) {
+                User::where('id', Auth::user()->id)->update(['referral_by' => $request->rcode]);
                 // session()->flash('success', 'Referral Code has been applied successfully');
                 return response()->json([
-                        'status' => true,
-                        'message' => 'Referral Code has been applied successfully',
-                
-                    ], 200);
-            }else{
+                    'status' => true,
+                    'message' => 'Referral Code has been applied successfully',
+
+                ], 200);
+            } else {
                 // session()->flash('error','Referral Code not Found!');
                 return response()->json([
                     'status' => false,
                     'message' => 'Referral Code not Found!.',
                 ], 200);
             }
-        
-       } catch (\Throwable $th) {
+
+        } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
                 'message' => $th->getMessage()
             ], 500);
         }
     }
-    
-    public function chnagePassword (Request $request)
+
+    public function chnagePassword(Request $request)
     {
-        
-        $userd=DB::table('users')->where('public_id', Auth::user()->public_id)->first();
-       
-       $fg=(Hash::check($request->old_password, $userd->password));
-        if($fg){
-           
-             $status = DB::table('users')->where('public_id', $userd->public_id)->update([
+
+        $userd = DB::table('users')->where('public_id', Auth::user()->public_id)->first();
+
+        $fg = (Hash::check($request->old_password, $userd->password));
+        if ($fg) {
+
+            $status = DB::table('users')->where('public_id', $userd->public_id)->update([
                 'password' => Hash::make($request->password),
-            ]);return response()->json([
+            ]);
+            return response()->json([
                 'status' => true,
                 'message' => 'Password Updated !!'
             ], 200);
             // return redirect('/logout')->with('status', 'Password Updated !!');
-        }else{
+        } else {
             return response()->json([
                 'status' => false,
                 'message' => 'Password not matched !!'
             ], 200);
             //  return redirect('/')->with('status', 'Password not matched !!');
         }
-       
+
     }
     public function PasswordUpdate(Request $request)
     {
-        $valid=Validator::make($request->all(),['password' => ['required', 'string', 'min:8'], 'new_password' => ['required', 'string', 'min:8'] ]);
-        if(!$valid->passes()){
+        $valid = Validator::make($request->all(), ['password' => ['required', 'string', 'min:8'], 'new_password' => ['required', 'string', 'min:8']]);
+        if (!$valid->passes()) {
             return response()->json([
                 'status' => false,
                 'message' => 'validation error',
                 'errors' => $valid->errors()
-                ], 200);
-        }else{
-            $fg=(Hash::check($request->password, Auth::user()->password));
-            if($fg){
+            ], 200);
+        } else {
+            $fg = (Hash::check($request->password, Auth::user()->password));
+            if ($fg) {
                 $status = User::where('id', Auth::user()->id)->update(['password' => Hash::make($request->new_password)]);
-                    return response()->json([
-                            'status' => true,
-                            'message' => 'Password Updated !!'
-                        ], 200);
-                        
-            }else{
                 return response()->json([
-                        'status' => false,
-                        'message' => 'Password not matched !!'
-                    ], 200);
-                        
+                    'status' => true,
+                    'message' => 'Password Updated !!'
+                ], 200);
+
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Password not matched !!'
+                ], 200);
+
             }
         }
     }
 
-    public  function checkEmail(Request $request)
+    public function checkEmail(Request $request)
     {
         // dd($request);
 
         try {
             //Validated
-            $validateUser = Validator::make($request->all(), 
-            [
-                'user_type' => 'required',
-                'email'=>'required'
-            ]);
+            $validateUser = Validator::make(
+                $request->all(),
+                [
+                    'user_type' => 'required',
+                    'email' => 'required'
+                ]
+            );
 
-            if($validateUser->fails()){
+            if ($validateUser->fails()) {
                 return response()->json([
                     'status' => false,
                     'message' => 'validation error',
@@ -249,39 +262,40 @@ class AuthController extends Controller
 
             if ($user) {
                 $data = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz';
-                $onetimepassword= substr(str_shuffle($data), 0, 8);
+                $onetimepassword = substr(str_shuffle($data), 0, 8);
                 //print_r($onetimepassword);
-                $possw= Hash::make($onetimepassword);
+                $possw = Hash::make($onetimepassword);
                 //dd($onetimepassword);
                 $status = DB::table('users')->where('public_id', $user->public_id)->update([
                     'password' => $possw,
                 ]);
                 //dd($status);
                 $email = $request->email;
-               $mailData = [
+                $mailData = [
                     'title' => 'Forgot Password',
-                    'name'=> $user->name,
-                    'rand_id'=>$onetimepassword,
+                    'name' => $user->name,
+                    'rand_id' => $onetimepassword,
                 ];
-                $hji= 'forgot_password';   $subject = 'Forgot Password';
-                Mail::to($email)->send(new EmailDemo($mailData,$hji,$subject));
-                
-                 $notifi = new NotificationController;
-                $notifi->mobilesmsotlp($mailData,$user->mobile_number);
-                
+                $hji = 'forgot_password';
+                $subject = 'Forgot Password';
+                Mail::to($email)->send(new EmailDemo($mailData, $hji, $subject));
+
+                $notifi = new NotificationController;
+                $notifi->mobilesmsotlp($mailData, $user->mobile_number);
+
                 return response()->json([
                     'status' => true,
                     'message' => 'Email verified email sent successfully!!',
-                    
+
                 ], 200);
             } else {
                 return response()->json([
                     'status' => false,
                     'message' => 'Invalid email',
-                    
-                ], 401); 
+
+                ], 401);
             }
-            
+
 
         } catch (\Throwable $th) {
             return response()->json([
@@ -291,22 +305,23 @@ class AuthController extends Controller
         }
     }
 
-    public function logout(Request $request){
-        Auth::user()->update(['device_token'=>'']);
-      // $result = Auth::user()->id;
-      $userd = User::find(Auth::user()->id);
-      $userd->device_token = NULL;
-      $userd->save();
+    public function logout(Request $request)
+    {
+        Auth::user()->update(['device_token' => '']);
+        // $result = Auth::user()->id;
+        $userd = User::find(Auth::user()->id);
+        $userd->device_token = NULL;
+        $userd->save();
         //$status = DB::table('users')->where('public_id', Auth::user()->public_id)->update(['device_token'=>NULL]);
         auth()->user()->tokens()->delete();
 
         return response()->json([
             'status' => true,
             'message' => 'logged out !!',
-          
+
         ], 200);
     }
-    
+
     public function Profile(Request $request)
     {
         $user_detail = Auth::user();
@@ -315,51 +330,51 @@ class AuthController extends Controller
             'result' => $user_detail
         ], 200);
     }
-    
+
     public function ReverifyAccountOTP(Request $request)
     {
-         try {
-        $otp = rand(111111,999999);
-          $token = Str::random(64);
-  
-        UserVerify::create([
-              'user_id' => Auth::user()->id, 
-              'token' => $token,
-              'mobile_opt'=>$otp
+        try {
+            $otp = rand(111111, 999999);
+            $token = Str::random(64);
+
+            UserVerify::create([
+                'user_id' => Auth::user()->id,
+                'token' => $token,
+                'mobile_opt' => $otp
             ]);
-        
-        $email = Auth::user()->email;
-   
-        $mailData = [
-            'title' => 'Register Request Submit',
-            'name'=> Auth::user()->name,
-            'token' => $otp
-        ];
-        $notifi = new NotificationController;
-        $notifi->mobilesmsotpvefiy($mailData,Auth::user()->mobile_number);
-         return response()->json([
-                    'status' => true,
-                    'message' => 'Verification OTP sent successfully!!',
-                ], 200);
-         } catch (\Throwable $th) {
+
+            $email = Auth::user()->email;
+
+            $mailData = [
+                'title' => 'Register Request Submit',
+                'name' => Auth::user()->name,
+                'token' => $otp
+            ];
+            $notifi = new NotificationController;
+            $notifi->mobilesmsotpvefiy($mailData, Auth::user()->mobile_number);
+            return response()->json([
+                'status' => true,
+                'message' => 'Verification OTP sent successfully!!',
+            ], 200);
+        } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
                 'message' => $th->getMessage()
             ], 500);
         }
     }
-     public function verifyAccountotp(Request $request)
+    public function verifyAccountotp(Request $request)
     {
-        
-         $verifyUser = UserVerify::where('mobile_opt', $request->token)->where('user_id',Auth::user()->id)->first();
+
+        $verifyUser = UserVerify::where('mobile_opt', $request->token)->where('user_id', Auth::user()->id)->first();
         //   dd($verifyUser);
 
         $message = 'Sorry Your OTP does not matched.';
-  
-        if(!is_null($verifyUser) ){
+
+        if (!is_null($verifyUser)) {
             $user = $verifyUser->user;
-              
-            if(!$user->is_mobile_verified) {
+
+            if (!$user->is_mobile_verified) {
                 $verifyUser->user->is_mobile_verified = 1;
                 $verifyUser->user->save();
                 $message = "Your Mobile is verified. You can now login.";
@@ -367,42 +382,44 @@ class AuthController extends Controller
                 $message = "Your Mobile is already verified. You can now login.";
             }
             return response()->json([
-                    'status' => true,
-                    'message' => $message,
-                    'token'=>$request->token
-                ], 200);
+                'status' => true,
+                'message' => $message,
+                'token' => $request->token
+            ], 200);
         }
-  
-       return response()->json([
-                    'status' => false,
-                    'message' => $message,
-                    'token'=>$request->token
-                ], 200);
+
+        return response()->json([
+            'status' => false,
+            'message' => $message,
+            'token' => $request->token
+        ], 200);
     }
     public function Accountdelete(Request $request)
     {
         try {
-            $validateUser = Validator::make($request->all(), 
-                    [
-                        'other_info' => 'required'
-                    ]);
+            $validateUser = Validator::make(
+                $request->all(),
+                [
+                    'other_info' => 'required'
+                ]
+            );
 
-                    if($validateUser->fails()){
-                        return response()->json([
-                            'status' => false,
-                            'message' => 'validation error',
-                            'errors' => $validateUser->errors()
-                        ], 401);
-                    }
-
-           
-
-            $user = User::find(Auth::user()->id)->update(['status'=>4,'delete_reason'=>$request->other_info]);
+            if ($validateUser->fails()) {
                 return response()->json([
-                    'status' => true,
-                    'message' => 'User Deleted Successfully !'
-                ], 200);
-            
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $validateUser->errors()
+                ], 401);
+            }
+
+
+
+            $user = User::find(Auth::user()->id)->update(['status' => 4, 'delete_reason' => $request->other_info]);
+            return response()->json([
+                'status' => true,
+                'message' => 'User Deleted Successfully !'
+            ], 200);
+
 
         } catch (\Throwable $th) {
             return response()->json([
@@ -411,70 +428,78 @@ class AuthController extends Controller
             ], 500);
         }
     }
-    
+
     function ticket_number()
     {
         do {
-            $rcode = Str::random(6);;
+            $rcode = Str::random(6);
+            ;
         } while (User::where("referral_code", "=", $rcode)->first());
-    
+
         return $rcode;
     }
 
-    
-    public function OtpLogin (Request $request)
+
+    public function OtpLogin(Request $request)
     {
         try {
-            $validateUser = Validator::make($request->all(), 
-                    [
-                        'number' => 'required',
-                        'otp' =>'required',
-                        'device_token'=>'required',
-                    ]);
+            $validateUser = Validator::make(
+                $request->all(),
+                [
+                    'number' => 'required',
+                    'otp' => 'required',
+                    'device_token' => 'required',
+                ]
+            );
 
-                    if($validateUser->fails()){
+            if ($validateUser->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $validateUser->errors()
+                ], 200);
+            }
+
+            $userc = User::where('phone', $request->number)->first();
+            if (isset($userc)) {
+                if ($userc->otp == $request->otp) {
+                    Auth::login($userc);
+                    if (Auth::user()->status == 0 || Auth::user()->is_active == 3) {
+                        Auth::logout();
                         return response()->json([
                             'status' => false,
-                            'message' => 'validation error',
-                            'errors' => $validateUser->errors()
+                            'message' => 'Your account is blocked or deactivated. Please contact support',
                         ], 200);
                     }
-
-            $userc = User::where('phone',$request->number)->first();
-            if(isset($userc))
-            {
-                if($userc->otp == $request->otp)
-                {
-                    Auth::login($userc);
-                    
-                    User::find(Auth::user()->id)->update(['device_token'=>$request->token,'otp'=>null]);
-                     if(!isset(Auth::user()->referral_code))
-                        {
-                            User::where('id',Auth::user()->id)->update(['referral_code'=>$this->ticket_number()]);
-                        }
+                    User::find(Auth::user()->id)->update(['device_token' => $request->token, 'otp' => null]);
+                    if (!isset(Auth::user()->referral_code)) {
+                        User::where('id', Auth::user()->id)->update(['referral_code' => $this->ticket_number()]);
+                    }
                     $user = Auth::user();
-                        return response()->json([
-                            'status' => true,
-                            'message' => 'User Logged In Successfully',
-                            'token' => $user->createToken("API TOKEN")->plainTextToken
-                        ], 200);
-                    
-                }else{
-                     return response()->json([
-                    'status' => false,
-                    'message' => 'This Otp is Wrong!'
-                ], 200);
-                    
+                    session(['user_id' => Auth::id()]);
+
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'User Logged In Successfully',
+                        'token' => $user->createToken("API TOKEN")->plainTextToken
+                    ], 200);
+
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'This Otp is Wrong!'
+                    ], 200);
+
                 }
-                
-            }else{
-                
+
+            } else {
+
                 return response()->json([
                     'status' => false,
                     'message' => 'This Mobile is number not registor!'
                 ], 200);
             }
-            
+
 
         } catch (\Throwable $th) {
             return response()->json([
@@ -486,35 +511,35 @@ class AuthController extends Controller
 
 
 
-     public function vcreateUser(Request $request)
+    public function vcreateUser(Request $request)
     {
         try {
             //Validated
-            
-                $valid=Validator::make($request->all(),[
-                    'name' => ['required', 'string', 'max:255'],
-                    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                    'password' => ['required', 'string', 'min:8'],
-                    'phone'=>['required','numeric','digits:10','unique:users'],
-                    'device_token' =>'required',
-                    'utype'=>'required'
-                ]);
-                if(!$valid->passes()){
-                     return response()->json([
-                            'status' => false,
-                            'message' => 'validation error',
-                            'errors' => $valid->errors()
-                        ], 200);
-                }else{
-                    
-                     event(new Registered($user = $this->create($request->all())));
-                    return response()->json([
-                        'status' => true,
-                        'message' => 'User Created Successfully',
-                         'token' => $user->createToken("API TOKEN")->plainTextToken
-                    ], 200);
-                }
-            
+
+            $valid = Validator::make($request->all(), [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => ['required', 'string', 'min:8'],
+                'phone' => ['required', 'numeric', 'digits:10', 'unique:users'],
+                'device_token' => 'required',
+                'utype' => 'required'
+            ]);
+            if (!$valid->passes()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $valid->errors()
+                ], 200);
+            } else {
+
+                event(new Registered($user = $this->create($request->all())));
+                return response()->json([
+                    'status' => true,
+                    'message' => 'User Created Successfully',
+                    'token' => $user->createToken("API TOKEN")->plainTextToken
+                ], 200);
+            }
+
 
         } catch (\Throwable $th) {
             return response()->json([
@@ -528,48 +553,48 @@ class AuthController extends Controller
     public function vloginauth(Request $request)
     {
         try {
-            $validateUser = Validator::make($request->all(), 
-            [
-                'email' => 'required|email',
-                'password' => 'required',
-                'device_token'=>'required',
-            ]);
+            $validateUser = Validator::make(
+                $request->all(),
+                [
+                    'email' => 'required|email',
+                    'password' => 'required',
+                    'device_token' => 'required',
+                ]
+            );
 
-            if($validateUser->fails()){
+            if ($validateUser->fails()) {
                 return response()->json([
                     'status' => false,
                     'message' => 'validation error',
                     'errors' => $validateUser->errors()
                 ], 401);
             }
-            
-            if ( $this->attemptLogin($request)) {
+
+            if ($this->attemptLogin($request)) {
                 if ($request->hasSession()) {
                     $request->session()->put('auth.password_confirmed_at', time());
                 }
-                
-                if(Auth::user()->utype !== 'VDR')
-                {
+
+                if (Auth::user()->utype !== 'VDR') {
                     return response()->json([
                         'status' => false,
                         'message' => 'Email & Password does not match with our record.',
                     ], 200);
-            
+
                 }
-                
+
                 // Auth::user()->update(['device_token'=>$request->token]);
-                User::find(Auth::user()->id)->update(['device_token'=>$request->token]);
-                 if(!isset(Auth::user()->referral_code))
-                    {
-                        User::where('id',Auth::user()->id)->update(['referral_code'=>$this->ticket_number()]);
-                    }
+                User::find(Auth::user()->id)->update(['device_token' => $request->token]);
+                if (!isset(Auth::user()->referral_code)) {
+                    User::where('id', Auth::user()->id)->update(['referral_code' => $this->ticket_number()]);
+                }
                 $user = Auth::user();
-                    return response()->json([
-                        'status' => true,
-                        'message' => 'User Logged In Successfully',
-                        'token' => $user->createToken("API TOKEN")->plainTextToken
-                    ], 200);
-            }else{
+                return response()->json([
+                    'status' => true,
+                    'message' => 'User Logged In Successfully',
+                    'token' => $user->createToken("API TOKEN")->plainTextToken
+                ], 200);
+            } else {
 
                 return response()->json([
                     'status' => false,
@@ -587,43 +612,44 @@ class AuthController extends Controller
     }
 
 
-     public function VGenrateOtp(Request $request)
+    public function VGenrateOtp(Request $request)
     {
         try {
-            $validateUser = Validator::make($request->all(), 
-                    [
-                        'number' => 'required'
-                    ]);
+            $validateUser = Validator::make(
+                $request->all(),
+                [
+                    'number' => 'required'
+                ]
+            );
 
-                    if($validateUser->fails()){
-                        return response()->json([
-                            'status' => false,
-                            'message' => 'validation error',
-                            'errors' => $validateUser->errors()
-                        ], 200);
-                    }
+            if ($validateUser->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $validateUser->errors()
+                ], 200);
+            }
 
-            $user = User::where('phone',$request->number)->where('utype','VDR')->first();
-            if(isset($user))
-            {
+            $user = User::where('phone', $request->number)->where('utype', 'VDR')->first();
+            if (isset($user)) {
                 // $otp= rand(100000, 999999);
-                $otp ="123456";
-                User::where('phone',$request->number)->update(['otp'=>$otp]);
-                
+                $otp = "123456";
+                User::where('phone', $request->number)->update(['otp' => $otp]);
+
                 return response()->json([
                     'status' => true,
                     'message' => '6 digit Otp send to your registor mobile number!',
                     'otp' => $otp
                 ], 200);
-            }else{
-                
-            
+            } else {
+
+
                 return response()->json([
                     'status' => false,
                     'message' => 'This Mobile is number not registor!'
                 ], 200);
             }
-            
+
 
         } catch (\Throwable $th) {
             return response()->json([
@@ -635,33 +661,34 @@ class AuthController extends Controller
     public function GenrateOtp(Request $request)
     {
         try {
-            $validateUser = Validator::make($request->all(), 
-                    [
-                        'number' => 'required'
-                    ]);
+            $validateUser = Validator::make(
+                $request->all(),
+                [
+                    'number' => 'required'
+                ]
+            );
 
-                    if($validateUser->fails()){
-                        return response()->json([
-                            'status' => false,
-                            'message' => 'validation error',
-                            'errors' => $validateUser->errors()
-                        ], 200);
-                    }
+            if ($validateUser->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $validateUser->errors()
+                ], 200);
+            }
 
-            $user = User::where('phone',$request->number)->where('utype','VDR')->first();
-            if(isset($user))
-            {
+            $user = User::where('phone', $request->number)->first();
+            if (isset($user)) {
                 // $otp= rand(100000, 999999);
-                $otp ="123456";
-                User::where('phone',$request->number)->update(['otp'=>$otp]);
-                
+                $otp = "123456";
+                User::where('phone', $request->number)->update(['otp' => $otp]);
+
                 return response()->json([
                     'status' => true,
                     'message' => '6 digit Otp send to your registor mobile number!',
                     'otp' => $otp
                 ], 200);
-            }else{
-                
+            } else {
+
                 User::create([
                     'name' => $request->number,
                     'email' => $request->number . '@gmail.com',
@@ -670,17 +697,17 @@ class AuthController extends Controller
                 ]);
 
                 // $otp= rand(100000, 999999);
-                $otp ="123456";
-                User::where('phone',$request->number)->update(['otp'=>$otp]);
-                
+                $otp = "123456";
+                User::where('phone', $request->number)->update(['otp' => $otp]);
+
                 return response()->json([
                     'status' => true,
                     'message' => '6 digit Otp send to your mobile number!',
                     'otp' => $otp
                 ], 200);
-                
+
             }
-            
+
 
         } catch (\Throwable $th) {
             return response()->json([
@@ -690,59 +717,58 @@ class AuthController extends Controller
         }
     }
 
-    public function VOtpLogin (Request $request)
+    public function VOtpLogin(Request $request)
     {
         try {
-            $validateUser = Validator::make($request->all(), 
-                    [
-                        'number' => 'required',
-                        'otp' =>'required',
-                        'device_token'=>'required',
-                    ]);
+            $validateUser = Validator::make(
+                $request->all(),
+                [
+                    'number' => 'required',
+                    'otp' => 'required',
+                    'device_token' => 'required',
+                ]
+            );
 
-                    if($validateUser->fails()){
-                        return response()->json([
-                            'status' => false,
-                            'message' => 'validation error',
-                            'errors' => $validateUser->errors()
-                        ], 200);
-                    }
-
-            $userc = User::where('phone',$request->number)->where('utype','VDR')->first();
-            if(isset($userc))
-            {
-                if($userc->otp == $request->otp)
-                {
-                    Auth::login($userc);
-                    
-                    User::find(Auth::user()->id)->update(['device_token'=>$request->token,'otp'=>null]);
-                     if(!isset(Auth::user()->referral_code))
-                        {
-                            User::where('id',Auth::user()->id)->update(['referral_code'=>$this->ticket_number()]);
-                        }
-                    $user = Auth::user();
-                        return response()->json([
-                            'status' => true,
-                            'message' => 'User Logged In Successfully',
-                            'token' => $user->createToken("API TOKEN")->plainTextToken
-                        ], 200);
-                    
-                }else{
-                     return response()->json([
+            if ($validateUser->fails()) {
+                return response()->json([
                     'status' => false,
-                    'message' => 'This Otp is Wrong!'
+                    'message' => 'validation error',
+                    'errors' => $validateUser->errors()
                 ], 200);
-                    
+            }
+
+            $userc = User::where('phone', $request->number)->where('utype', 'VDR')->first();
+            if (isset($userc)) {
+                if ($userc->otp == $request->otp) {
+                    Auth::login($userc);
+
+                    User::find(Auth::user()->id)->update(['device_token' => $request->token, 'otp' => null]);
+                    if (!isset(Auth::user()->referral_code)) {
+                        User::where('id', Auth::user()->id)->update(['referral_code' => $this->ticket_number()]);
+                    }
+                    $user = Auth::user();
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'User Logged In Successfully',
+                        'token' => $user->createToken("API TOKEN")->plainTextToken
+                    ], 200);
+
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'This Otp is Wrong!'
+                    ], 200);
+
                 }
-                
-            }else{
-                
+
+            } else {
+
                 return response()->json([
                     'status' => false,
                     'message' => 'This Mobile is number not registor!'
                 ], 200);
             }
-            
+
 
         } catch (\Throwable $th) {
             return response()->json([

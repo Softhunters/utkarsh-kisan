@@ -178,15 +178,16 @@ class HomeComponent extends Component
         $banners = Banner::where('status', 1)->where('for', 'home')->get();
         // $cbanners = Banner::where('status',1)->where('for','1')->get();
         $products = Product::with(['seller', 'category', 'subCategories'])
+            ->where('featured', '!=', 1)
             ->where('sale_price', '>', 0)
             ->where('status', 1)
             ->where('stock_status', 'instock')
-            ->whereHas('category', function ($q) {
-                $q->where('status', 1)->where('is_home', 1);
-            })
-            ->whereHas('subCategories', function ($q) {
-                $q->where('status', 1)->where('is_home', 1);
-            })
+            // ->whereHas('category', function ($q) {
+            //     $q->where('status', 1)->where('is_home', 1);
+            // })
+            // ->whereHas('subCategories', function ($q) {
+            //     $q->where('status', 1)->where('is_home', 1);
+            // })
             ->inRandomOrder()
             ->take(8)
             ->get();
@@ -195,12 +196,12 @@ class HomeComponent extends Component
             ->where('featured', 1)
             ->where('status', 1)
             ->where('stock_status', 'instock')
-            ->whereHas('category', function ($q) {
-                $q->where('status', 1)->where('is_home', 1);
-            })
-            ->whereHas('subCategories', function ($q) {
-                $q->where('status', 1)->where('is_home', 1);
-            })
+            // ->whereHas('category', function ($q) {
+            //     $q->where('status', 1)->where('is_home', 1);
+            // })
+            // ->whereHas('subCategories', function ($q) {
+            //     $q->where('status', 1)->where('is_home', 1);
+            // })
             ->inRandomOrder()
             ->take(8)
             ->get();

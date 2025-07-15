@@ -12,7 +12,7 @@
                          <h1 class="h3 m-0">Add Tax</h1>
                      </div>
                      <div class="col-auto d-flex">
-                         <a href="{{route('admin.taxs')}}" class="btn btn-primary">All Tax</a>
+                         <a href="{{ route('admin.taxs') }}" class="btn btn-primary">All Tax</a>
                      </div>
 
                  </div>
@@ -25,38 +25,49 @@
                              <div class="sa-entity-layout__main">
                                  <div class="card">
                                      <div class="card-body p-5">
-                                         @if(Session::has('message'))
-                                         <div class="alert alert-success" role="alert">{{Session::get('message')}}</div>
+                                         @if (Session::has('message'))
+                                             <div class="alert alert-success" role="alert">
+                                                 {{ Session::get('message') }}</div>
                                          @endif
-                                         <form class="form-horizontal" enctype="multipart/form-data" wire:submit.prevent="addTax">
+                                         <form class="form-horizontal" enctype="multipart/form-data"
+                                             wire:submit.prevent="addTax">
                                              <div class="mb-5">
                                                  <h2 class="mb-0 fs-exact-18">Basic information</h2>
                                              </div>
                                              <div class="mb-4">
-                                                 <label for="form-banner/name" class="form-label">Title<span class="text-danger"> *</span></label>
+                                                 <label for="form-banner/name" class="form-label">Title<span
+                                                         class="text-danger"> *</span></label>
                                                  <input type="text" placeholder="Title" class="form-control"
                                                      wire:model="tax_name" />
-                                                 @error('tax_name') <p class="text-danger">{{$message}}</p> @enderror
+                                                 @error('tax_name')
+                                                     <p class="text-danger">{{ $message }}</p>
+                                                 @enderror
                                              </div>
-                                             
+
 
                                              <div class="mb-4">
-                                                 <label for="form-banner/image" class="form-label">Type<span class="text-danger"> *</span></label>
+                                                 <label for="form-banner/image" class="form-label">Type<span
+                                                         class="text-danger"> *</span></label>
                                                  <div class="input-group input-group--sa-slug">
 
-                                                    <select class="form-control" wire:model="type">
-                                                        <option value="">Select</option>
-                                                        <option value="1">Percantage</option>
-                                                        <option value="2">Flat</option>
-                                                    </select>
+                                                     <select class="form-control" wire:model="type">
+                                                         <option value="">Select</option>
+                                                         <option value="1">Percantage</option>
+                                                         <option value="2">Flat</option>
+                                                     </select>
                                                  </div>
-                                                    @error('type') <p class="text-danger">{{$message}}</p> @enderror
+                                                 @error('type')
+                                                     <p class="text-danger">{{ $message }}</p>
+                                                 @enderror
                                              </div>
                                              <div class="mb-4">
-                                                 <label for="form-banner/name" class="form-label">Value<span class="text-danger"> *</span></label>
+                                                 <label for="form-banner/name" class="form-label">Value<span
+                                                         class="text-danger"> *</span></label>
                                                  <input type="number" placeholder="15" class="form-control"
                                                      wire:model="value" />
-                                                 @error('value') <p class="text-danger">{{$message}}</p> @enderror
+                                                 @error('value')
+                                                     <p class="text-danger">{{ $message }}</p>
+                                                 @enderror
                                              </div>
                                              <div class="mb-4">
                                                  <label for="form-banner/image" class="form-label">Status</label>
@@ -68,6 +79,9 @@
                                                          <option value="1">Active</option>
                                                      </select>
                                                  </div>
+                                                 @error('status')
+                                                     <p class="text-danger">{{ $message }}</p>
+                                                 @enderror
                                              </div>
                                              <div class="mb-4 text-center">
                                                  <button type="submit" class="btn btn-primary">Submit</button>

@@ -95,15 +95,16 @@ Route::get('/cart', CartComponent::class)->name('cart');
 Route::get('/check-out', CheckOutComponent::class)->name('check-out');
 Route::get('/thankyou', ThankyouComponent::class)->name('thankyou');
 
-
-Route::get('/contact-us', ContactUsComponent::class)->name('contact-us');
-Route::get('/about-us',AboutUsComponent::class)->name('about-us');
-
-
 Route::get('/shop', ShopComponent::class)->name('shop');
 Route::get('/vendor/product_list/{slug}', VendorProductComponent::class)->name('vendorProduct');
 Route::get('/category/{category_slug}/{scategory_slug?}', CategorySearchComponent::class)->name('product.category');
 Route::get('/product-detail/{slug}', ProductDetailsComponent::class)->name('product-details');
+
+
+
+Route::get('/contact-us', ContactUsComponent::class)->name('contact-us');
+Route::get('/about-us',AboutUsComponent::class)->name('about-us');
+
 Route::get('/vdrregistor', [RegisterController::class, 'vdrregisterview'])->name('vdrregisterview');
 Route::get('/uregisteor', [RegisterController::class, 'uregisteorview'])->name('udregisteorview');
 Route::post('/uregisteor', [RegisterController::class, 'uregisteor'])->name('udregisteor');

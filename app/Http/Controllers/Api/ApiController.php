@@ -324,11 +324,41 @@ class ApiController extends Controller
 
     public function GetCart(Request $request)
     {
-        $result['cart'] = Product::where('user_id', Auth::user()->id)
-            ->select('carts.*', 'products.slug', 'products.regular_price', 'products.discount_value', 'users.name as seller_name')
-            ->leftJoin('carts', 'products.id', '=', 'carts.product_id')
-            ->leftJoin('users', 'carts.seller_id', '=', 'users.id')
-            ->withAvg('reviews', 'rating')->get();
+        // $result['cart'] = Product::select('carts.*', 'products.slug', 'products.regular_price', 'products.discount_value', 'users.name as seller_name')
+        //     ->leftJoin('carts', 'products.id', '=', 'carts.product_id')
+        //     ->leftJoin('users', 'carts.seller_id', '=', 'users.id')
+        //     ->where('carts.user_id', Auth::user()->id)
+        //     ->withAvg('reviews', 'rating')->get();
+
+        $carts = Cart::with([
+            'product:id,name,image,slug,regular_price,sale_price',
+            'seller:id,name',
+            'product.reviews'
+        ])->where('user_id', Auth::id())->get();
+      
+
+        $result['cart'] = $carts->map(function ($cart) {
+            $product = $cart->product;
+            $sellerProduct = $cart->sellerProduct;
+          
+            return [
+                'id' => $cart->id,
+                'product_id' => $product->id,
+                'user_id' => $cart->user_id,
+                'seller_id' => $cart->seller_id,
+                'product_name' => $product->name,
+                'product_image' => $product->image,
+                'price' => $sellerProduct->price ?? $product->sale_price,
+                'quantity' => $cart->quantity,
+                'slug' => $product->slug,
+                'regular_price' => $product->regular_price,
+                'seller_name' => $cart->seller->name ?? null,
+                'reviews_avg_rating' => $product->reviews->avg('rating'),
+                'created_at' => $cart->created_at,
+                'updated_at' => $cart->updated_at,
+            ];
+        });
+
         return response()->json([
             'status' => true,
 

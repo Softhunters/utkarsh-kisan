@@ -32,12 +32,22 @@ class LoginController extends Controller
 
         if ($this->attemptLogin($request)) {
 
+            if (Auth::user()->status == 0 || Auth::user()->is_active == 3) {
+                Auth::logout();
+                return redirect()->back()->withErrors([
+                    'email' => 'Your account is blocked or deactivated. Please contact support.',
+                ]);
+            }
+
             if ($request->hasSession()) {
                 $request->session()->put('auth.password_confirmed_at', time());
             }
             if (!isset(Auth::user()->referral_code)) {
                 User::where('id', Auth::user()->id)->update(['referral_code' => $this->ticket_number()]);
             }
+
+            session(['user_id' => Auth::id()]);
+
             // $this->movewishlist($request);
             // $this->movecart($request);
 
@@ -74,6 +84,7 @@ class LoginController extends Controller
             }
             //dd(Auth::user());
             //return $this->sendLoginResponse($request);
+            session(['user_id' => Auth::id()]);
             $user = Auth::user();
 
             if ($user->status == 0 || $user->is_active == 3) {

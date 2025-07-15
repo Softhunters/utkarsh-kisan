@@ -56,6 +56,17 @@ class ApiVendorController extends Controller
                 'errors' => $valid->errors()
             ], 200);
         } else {
+
+            $existing = VendorProduct::where('product_id', $request->product_id)
+                ->where('vendor_id', Auth::id())
+                ->first();
+
+            if ($existing) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'This product variant already exists for the vendor.',
+                ], 200);
+            }
             $vendorProduct = new VendorProduct();
             $vendorProduct->product_id = $request->product_id;
             $vendorProduct->vendor_id = Auth::id();

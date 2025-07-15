@@ -204,7 +204,7 @@ class AddProductComponent extends Component
         $subcategories = SubSubCategory::where('sub_category_id',$this->s_id)->where('status','!=',3)->get();
         $attributes = Attribute::where('status','!=',3)->get();
         $brands = Brand::where('status','!=',3)->get();
-        $taxs = Tax::where('status','!=',3)->get();
+        $taxs = Tax::where('status','!=',3)->where('status',1)->get();
       
         return view('livewire.admin.product.add-product-component',['subcategories' =>$subcategories,'categories'=>$categories,'scategories'=>$scategories,'attributes'=>$attributes,'brands'=>$brands,'taxs'=>$taxs
         ])->layout('layouts.admin');
