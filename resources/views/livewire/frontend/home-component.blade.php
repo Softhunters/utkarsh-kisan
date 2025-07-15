@@ -17,10 +17,12 @@
     <div class="hero3 mb-90">
         <div class="background-text">
             <h2 class="marquee_text">
-                <img src="{{ asset('assets/images/icon/mark-logo.svg') }}" alt="image" class="mark-logo" /><span>No Middlemen
-                     Just Pure Goodness;</span> Up To 50%<img src="{{ asset('assets/images/icon/mark-logo.svg') }}"
-                    alt="image" class="mark-logo" /><span> Best Quality, Best prices;
-</span> Up To 50%
+                <img src="{{ asset('assets/images/icon/mark-logo.svg') }}" alt="image" class="mark-logo" /><span>No
+                    Middlemen ,
+                    Just Pure Goodness</span> 
+                    <img src="{{ asset('assets/images/icon/mark-logo.svg') }}"
+                    alt="image" class="mark-logo" /><span> Best Quality, Best prices
+                </span>  
             </h2>
         </div>
         @if (isset($sliders[0]))
@@ -32,8 +34,10 @@
                                 <!--<div class="container">-->
                                 <div>
                                     <a href="{{ $slider->link }}">
+                                        
                                         <img class="img-fluid banner-imgas"
                                             src="{{ asset('admin/slider') }}/{{ $slider->images }}" alt />
+                                         
                                     </a>
                                 </div>
                                 <!--</div>-->
@@ -56,9 +60,10 @@
             <div class="row mb-60">
                 <div class="col-lg-12 d-flex align-items-center justify-content-between flex-wrap gap-3 utkrsh_title">
                     <div class="section-title3 align-items-center  ">
-                        <h2><img class="kishan_left" src="{{ asset('assets/images/icon/utkarsh-kisan_bg.png') }}" width="40" height="40" alt /><span
-                                class="word">Browse By Categories</span><img
-                                src="{{ asset('assets/images/icon/utkarsh-kisan_bg.png') }}" width="40" height="40" alt /></h2>
+                        <h2><img class="kishan_left" src="{{ asset('assets/images/icon/utkarsh-kisan_bg.png') }}"
+                                width="40" height="40" alt /><span class="word">Browse By Categories</span><img
+                                src="{{ asset('assets/images/icon/utkarsh-kisan_bg.png') }}" width="40"
+                                height="40" alt /></h2>
                     </div>
                     <div class="slider-btn-wrap">
                         <div class="slider-btn prev-btn-11">
@@ -162,14 +167,14 @@
                                             <!--<a href="#"><img src="{{ asset('assets/images/icon/Icon-cart3.svg') }}" alt /></a>-->
                                         @else
                                             <a href="#"
-                                                wire:click.prevent="AddtoCart({{ $product->id }},{{ $product->sale_price }},{{$product->seller->vendor_id??''}})"><img
+                                                wire:click.prevent="AddtoCart({{ $product->id }},{{ $product->sale_price }},{{ $product->seller->vendor_id ?? '' }})"><img
                                                     src="{{ asset('assets/images/icon/Icon-cart3.svg') }}" alt /></a>
                                         @endif
                                     </li>
                                     <li>
                                         @if (in_array($product->id, $wishp))
                                             <a href="#"
-                                                wire:click.prevent="removeFromWishlist({{ $product->id }},{{$product->seller->vendor_id??''}})"><img
+                                                wire:click.prevent="removeFromWishlist({{ $product->id }},{{ $product->seller->vendor_id ?? '' }})"><img
                                                     src="{{ asset('assets/images/icon/Icon-favorites3.svg') }}"
                                                     alt /></a>
                                         @else
@@ -229,8 +234,8 @@
             <div class="row d-md-none d-block pt-30">
                 <div class="col-lg-12 d-flex justify-content-center">
                     <div class="h3-view-btn">
-                        <a href="#">View All Product<img src="{{ asset('assets/images/icon/haf-button-2.svg') }}"
-                                alt /></a>
+                        <a href="#">View All Product<img
+                                src="{{ asset('assets/images/icon/haf-button-2.svg') }}" alt /></a>
                     </div>
                 </div>
             </div>
@@ -290,9 +295,10 @@
             <div class="row mb-60">
                 <div class="col-lg-12 d-flex align-items-center justify-content-between flex-wrap gap-3 utkrsh_title">
                     <div class="section-title3">
-                        <h2><img class="kishan_left" src="{{ asset('assets/images/icon/utkarsh-kisan_bg.png') }}" width="40" height="40" alt /><span
-                                class="word">Featured Items</span><img
-                                src="{{ asset('assets/images/icon/utkarsh-kisan_bg.png') }}" width="40" height="40" alt /></h2>
+                        <h2><img class="kishan_left" src="{{ asset('assets/images/icon/utkarsh-kisan_bg.png') }}"
+                                width="40" height="40" alt /><span class="word">Featured Items</span><img
+                                src="{{ asset('assets/images/icon/utkarsh-kisan_bg.png') }}" width="40"
+                                height="40" alt /></h2>
                     </div>
                     <div class="slider-btn-wrap">
                         <div class="slider-btn prev-btn-12">
@@ -416,19 +422,22 @@
                 <div class="col-lg-12 col-md-6 col-sm-8">
                     <div class="offer-banner-card">
                         <div class="offer-img d-lg-none d-flex justify-content-center">
-                            <img src="{{ asset('assets/images/bg/offer-image.png') }}" height="120px" alt />
+                            <img src="{{ asset('assets/images/bg/wheet_img.png') }}" height="100px" alt />
                         </div>
                         <div class="offer-content">
-                            <h4><a href="#">Experience the true taste of farm-fresh  produce delivered right to your home
- </a></h4>
+                            <h4><a href="#">Experience the true taste of farm-fresh produce <br>
+                                    <span class="d-flex justify-content-center"> delivered right to your home </span>
+                                </a></h4>
                             {{-- <div class="price">
                                 <h6>₹25.00</h6>
                                 <del>₹30.00</del>
                             </div> --}}
                         </div>
                         <div class="offer-img d-lg-block d-none">
-                            <img src="{{ asset('assets/images/bg/offer-image.png') }}" height="120px" alt />
+                            <img src="{{ asset('assets/images/bg/wheet_img.png') }}" height="120px" alt />
                         </div>
+                        <a href={{route('shop')}}>
+
                         <div class="offer-right d-flex">
                             <div class="offer-tag d-lg-none d-flex justify-content-center">
                                 {{-- <h3>50%<span>Off</span></h3> --}}
@@ -442,6 +451,7 @@
                                 </h3>
                             </div>
                         </div>
+                    </a>
                     </div>
                 </div>
             </div>
@@ -589,10 +599,12 @@
                                 </div>
                                 <div class="content">
                                     <h3><a href="#">Home Delivery </a></h3>
-                                    <p>Grains, Millets, and Pulses straight to your porch, and you will make sure that quality, purity, and convenience will accompany you every time you get your order....</p>
+                                    <p>Grains, Millets, and Pulses straight to your porch, and you will make sure that
+                                        quality, purity, and convenience will accompany you every time you get your
+                                        order.</p>
                                 </div>
-                                <a class="more-btn" href="#">More Details<img
-                                        src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a>
+                                {{-- <a class="more-btn" href="#">More Details<img
+                                        src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a> --}}
                             </div>
                         </div>
                         <div class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-prev"
@@ -606,10 +618,11 @@
                                 </div>
                                 <div class="content">
                                     <h3><a href="#">Straight from Farmers</a></h3>
-                                    <p>Get your grains directly from farmers. Shop directly, know where you are getting them, and empower real humans to produce something that you need daily...</p>
+                                    <p>Get your grains directly from farmers. Shop directly, know where you are getting
+                                        them, and empower real humans to produce something that you need daily.</p>
                                 </div>
-                                <a class="more-btn" href="#">More Details<img
-                                        src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a>
+                                {{-- <a class="more-btn" href="#">More Details<img
+                                        src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a> --}}
                             </div>
                         </div>
                         <div class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-active"
@@ -623,10 +636,11 @@
                                 </div>
                                 <div class="content">
                                     <h3><a href="#"> Bulk Orders</a></h3>
-                                    <p>Buy grains, pulses, and millets in bulk and use them in business, functions, or organizations - efficiently delivered with reasonable costs assured..</p>
+                                    <p>Buy grains, pulses, and millets in bulk and use them in business, functions, or
+                                        organizations - efficiently delivered with reasonable costs assured.</p>
                                 </div>
-                                <a class="more-btn" href="#">More Details<img
-                                        src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a>
+                                {{-- <a class="more-btn" href="#">More Details<img
+                                        src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a> --}}
                             </div>
                         </div>
                         {{-- <div class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-next" data-swiper-slide-index="3" role="group" aria-label="4 / 4" style="width: 267px; margin-right: 24px;">
@@ -653,10 +667,11 @@
                                 </div>
                                 <div class="content">
                                     <h3><a href="#">Customize your cart </a></h3>
-                                    <p>Make it yourself, in your combination of grains and pulses to your specification - flexible volume, high quality, freshly packed with care....</p>
+                                    <p>Make it yourself, in your combination of grains and pulses to your specification
+                                        - flexible volume, high quality, freshly packed with care.</p>
                                 </div>
-                                <a class="more-btn" href="#">More Details<img
-                                        src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a>
+                                {{-- <a class="more-btn" href="#">More Details<img
+                                        src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a> --}}
                             </div>
                         </div>
                         <div class="swiper-slide swiper-slide-prev" data-swiper-slide-index="1" role="group"
@@ -669,12 +684,14 @@
                                 </div>
                                 <div class="content">
                                     <h3><a href="#">Home Delivery </a></h3>
-                                    <p>Grains, Millets, and Pulses straight to your porch, and you will make sure that quality, purity, and convenience will accompany you every time you get your order.
+                                    <p>Grains, Millets, and Pulses straight to your porch, and you will make sure that
+                                        quality, purity, and convenience will accompany you every time you get your
+                                        order.
 
-.</p>
+                                        </p>
                                 </div>
-                                <a class="more-btn" href="#">More Details<img
-                                        src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a>
+                                {{-- <a class="more-btn" href="#">More Details<img
+                                        src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a> --}}
                             </div>
                         </div>
                         <div class="swiper-slide swiper-slide-active" data-swiper-slide-index="2" role="group"
@@ -687,10 +704,11 @@
                                 </div>
                                 <div class="content">
                                     <h3><a href="#">Straight from Farmers</a></h3>
-                                    <p>Get your grains directly from farmers. Shop directly, know where you are getting them, and empower real humans to produce something that you need daily..</p>
+                                    <p>Get your grains directly from farmers. Shop directly, know where you are getting
+                                        them, and empower real humans to produce something that you need daily.</p>
                                 </div>
-                                <a class="more-btn" href="#">More Details<img
-                                        src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a>
+                                {{-- <a class="more-btn" href="#">More Details<img
+                                        src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a> --}}
                             </div>
                         </div>
                         <!--<div class="swiper-slide swiper-slide-next" data-swiper-slide-index="3" role="group" aria-label="4 / 4" style="width: 267px; margin-right: 24px;">-->
@@ -717,11 +735,12 @@
                                 </div>
                                 <div class="content">
                                     <h3><a href="#">Bulk Orders </a></h3>
-                                    <p>Buy grains, pulses, and millets in bulk and use them in business, functions, or organizations - efficiently delivered with reasonable costs assured.
- ... </p>
+                                    <p>Buy grains, pulses, and millets in bulk and use them in business, functions, or
+                                        organizations - efficiently delivered with reasonable costs assured.
+                                        </p>
                                 </div>
-                                <a class="more-btn" href="#">More Details<img
-                                        src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a>
+                                {{-- <a class="more-btn" href="#">More Details<img
+                                        src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a> --}}
                             </div>
                         </div>
                         <div class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-prev"
@@ -735,28 +754,31 @@
                                 </div>
                                 <div class="content">
                                     <h3><a href="#">Customize your cart </a></h3>
-                                    <p>Make it yourself, in your combination of grains and pulses to your specification flexible volume, high quality, freshly packed with care.
-.</p>
+                                    <p>Make it yourself, in your combination of grains and pulses to your specification
+                                        flexible volume, high quality, freshly packed with care.
+                                        </p>
                                 </div>
-                                <a class="more-btn" href="#">More Details<img
-                                        src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a>
+                                {{-- <a class="more-btn" href="#">More Details<img
+                                        src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a> --}}
                             </div>
                         </div>
                         <div class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-active"
                             data-swiper-slide-index="2" role="group" aria-label="3 / 4"
                             style="width: 267px; margin-right: 24px;">
                             <div class="services-card1 three">
-                                <img class="services-card-vec  mark-logo" 
+                                <img class="services-card-vec  mark-logo"
                                     src="{{ asset('/assets/images/icon/mark-logo.svg') }}" alt="" />
                                 <div class="icon">
                                     <img src="{{ asset('assets/images/icon/boarding2.svg') }}" alt="" />
                                 </div>
                                 <div class="content">
                                     <h3><a href="#">Home Delivery</a></h3>
-                                    <p>Grains, Millets, and Pulses straight to your porch, and you will make sure that quality, purity, and convenience will accompany you every time you get your order..</p>
+                                    <p>Grains, Millets, and Pulses straight to your porch, and you will make sure that
+                                        quality, purity, and convenience will accompany you every time you get your
+                                        order.</p>
                                 </div>
-                                <a class="more-btn" href="#">More Details<img
-                                        src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a>
+                                {{-- <a class="more-btn" href="#">More Details<img
+                                        src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a> --}}
                             </div>
                         </div>
                         <!--<div class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-next" data-swiper-slide-index="3" role="group" aria-label="4 / 4" style="width: 267px; margin-right: 24px;">-->
@@ -784,9 +806,10 @@
             <div class="row mb-60">
                 <div class="col-lg-12 d-flex align-items-center justify-content-between flex-wrap gap-3 utkrsh_title">
                     <div class="section-title3 align-items-center">
-                        <h2><img  class="kishan_left" src="{{ asset('assets/images/icon/utkarsh-kisan_bg.png') }}" width="40" height="40" alt /><span
-                                class="word">Customers Think About Us</span><img
-                                src="{{ asset('assets/images/icon/mark-logo.svg') }}" width="40" height="40" alt /></h2>
+                        <h2><img class="kishan_left" src="{{ asset('assets/images/icon/utkarsh-kisan_bg.png') }}"
+                                width="40" height="40" alt /><span class="word">Customers Think About
+                                Us</span><img src="{{ asset('assets/images/icon/mark-logo.svg') }}" width="40"
+                                height="40" alt /></h2>
                     </div>
                     <div class="slider-btn-wrap">
                         <div class="slider-btn prev-btn-12">
