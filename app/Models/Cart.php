@@ -24,4 +24,9 @@ class Cart extends Model
             ->where('vendor_id', $this->seller_id);
     }
 
+    public function seller()
+    {
+        return $this->belongsTo(User::class, 'seller_id');
+    }
+
 }

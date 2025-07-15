@@ -63,6 +63,9 @@ class RegisterController extends Controller
             ]);
         }
 
+        session(['user_id' => $user->id]);
+
+
         // Fire the registration event
         // event(new Registered($user));
 
