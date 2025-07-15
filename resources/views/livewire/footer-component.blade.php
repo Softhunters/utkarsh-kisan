@@ -31,7 +31,8 @@
                                 <!-- <li><a href="#">Shop</a></li> -->
                                 <li><a href="{{route('contact-us')}}">Contact Us</a></li>
                                 <li><a href="{{route('vdrregisterview')}}">Kisan Registration</a></li>
-                                 <li><a href="{{route('user.account')}}">My Account</a></li>
+                                <li><a href="{{route('user.account')}}">My Account</a></li>
+                                <li><a href="{{route('vendor-subscription')}}">Our Subscription</a></li>
                                 <!-- <li><a href="#">Order Tracking</a></li>
                                 <li><a href="#">Blogs -->
                                 </a></li> 

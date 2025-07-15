@@ -235,3 +235,6 @@ Route::get('/shipping-policy', function () {
 Route::get('/vendor-terms-conditions', function () {
     return view('static-pages.vendor-terms-conditions');
 })->name('vendor-terms-and-conditions');
+Route::get('/vendor-subscription', function () {
+    return view('static-pages.vendor-subscription');
+})->name('vendor-subscription');

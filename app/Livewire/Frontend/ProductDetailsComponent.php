@@ -222,8 +222,8 @@ class ProductDetailsComponent extends Component
             $varaiants = Product::where('parent_id', $product->id)->orWhere('id', $product->id)->get();
         }
         if (Auth::check()) {
-            // $this->cartp = Cart::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
-            // $this->wishp = Wishlist::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
+            $this->cartp = Cart::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
+            $this->wishp = Wishlist::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
             // $ord = OrderItem::leftJoin('orders', 'orders.id', 'orderitems.order_id')->where('orderitems.product_id', $product->id)->where('orders.user_id', Auth::user()->id)->where('orders.status', 'delivered')->first();
             if (isset($ord)) {
                 $this->reviewyes = '1';

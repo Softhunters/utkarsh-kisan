@@ -59,8 +59,8 @@ class CategorySearchComponent extends Component
         
         if(Auth::check())
         {
-            // $this->cartp = Cart::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
-            // $this->wishp = Wishlist::where('user_id', Auth::user()->id)->pluck('product_id')->toArray(); 
+            $this->cartp = Cart::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
+            $this->wishp = Wishlist::where('user_id', Auth::user()->id)->pluck('product_id')->toArray(); 
         }else{
              if (Session::has('cart')){
                 $cartlist = $request->session()->get('cart');
@@ -140,16 +140,18 @@ class CategorySearchComponent extends Component
     {
        // dd($this->brandtype);
     }
-    public function addToWishlist(Request $request,$product_id,$product_price)
+    public function addToWishlist(Request $request,$product_id,$product_price, $seller_id = null)
     {
-        $id= $product_id;
+        $id = $product_id;
+        $seller_id = $seller_id ?? 1;
         if(Auth::check())
         {
-            $wproduct = Wishlist::where('product_id',$product_id)->where('user_id',Auth::user()->id)->first();
-            if($wproduct){
-                session()->flash('info','Item alreday added to wishlist');;
+            $wproduct = Wishlist::where('product_id', $product_id)->where('user_id', Auth::user()->id)
+                ->where('seller_id', $seller_id)->first();
+            if ($wproduct) {
+                session()->flash('info', 'Item alreday added to Wishlist');
                 return;
-            }else{
+            } else {
                 $product = Product::where('id', $product_id)->first();
                 $wishlist = new Wishlist();
                 $wishlist->user_id = Auth::user()->id;
@@ -158,8 +160,9 @@ class CategorySearchComponent extends Component
                 $wishlist->product_image = $product->image;
                 $wishlist->price = $product->sale_price;
                 $wishlist->quantity = '1';
+                $wishlist->seller_id = $seller_id;
                 $wishlist->save();
-                session()->flash('success','Item added to Wishlist!');
+                session()->flash('success', 'Item added to Wishlist!');
                 // $this->dispatch('wishlist-count-component');
                 $this->dispatch('wishlist_add');
                 return;
@@ -168,18 +171,18 @@ class CategorySearchComponent extends Component
             $product = Product::where('id', $product_id)->first();
             $wishlist = $request->session()->get('wishlist');
 
-                
-                    $wishlist[$id] = [
-                        'product_id' => $product->id,
-                        'product_name' => $product->name,
-                        'product_image' => $product->image,
-                         'quantity' => '1',
-                        'price' => $product->sale_price
-                    ];
-                    Session()->put('wishlist', $wishlist);
-                   
-                    session()->flash('success','Item added to Wishlist!');
-                $this->dispatch('wishlist_add');
+
+            $wishlist[$id] = [
+                'product_id' => $product->id,
+                'product_name' => $product->name,
+                'product_image' => $product->image,
+                'quantity' => '1',
+                'seller_id' => $seller_id,
+                'price' => $product->sale_price
+            ];
+            Session()->put('wishlist', $wishlist);
+            session()->flash('success','Item added to Wishlist!');
+            $this->dispatch('wishlist_add');
 
         }
       
@@ -187,25 +190,28 @@ class CategorySearchComponent extends Component
         return;
     }
     
-    public function removeFromWishlist(Request $request,$product_id)
+
+    public function removeFromWishlist(Request $request, $product_id, $seller_id = null)
     {
-        if(Auth::check()){
-                $wishlist = Wishlist::where('product_id',$product_id)->where('user_id',Auth::user()->id)->first();
-                if($wishlist){
-                    $wishlist->delete();
-                    session()->flash('warning','Item remove from wishlist!');
-                    // $this->dispatch('wishlist-count-component','refreshComponent');
-                    $this->dispatch('wishlist_add');
-                    return;
-                }
-        }else{
-            if (Session::has('wishlist')){
+        $seller_id = $seller_id ?? 1;
+        if (Auth::check()) {
+            $wishlist = Wishlist::where('product_id', $product_id)->where('user_id', Auth::user()->id)
+                ->where('seller_id', $seller_id)->first();
+            if ($wishlist) {
+                $wishlist->delete();
+                session()->flash('warning', 'Item remove from Wishlist!');
+                // $this->dispatch('wishlist-count-component','refreshComponent');
+                $this->dispatch('wishlist_add');
+                return;
+            }
+        } else {
+            if (Session::has('wishlist')) {
 
                 $wishlistdf = $request->session()->get('wishlist');
                 unset($wishlistdf[$product_id]);
                 Session()->put('wishlist', $wishlistdf);
                 // dd($wishlistdf);
-                session()->flash('warning','Item remove from wishlist!');
+                session()->flash('warning', 'Item remove from Wishlist!');
                 // $this->dispatch('wishlist-count-component','refreshComponent');
                 $this->dispatch('wishlist_add');
                 return;
@@ -214,16 +220,17 @@ class CategorySearchComponent extends Component
         }
         return;
     }
-    public function AddtoCart(Request $request,$product_id,$product_price)
+    public function AddtoCart(Request $request, $product_id, $product_price, $seller_id = null)
     {
-        $id= $product_id;
-        if(Auth::check())
-        {
-            $wproduct = Cart::where('product_id',$product_id)->where('user_id',Auth::user()->id)->first();
-            if($wproduct){
-                session()->flash('info','Item alreday added to Cart!');
+        $id = $product_id;
+        $seller_id = $seller_id ?? 1;
+        if (Auth::check()) {
+            $wproduct = Cart::where('product_id', $product_id)->where('user_id', Auth::user()->id)
+                ->where('seller_id', $seller_id)->first();
+            if ($wproduct) {
+                session()->flash('info', 'Item alreday added to Cart!');
                 return;
-            }else{
+            } else {
                 $product = Product::where('id', $product_id)->first();
                 // if($this->quntiti >= $product->quantity)
                 // {
@@ -237,32 +244,34 @@ class CategorySearchComponent extends Component
                 $cart->product_image = $product->image;
                 $cart->price = $product->sale_price;
                 $cart->quantity = '1';
+                $cart->seller_id = $seller_id;
                 $cart->save();
-                session()->flash('success','Item added to cart!');
+                session()->flash('success', 'Item added to Cart!');
                 // $this->dispatch('wishlist-count-component','refreshComponent');
                 $this->dispatch('cart_add');
                 return;
                 // }
             }
-        }else{
+        } else {
             $product = Product::where('id', $product_id)->first();
             $cart = $request->session()->get('cart');
 
-                
-                    $cart[$id] = [
-                        'product_id' => $product->id,
-                        'product_name' => $product->name,
-                        'product_image' => $product->image,
-                         'quantity' => '1',
-                        'price' => $product->sale_price
-                    ];
-                    Session()->put('cart', $cart);
-                   
-                    session()->flash('success','Item added to cart!');
-                
-                $this->dispatch('cart_add');
+
+            $cart[$id] = [
+                'product_id' => $product->id,
+                'product_name' => $product->name,
+                'product_image' => $product->image,
+                'quantity' => '1',
+                'seller_id' => $seller_id,
+                'price' => $product->sale_price
+            ];
+            Session()->put('cart', $cart);
+
+
+            session()->flash('success', 'Item added to Cart!');
+            $this->dispatch('cart_add');
         }
-      
+
         //  $this->dispatch('wishlist-count-component','refreshComponent');
         return;
     }

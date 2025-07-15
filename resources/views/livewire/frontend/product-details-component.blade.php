@@ -167,7 +167,7 @@
                                 <a href="{{ route('cart') }}" class="primary-btn3">Already In Cart</a>
                             @else
                                 <a href="#"
-                                    wire:click.prevent="AddtoCart({{ $product->id }},{{ $product->sale_price }},{{ $product->seller->id??'' }})"
+                                    wire:click.prevent="AddtoCart({{ $product->id }},{{ $product->sale_price }},{{ $product->seller->vendor_id??'' }})"
                                     class="primary-btn3">Add to cart</a>
                             @endif
 
@@ -656,7 +656,7 @@
         </div>
     </div>
     <!-- Vendor Details Modal -->
-    <div class="modal fade" id="vendorModal" tabindex="-1" aria-labelledby="vendorModalLabel" aria-hidden="true">
+    <div class="modal fade" id="vendorModal" tabindex="-1" aria-labelledby="vendorModalLabel" aria-hidden="true" wire:ignore>
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -673,6 +673,7 @@
                                         <th style="width: 15%;">Vendor Name</th>
                                         <th style="width: 10%;">Price</th>
                                         <th style="width: 10%;">Quantity</th>
+                                        <th style="width: 10%;">Action</th>
                                         <th style="width: 60%;">Additional Info</th>
                                     </tr>
                                 </thead>
@@ -682,6 +683,7 @@
                                             <td><a href="{{route('vendorProduct',['slug'=>$vp->vendor_id])}}">{{ $vp->vendor->name ?? 'N/A' }}</a></td>
                                             <td>₹{{ number_format($vp->price) }}</td>
                                             <td>{{ $vp->quantity }}</td>
+                                            <td><a href="#" wire:click.prevent="AddtoCart({{ $vp->product_id }},{{ $vp->price }},{{ $vp->vendor_id??'' }})" class="primary-btn3">Add to cart</a></td>
                                             <td>{!! $vp->additional_info !!}</td>
                                         </tr>
                                     @endforeach

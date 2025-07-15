@@ -517,7 +517,7 @@ class CartComponent extends Component
 
         }
         //flat discount
-// dd('sf');
+        // dd('sf');
         session()->put('coupon', [
             'code' => $coupon->code,
             'type' => $coupon->type,
