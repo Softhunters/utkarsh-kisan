@@ -24,7 +24,7 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item">
-                                    <a class="text-nowrap" href="index.html"><i class="fa fa-home mr-2"></i>Home</a>
+                                    <a class="text-nowrap" href="/"><i class="fa fa-home mr-2"></i>Home</a>
                                 </li>
 
                                 <li class="breadcrumb-item text-nowrap"><a href="account.html"><i
@@ -178,20 +178,19 @@
                                                                     @else
                                                                         @if ($orderitem->rstatus != 1)
                                                                             <a href="#"
-                                                                                class="btned btn-rounded btn-primary"
+                                                                                class="btn btn-rounded btn-primary text-white"
                                                                                 wire:click.prevent="cancelOrderItem({{ $orderitem->id }})">
-                                                                                <img src="{{ asset('img/logo/tras.png') }}"
+                                                                                {{-- <img src="{{ asset('img/logo/tras.png') }}"
                                                                                     alt=""
-                                                                                    style="width:20px;">
+                                                                                    style="width:20px;"> --}}
                                                                                 Cancel Item
                                                                             </a>
                                                                         @else
                                                                             <a href="#"
-                                                                                class="btned btn-rounded btn-primary"
-                                                                                >
-                                                                                <img src="{{ asset('img/logo/tras.png') }}"
+                                                                                class="btn btn-rounded btn-primary text-white">
+                                                                                {{-- <img src="{{ asset('img/logo/tras.png') }}"
                                                                                     alt=""
-                                                                                    style="width:20px;">
+                                                                                    style="width:20px;"> --}}
                                                                                 Canceled
                                                                             </a>
                                                                         @endif
@@ -347,8 +346,9 @@
                                         @if ($order->status == 'canceled')
                                             <li class="timeline-item @if ($order->status == 'canceled') active @endif">
                                                 <div class="timeline-figure">
-                                                    <span class="tile tile-circle tile-sm"><i
-                                                            class="ti-arrow-circle-down"></i></span>
+                                                    <span class="tile tile-circle tile-sm">
+                                                     <i class="bx bxs-x-circle orderDetailICon text-white"></i>    
+                                                    </span>
                                                 </div>
                                                 <div class="timeline-body">
                                                     <div class="media">

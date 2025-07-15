@@ -62,9 +62,11 @@
 
                                         <div class="form-group">
 
-                                            <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }} />
+                                            {{-- <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }} /> --}}
 
-                                            <label for="html">Remember Me</a></label>
+                                            <input type="checkbox"  name="checkbox" value ="1" id="html" />
+
+                                            <label for="html">Remember Me </a></label>
 
                                         </div>
 

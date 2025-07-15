@@ -86,8 +86,9 @@
                                     <div class="email-icon">
                                     <img src="{{asset('assets/images/location.svg')}}" alt>
                                     </div>
-                                    <div class="email-info ms-2 text-center">
+                                    <div class="email-info ms-2 ">
                                     <h6 ><a>{{$setting->address}}</a></h6>
+                                    {{-- <h6 ><a>508, Madhyam Marg, Agarwal Farm, Sector 9, Mansarovar, Jaipur, Rajasthan 302020</a></h6> --}}
                                     </div>
                                 </li>
                                    
