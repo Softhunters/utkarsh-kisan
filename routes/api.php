@@ -111,5 +111,8 @@ Route::middleware(['auth:sanctum'])->prefix('vendor')->group(function () {
 
     Route::get('/edit-variant/{id}', [ApiVendorController::class, 'editVariant']);
 
+    Route::get('/order-accept/{id}', [ApiVendorController::class, 'orderAccept']);
+    Route::get('/order-reject/{id}', [ApiVendorController::class, 'orderReject']);
+
 
 });

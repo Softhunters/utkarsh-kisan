@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\ProductHistory;
 use App\Models\Review;
 use App\Models\User;
 use App\Models\VendorProduct;
@@ -253,6 +254,98 @@ class ApiVendorController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Vendor profile updated successfully'
+        ], 200);
+    }
+
+    public function orderAccept($id)
+    {
+        $order = OrderItem::find($id);
+
+        if (!$order) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Order item not found.'
+            ], 200);
+        }
+
+        // Fetch product
+        $product = Product::find($order->product_id);
+
+        if (!$product) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Product not found.'
+            ], 200);
+        }
+
+        // Update ordered quantity
+        $product->order_qty += $order->quantity;
+
+        if ($order->seller_id == 1) {
+            // Admin stock handling
+            if ($product->quantity <= $product->order_qty) {
+                $product->stock_status = 'outofstock';
+            }
+            $product->save();
+        } else {
+            // Vendor stock handling
+            $vproduct = VendorProduct::where('product_id', $order->product_id)
+                ->where('vendor_id', $order->seller_id)
+                ->first();
+
+            if (!$vproduct) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Vendor product not found.'
+                ], 200);
+            }
+
+            if ($vproduct->quantity <= $order->quantity) {
+                $vproduct->stock_status = 'outofstock';
+                $vproduct->quantity = 0;
+            } else {
+                $vproduct->quantity -= $order->quantity;
+            }
+
+            $vproduct->save();
+        }
+
+        // Update order item status
+        $order->status = 'accepted';
+        $order->save();
+
+        // Record product history
+        ProductHistory::create([
+            'seller_id' => $order->seller_id,
+            'product_id' => $order->product_id,
+            'order_id' => $order->id,
+            'type' => 'minus',
+            'quantity' => $order->quantity,
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Order Accepted!'
+        ], 200);
+    }
+
+    public function orderReject($id)
+    {
+        $order = OrderItem::where('id', $id)->first();
+
+        if (!$order) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Order item not found.'
+            ], 200);
+        }
+        
+        $order->status = 'rejected';
+        $order->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Order Rejected!'
         ], 200);
     }
 }

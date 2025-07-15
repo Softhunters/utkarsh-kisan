@@ -26,7 +26,7 @@ class EditProductComponent extends Component
     use WithFileUPloads;
     public $name;
     public $slug;
-    public $short_description;
+    public $additional_info;
     public $description;
     public $manufacturer_details;
     public $regular_price;
@@ -82,7 +82,7 @@ class EditProductComponent extends Component
         $product = Product::where('slug', $product_slug)->first();
         $this->name = $product->name;
         $this->slug = $product->slug;
-        $this->short_description = $product->short_description;
+        $this->short_description = $product->additional_info;
         $this->description = $product->description;
         $this->manufacturer_details = $product->manufacturer_details;
         $this->regular_price = $product->regular_price;
@@ -139,7 +139,7 @@ class EditProductComponent extends Component
     {
         $this->validateOnly($fields, [
             'name' => 'required',
-            'short_description' => 'required',
+            'additional_info' => 'required',
             'description' => 'required',
             'regular_price' => 'required|numeric',
             'sale_price' => 'numeric',
@@ -176,7 +176,7 @@ class EditProductComponent extends Component
         //dd($this->newqtyes);
         $this->validate([
             'name' => 'required',
-            'short_description' => 'required',
+            'additional_info' => 'required',
             'description' => 'required',
             'regular_price' => 'required|numeric',
             'sale_price' => 'numeric',
@@ -209,7 +209,7 @@ class EditProductComponent extends Component
         $product = Product::find($this->product_id);
         $product->name = $this->name;
         $product->slug = $this->slug;
-        $product->short_description = $this->short_description;
+        $product->short_description = $this->additional_info;
         $product->description = $this->description;
         $product->manufacturer_details = $this->manufacturer_details;
         $product->regular_price = $this->regular_price;
@@ -309,7 +309,7 @@ class EditProductComponent extends Component
                 $product_varaint = Product::find($tdata->id);
                 $product_varaint->name = $this->name;
                 $product_varaint->slug = $this->slug . '-' . $tdata->variant_detail;
-                $product_varaint->short_description = $this->short_description;
+                $product_varaint->short_description = $this->additional_info;
                 $product_varaint->manufacturer_details = $this->manufacturer_details;
                 $product_varaint->description = $this->description;
                 $product_varaint->regular_price = $this->mrps[$key];
