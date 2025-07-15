@@ -15,7 +15,7 @@
                 <img src="assets/images/logo/happy_dog.png" alt="">
                     <h2>Thank you for your order</h2>
                             <p style="text-align:center;">A confirmation email was sent.</p>
-                            <a href="#"><button class="btn btn-primary"style="background-color: #5b5b5b;border-color:#5b5b5b;">Continue Shopping</button></a>
+                            <a href="#"><button class="btn btn-primary wishlist_shopping_btn" >Continue Shopping</button></a>
                             
           </div>
             </div>

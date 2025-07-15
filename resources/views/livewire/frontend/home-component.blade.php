@@ -17,9 +17,10 @@
     <div class="hero3 mb-90">
         <div class="background-text">
             <h2 class="marquee_text">
-                <img src="{{ asset('assets/images/icon/mark-logo.svg') }}" alt="image" class="mark-logo" /><span>Get exciting
-                    Discount</span> Up To 50%<img src="{{ asset('assets/images/icon/mark-logo.svg') }}"
-                    alt="image" class="mark-logo" /><span>On Your first buying</span> Up To 50%
+                <img src="{{ asset('assets/images/icon/mark-logo.svg') }}" alt="image" class="mark-logo" /><span>No Middlemen
+                     Just Pure Goodness;</span> Up To 50%<img src="{{ asset('assets/images/icon/mark-logo.svg') }}"
+                    alt="image" class="mark-logo" /><span> Best Quality, Best prices;
+</span> Up To 50%
             </h2>
         </div>
         @if (isset($sliders[0]))
@@ -415,27 +416,29 @@
                 <div class="col-lg-12 col-md-6 col-sm-8">
                     <div class="offer-banner-card">
                         <div class="offer-img d-lg-none d-flex justify-content-center">
-                            <img src="{{ asset('assets/images/bg/offer-img-31.png') }}" alt />
+                            <img src="{{ asset('assets/images/bg/offer-image.png') }}" height="120px" alt />
                         </div>
                         <div class="offer-content">
-                            <h4><a href="#">All Natural Cat Food Package </a></h4>
-                            <div class="price">
+                            <h4><a href="#">Experience the true taste of farm-fresh  produce delivered right to your home
+ </a></h4>
+                            {{-- <div class="price">
                                 <h6>₹25.00</h6>
                                 <del>₹30.00</del>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="offer-img d-lg-block d-none">
-                            <img src="{{ asset('assets/images/bg/offer-img-31.png') }}" alt />
+                            <img src="{{ asset('assets/images/bg/offer-image.png') }}" height="120px" alt />
                         </div>
                         <div class="offer-right d-flex">
                             <div class="offer-tag d-lg-none d-flex justify-content-center">
-                                <h3>50%<span>Off</span></h3>
+                                {{-- <h3>50%<span>Off</span></h3> --}}
+                                Shop Now
                             </div>
-                            <a class="primary-btn6" href="#">Shop Now</a>
+                            {{-- <a class="primary-btn6" href="#">Shop Now</a> --}}
                             <div class="offer-tag d-lg-flex d-none">
                                 <h3>
-                                    50%<br />
-                                    <span>Off</span>
+                                    Shop<br />
+                                    <span>Now</span>
                                 </h3>
                             </div>
                         </div>
@@ -585,9 +588,8 @@
                                         alt="" />
                                 </div>
                                 <div class="content">
-                                    <h3><a href="#">Daycare </a></h3>
-                                    <p>Daycare isn't universally off-limits. For day care to benefit and not harm your
-                                        dog, the entire staff must be particularly knowledgeable about dog...</p>
+                                    <h3><a href="#">Home Delivery </a></h3>
+                                    <p>Grains, Millets, and Pulses straight to your porch, and you will make sure that quality, purity, and convenience will accompany you every time you get your order....</p>
                                 </div>
                                 <a class="more-btn" href="#">More Details<img
                                         src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a>
@@ -603,9 +605,8 @@
                                     <img src="{{ asset('assets/images/icon/grooming2.svg') }}" alt="" />
                                 </div>
                                 <div class="content">
-                                    <h3><a href="#">Grooming </a></h3>
-                                    <p>Pet grooming means the act of bathing, brushing, clipping, or styling a pet ,
-                                        trimming a pet's nails, or providing anal.</p>
+                                    <h3><a href="#">Straight from Farmers</a></h3>
+                                    <p>Get your grains directly from farmers. Shop directly, know where you are getting them, and empower real humans to produce something that you need daily...</p>
                                 </div>
                                 <a class="more-btn" href="#">More Details<img
                                         src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a>
@@ -621,9 +622,8 @@
                                     <img src="{{ asset('assets/images/icon/boarding2.svg') }}" alt="" />
                                 </div>
                                 <div class="content">
-                                    <h3><a href="#">Boarding</a></h3>
-                                    <p>Pet boarding is leaving your pet at a professional facility meant to care for
-                                        them while you're away.</p>
+                                    <h3><a href="#"> Bulk Orders</a></h3>
+                                    <p>Buy grains, pulses, and millets in bulk and use them in business, functions, or organizations - efficiently delivered with reasonable costs assured..</p>
                                 </div>
                                 <a class="more-btn" href="#">More Details<img
                                         src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a>
@@ -652,9 +652,8 @@
                                         alt="" />
                                 </div>
                                 <div class="content">
-                                    <h3><a href="#">Daycare </a></h3>
-                                    <p>Daycare isn't universally off-limits. For day care to benefit and not harm your
-                                        dog, the entire staff must be particularly knowledgeable about dog body...</p>
+                                    <h3><a href="#">Customize your cart </a></h3>
+                                    <p>Make it yourself, in your combination of grains and pulses to your specification - flexible volume, high quality, freshly packed with care....</p>
                                 </div>
                                 <a class="more-btn" href="#">More Details<img
                                         src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a>
@@ -669,9 +668,10 @@
                                     <img src="{{ asset('assets/images/icon/grooming2.svg') }}" alt="" />
                                 </div>
                                 <div class="content">
-                                    <h3><a href="#">Grooming </a></h3>
-                                    <p>Pet grooming means the act of bathing, brushing, clipping, or styling a pet ,
-                                        trimming a pet's nails, or providing anal.</p>
+                                    <h3><a href="#">Home Delivery </a></h3>
+                                    <p>Grains, Millets, and Pulses straight to your porch, and you will make sure that quality, purity, and convenience will accompany you every time you get your order.
+
+.</p>
                                 </div>
                                 <a class="more-btn" href="#">More Details<img
                                         src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a>
@@ -686,9 +686,8 @@
                                     <img src="{{ asset('assets/images/icon/boarding2.svg') }}" alt="" />
                                 </div>
                                 <div class="content">
-                                    <h3><a href="#">Boarding</a></h3>
-                                    <p>Pet boarding is leaving your pet at a professional facility meant to care for
-                                        them while you're away.</p>
+                                    <h3><a href="#">Straight from Farmers</a></h3>
+                                    <p>Get your grains directly from farmers. Shop directly, know where you are getting them, and empower real humans to produce something that you need daily..</p>
                                 </div>
                                 <a class="more-btn" href="#">More Details<img
                                         src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a>
@@ -717,9 +716,9 @@
                                         alt="" />
                                 </div>
                                 <div class="content">
-                                    <h3><a href="#">Daycare </a></h3>
-                                    <p>Daycare isn't universally off-limits. For day care to benefit and not harm your
-                                        dog, the entire staff must be particularly knowledgeable about dog ... </p>
+                                    <h3><a href="#">Bulk Orders </a></h3>
+                                    <p>Buy grains, pulses, and millets in bulk and use them in business, functions, or organizations - efficiently delivered with reasonable costs assured.
+ ... </p>
                                 </div>
                                 <a class="more-btn" href="#">More Details<img
                                         src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a>
@@ -735,9 +734,9 @@
                                     <img src="{{ asset('assets/images/icon/grooming2.svg') }}" alt="" />
                                 </div>
                                 <div class="content">
-                                    <h3><a href="#">Grooming </a></h3>
-                                    <p>Pet grooming means the act of bathing, brushing, clipping, or styling a pet ,
-                                        trimming a pet's nails, or providing anal.</p>
+                                    <h3><a href="#">Customize your cart </a></h3>
+                                    <p>Make it yourself, in your combination of grains and pulses to your specification flexible volume, high quality, freshly packed with care.
+.</p>
                                 </div>
                                 <a class="more-btn" href="#">More Details<img
                                         src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a>
@@ -753,9 +752,8 @@
                                     <img src="{{ asset('assets/images/icon/boarding2.svg') }}" alt="" />
                                 </div>
                                 <div class="content">
-                                    <h3><a href="#">Boarding</a></h3>
-                                    <p>Pet boarding is leaving your pet at a professional facility meant to care for
-                                        them while you're away.</p>
+                                    <h3><a href="#">Home Delivery</a></h3>
+                                    <p>Grains, Millets, and Pulses straight to your porch, and you will make sure that quality, purity, and convenience will accompany you every time you get your order..</p>
                                 </div>
                                 <a class="more-btn" href="#">More Details<img
                                         src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a>

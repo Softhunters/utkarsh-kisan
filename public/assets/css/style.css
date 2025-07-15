@@ -821,7 +821,8 @@ html .ui-button.ui-state-disabled:active:hover {
 }
 
 .section-title1 h2 {
-    font-size: 3.125rem;
+    /* font-size: 3.125rem; */
+    font-size: 2rem;
     font-weight: 800;
     color: var(--title-color1);
     font-family: var(--font-dosis);
@@ -4384,7 +4385,8 @@ a.ui-button:active,
 }
 
 .services-card1 .content h3>a {
-    font-size: 2rem;
+    /* font-size: 2rem; */
+    font-size: 1.35rem;
     font-weight: 700;
     color: var(--title-color1);
     font-family: var(--font-dosis);
@@ -6939,7 +6941,7 @@ footer.style2 .social-area ul li:hover a i {
 }
 
 .h2-services-area .services-btm .services-img .services-img-bg::after {
-    content: url(../images/bg/services-img-bg-vec.png);
+    content: url(../images/bg/work-img-bg-vec.png);
     position: absolute;
     left: -40px;
     top: -50px
@@ -9264,7 +9266,12 @@ footer.style2 .social-area ul li:hover a i {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%)
+    transform: translate(-50%, -50%) !important;
+ 
+  /* position: relative !important;
+  top: 50% !important;
+  left: 50% !important; */
+  
 }
 
 @media(max-width:991px) {
@@ -15679,6 +15686,46 @@ header.style-3 .main-menu ul > li ul.sub-menu > li a:hover{
 @media screen and (max-width:767px) {
     .seller_data{
         height: 40px;
+    }
+    
+}
+
+
+.login_btn , .btn-primary {
+    background-color:var(--primary-color3) !important;
+    border-color: var(--primary-color3) !important;
+}
+
+.login_btn:hover , .btn-primary:hover{
+    background-color: var(--btn-hoverbg) !important;
+}
+
+.btn-primary:active , .login_btn:active{
+    border-color: var(--primary-color3) !important;
+}
+
+ .btn-primary:focus{
+    box-shadow: none !important;
+ }
+
+.btn-link{
+    color :var(--primary-color3) !important;
+    box-shadow: none !important;
+}
+
+/* .form-control:focus{
+    box-shadow: none !important;
+    border-color: #fff !important;
+} */
+
+
+
+@media screen and (max-width:992px) {
+
+    .about_title{
+    display: flex;
+    justify-content: center !important;
+    max-width: 100% !important;
     }
     
 }

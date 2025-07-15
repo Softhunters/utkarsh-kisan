@@ -32,9 +32,9 @@
     <div class="h1-story-area two mb-120 pt-120 ">
         <div class="container">
             <div class="row g-lg-4 gy-5">
-                <div class="col-lg-6">
-                    <div class="section-title1">
-                        <span><img src="{{ asset('assets/images/icon/section-vec-l1.svg') }}" alt />Our Story<img
+                <div class="col-lg-6"> 
+                    <div class="section-title1  ">
+                        <span class="about_title"><img src="{{ asset('assets/images/icon/section-vec-l1.svg') }}" alt />Our Story<img
                                 src="{{ asset('assets/images/icon/section-vec-r1.svg') }}" alt /></span>
                         <h2>Empowering India’s Farmers. Connecting Every Home to the Farm.</h2>
                     </div>
@@ -45,8 +45,8 @@
                             rely on their produce. Rooted in our nation’s agricultural heritage and powered by modern
                             technology, we aim to redefine how agricultural trade happens in India.
                         </p>
-                        <div class="story-title-reviews">
-                            <h3> <span> Our Mission </span> </h3>
+                        <div class="story-title-reviews  ">
+                            <h3 class="about_title"> <span> Our Mission </span> </h3>
                             {{-- <div class="review">
                                 <p>Based on <a href="#">20,921 reviews</a></p>
                                 <img src="{{asset('assets/images/icon/trastpilot.svg')}}" alt />
@@ -58,8 +58,8 @@
                             integrating digital solutions into the rural economy, Utkarsh Kisan promotes fair pricing,
                             direct market access, and technology-led growth for India’s agricultural sector.
                         </p>
-                        <div class="story-title-reviews">
-                            <h3> <span> Our Vision </span> </h3>
+                        <div class="story-title-reviews about_title">
+                            <h3 class="about_title"> <span> Our Vision </span> </h3>
 
                         </div>
                         <p>
@@ -74,7 +74,7 @@
                 </div>
                 <div class="col-lg-6 d-flex justify-content-lg-end justify-content-center">
                     <div class="story-img">
-                        <img class="img-fluid" src="{{ asset('assets/images/bg/story-img1.png') }}" alt />
+                        <img class="img-fluid" src="{{ asset('assets/images/bg/story-img.png') }}" alt />
                     </div>
                 </div>
             </div>
@@ -88,14 +88,14 @@
                     <div class="col-lg-5">
                         <div class="services-img">
                             <div class="services-img-bg">
-                                <img src="{{ asset('assets/images/icon/h2-services-img-bg.svg') }}" alt />
+                                <img src="{{ asset('assets/images/icon/h2-work-img-bg.svg') }}" alt />
                             </div>
-                            <img class="img-fluid" src="{{ asset('assets/images/bg/h2-services-img.png') }}" alt />
+                            <img class="img-fluid" src="{{ asset('assets/images/bg/kisan-work.png') }}" alt />
                         </div>
                     </div>
                     <div class="col-lg-7">
                         <div class="services-content">
-                            <img src="{{ asset('assets/images/icon/section-sl-no.svg') }}" alt />
+                            <img src="{{ asset('assets/images/icon/section-no.svg') }}" alt />
                             <h2>How Utkarsh Kisan Works</h2>
                             <p>
                                 We operate on a transparent and verified marketplace model that connects:
@@ -130,140 +130,13 @@
             </div>
         </div>
     </div>
-
-    {{-- <div class="h1-testimonial-area mb-120">
-        <div class="container-fluid">
-            <div class="row mb-50">
-                <div class="col-lg-12 d-flex justify-content-center">
-                    <div class="section-title1 text-center">
-                        <span><img src="{{ asset('assets/images/icon/section-vec-l2.svg') }}" alt />Testimonial<img
-                                src="{{ asset('assets/images/icon/section-vec-r2.svg') }}" alt /></span>
-                        <h2 class="text-white">valueable words from Customers</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-end">
-                <div class="col-xxl-10 col-md-11 p-sm-0">
-                    <div class="swiper h1-testimonial-slider">
-                        <div class="swiper-wrapper">
-                            @foreach ($testimonials as $testimonial)
-                                <div class="swiper-slide">
-                                    <div class="testimonial-card">
-                                        <div class="testimonial-img">
-                                            <img class="img-fluid"
-                                                src="{{ asset('admin/testimonial') }}/{{ $testimonial->image }}"
-                                                alt />
-                                        </div>
-                                        <div class="testimonial-content" style="height: 450px;">
-                                            <ul class="review">
-                                                @for ($i = 0; $i <= $testimonial->star; $i++)
-                                                    <li><i class="bi bi-star-fill"></i></li>
-                                                @endfor
-                                                @for ($i = 0; $i < 5 - $testimonial->star; $i++)
-                                                    <li><i class="bi bi-star"></i></li>
-                                                @endfor
-                                            </ul>
-                                            <p>{{ $testimonial->description }}</p>
-                                            <div class="author-area">
-                                                <h4>{{ $testimonial->name }}</h4>
-                                                <span>{{ $testimonial->position }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                            <div class="swiper-slide">
-                                <div class="testimonial-card">
-                                    <div class="testimonial-img">
-                                        <img class="img-fluid" src="{{ asset('assets/images/bg/h1-testi2.png') }}"
-                                            alt />
-                                    </div>
-                                    <div class="testimonial-content">
-                                        <ul class="review">
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                        </ul>
-                                        <p>Pellentesque maximus augue orci, quisdal Pellentesque maximus augue orci,
-                                            quisoki congue coug purus iaculis ida.</p>
-                                        <div class="author-area">
-                                            <h4>Sebastian Ethan</h4>
-                                            <span>Customer</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="testimonial-card">
-                                    <div class="testimonial-img">
-                                        <img class="img-fluid" src="{{ asset('assets/images/bg/h1-testi3.png') }}"
-                                            alt />
-                                    </div>
-                                    <div class="testimonial-content">
-                                        <ul class="review">
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                        </ul>
-                                        <p>Pellentesque maximus augue orci, quisdal Pellentesque maximus augue orci,
-                                            quisoki congue coug purus iaculis ida.</p>
-                                        <div class="author-area">
-                                            <h4>Anthony Dylan</h4>
-                                            <span>Customer</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="testimonial-card">
-                                    <div class="testimonial-img">
-                                        <img class="img-fluid" src="{{ asset('assets/images/bg/h1-testi4.png') }}"
-                                            alt />
-                                    </div>
-                                    <div class="testimonial-content">
-                                        <ul class="review">
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                        </ul>
-                                        <p>Pellentesque maximus augue orci, quisdal Pellentesque maximus augue orci,
-                                            quisoki congue coug purus iaculis ida.</p>
-                                        <div class="author-area">
-                                            <h4>Maverick Elias</h4>
-                                            <span>Customer</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-11">
-                    <div class="swiper-btn-wrap d-flex align-items-center justify-content-center">
-                        <div class="slider-btn prev-btn-1">
-                            <i class="bi bi-arrow-left"></i>
-                        </div>
-                        <div class="slider-btn next-btn-1">
-                            <i class="bi bi-arrow-right"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
+ 
     <div class="h1-choose-area mb-120 ">
         <div class="container">
             <div class="row g-lg-4 gy-5 justify-content-center">
                 <div class="col-lg-6">
-                    <div class="section-title1">
-                        <span><img src="{{ asset('assets/images/icon/section-vec-l1.svg') }}" alt />Why Choose Us<img
+                    <div class="section-title1 ">
+                        <span class="about_title"><img src="{{ asset('assets/images/icon/section-vec-l1.svg') }}" alt />Why Choose Us<img
                                 src="{{ asset('assets/images/icon/section-vec-r1.svg') }}" alt /></span>
                         <h2>Why We Are Different .</h2>
                     </div>
@@ -356,58 +229,20 @@
                 <div class="col-lg-6 col-md-8">
                     <div class="choose-img">
                         <div class="batch">
-                            <img src="{{ asset('assets/images/icon/choose-star.svg') }}" alt />
+                            <img src="{{ asset('assets/images/icon/Vector.svg') }}" alt />
                             <span>
                                 100% Safe<br />
                                 Your Pet
                             </span>
                         </div>
                         <div class="choose-vector">
-                            <img src="{{ asset('assets/images/icon/choose-vector.svg') }}" alt />
+                            <img src="{{ asset('assets/images/icon/choose-vector1.svg') }}" alt />
                         </div>
-                        <img class="img-fluid" src="{{ asset('assets/images/bg/choose-img.png') }}"
+                        <img class="img-fluid" src="{{ asset('assets/images/bg/choose-utkarsh.png') }}"
                             alt="choose-img" />
                     </div>
                 </div>
-                {{-- <div class="col-lg-2">
-                    <div class="choose-feature">
-                        <ul>
-                            <li>
-                                <div class="single-choose-card">
-                                    <div class="icon">
-                                        <img src="{{ asset('assets/images/icon/care.svg') }}" alt />
-                                    </div>
-                                    <div class="content">
-                                        <h4>Personalized care</h4>
-                                        <p>Pellentesque maximus augue orci, quisl congue purus iaculison</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="single-choose-card">
-                                    <div class="icon">
-                                        <img src="{{ asset('assets/images/icon/team.svg') }}" alt />
-                                    </div>
-                                    <div class="content">
-                                        <h4>Trusted Team</h4>
-                                        <p>Pellentesque maximus augue orci, quisl congue purus iaculison</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="single-choose-card">
-                                    <div class="icon">
-                                        <img src="{{ asset('assets/images/icon/mind.svg') }}" alt />
-                                    </div>
-                                    <div class="content">
-                                        <h4>Peace of mind</h4>
-                                        <p>Pellentesque maximus augue orci, quisl congue purus iaculison</p>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div> --}}
+                
             </div>
         </div>
     </div>
@@ -418,13 +253,13 @@
              <!-- Right Image -->
             <div class="col-lg-6 d-flex justify-content-center">
                 <div class="growth-img">
-                    <img class="img-fluid rounded " src="{{ asset('assets/images/bg/h2-services-img.png') }}" alt="Growth Journey Image" />
+                    <img class="img-fluid rounded " src="{{ asset('assets/images/bg/growth_image.png') }}" alt="Growth Journey Image" style="height:80% !important"/>
                 </div>
             </div>
             <!-- Left Content -->
             <div class="col-lg-6">
                 <div class="section-title1">
-                    <span class="d-flex justify-content-start">
+                    <span class="d-flex justify-content-start about_title">
                         <img src="{{ asset('assets/images/icon/section-vec-l1.svg') }}" alt="vec-left" />
                         Our Growth Journey
                         <img src="{{ asset('assets/images/icon/section-vec-r1.svg') }}" alt="vec-right" />
@@ -469,82 +304,5 @@
         </div>
     </div>
 </div>
-
-
-    {{-- <div class="team-area two mb-120 position-relative">
-        <div class="swiper-btn-wrap d-flex align-items-center justify-content-between">
-            <div class="slider-btn prev-btn-2">
-                <i class="bi bi-arrow-left"></i>
-            </div>
-            <div class="slider-btn next-btn-2">
-                <i class="bi bi-arrow-right"></i>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row mb-50">
-                <div class="col-lg-12 d-flex justify-content-center">
-                    <div class="section-title1 text-center">
-                        <span><img src="{{ asset('assets/images/icon/section-vec-l1.svg') }}" alt />Our Team<img
-                                src="{{ asset('assets/images/icon/section-vec-r1.svg') }}" alt /></span>
-                        <h2>See Our Scooby Team members</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="swiper team-slider-1">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="single-team-card">
-                                <div class="member-img">
-                                    <img class="img-fluid" src="{{ asset('assets/images/bg/team/team-1.png') }}"
-                                        alt />
-                                </div>
-                                <div class="member-content">
-                                    <span>Co-Founder</span>
-                                    <h3>Kash Preston</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="single-team-card">
-                                <div class="member-img">
-                                    <img class="img-fluid" src="{{ asset('assets/images/bg/team/team-2.png') }}"
-                                        alt />
-                                </div>
-                                <div class="member-content">
-                                    <span>Kennel Assistant</span>
-                                    <h3>Scarlett Emily</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="single-team-card">
-                                <div class="member-img">
-                                    <img class="img-fluid" src="{{ asset('assets/images/bg/team/team-3.png') }}"
-                                        alt />
-                                </div>
-                                <div class="member-content">
-                                    <span>Veterinary Assistant</span>
-                                    <h3>Jackson Mateo</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="single-team-card">
-                                <div class="member-img">
-                                    <img class="img-fluid" src="{{ asset('assets/images/bg/team/team-4.png') }}"
-                                        alt />
-                                </div>
-                                <div class="member-content">
-                                    <span>Groomer Manager</span>
-                                    <h3>Madison Ellie</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
+ 
 </div>
