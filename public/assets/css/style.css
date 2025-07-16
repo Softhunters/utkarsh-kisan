@@ -15755,3 +15755,65 @@ header.style-3 .main-menu ul > li ul.sub-menu > li a:hover{
 .subscription_price:hover{
     color:var(--btn-hoverbg);
 } */
+
+
+
+.otp-inputs input {
+        width: 60px;
+        height: 50px;
+        font-size: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+
+    .otp-inputs input:focus {
+        border-color: #000;
+        outline: none;
+        box-shadow: none !important;
+    }
+    .resend_otp{
+        color:var(--primary-color3)
+    }
+    .resend_otp:hover{
+        color: var()
+
+    }
+
+
+@media screen  and (max-width: 453px) {
+
+    .otp-inputs input {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 2px;
+    }
+
+    .otp_verify{
+        font-size: 25px !important;
+    }
+
+    .otp_verify{
+        font-size: 20px !important;
+    }
+}
+@media screen  and (max-width: 375px) {
+
+    .otp-inputs input {
+        width: 38px;
+        height: 40px;
+        font-size: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 2px;
+    }
+}
+@media screen  and (max-width: 326px) {
+
+    .otp-inputs input {
+         width: 32px;
+    height: 32px;
+    }
+}
