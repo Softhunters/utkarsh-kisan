@@ -4102,8 +4102,9 @@ header.style-3 .main-menu ul li.menu-item-has-children>i {
 }
 
 .hero3 .hero-wrapper {
-    background-image: url(../images/bg/h3-banner-bg.png);
-    background-color: #f0eccd;
+    background-image: url(../images/bg/home-banner-back.png);
+    /* background-color: #f0eccd; */
+    background-color: #f7fff4;
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -9818,7 +9819,6 @@ footer.style2 .social-area ul li:hover a i {
     content: url(../images/icon/breadcumb-vec.svg);
     padding-right: .625rem;
      
-    
 }
 
 .inner-page-banner .banner-img {
@@ -12444,7 +12444,8 @@ footer.style2 .social-area ul li:hover a i {
 }
 
 .shop-details-page .shop-details-content h3 {
-    font-size: 2.188rem;
+    /* font-size: 2.188rem; */
+    font-size: 1.8rem;
     font-weight: 700;
     color: var(--title-color1);
     font-family: var(--font-dosis);
@@ -15574,7 +15575,9 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
     color: black;
 }
 .wishs{
-    gap:74px;
+    /* gap:74px; */
+    gap:50px;
+    /* align-items: center; */
 }
 .compare-wishlist-area ul {
     display: flex;
@@ -15739,3 +15742,16 @@ header.style-3 .main-menu ul > li ul.sub-menu > li a:hover{
     }
     
 }
+
+
+
+/* .subscription_price{
+
+    color:var(--primary-color3);
+    font-weight: 500;
+
+}
+
+.subscription_price:hover{
+    color:var(--btn-hoverbg);
+} */
