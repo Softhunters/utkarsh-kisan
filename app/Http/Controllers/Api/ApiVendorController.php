@@ -15,6 +15,7 @@ use App\Models\VendorProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use function PHPUnit\Framework\returnArgument;
 
 class ApiVendorController extends Controller
 {
@@ -184,13 +185,35 @@ class ApiVendorController extends Controller
 
         ], 200);
     }
-    public function orderList()
+    public function vendorOrders()
     {
-        // $orders = Order::whereHas('orderItemsApi', function ($query) {
-        //     $query->where('orderitems.seller_id', Auth::id());
-        // })->with(['orderItemsApi'])->get();
+        $orders = OrderItem::where('seller_id', Auth::id())
+            ->get()
+            ->groupBy('order_id')
+            ->map(function ($items) {
+                $first = $items->first();
 
-        $orders = OrderItem::where('seller_id', Auth::id())->with(['orderApi', 'productApi'])->get();
+                return [
+                    'order_id' => $first->order_id,
+                    'created_at' => $first->created_at,
+                    'order_number' => $first->orderApi->order_number ?? null,
+                    'status' => $first->status,
+                    'total_price' => $items->sum(function ($item) {
+                        return ($item->price ?? 0) * ($item->quantity ?? 1);
+                    }),
+                    'total_products' => $items->count(),
+                ];
+            })
+            ->values();
+
+        return response()->json([
+            'status' => true,
+            'result' => $orders
+        ], 200);
+    }
+    public function orderList($id)
+    {
+        $orders = OrderItem::where('order_id', $id)->where('seller_id', Auth::id())->with(['orderApi', 'productApi'])->get();
 
         return response()->json([
             'status' => true,
@@ -339,13 +362,70 @@ class ApiVendorController extends Controller
                 'message' => 'Order item not found.'
             ], 200);
         }
-        
+
         $order->status = 'rejected';
         $order->save();
 
         return response()->json([
             'status' => true,
             'message' => 'Order Rejected!'
+        ], 200);
+    }
+    public function addQuantity(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+            'quantity' => 'required',
+        ]);
+
+        $vendorProduct = VendorProduct::find($request->id);
+        $vendorProduct->quantity += $request->quantity;
+        $vendorProduct->save();
+
+        ProductHistory::create([
+            'seller_id' => $vendorProduct->vendor_id,
+            'product_id' => $vendorProduct->product_id,
+            'type' => 'add',
+            'quantity' => $request->quantity,
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'quantity added successfully!'
+        ], 200);
+    }
+    public function productOrderHistory(Request $request)
+    {
+        $vendorProducts = VendorProduct::with('productApi')->where('vendor_id', auth()->id())->get();
+
+        $vendorProducts->map(function($product){
+            $product->totalMinus = ProductHistory::where('seller_id', $product->vendor_id)
+                ->where('product_id', $product->product_id)
+                ->where('type', 'minus')
+                ->sum('quantity');
+
+            $product->totalAdd = ProductHistory::where('seller_id', $product->vendor_id)
+                ->where('product_id', $product->product_id)
+                ->where('type', 'add')
+                ->sum('quantity');
+
+            return $product;
+        });
+
+        return response()->json([
+            'status' => true,
+            'result' => $vendorProducts
+        ], 200);
+    }
+
+
+    public function productHistory($id)
+    {
+        $productHistory = ProductHistory::where('product_id', $id)->orderByDesc('id')->get();
+
+        return response()->json([
+            'status' => true,
+            'result' => $productHistory
         ], 200);
     }
 }
