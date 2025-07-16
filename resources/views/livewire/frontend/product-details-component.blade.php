@@ -18,7 +18,11 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{ route('index') }}">Home</a></li>
-                                <li class="breadcrumb-item active d-flex flex-wrap" aria-current="page">{{ $product->name }}</li>
+                                <li class="breadcrumb-item active d-flex flex-wrap" aria-current="page">
+                                    {{-- {{ $product->name }}  --}}
+                                    {{ substr($product->name, 0, 50) }}
+                                
+                                </li>
                             </ol>
                         </nav>
                     </div>
