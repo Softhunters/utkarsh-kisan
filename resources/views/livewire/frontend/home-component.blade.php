@@ -19,10 +19,10 @@
             <h2 class="marquee_text">
                 <img src="{{ asset('assets/images/icon/mark-logo.svg') }}" alt="image" class="mark-logo" /><span>No
                     Middlemen ,
-                    Just Pure Goodness</span> 
-                    <img src="{{ asset('assets/images/icon/mark-logo.svg') }}"
-                    alt="image" class="mark-logo" /><span> Best Quality, Best prices
-                </span>  
+                    Just Pure Goodness</span>
+                <img src="{{ asset('assets/images/icon/mark-logo.svg') }}" alt="image" class="mark-logo" /><span> Best
+                    Quality, Best prices
+                </span>
             </h2>
         </div>
         @if (isset($sliders[0]))
@@ -34,10 +34,10 @@
                                 <!--<div class="container">-->
                                 <div>
                                     <a href="{{ $slider->link }}">
-                                        
+
                                         <img class="img-fluid banner-imgas"
                                             src="{{ asset('admin/slider') }}/{{ $slider->images }}" alt />
-                                         
+
                                     </a>
                                 </div>
                                 <!--</div>-->
@@ -343,24 +343,24 @@
                                             </div>
                                             <ul class="cart-icon-list">
                                                 <li>
-                                                    @if (in_array($fproduct->id, $cartp))
+                                                    @if (in_array($product->id, $cartp))
                                                         <!--<a href="#"><img src="{{ asset('assets/images/icon/Icon-cart3.svg') }}" alt /></a>-->
                                                     @else
                                                         <a href="#"
-                                                            wire:click.prevent="AddtoCart({{ $fproduct->id }},{{ $fproduct->sale_price }})"><img
+                                                            wire:click.prevent="AddtoCart({{ $product->id }},{{ $product->sale_price }},{{ $product->seller->vendor_id ?? '' }})"><img
                                                                 src="{{ asset('assets/images/icon/Icon-cart3.svg') }}"
                                                                 alt /></a>
                                                     @endif
                                                 </li>
                                                 <li>
-                                                    @if (in_array($fproduct->id, $wishp))
+                                                    @if (in_array($product->id, $wishp))
                                                         <a href="#"
-                                                            wire:click.prevent="removeFromWishlist({{ $fproduct->id }},{{ $fproduct->sale_price }})"><img
+                                                            wire:click.prevent="removeFromWishlist({{ $product->id }},{{ $product->seller->vendor_id ?? '' }})"><img
                                                                 src="{{ asset('assets/images/icon/Icon-favorites3.svg') }}"
                                                                 alt /></a>
                                                     @else
                                                         <a href="#"
-                                                            wire:click.prevent="addToWishlist({{ $fproduct->id }},{{ $fproduct->sale_price }})"><img
+                                                            wire:click.prevent="addToWishlist({{ $product->id }},{{ $product->sale_price }})"><img
                                                                 src="{{ asset('assets/images/icon/Icon-favorites.svg') }}"
                                                                 alt /></a>
                                                     @endif
@@ -436,22 +436,22 @@
                         <div class="offer-img d-lg-block d-none">
                             <img src="{{ asset('assets/images/bg/wheet_img.png') }}" height="120px" alt />
                         </div>
-                        <a href={{route('shop')}}>
+                        <a href={{ route('shop') }}>
 
-                        <div class="offer-right d-flex">
-                            <div class="offer-tag d-lg-none d-flex justify-content-center">
-                                {{-- <h3>50%<span>Off</span></h3> --}}
-                                Shop Now
+                            <div class="offer-right d-flex">
+                                <div class="offer-tag d-lg-none d-flex justify-content-center">
+                                    {{-- <h3>50%<span>Off</span></h3> --}}
+                                    Shop Now
+                                </div>
+                                {{-- <a class="primary-btn6" href="#">Shop Now</a> --}}
+                                <div class="offer-tag d-lg-flex d-none">
+                                    <h3>
+                                        Shop<br />
+                                        <span>Now</span>
+                                    </h3>
+                                </div>
                             </div>
-                            {{-- <a class="primary-btn6" href="#">Shop Now</a> --}}
-                            <div class="offer-tag d-lg-flex d-none">
-                                <h3>
-                                    Shop<br />
-                                    <span>Now</span>
-                                </h3>
-                            </div>
-                        </div>
-                    </a>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -467,7 +467,7 @@
                 <div class="col-lg-12">
                     <div class="swiper essential-items-slider" wire:ignore>
                         <div class="swiper-wrapper">
-                            {{-- @foreach ($fproducts as $fproduct)
+                            @foreach ($fproducts as $fproduct)
                                 <div class="swiper-slide">
                                     <div class="collection-card">
                                         <div class="offer-card">
@@ -549,7 +549,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach --}}
+                            @endforeach
 
                         </div>
                     </div>
@@ -688,7 +688,7 @@
                                         quality, purity, and convenience will accompany you every time you get your
                                         order.
 
-                                        </p>
+                                    </p>
                                 </div>
                                 {{-- <a class="more-btn" href="#">More Details<img
                                         src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a> --}}
@@ -737,7 +737,7 @@
                                     <h3><a href="#">Bulk Orders </a></h3>
                                     <p>Buy grains, pulses, and millets in bulk and use them in business, functions, or
                                         organizations - efficiently delivered with reasonable costs assured.
-                                        </p>
+                                    </p>
                                 </div>
                                 {{-- <a class="more-btn" href="#">More Details<img
                                         src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a> --}}
@@ -756,7 +756,7 @@
                                     <h3><a href="#">Customize your cart </a></h3>
                                     <p>Make it yourself, in your combination of grains and pulses to your specification
                                         flexible volume, high quality, freshly packed with care.
-                                        </p>
+                                    </p>
                                 </div>
                                 {{-- <a class="more-btn" href="#">More Details<img
                                         src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a> --}}

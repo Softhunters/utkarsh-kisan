@@ -205,9 +205,9 @@ class OrderComponent extends Component
       CURLOPT_CUSTOMREQUEST => 'POST',
       CURLOPT_POSTFIELDS => $body,
       CURLOPT_HTTPHEADER => array(
-          'Content-Type: application/json',
-          'Authorization: Bearer ' . $rt
-        ),
+        'Content-Type: application/json',
+        'Authorization: Bearer ' . $rt
+      ),
     ));
 
     $response = curl_exec($curl);

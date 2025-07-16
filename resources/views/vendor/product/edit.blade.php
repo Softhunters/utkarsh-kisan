@@ -105,7 +105,14 @@
                                                         <div class="mb-4">
                                                             <label class="form-label">Quantity</label>
                                                             <input type="number" class="form-control" name="quantity"
-                                                                value="{{ $vendorProduct->quantity }}" required>
+                                                                value="{{ $vendorProduct->quantity }}" disabled>
+                                                        </div>
+
+                                                        {{-- Add Quantity --}}
+                                                        <div class="mb-4">
+                                                            <label class="form-label">Add Quantity</label>
+                                                            <input type="number" class="form-control" placeholder="Enter quantity" name="add_quantity"
+                                                                value="">
                                                         </div>
 
                                                         {{-- Additional Info --}}

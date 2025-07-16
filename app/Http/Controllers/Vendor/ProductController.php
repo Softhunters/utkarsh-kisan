@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductHistory;
 use App\Models\SubCategory;
 use App\Models\VendorProduct;
 use Illuminate\Http\Request;
@@ -75,15 +76,25 @@ class ProductController extends Controller
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'price' => 'required|integer|min:1',
-            'quantity' => 'required|integer|min:1',
         ]);
 
         $product->update([
             'product_id' => $request->product_id,
             'price' => $request->price,
-            'quantity' => $request->quantity,
             'additional_info' => $request->additional_info,
         ]);
+
+        if ($request->add_quantity) {
+            $product->quantity += $request->add_quantity;
+            $product->save();
+
+            ProductHistory::create([
+                'seller_id' => $product->vendor_id,
+                'product_id' => $product->product_id,
+                'type' => 'add',
+                'quantity' => $request->add_quantity,
+            ]);
+        }
 
         return redirect()->route('vendor.products')->with('message', 'Product updated successfully.');
     }
