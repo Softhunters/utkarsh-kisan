@@ -14,9 +14,17 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{route('index')}}">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">{{$category_name}}</li>
+                                <li class="breadcrumb-item active" aria-current="page">
+                                    {{-- {{$category_name}}  --}}
+                                    {{ substr($category_name, 0, 30) }}
+                                
+                                </li>
                                 @if(isset($scategory['name']))
-                                <li class="breadcrumb-item active" aria-current="page">{{$scategory->name}}</li>
+                                <li class="breadcrumb-item active" aria-current="page">
+                                    {{-- {{$scategory->name}} --}}
+                                    {{ substr($scategory->name, 0, 30) }}
+                                    
+                                </li>
                                 @endif
                             </ol>
                         </nav>

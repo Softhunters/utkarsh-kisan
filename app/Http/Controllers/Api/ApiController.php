@@ -63,7 +63,6 @@ class ApiController extends Controller
 
     public function CategoryData(Request $request)
     {
-
         $per_page = 10;
         $mip = Product::where('status', 1)->min('regular_price');
         $map = Product::where('status', 1)->max('regular_price');
@@ -230,7 +229,7 @@ class ApiController extends Controller
             $wish->user_id = Auth::user()->id;
             $wish->quantity = '1';
             $wish->product_name = $product->name;
-            $wish->seller_id = $request->sid;
+            $wish->seller_id = $request->sid??1;
             $wish->product_image = $product->image;
             $wish->save();
             return response()->json([
@@ -302,7 +301,7 @@ class ApiController extends Controller
             $wish->price = $product->sale_price;
             $wish->user_id = Auth::user()->id;
             $wish->quantity = $request->qty;
-            $wish->seller_id = $request->sid;
+            $wish->seller_id = $request->sid??1;
             $wish->product_name = $product->name;
             $wish->product_image = $product->image;
             $wish->save();
@@ -645,7 +644,7 @@ class ApiController extends Controller
                 $cart->product_id = $wishlist->product_id;
                 $cart->product_name = $wishlist->product_name;
                 $cart->product_image = $wishlist->product_image;
-                $cart->seller_id = $wishlist->seller_id;
+                $cart->seller_id = $wishlist->seller_id??1;
                 $cart->price = $wishlist->price;
                 $cart->quantity = $wishlist->quantity;
                 $cart->save();
@@ -680,7 +679,7 @@ class ApiController extends Controller
                 $cart->product_name = $wishlist->product_name;
                 $cart->product_image = $wishlist->product_image;
                 $cart->price = $wishlist->price;
-                $cart->seller_id = $wishlist->seller_id;
+                $cart->seller_id = $wishlist->seller_id??1;
                 $cart->quantity = $wishlist->quantity;
                 $cart->save();
                 $wishlist->delete();

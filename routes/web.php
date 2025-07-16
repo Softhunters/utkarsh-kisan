@@ -238,3 +238,12 @@ Route::get('/vendor-terms-conditions', function () {
 Route::get('/vendor-subscription', function () {
     return view('static-pages.vendor-subscription');
 })->name('vendor-subscription');
+Route::get('/new-user-login', function () {
+    return view('livewire.login2');
+})->name('new-user-login');
+Route::get('/new-user-register', function () {
+    return view('livewire.register2');
+})->name('new-user-register');
+Route::get('/get-otp', function () {
+    return view('livewire.otp');
+})->name('get-otp');

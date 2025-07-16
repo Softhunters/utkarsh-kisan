@@ -106,7 +106,8 @@ Route::middleware(['auth:sanctum'])->prefix('vendor')->group(function () {
 
     Route::get('/product-detail/{id}', [ApiVendorController::class, 'ProductData']);
 
-    Route::get('/order-list', [ApiVendorController::class, 'orderList']);
+    Route::get('/vendor-orders', [ApiVendorController::class, 'vendorOrders']);
+    Route::get('/order-list/{id}', [ApiVendorController::class, 'orderList']);
     Route::get('/order-detail/{id}', [ApiVendorController::class, 'orderDetails']);
 
     Route::get('/edit-variant/{id}', [ApiVendorController::class, 'editVariant']);
@@ -114,5 +115,9 @@ Route::middleware(['auth:sanctum'])->prefix('vendor')->group(function () {
     Route::get('/order-accept/{id}', [ApiVendorController::class, 'orderAccept']);
     Route::get('/order-reject/{id}', [ApiVendorController::class, 'orderReject']);
 
+    Route::post('/add-quantity', [ApiVendorController::class, 'addQuantity']);
+
+    Route::get('/product-order-history', [ApiVendorController::class, 'productOrderHistory']);
+    Route::get('/product-history/{id}', [ApiVendorController::class, 'productHistory']);
 
 });
