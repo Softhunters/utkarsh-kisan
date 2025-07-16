@@ -2,7 +2,7 @@
     <div class="contact-number">
         <a href="tel:{{$setting->phone}}"><img src="{{asset('assets/images/icon/support2.svg')}}" alt="" /> {{$setting->phone}}</a>
     </div>
-    <div class="opening-time text-center search-bar-input">
+    <div class="opening-time text-center search-bar-input d-none d-sm-block">
         <!-- <p>Free Shipping On Shipment of $80 Or More</p> -->
         <form action="" >
         <div class="search-bar">

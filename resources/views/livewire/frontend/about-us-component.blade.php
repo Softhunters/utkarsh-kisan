@@ -232,7 +232,6 @@
                             <img src="{{ asset('assets/images/icon/Vector.svg') }}" alt />
                             <span>
                                 100% Safe<br />
-                                Your Pet
                             </span>
                         </div>
                         <div class="choose-vector">

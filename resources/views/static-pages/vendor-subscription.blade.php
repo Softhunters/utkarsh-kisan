@@ -23,8 +23,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row" style="padding-top:20px">
-                <div class="col-4">
+            <div class="row g-4" style="padding-top:20px">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-12" >
                     <div class="services-card1">
                         <img class="services-card-vec mark-logo"
                             src="{{ asset('/assets/images/icon/mark-logo.svg') }}" alt="" />
@@ -42,7 +42,7 @@
                                 src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a> -->
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-12">
                     <div class="services-card1">
                         <img class="services-card-vec mark-logo"
                             src="{{ asset('/assets/images/icon/mark-logo.svg') }}" alt="" />
@@ -59,7 +59,7 @@
                                 src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a> -->
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-12">
                     <div class="services-card1">
                         <img class="services-card-vec mark-logo"
                             src="{{ asset('/assets/images/icon/mark-logo.svg') }}" alt="" />

@@ -12,7 +12,7 @@
             <div class="col-md-12 text-center">
                 
                 <div class="empty-wishlist text-center">
-                <img src="assets/images/logo/happy_kisan.png" alt="">
+                <img src="{{asset('assets/images/logo/happy_kisan.png')}}" alt="">
                     <h2>Thank you for your order</h2>
                             <p style="text-align:center;">A confirmation email was sent.</p>
                             <a href="#"><button class="btn btn-primary wishlist_shopping_btn" >Continue Shopping</button></a>
