@@ -77,6 +77,13 @@ class ApiVendorController extends Controller
             $vendorProduct->additional_info = $request->additional_info ?? null;
             $vendorProduct->save();
 
+            ProductHistory::create([
+                'seller_id' => $vendorProduct->vendor_id,
+                'product_id' => $vendorProduct->product_id,
+                'type' => 'add',
+                'quantity' => $request->quantity,
+            ]);
+
             return response()->json([
                 'status' => true,
                 'message' => 'Product Added Successfully!',
@@ -89,7 +96,6 @@ class ApiVendorController extends Controller
         $valid = Validator::make($request->all(), [
             'product_id' => 'required|exists:products,id',
             'price' => 'required|numeric|min:1',
-            'quantity' => 'required|numeric|min:1',
             'additional_info' => 'nullable|string',
             'status' => 'nullable|string',
         ]);
@@ -102,7 +108,6 @@ class ApiVendorController extends Controller
         } else {
             $vendorProduct = VendorProduct::where('product_id', $request->product_id)->where('vendor_id', Auth::id())->first();
             $vendorProduct->price = $request->price;
-            $vendorProduct->quantity = $request->quantity;
             $vendorProduct->status = $request->status;
             $vendorProduct->additional_info = $request->additional_info ?? null;
             $vendorProduct->save();
@@ -398,7 +403,7 @@ class ApiVendorController extends Controller
     {
         $vendorProducts = VendorProduct::with('productApi')->where('vendor_id', auth()->id())->get();
 
-        $vendorProducts->map(function($product){
+        $vendorProducts->map(function ($product) {
             $product->totalMinus = ProductHistory::where('seller_id', $product->vendor_id)
                 ->where('product_id', $product->product_id)
                 ->where('type', 'minus')
@@ -422,6 +427,13 @@ class ApiVendorController extends Controller
     public function productHistory($id)
     {
         $productHistory = ProductHistory::where('product_id', $id)->orderByDesc('id')->get();
+
+        $productHistory->map(function ($product) {
+            $orderItem = OrderItem::find($product->order_id);
+            $product->order_number = isset($orderItem) ? $orderItem->order->order_number : null;
+
+            return $product;
+        });
 
         return response()->json([
             'status' => true,

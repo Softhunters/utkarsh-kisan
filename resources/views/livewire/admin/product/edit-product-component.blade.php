@@ -69,7 +69,7 @@
                                                         <label class="control-label">Additional Info<span
                                                                 class="text-danger"> *</span></label>
                                                         <div wire:ignore>
-                                                            <textarea class ="form-control" id="short_description" placeholder="Additional Info" wire:model="additional_info">{!! $additional_info !!}</textarea>
+                                                            <textarea class ="form-control" id="additional_info" placeholder="Additional Info" wire:model="additional_info">{!! $additional_info !!}</textarea>
                                                             @error('additional_info')
                                                                 <p class="text-danger">{{ $message }}</p>
                                                             @enderror
@@ -119,12 +119,23 @@
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="mb-4">
-                                                                <label class="form-label">Quantity<span
-                                                                        class="text-danger"> *</span></label>
+                                                                <label class="form-label">Quantity</label>
                                                                 <input type ="text" placeholder="10"
                                                                     class ="form-control input-md"
-                                                                    wire:model="quantity" />
+                                                                    wire:model="quantity" disabled/>
                                                                 @error('quantity')
+                                                                    <p class="text-danger">{{ $message }}</p>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="mb-4">
+                                                                <label class="form-label">Add Quantity</label>
+                                                                <input type ="text" placeholder="eg:10"
+                                                                    class ="form-control input-md"
+                                                                    wire:model="newquantity"/>
+                                                                @error('newquantity')
                                                                     <p class="text-danger">{{ $message }}</p>
                                                                 @enderror
                                                             </div>
@@ -521,7 +532,7 @@
 @push('scripts')
     <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
     <script>
-        ClassicEditor.create(document.querySelector('#short_description'))
+        ClassicEditor.create(document.querySelector('#additional_info'))
             .then(editor => {
                 editor.model.document.on('change:data', () => {
                     @this.set('additional_info', editor.getData());

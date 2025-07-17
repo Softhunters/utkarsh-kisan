@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Product;
 
+use App\Models\ProductHistory;
 use Livewire\Component;
 use App\Models\Product;
 use App\Models\Category;
@@ -82,7 +83,7 @@ class EditProductComponent extends Component
         $product = Product::where('slug', $product_slug)->first();
         $this->name = $product->name;
         $this->slug = $product->slug;
-        $this->short_description = $product->additional_info;
+        $this->additional_info = $product->short_description;
         $this->description = $product->description;
         $this->manufacturer_details = $product->manufacturer_details;
         $this->regular_price = $product->regular_price;
@@ -183,7 +184,7 @@ class EditProductComponent extends Component
             'SKU' => 'required',
             'stock_status' => 'required',
             'featured' => 'required',
-            'quantity' => 'required|numeric',
+            // 'quantity' => 'required|numeric',
             // 'image'=>'required|mimes:jpeg,jpg,png',
             //'images'=>'required',
             'category_id' => 'required',
@@ -217,7 +218,18 @@ class EditProductComponent extends Component
         $product->SKU = $this->SKU;
         $product->stock_status = $this->stock_status;
         $product->featured = $this->featured;
-        $product->quantity = $this->quantity + $this->newquantity;
+        // $product->quantity = $this->quantity + $this->newquantity;
+
+        if ($this->newquantity) {
+            $product->quantity += $this->newquantity;
+
+            ProductHistory::create([
+                'seller_id' => '1',
+                'product_id' => $product->id,
+                'type' => 'add',
+                'quantity' => $this->newquantity,
+            ]);
+        }
         // if($this->newimage){
         //     unlink('admin/product/feat'.'/'.$product->image);
         //     $imageName= Carbon::now()->timestamp.'.'.$this->newimage->extension();
@@ -254,7 +266,7 @@ class EditProductComponent extends Component
 
             $imageName = Carbon::now()->timestamp . '.' . $this->newimage->extension();
             // $this->newimage->storeAs('product/feat', $imageName, 'public');
-            $this->newimage->storeAs('product/feat',$imageName);
+            $this->newimage->storeAs('product/feat', $imageName);
             $product->image = $imageName;
         }
 
@@ -275,7 +287,7 @@ class EditProductComponent extends Component
                 $image->storeAs('product', $imgName);
                 $imagesname .= ',' . $imgName;
             }
-            $product->images = ltrim($imagesname, ','); 
+            $product->images = ltrim($imagesname, ',');
         }
 
         $product->category_id = $this->category_id;
@@ -293,12 +305,12 @@ class EditProductComponent extends Component
         $product->meta_description = $this->meta_description;
         $product->save();
 
-        if ($this->newquantity) {
-            $prqty = new ProductQuantity();
-            $prqty->product_id = $product->id;
-            $prqty->quantity = $this->newquantity;
-            $prqty->save();
-        }
+        // if ($this->newquantity) {
+        //     $prqty = new ProductQuantity();
+        //     $prqty->product_id = $product->id;
+        //     $prqty->quantity = $this->newquantity;
+        //     $prqty->save();
+        // }
 
 
         $j = 1;

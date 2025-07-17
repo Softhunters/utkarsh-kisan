@@ -57,6 +57,55 @@ class LoginController extends Controller
         }
 
     }
+    public function vendorloginAuth(Request $request)
+    {
+        //dd($request);
+        $valid = Validator::make($request->all(), [
+            'email' => 'required',
+            'password' => 'required',
+        ], [
+            'email.required' => 'The Email field is required.',
+            'password.required' => 'The Password field is required.',
+        ]);
+        if (!$valid->passes()) {
+            return response()->json(['status' => 'error', 'msg' => 'Email and password field are required']);
+        }
+
+        if ($this->attemptLogin($request)) {
+
+            if (Auth::user()->utype != "VDR") {
+                Auth::logout();
+                return redirect()->back()->with([
+                    'error' => 'No Kisan account found.',
+                ]);
+            }
+            
+            if (Auth::user()->status == 0 || Auth::user()->is_active == 3) {
+                Auth::logout();
+                return redirect()->back()->withErrors([
+                    'error' => 'Your account is blocked or deactivated. Please contact support.',
+                ]);
+            }
+
+
+            if ($request->hasSession()) {
+                $request->session()->put('auth.password_confirmed_at', time());
+            }
+            if (!isset(Auth::user()->referral_code)) {
+                User::where('id', Auth::user()->id)->update(['referral_code' => $this->ticket_number()]);
+            }
+
+            session(['user_id' => Auth::id()]);
+
+            $this->movewishlist($request);
+            $this->movecart($request);
+
+            return redirect()->route('vendor.dashboard');
+        } else {
+            return redirect()->back()->with('error', 'Email or Password not match!');
+        }
+
+    }
 
     public function uloginview(Request $request)
     {
@@ -70,7 +119,7 @@ class LoginController extends Controller
     public function vendorlogin(Request $request)
     {
         //dd($request);
-        return view('auth.adminlogin');
+        return view('livewire.login');
     }
 
     public function adminloginauth(Request $request)
@@ -86,6 +135,13 @@ class LoginController extends Controller
             //return $this->sendLoginResponse($request);
             session(['user_id' => Auth::id()]);
             $user = Auth::user();
+
+            if (Auth::user()->utype != "ADM") {
+                Auth::logout();
+                return redirect()->back()->with([
+                    'error' => 'No Admin account found.',
+                ]);
+            }
 
             if ($user->status == 0 || $user->is_active == 3) {
                 Auth::logout();
@@ -113,22 +169,22 @@ class LoginController extends Controller
 
     public function movewishlist($request)
     {
-        if (Session::has('wishlist')){
-            
-            foreach (Session::get('wishlist') as $id=>$cart){
+        if (Session::has('wishlist')) {
 
-                $wproduct = Wishlist::where('product_id',$cart['product_id'])->where('user_id',Auth::user()->id)->first();
-                if($wproduct){
+            foreach (Session::get('wishlist') as $id => $cart) {
+
+                $wproduct = Wishlist::where('product_id', $cart['product_id'])->where('user_id', Auth::user()->id)->first();
+                if ($wproduct) {
                     // session()->flash('info','Item alreday in wishlist!');
                     // return;
-                }else{
+                } else {
                     $carModel = new Wishlist();
                     $carModel['user_id'] = Auth::user()->id;
                     $carModel['product_id'] = $cart['product_id'];
                     $carModel['product_name'] = $cart['product_name'];
                     $carModel['product_image'] = $cart['product_image'];
                     $carModel['quantity'] = $cart['quantity'];
-                    $carModel['seller_id'] = $cart['seller_id']??1;
+                    $carModel['seller_id'] = $cart['seller_id'] ?? 1;
                     $carModel['price'] = $cart['price'];
                     $carModel->save();
                 }
@@ -141,14 +197,14 @@ class LoginController extends Controller
 
     public function movecart($request)
     {
-        if (Session::has('cart')){
-            foreach (Session::get('cart') as $id=>$cart){
-                $wproduct = Cart::where('product_id',$cart['product_id'])->where('user_id', Auth::user()->id)->first();
-                if($wproduct){
+        if (Session::has('cart')) {
+            foreach (Session::get('cart') as $id => $cart) {
+                $wproduct = Cart::where('product_id', $cart['product_id'])->where('user_id', Auth::user()->id)->first();
+                if ($wproduct) {
 
                     // session()->flash('info','item alreday in Cart!');
                     // return;
-                }else{
+                } else {
 
                     $carModel = new Cart();
                     $carModel['user_id'] = Auth::user()->id;
@@ -156,7 +212,7 @@ class LoginController extends Controller
                     $carModel['product_name'] = $cart['product_name'];
                     $carModel['product_image'] = $cart['product_image'];
                     $carModel['quantity'] = $cart['quantity'];
-                    $carModel['seller_id'] = $cart['seller_id']??1;
+                    $carModel['seller_id'] = $cart['seller_id'] ?? 1;
                     $carModel['price'] = $cart['price'];
                     $carModel->save();
                 }
@@ -177,4 +233,6 @@ class LoginController extends Controller
 
         return $rcode;
     }
+
+
 }

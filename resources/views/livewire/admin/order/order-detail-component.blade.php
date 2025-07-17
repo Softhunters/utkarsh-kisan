@@ -24,14 +24,14 @@
                             {{ $order->created_at->format('H:i:s') }}</div>
                         <div class="sa-page-meta__item">{{ $order->orderItems->count() }} items</div>
                         <div class="sa-page-meta__item">Total ₹{{ $order->total }}</div>
-                        <div class="sa-page-meta__item d-flex align-items-center fs-6"><span
-                                class="badge badge-sa-success me-2">{{ $order->transaction->status }}</span>
+                        {{-- <div class="sa-page-meta__item d-flex align-items-center fs-6">
+                            <span class="badge badge-sa-success me-2">{{ $order->transaction->status }}</span>
                             @if ($order->prescription)
                                 <span class="badge badge-sa-warning me-2"><a
                                         href="{{ asset('admin/prescription') }}/{{ $order->prescription }}"
                                         target="_blank">Prescription Download</a></span>
                             @endif
-                        </div>
+                        </div> --}}
                         <div class="sa-page-meta__item d-flex align-items-center fs-6"><span
                                 class="badge badge-sa-success me-2"><a href="#" target="_blank">Address Slip
                                     Download</a></span><span class="badge badge-sa-warning me-2"><a href="#"
@@ -79,9 +79,70 @@
                                                 </td>
                                                 <td class="text-end">{{ $orderitem->quantity }}</td>
                                                 <td class="text-end">
+                                                    @php
+                                                        $status = strtolower($orderitem->status);
+                                                    @endphp
+
+                                                    @switch($status)
+                                                        @case('accepted')
+                                                            <span class="badge bg-success">Accepted</span>
+                                                        @break
+
+                                                        @case('rejected')
+                                                            <span class="badge bg-danger">Rejected</span>
+                                                        @break
+
+                                                        @case('delivered')
+                                                            <span class="badge bg-primary">Delivered</span>
+                                                        @break
+
+                                                        @case('canceled')
+                                                            <span class="badge bg-dark">Canceled</span>
+                                                        @break
+
+                                                        @default
+                                                            <span class="badge bg-warning text-dark">Pending</span>
+                                                    @endswitch
+                                                </td>
+
+                                                <td class="text-end"
+                                                    style="display: flex;justify-content: space-evenly;padding-bottom: 0px;padding-top: 23px;">
                                                     <div class="sa-price"><span class="sa-price__symbol">₹</span><span
                                                             class="sa-price__integer">{{ $orderitem->price * $orderitem->quantity }}</span><span
-                                                            class="sa-price__decimal">.00</span></div>
+                                                            class="sa-price__decimal">.00</span>
+                                                    </div>
+                                                    @if ($orderitem->status != 'delivered' || $orderitem->status != 'canceled')
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-sa-muted btn-sm" type="button"
+                                                                id="order-context-menu-0" data-bs-toggle="dropdown"
+                                                                aria-expanded="false" aria-label="More">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="3"
+                                                                    height="13" fill="currentColor">
+                                                                    <path
+                                                                        d="M1.5,8C0.7,8,0,7.3,0,6.5S0.7,5,1.5,5S3,5.7,3,6.5S2.3,8,1.5,8z M1.5,3C0.7,3,0,2.3,0,1.5S0.7,0,1.5,0 S3,0.7,3,1.5S2.3,3,1.5,3z M1.5,10C2.3,10,3,10.7,3,11.5S2.3,13,1.5,13S0,12.3,0,11.5S0.7,10,1.5,10z">
+                                                                    </path>
+                                                                </svg>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-end"
+                                                                aria-labelledby="order-context-menu-0">
+                                                                @if ($orderitem->status == 'ordered')
+                                                                    <li><a class="dropdown-item" href="#"
+                                                                            wire:click.prevent="updateOrderStatus({{ $orderitem->id }},'accepted')">
+                                                                            Accepted</a></li>
+                                                                    <li><a class="dropdown-item" href="#"
+                                                                            wire:click.prevent="updateOrderStatus({{ $orderitem->id }},'rejected')">Rejected</a>
+                                                                    </li>
+                                                                @elseif($orderitem->status == 'accepted')
+                                                                    <li><a class="dropdown-item" href="#"
+                                                                            wire:click.prevent="updateOrderStatus({{ $orderitem->id }},'canceled')">
+                                                                            Canceled</a></li>
+                                                                    <li><a class="dropdown-item" href="#"
+                                                                            wire:click.prevent="updateOrderStatus({{ $orderitem->id }},'delivered')">
+                                                                            Delivered</a></li>
+                                                                @endif
+                                                            </ul>
+                                                        </div>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -89,7 +150,7 @@
                                     </tbody>
                                     <tbody class="sa-table__group">
                                         <tr>
-                                            <td colspan="3">Subtotal</td>
+                                            <td colspan="4">Subtotal</td>
                                             <td class="text-end">
                                                 <div class="sa-price"><span class="sa-price__symbol">₹</span><span
                                                         class="sa-price__integer">{{ $order->subtotal }}</span><span
@@ -97,7 +158,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3">Tax</td>
+                                            <td colspan="4">Tax</td>
                                             <td class="text-end">
                                                 <div class="sa-price"><span class="sa-price__symbol">₹</span><span
                                                         class="sa-price__integer">{{ $order->tax }}</span><span
@@ -105,7 +166,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3">Discount</td>
+                                            <td colspan="4">Discount</td>
                                             <td class="text-end">
                                                 <div class="sa-price"><span class="sa-price__symbol">₹</span><span
                                                         class="sa-price__integer">-{{ $order->discount }}</span><span
@@ -113,7 +174,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3">
+                                            <td colspan="4">
                                                 Shipping
                                                 <div class="text-muted fs-exact-13">via Meradog</div>
                                             </td>
@@ -126,7 +187,7 @@
                                     </tbody>
                                     <tbody>
                                         <tr>
-                                            <td colspan="3">Total</td>
+                                            <td colspan="4">Total</td>
                                             <td class="text-end">
                                                 <div class="sa-price"><span class="sa-price__symbol">₹</span><span
                                                         class="sa-price__integer">{{ $order->total }}</span><span

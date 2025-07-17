@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Admin\Order;
 
+use App\Models\ProductHistory;
+use App\Models\VendorProduct;
 use Livewire\Component;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -49,6 +51,70 @@ class OrderComponent extends Component
           $product->stock_status = "outofstock";
         }
         $product->save();
+
+        // $order = OrderItem::find($id);
+
+        // if (!$order) {
+        //   return response()->json([
+        //     'status' => false,
+        //     'message' => 'Order item not found.'
+        //   ], 200);
+        // }
+
+        // // Fetch product
+        // $product = Product::find($order->product_id);
+
+        // if (!$product) {
+        //   return response()->json([
+        //     'status' => false,
+        //     'message' => 'Product not found.'
+        //   ], 200);
+        // }
+
+        // // Update ordered quantity
+        // $product->order_qty += $order->quantity;
+
+        // if ($order->seller_id == 1) {
+        //   // Admin stock handling
+        //   if ($product->quantity <= $product->order_qty) {
+        //     $product->stock_status = 'outofstock';
+        //   }
+        //   $product->save();
+        // } else {
+        //   // Vendor stock handling
+        //   $vproduct = VendorProduct::where('product_id', $order->product_id)
+        //     ->where('vendor_id', $order->seller_id)
+        //     ->first();
+
+        //   if (!$vproduct) {
+        //     return response()->json([
+        //       'status' => false,
+        //       'message' => 'Vendor product not found.'
+        //     ], 200);
+        //   }
+
+        //   if ($vproduct->quantity <= $order->quantity) {
+        //     $vproduct->stock_status = 'outofstock';
+        //     $vproduct->quantity = 0;
+        //   } else {
+        //     $vproduct->quantity -= $order->quantity;
+        //   }
+
+        //   $vproduct->save();
+        // }
+
+        // // Update order item status
+        // $order->status = 'accepted';
+        // $order->save();
+
+        // // Record product history
+        // ProductHistory::create([
+        //   'seller_id' => $order->seller_id,
+        //   'product_id' => $order->product_id,
+        //   'order_id' => $order->id,
+        //   'type' => 'minus',
+        //   'quantity' => $order->quantity,
+        // ]);
       }
 
       // $this->mkeorderapisd($order_id);
