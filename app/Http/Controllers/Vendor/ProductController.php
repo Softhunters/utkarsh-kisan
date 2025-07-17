@@ -55,6 +55,13 @@ class ProductController extends Controller
         $vendorProduct->additional_info = $request->additional_info ?? null;
         $vendorProduct->save();
 
+        ProductHistory::create([
+            'seller_id' => $vendorProduct->vendor_id,
+            'product_id' => $vendorProduct->product_id,
+            'type' => 'add',
+            'quantity' => $request->quantity,
+        ]);
+
         return redirect()->back()->with('message', 'Product added successfully!');
     }
 

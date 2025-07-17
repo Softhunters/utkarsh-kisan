@@ -1,165 +1,147 @@
 @extends('layouts.main1')
 
-
-
 @section('content')
-
     <div class="login-section pt-50 pb-90">
-
         <div class="container">
-
             <div class="row d-flex justify-content-center g-4">
-
                 <div class="col-xl-6 col-lg-8 col-md-10">
-
                     <div class="form-wrapper wow fadeInUp" data-wow-duration="1.5s" data-wow-delay=".2s">
-
                         <div class="form-title">
-
                             <h3>Log In</h3>
-
-                            <p>New Member? <a href="{{route('new-user-register')}}">signup here</a></p>
-
+                            {{-- <p>New Member? <a href="{{ route('new-user-register') }}">signup here</a></p> --}}
                         </div>
 
-                        <form class="w-100" action="#" id="frmLogin" method="post">
+                        <form id="frmLogin" method="POST">
+                            @csrf
 
-                        @csrf
-
-                            <div class="row">
-
-                                <div class="col-12">
-
-                                    <div class="form-inner">
-
-                                        <label>Enter Your Email or Phone Number *</label>
-
-                                        <input type="email" name ="email" placeholder="Enter Your Email" />
-
-                                    </div>
-
+                            <div id="loginStep">
+                                <div class="form-inner">
+                                    <label>Enter Your Phone Number *</label>
+                                    <input type="text" name="number" id="number" class="form-control"
+                                        placeholder="Enter your phone number" required>
                                 </div>
-
-                                {{--<div class="col-12">
-
-                                    <div class="form-inner">
-
-                                        <label>Password *</label>
-
-                                        <input type="password" name="password" id="password" placeholder="Password" />
-
-                                        <i class="bi bi-eye-slash" id="togglePassword"></i>
-
-                                    </div>
-
-                                </div>
-                                --}}
-
-                                <div id="login_msg" style="color:black;"></div>
-
-                                <div class="col-12">
-
-                                    <div class="form-agreement form-inner d-flex justify-content-between flex-wrap">
-
-                                        <div class="form-group">
-
- 
-                                            <input type="checkbox"  name="checkbox" value ="1" id="html" />
-
-                                            <label for="html">Remember Me </a></label>
-
-                                        </div>
-
-                                      
-
-                                        <a href="{{ route('password.request') }}" class="forgot-pass">Forgotten Email</a>
-
-                                    </div>
-
-                                </div>
-
+                                <div id="login_msg" class="text-danger mt-2"></div>
+                                <button type="submit" class="account-btn mt-3" id="sendOtpBtn">Send OTP</button>
                             </div>
 
-                            <button class="account-btn">Log in</button>
+                            <div id="otpStep" class="d-none">
+                                <div class="form-inner mb-3">
+                                    <div class="d-flex justify-content-between gap-2 otp-inputs">
+                                        @for ($i = 1; $i <= 6; $i++)
+                                            <input type="text" maxlength="1" class="otp-digit form-control text-center"
+                                                name="otp[]">
+                                        @endfor
+                                    </div>
+                                </div>
 
+                                <div id="otp_msg" class="text-success mb-2"></div>
+
+                                <div class="text-end mb-3">
+                                    <a href="#" id="resendOtp" class="resend_otp">Resend OTP</a>
+                                </div>
+
+                                <button type="button" class="account-btn" id="verifyOtpBtn">Verify OTP</button>
+                            </div>
                         </form>
 
-                        <!--<div class="alternate-signup-box">-->
-
-                        <!--    <h6>or signup WITH</h6>-->
-
-                        <!--    <div class="btn-group gap-4">-->
-
-                        <!--        <a href class="eg-btn google-btn d-flex align-items-center"><i class="bx bxl-google"></i><span>signup whit google</span></a>-->
-
-                        <!--        <a href class="eg-btn facebook-btn d-flex align-items-center"><i class="bx bxl-facebook"></i>signup whit facebook</a>-->
-
-                        <!--    </div>-->
-
-                        <!--</div>-->
-
-                        <div class="form-poicy-area">
-
-                            <p>By clicking the "signup" button, you create a Petshop account, and you agree to Petshop's <a href="#">Terms & Conditions</a> & <a href="#">Privacy Policy.</a></p>
-
+                        <div class="form-poicy-area mt-3">
+                            <p>By clicking the "signup" button, you create a Utkarsh Kisan account, and you agree to Utkarsh
+                                Kisan's <a href="#">Terms & Conditions</a> & <a href="#">Privacy Policy</a>.</p>
                         </div>
 
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
-
-
     @push('scripts')
+        <script>
+            let generatedOtp = "";
 
-    <script>
-
-        jQuery('#frmLogin').submit(function(e){
-
-        jQuery('#login_msg').html("");
-
-        e.preventDefault();
-
-        jQuery.ajax({
-
-            url:'{{ route('ulogin') }}',
-
-            data:jQuery('#frmLogin').serialize(),
-
-            type:'post',
-
-            success:function(result){
-
-            if(result.status=="error"){
-
-                jQuery('#login_msg').html(result.msg);
-
+            function sendOtp(number, callback) {
+                $.ajax({
+                    url: '/api/get-otp',
+                    type: 'POST',
+                    data: {
+                        number: number,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(res) {
+                        if (res.status) {
+                            generatedOtp = res.otp;
+                        }
+                        if (typeof callback === 'function') {
+                            callback(res);
+                        }
+                    }
+                });
             }
 
-            if(result.status=="success"){
+            $('#frmLogin').on('submit', function(e) {
+                e.preventDefault();
+                const number = $('#number').val();
 
-            // window.location.reload();
+                sendOtp(number, function(res) {
+                    if (res.status) {
+                        $('#login_msg').text(res.message);
+                        $('#loginStep').hide();
+                        $('#otpStep').removeClass('d-none');
+                    } else {
+                        $('#login_msg').text(res.message);
+                    }
+                });
+            });
 
-            window.location.href="/";
+            $('#resendOtp').on('click', function(e) {
+                e.preventDefault();
+                const number = $('#number').val();
+
+                sendOtp(number, function(res) {
+                    if (res.status) {
+                        $('#otp_msg').text("New OTP sent!");
+                    } else {
+                        $('#otp_msg').text(res.message);
+                    }
+                });
+            });
 
 
+            $('#verifyOtpBtn').on('click', function() {
+                const number = $('#number').val();
+                const userOtp = $('.otp-digit').map(function() {
+                    return $(this).val();
+                }).get().join('');
 
-            }
+                const device_token = 'web_token_123';
 
-            }
+                $.ajax({
+                    url: '/mobile-login',
+                    method: 'POST',
+                    data: {
+                        number: number,
+                        otp: userOtp,
+                        device_token: device_token,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(res) {
+                        if (res.status) {
+                            $('#otp_msg').text("Login successful. Redirecting...");
 
-        });
+                            window.location.href = "/";
+                        } else {
+                            $('#otp_msg').text(res.message);
+                        }
+                    }
+                });
+            });
 
-        });
 
-    </script>
-
+            $(document).on('keyup', '.otp-digit', function() {
+                if (this.value.length === 1) {
+                    $(this).next('.otp-digit').focus();
+                }
+            });
+        </script>
     @endpush
-
-    @endsection
+@endsection

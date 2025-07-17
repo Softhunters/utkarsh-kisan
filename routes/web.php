@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\VendorController;
 use App\Http\Controllers\Api\ApiController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Vendor\DashboardController;
@@ -110,10 +111,11 @@ Route::get('/uregisteor', [RegisterController::class, 'uregisteorview'])->name('
 Route::post('/uregisteor', [RegisterController::class, 'uregisteor'])->name('udregisteor');
 Route::get('/ulogin', [LoginController::class, 'uloginview'])->name('uloginview');
 Route::post('/ulogin', [LoginController::class, 'uloginauth'])->name('ulogin');
-Route::get('/vendorlogin', [LoginController::class, 'vendorlogin']);
+Route::get('/vendorlogin', [LoginController::class, 'vendorlogin'])->name('vendorlogin');
+Route::post('/vendorlogin', [LoginController::class, 'vendorloginAuth'])->name('vlogin');
 Route::get('/adminlogin', [LoginController::class, 'adminlogin']);
 Route::post('/adminlogin', [LoginController::class, 'adminloginauth'])->name('adminlogin');
-
+Route::post('/mobile-login', [AuthController::class, 'OtpLogin']);
 
 Auth::routes();
 

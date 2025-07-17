@@ -54,7 +54,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="d-flex fs-6"><div class="badge badge-sa-{{$level_color[$order->status]}}">{{$order->status}}</div>
-                                                    <div class="dropdown">
+                                                    {{-- <div class="dropdown">
                                                         <button class="btn btn-sa-muted btn-sm" type="button" id="order-context-menu-0" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="3" height="13" fill="currentColor">
                                                                 <path
@@ -72,7 +72,7 @@
                                                             @endif
                                                             
                                                         </ul>
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                                 </td>
                                                 <td>{{$order->orderItems->count()}} items</td>
@@ -90,13 +90,13 @@
                                                             </svg>
                                                         </button>
                                                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="order-context-menu-0">
-                                                            @if($order->status == "ordered")
+                                                            {{-- @if($order->status == "ordered")
                                                                 <li><a class="dropdown-item" href="#" wire:click.prevent="updateOrderStatus({{$order->id}},'accepted')"> Accepted</a></li>
                                                                 <li><a class="dropdown-item" href="#" wire:click.prevent="updateOrderStatus({{$order->id}},'rejected')">Rejected</a></li>
                                                             @elseif($order->status == "accepted")
                                                                 <li><a class="dropdown-item" href="#" wire:click.prevent="updateOrderStatus({{$order->id}},'canceled')"> Canceled</a></li>
                                                                 <li><a class="dropdown-item" href="#" wire:click.prevent="updateOrderStatus({{$order->id}},'delivered')"> Delivered</a></li>
-                                                            @endif
+                                                            @endif --}}
                                                            
                                                             <li><hr class="dropdown-divider" /></li>
                                                             <li><a class="dropdown-item text-danger" href="{{route('admin.order-detail',['id'=>$order->id])}}">Details</a></li>

@@ -15,9 +15,9 @@
 
                         <div class="form-title">
 
-                            <h3>Sign Up</h3>
+                            <h3>Kisan Registration</h3>
 
-                            <p>Do you already have an account? <a href="{{ route('uloginview') }}">Log in here</a></p>
+                            <p>Do you already have an account? <a href="{{ route('vendorlogin') }}">Log in here</a></p>
 
                         </div>
 

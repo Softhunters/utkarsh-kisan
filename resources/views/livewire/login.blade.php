@@ -3,7 +3,6 @@
 
 
 @section('content')
-
     <div class="login-section pt-90 pb-90">
 
         <div class="container">
@@ -16,15 +15,15 @@
 
                         <div class="form-title">
 
-                            <h3>Log In</h3>
+                            <h3>Kisan Log In</h3>
 
-                            <p>New Member? <a href="{{route('udregisteorview')}}">signup here</a></p>
+                            <p>New Member? <a href="{{ route('vdrregisterview') }}">signup here</a></p>
 
                         </div>
 
-                        <form class="w-100" action="#" id="frmLogin" method="post">
+                        <form class="w-100" action="{{ route('vlogin') }}" id="frmLogin" method="post">
 
-                        @csrf
+                            @csrf
 
                             <div class="row">
 
@@ -54,7 +53,16 @@
 
                                 </div>
 
-                                <div id="login_msg" style="color:black;"></div>
+                                <div id="login_msg">
+
+                                    @if (session('error'))
+                                        <div
+                                            style="color: #a94442; background-color: #f2dede; border: 1px solid #ebccd1; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                                            {{ session('error') }}
+                                        </div>
+                                    @endif
+                                </div>
+
 
                                 <div class="col-12">
 
@@ -64,13 +72,13 @@
 
                                             {{-- <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }} /> --}}
 
-                                            <input type="checkbox"  name="checkbox" value ="1" id="html" />
+                                            <input type="checkbox" name="checkbox" value ="1" id="html" />
 
                                             <label for="html">Remember Me </a></label>
 
                                         </div>
 
-                                      
+
 
                                         <a href="{{ route('password.request') }}" class="forgot-pass">Forgotten Password</a>
 
@@ -100,7 +108,8 @@
 
                         <div class="form-poicy-area">
 
-                            <p>By clicking the "signup" button, you create a Petshop account, and you agree to Petshop's <a href="#">Terms & Conditions</a> & <a href="#">Privacy Policy.</a></p>
+                            <p>By clicking the "signup" button, you create a Petshop account, and you agree to Petshop's <a
+                                    href="#">Terms & Conditions</a> & <a href="#">Privacy Policy.</a></p>
 
                         </div>
 
@@ -117,8 +126,7 @@
 
 
     @push('scripts')
-
-    <script>
+        {{-- <script>
 
         jQuery('#frmLogin').submit(function(e){
 
@@ -128,7 +136,7 @@
 
         jQuery.ajax({
 
-            url:'{{ route('ulogin') }}',
+            url:'{{ route('vlogin') }}',
 
             data:jQuery('#frmLogin').serialize(),
 
@@ -158,8 +166,6 @@
 
         });
 
-    </script>
-
+    </script> --}}
     @endpush
-
-    @endsection
+@endsection
