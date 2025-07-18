@@ -243,7 +243,7 @@
                     </div>
                 </div>
             </div>
-            <div class="container">
+            <div class="">
                 <div class="row mb-70">
                     <div class="col-lg-12">
                         <div class="nav nav2 nav nav-pills" id="v-pills-tab2" role="tablist"

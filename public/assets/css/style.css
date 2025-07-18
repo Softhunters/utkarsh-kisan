@@ -84,6 +84,12 @@ body {
     margin: 0
 }
 
+/* @media (min-width: 1200px) {
+  .container, .container-lg, .container-md, .container-sm, .container-xl {
+    max-width: 1140px !important;
+  }
+} */
+
 button {
     outline: none;
     border: none
@@ -4838,7 +4844,7 @@ a.ui-button:active,
 }
 
 .h1-choose-area::after {
-    content: url(../images/bg/frem-03.png);
+    /* content: url(../images/bg/frem-03.png); */
     position: absolute;
     right: 0;
     bottom: -20%;
@@ -9827,13 +9833,13 @@ footer.style2 .social-area ul li:hover a i {
 }
 
 @media(max-width:991px) {
-    .inner-page-banner .banner-img {
+    /* .inner-page-banner .banner-img {
         position: absolute;
         right: 50px;
         top: 50%;
         transform: translateY(-50%);
         opacity: .2
-    }
+    } */
 }
 
 .inner-page-banner .banner-img .banner-img-bg {
@@ -12307,7 +12313,7 @@ footer.style2 .social-area ul li:hover a i {
 }
 
 .multiselect-bar .multiselect-area .single-select.two .nice-select {
-    min-width: 150px
+    min-width: 120px
 }
 
 .shop-details-page .tab-content1 {
@@ -14852,7 +14858,7 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
     padding: 50px 25px 45px;}
     
     .inner-page-banner .banner-content h1 {
-    font-size: 2.375rem;}
+    font-size: 2rem;}
     
     header.style-3 .main-menu ul>li a {
     padding: 10px;
@@ -14985,6 +14991,13 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
     font-size: 20px;}
     .word {
     font-size: 18px;
+    
+}
+.home3-categoty-area{
+    padding-top: 0px !important;
+}
+.swiper-button-prev::after , .swiper-button-next::after{
+    font-size: 20px !important;
 }
 .accounnt_header {
     padding-top: 40px;
@@ -15289,9 +15302,9 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
     .shop-details-page .shop-details-content .shop-quantity .primary-btn3 {
         padding: 10px 38px;
       }
-      .inner-page-banner .banner-content h1 {
+      /* .inner-page-banner .banner-content h1 {
         font-size: 2.375rem;
-      }
+      } */
       .collection-card .collection-content .review span {
         font-family: var(--font-cabin);
         font-weight: 400;
@@ -15460,9 +15473,7 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
     .shop-details-page .shop-details-content .shop-quantity .primary-btn3 {
         padding: 10px 38px;
       }
-      .inner-page-banner .banner-content h1 {
-        font-size: 2.375rem;
-      }
+       
       .collection-card .collection-content .review span {
         font-family: var(--font-cabin);
         font-weight: 400;
@@ -15612,11 +15623,12 @@ header.style-3 .main-menu ul > li ul.sub-menu > li a:hover{
 
 
 .nice_num1{
-    width: 4ch !important;
+    width: 7ch !important;
 }
 
 .nice_num2{
-    width:15ch !important
+    /* width:15ch !important */
+    width:13ch !important
 }
 
 .wishlist_shopping_btn{
@@ -15679,13 +15691,32 @@ header.style-3 .main-menu ul > li ul.sub-menu > li a:hover{
 }
 
 
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
   .container, .container-md, .container-sm {
-    /* max-width: 100% !important; */
-    max-width: 90% !important;
+     max-width: 1250px
+  }
+} */
+
+@media (min-width: 1400px) {
+  .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+    max-width: 1320px;
   }
 }
-
+@media (min-width: 1200px) {
+  .container, .container-lg, .container-md, .container-sm, .container-xl {
+    max-width: 1120px;
+  }
+}
+/* @media (min-width: 992px) {
+  .container, .container-lg, .container-md, .container-sm {
+    max-width: 960px;
+  }
+}
+@media (min-width: 768px) {
+  .container, .container-md, .container-sm {
+    max-width: 720px;
+  }
+} */
 
 @media screen  and (max-width:992px){
 
@@ -15732,6 +15763,10 @@ header.style-3 .main-menu ul > li ul.sub-menu > li a:hover{
 } */
 
 
+ .growth-img img{
+        height: 80% !important;
+     }
+
 
 @media screen and (max-width:992px) {
 
@@ -15740,7 +15775,36 @@ header.style-3 .main-menu ul > li ul.sub-menu > li a:hover{
     justify-content: center !important;
     max-width: 100% !important;
     }
+
+    .about_title {
+         padding: 30px 0 18px;
+         
+    }
+
+     .h1-story-area {
+        padding-top: 0px;
+     }
+
+     .h1-story-area .section-title1  {
+        margin-bottom: 0px !important;
+     }
     
+     .growth-img {
+       display: flex;
+       justify-content: center;
+       ;
+     }
+     .growth-img img{
+        height: 100% !important;
+     }
+
+     .h1-choose-area , .h2-services-area      {
+margin-bottom: 0px !important;
+     }
+
+     .choose-section{
+        margin-top: 0px !important;
+     }
 }
 
 
@@ -15809,6 +15873,8 @@ header.style-3 .main-menu ul > li ul.sub-menu > li a:hover{
         border-radius: 5px;
         padding: 2px;
     }
+     
+    
 }
 @media screen  and (max-width: 326px) {
 
@@ -15817,3 +15883,5 @@ header.style-3 .main-menu ul > li ul.sub-menu > li a:hover{
     height: 32px;
     }
 }
+
+

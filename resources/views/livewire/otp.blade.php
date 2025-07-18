@@ -23,7 +23,7 @@
 
                         <div class="form-inner mb-3">
                             {{-- <label>Enter OTP *</label> --}}
-                            <div class="d-flex justify-content-between gap-2 otp-inputs">
+                            <div class="d-flex justify-content-center gap-2 otp-inputs">
                                 @for ($i = 1; $i <= 6; $i++)
                                     <input type="text" maxlength="1" class="otp-digit form-control text-center" name="otp[]" required>
                                 @endfor

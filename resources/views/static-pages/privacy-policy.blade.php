@@ -194,7 +194,13 @@
  
   <style>
      
-
+  @media (min-width: 768px) {
+  .container, .container-md, .container-sm {
+    /* max-width: 100% !important; */
+    /* max-width: 90% !important; */
+    max-width: 1350px
+  }
+}
    p, li {
       color: #4d4b4b !important;
    }
