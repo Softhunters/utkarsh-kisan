@@ -6,7 +6,7 @@
         </div> --}}
         <div class="container">
             <div class="row justify-content-center align-items-center text-center">
-                <div class="col-lg-6 align-items-center">
+                <div class="col-sm-6 align-items-center">
                     <div class="banner-content">
                         <h1>About Utkarsh Kisan</h1>
                         <nav aria-label="breadcrumb">
@@ -17,8 +17,8 @@
                         </nav>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="banner-img d-lg-block d-none">
+                <div class="col-sm-6">
+                    <div class="banner-img d-sm-block d-none">
                         {{-- <div class="banner-img-bg">
                             <img class="img-fluid" src="{{asset('assets/images/bg/inner-banner-vec.png')}}" alt />
                         </div> --}}
@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    <div class="h1-story-area two mb-120 pt-120 ">
+    <div class="h1-story-area two mb-120 pt-70 ">
         <div class="container">
             <div class="row g-lg-4 gy-5">
                 <div class="col-lg-6"> 
@@ -85,7 +85,7 @@
         <div class="services-btm">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-5">
+                    <div class="col-12 col-lg-5 order-2 order-lg-1">
                         <div class="services-img">
                             <div class="services-img-bg">
                                 <img src="{{ asset('assets/images/icon/h2-work-img-bg.svg') }}" alt />
@@ -93,7 +93,7 @@
                             <img class="img-fluid" src="{{ asset('assets/images/bg/kisan-work.png') }}" alt />
                         </div>
                     </div>
-                    <div class="col-lg-7">
+                    <div class="col-12 col-lg-7 order-1 order-lg-2">
                         <div class="services-content">
                             <img src="{{ asset('assets/images/icon/section-no.svg') }}" alt />
                             <h2>How Utkarsh Kisan Works</h2>
@@ -133,8 +133,8 @@
  
     <div class="h1-choose-area mb-120 ">
         <div class="container">
-            <div class="row g-lg-4 gy-5 justify-content-center">
-                <div class="col-lg-6">
+            <div class="row g-lg-4 gy-5 justify-content-center ">
+                <div class="col-lg-6  choose-section ">
                     <div class="section-title1 ">
                         <span class="about_title"><img src="{{ asset('assets/images/icon/section-vec-l1.svg') }}" alt />Why Choose Us<img
                                 src="{{ asset('assets/images/icon/section-vec-r1.svg') }}" alt /></span>
@@ -246,17 +246,17 @@
         </div>
     </div>
 
-    <div class="growth-journey-area mb-120 ">
+    <div class="growth-journey-area ">
     <div class="container">
         <div class="row g-lg-4 gy-5 align-items-center">
              <!-- Right Image -->
-            <div class="col-lg-6 d-flex justify-content-center">
-                <div class="growth-img">
-                    <img class="img-fluid rounded " src="{{ asset('assets/images/bg/growth_image.png') }}" alt="Growth Journey Image" style="height:80% !important"/>
+            <div class="col-lg-6 d-flex justify-content-center order-2 order-lg-1">
+                <div class="growth-img ">
+                    <img class="img-fluid rounded " src="{{ asset('assets/images/bg/growth_image.png') }}" alt="Growth Journey Image" />
                 </div>
             </div>
             <!-- Left Content -->
-            <div class="col-lg-6">
+            <div class="col-lg-6 order-1 order-lg-2  ">
                 <div class="section-title1">
                     <span class="d-flex justify-content-start about_title">
                         <img src="{{ asset('assets/images/icon/section-vec-l1.svg') }}" alt="vec-left" />
@@ -282,7 +282,7 @@
         </div>
 
         <!-- Join the Movement Section -->
-        <div class="row mt-5 align-items-center">
+        {{-- <div class="row  align-items-center">
             <div class="col-lg-12 text-center">
                 <div class="section-title1">
                     <span>
@@ -300,8 +300,36 @@
                     Join Us Today
                 </a>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
+
+ <div class="growth-journey-area mb-120 ">
+    <div class="container">
+ <div class="row mt-0 align-items-center">
+            <div class="col-lg-12 text-center">
+                <div class="section-title1 ">
+                    <span class="my-4">
+                        <img src="{{ asset('assets/images/icon/section-vec-l1.svg') }}" alt="vec-left" />
+                        Join the Movement
+                        <img src="{{ asset('assets/images/icon/section-vec-r1.svg') }}" alt="vec-right" />
+                    </span>
+                    <h2>Towards Responsible Agriculture and Digital Bharat</h2>
+                </div>
+                <p class="mx-auto" style="max-width: 800px;">
+                    Utkarsh Kisan is not just a platform — it's a movement towards responsible agriculture, inclusive commerce, and digital Bharat. Whether you're a farmer, a household, a vendor, or an institution — we welcome you to be part of a system that works for everyone.
+                </p>
+                <a href="#" 
+                class="btn  mt-4 primary-btn1">
+                    Join Us Today
+                </a>
+            </div>
+        </div>
+
+    </div>
+ </div>
+
+
+
  
 </div>
