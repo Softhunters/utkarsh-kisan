@@ -31,7 +31,6 @@ class WishlistCountComponent extends Component
         if (Auth::check()) {
             $this->wishlist = Wishlist::where('user_id', Auth::user()->id)->get();
             $this->wishcount = Wishlist::where('user_id', Auth::user()->id)->get()->count();
-
         } else {
             if (Session::has('wishlist')) {
                 $this->wishlist = $request->session()->get('wishlist');
