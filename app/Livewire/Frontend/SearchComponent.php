@@ -3,23 +3,81 @@
 namespace App\Livewire\Frontend;
 
 use Livewire\Component;
-use App\Models\Slider;
+use Illuminate\Http\Request;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\SubCategory;
-use App\Models\Brand;
-use App\Models\Banner;
 use App\Models\Product;
-use App\Models\Testimonial;
-use App\Models\Wishlist;
-use App\Models\Cart;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use Session;
 
-class HomeComponent extends Component
+use Illuminate\Support\Facades\Auth;
+use App\Models\Cart;
+use Session;
+use App\Models\Wishlist;
+
+class SearchComponent extends Component
 {
-    public $cartp = [];
+    public $sorting;
+    public $pagesize;
+    public $min_price;
+    public $max_price;
+    public $search;
+    public $brandtype = [];
+    public $discount = [];
     public $wishp = [];
+    public $cartp = [];
+    public $max, $min;
+
+    public function mount(Request $request)
+    {
+        $this->sorting = "default";
+        $this->pagesize = "12";
+        $this->min = Product::where('status', 1)->min('sale_price');
+        $this->max = Product::where('status', 1)->max('sale_price');
+        $this->min_price = $this->min;
+        $this->max_price = $this->max;
+        $this->search = $request->search;
+
+    }
+
+    public function render(Request $request)
+    {
+        if (Auth::check()) {
+            $this->cartp = Cart::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
+            $this->wishp = Wishlist::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
+        } else {
+            if (Session::has('cart')) {
+                $cartlist = $request->session()->get('cart');
+                $this->cartp = array_keys($cartlist);
+            }
+            if (Session::has('wishlist')) {
+                $wish = $request->session()->get('wishlist');
+                $this->wishp = array_keys($wish);
+            }
+        }
+        $category_id = Category::where('slug', 'like', '%' . $this->search . '%')->first() ? Category::where('slug', 'like', '%' . $this->search . '%')->first()->id : '';
+        $brand_id = Brand::where('brand_slug', 'like', '%' . $this->search . '%')->first() ? Brand::where('brand_slug', 'like', '%' . $this->search . '%')->first()->id : '';
+        $subcategory_id = SubCategory::where('slug', 'like', '%' . $this->search . '%')->first() ? SubCategory::where('slug', 'like', '%' . $this->search . '%')->first()->id : '';
+        // dd($category_id);
+        $query = Product::whereBetween('sale_price', [$this->min_price, $this->max_price])->where('status', 1);
+        if ($category_id) {
+            $query = $query->where('category_id', $category_id);
+        } elseif ($subcategory_id) {
+            $query = $query->where('subcategory_id', $subcategory_id);
+        } elseif ($brand_id) {
+            $query = $query->where('brand_id', $brand_id);
+        } else {
+            $query = $query->where('name', 'like', '%' . $this->search . '%')->orwhere('meta_tag', 'like', '%' . $this->search . '%');
+        }
+
+        $query = $query->distinct()->select('products.*');
+        $products = $query->paginate(20);
+        // dd($products);
+
+        $brands = Brand::where('status', 1)->get();
+        $categorys = Category::where('status', 1)->get();
+        return view('livewire.frontend.search-component', ['categorys' => $categorys, 'products' => $products, 'brands' => $brands])->layout('layouts.main');
+    }
+
 
     public function addToWishlist(Request $request, $product_id, $product_price, $seller_id = null)
     {
@@ -156,62 +214,9 @@ class HomeComponent extends Component
         //  $this->dispatch('wishlist-count-component','refreshComponent');
         return;
     }
-    public function render(Request $request)
+
+    public function brandseletc()
     {
-        if (Auth::check()) {
-            $this->cartp = Cart::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
-            $this->wishp = Wishlist::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
-        } else {
-            if (Session::has('cart')) {
-                $cartlist = $request->session()->get('cart');
-                $this->cartp = array_keys($cartlist);
-            }
-            if (Session::has('wishlist')) {
-                $wish = $request->session()->get('wishlist');
-                $this->wishp = array_keys($wish);
-            }
-        }
-        $sliders = Slider::where('for', 'home')->where('status', 1)->get();
-        $categorys = Category::where('is_home', 1)->where('status', 1)->get();
-        $subcategorys = SubCategory::where('is_home', 1)->where('status', 1)->get();
-        $brands = Brand::where('is_home', 1)->where('status', 1)->get();
-        $banners = Banner::where('status', 1)->where('for', 'home')->get();
-        // $cbanners = Banner::where('status',1)->where('for','1')->get();
-        $products = Product::with(['seller', 'category', 'subCategories'])
-            ->where('featured', '!=', 1)
-            ->where('sale_price', '>', 0)
-            ->where('status', 1)
-            ->where('stock_status', 'instock')
-            ->inRandomOrder()
-            ->take(8)
-            ->get();
-
-        $fproducts = Product::with(['seller', 'category', 'subCategories'])
-            ->where('featured', 1)
-            ->where('status', 1)
-            ->where('stock_status', 'instock')
-            ->inRandomOrder()
-            ->take(8)
-            ->get();
-
-        $oproducts = Product::with(['seller', 'category', 'subCategories'])
-            ->where('sale_price', '>', 0)
-            ->where('status', 1)
-            ->where('discount_value', '>', 10)
-            ->where('stock_status', 'instock')
-            ->whereHas('category', function ($q) {
-                $q->where('status', 1)->where('is_home', 1);
-            })
-            ->whereHas('subCategories', function ($q) {
-                $q->where('status', 1)->where('is_home', 1);
-            })
-            ->inRandomOrder()
-            ->take(12)
-            ->get();
-
-        // // $products = Product::where('sale_price','>',0)->where('status',1)->where('featured',1)->where('stock_status','instock')->inRandomOrder()->get()->take(12);
-        $testimonials = Testimonial::where('status',1)->get();
-        //    dd($fproducts); 
-        return view('livewire.frontend.home-component', compact('testimonials', 'banners', 'sliders', 'oproducts', 'fproducts', 'categorys', 'subcategorys', 'products', 'brands'))->layout('layouts.main');
+        // dd($this->brandtype);
     }
 }

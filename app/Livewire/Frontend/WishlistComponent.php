@@ -29,10 +29,10 @@ class WishlistComponent extends Component
             $wishlist = Product::whereIn('products.id', $product_ids)
                 ->leftJoin('vendor_products', 'products.id', '=', 'vendor_products.product_id')
                 ->leftJoin('users', 'vendor_products.vendor_id', '=', 'users.id')
-                ->where(function ($query) use ($seller_ids) {
-                    $query->whereNull('vendor_products.vendor_id')
-                        ->orWhereIn('vendor_products.vendor_id', array_filter($seller_ids));
-                })
+                // ->where(function ($query) use ($seller_ids) {
+                //     $query->whereNull('vendor_products.vendor_id')
+                //         ->orWhereIn('vendor_products.vendor_id', array_filter($seller_ids));
+                // })
                 ->select(
                     'products.*',
                     'vendor_products.vendor_id as seller_id',

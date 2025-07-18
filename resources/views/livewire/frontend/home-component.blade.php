@@ -138,7 +138,7 @@
 
             <div class="row g-4 justify-content-center">
 
-                @foreach ($fproducts as $product)
+                @foreach ($products as $product)
                     <div class="col-lg-3 col-md-3 col-6">
                         <div class="collection-card">
                             <div class="offer-card">
@@ -234,7 +234,7 @@
             <div class="row d-md-none d-block pt-30">
                 <div class="col-lg-12 d-flex justify-content-center">
                     <div class="h3-view-btn">
-                        <a href="#">View All Product<img
+                        <a href="{{route('shop')}}">View All Product<img
                                 src="{{ asset('assets/images/icon/haf-button-2.svg') }}" alt /></a>
                     </div>
                 </div>
@@ -827,7 +827,7 @@
                 <div class="col-xxl-11">
                     <div class="swiper h3-testimonil-slider" wire:ignore>
                         <div class="swiper-wrapper">
-                            {{-- @foreach ($testimonials as $testimonial)
+                            @foreach ($testimonials as $testimonial)
                                 <div class="swiper-slide">
                                     <div class="testimonial-wrapper">
                                         <div class="review">
@@ -853,7 +853,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach --}}
+                            @endforeach
 
                         </div>
                     </div>

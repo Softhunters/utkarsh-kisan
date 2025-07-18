@@ -23,104 +23,98 @@ class ShopComponent extends Component
     public $pagesize;
     public $min_price;
     public $max_price;
-    public $max,$min;
-    public $brandtype=[];
-    public $breedtype=[];
-    public $discount =[];
-    public $wishp=[];
-    public $cartp=[];
-    public $flavourtype =[];
-    
+    public $max, $min;
+    public $brandtype = [];
+    public $breedtype = [];
+    public $discount = [];
+    public $wishp = [];
+    public $cartp = [];
+    public $flavourtype = [];
+
 
     public function mount()
     {
-        $this->sorting="default";
-        $this->pagesize="12";
-        $this->min =Product::where('status',1)->min('regular_price');
-        $this->max =Product::where('status',1)->max('regular_price');
-        $this->min_price =$this->min;
-        $this->max_price=$this->max;
+        $this->sorting = "default";
+        $this->pagesize = "10";
+        $this->min = Product::where('status', 1)->min('regular_price');
+        $this->max = Product::where('status', 1)->max('regular_price');
+        $this->min_price = $this->min;
+        $this->max_price = $this->max;
     }
 
     public function render(Request $request)
     {
-        if(Auth::check())
-        {
+        if (Auth::check()) {
             $this->cartp = Cart::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
-            $this->wishp = Wishlist::where('user_id', Auth::user()->id)->pluck('product_id')->toArray(); 
-        }else{
-             if (Session::has('cart')){
+            $this->wishp = Wishlist::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
+        } else {
+            if (Session::has('cart')) {
                 $cartlist = $request->session()->get('cart');
                 $this->cartp = array_keys($cartlist);
-             }
-             if (Session::has('wishlist')){
+            }
+            if (Session::has('wishlist')) {
                 $wish = $request->session()->get('wishlist');
                 $this->wishp = array_keys($wish);
             }
         }
-     // dd($this->pagesize);
-        $query = Product::whereBetween('regular_price',[$this->min_price,$this->max_price])->where('status',1);
-       if($this->sorting=="date"){
-        $query=$query->orderBy('products.created_at','DESC');
-       }
-       if($this->sorting=="price"){
-        $query=$query->orderBy('regular_price','ASC');
-       }
-       if($this->sorting=="price-desc"){
-        $query=$query->orderBy('regular_price','DESC');
-       }
-       if($this->brandtype != null)
-       {
-        $query=$query->whereIn('brand_id',$this->brandtype);
-       }
-       if($this->breedtype != null)
-       {
-        $query=$query->whereIn('breed_id',$this->breedtype);
-       }
-        if($this->flavourtype != null)
-       {
-        $query=$query->whereIn('flavour_id',$this->flavourtype);
-       }
+        // dd($this->pagesize);
+        $query = Product::whereBetween('sale_price', [$this->min_price, $this->max_price])->where('status', 1);
+        if ($this->sorting == "date") {
+            $query = $query->orderBy('products.created_at', 'DESC');
+        }
+        if ($this->sorting == "price") {
+            $query = $query->orderBy('sale_price', 'ASC');
+        }
+        if ($this->sorting == "price-desc") {
+            $query = $query->orderBy('sale_price', 'DESC');
+        }
+        if ($this->brandtype != null) {
+            $query = $query->whereIn('brand_id', $this->brandtype);
+        }
+        if ($this->breedtype != null) {
+            $query = $query->whereIn('breed_id', $this->breedtype);
+        }
+        if ($this->flavourtype != null) {
+            $query = $query->whereIn('flavour_id', $this->flavourtype);
+        }
 
-    //    $query=$query->distinct()->select('products.*',DB::raw('((products.regular_price - products.sale_price)/products.regular_price)*100 as offerdiscount'));
-       if($this->discount != null)
-       {
+        //    $query=$query->distinct()->select('products.*',DB::raw('((products.regular_price - products.sale_price)/products.regular_price)*100 as offerdiscount'));
+        if ($this->discount != null) {
+            //dd($this->discount);
+            $query = $query->where('discount_value', '>=', (int) min($this->discount));
+
+        }
+
         //dd($this->discount);
-        $query=$query->where('discount_value','>=',(int) min($this->discount));
-        
-       }
-       
-        //dd($this->discount);
-         $query=$query->distinct()->select('products.*');
-       
-        $products=$query->paginate($this->pagesize);
-// dd($products);
-        $categorys = Category::where('status',1)->get();
-        $brands = Brand::where('status',1)->get();
-       
-        return view('livewire.frontend.shop-component',['categorys'=>$categorys,'brands'=>$brands,'products'=>$products])->layout('layouts.main');
+        $query = $query->distinct()->select('products.*');
+
+        $products = $query->paginate($this->pagesize);
+        // dd($products);
+        $categorys = Category::where('status', 1)->get();
+        $brands = Brand::where('status', 1)->get();
+
+        return view('livewire.frontend.shop-component', ['categorys' => $categorys, 'brands' => $brands, 'products' => $products])->layout('layouts.main');
     }
 
 
     public function brandseletc()
     {
-       // dd($this->brandtype);
+        // dd($this->brandtype);
     }
     public function breedseletc()
     {
-       // dd($this->brandtype);
+        // dd($this->brandtype);
     }
     public function flavourselect()
     {
-       // dd($this->brandtype);
+        // dd($this->brandtype);
     }
-    
-    public function addToWishlist(Request $request,$product_id,$product_price, $seller_id = null)
+
+    public function addToWishlist(Request $request, $product_id, $product_price, $seller_id = null)
     {
         $id = $product_id;
         $seller_id = $seller_id ?? 1;
-        if(Auth::check())
-        {
+        if (Auth::check()) {
             $wproduct = Wishlist::where('product_id', $product_id)->where('user_id', Auth::user()->id)
                 ->where('seller_id', $seller_id)->first();
             if ($wproduct) {
@@ -142,7 +136,7 @@ class ShopComponent extends Component
                 $this->dispatch('wishlist_add');
                 return;
             }
-        }else{
+        } else {
             $product = Product::where('id', $product_id)->first();
             $wishlist = $request->session()->get('wishlist');
 
@@ -156,15 +150,15 @@ class ShopComponent extends Component
                 'price' => $product->sale_price
             ];
             Session()->put('wishlist', $wishlist);
-            session()->flash('success','Item added to Wishlist!');
+            session()->flash('success', 'Item added to Wishlist!');
             $this->dispatch('wishlist_add');
 
         }
-      
+
         //  $this->dispatch('wishlist-count-component','refreshComponent');
         return;
     }
-    
+
 
     public function removeFromWishlist(Request $request, $product_id, $seller_id = null)
     {

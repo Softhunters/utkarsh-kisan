@@ -6,7 +6,7 @@
         </div>
         <div class="opening-time text-center search-bar-input d-lg-none d-md-none d-block">
             <!-- <p>Free Shipping On Shipment of $80 Or More</p> -->
-            <form action="">
+            <form action="{{route('searchs')}}">
                 <div class="search-bar">
                     <input type="text" name="search" placeholder="Search anything here..." />
                 </div>

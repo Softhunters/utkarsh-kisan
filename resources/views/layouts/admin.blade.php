@@ -473,6 +473,43 @@
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
                                     data-sa-collapse-item="sa-nav__menu-item--open">
                                     <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
+                                       <img class="sidebaar2" style="width:20px;" src="{{asset('assets/images/logo/19.png')}}" >
+                                        <span class="sa-nav__title">Testimonial</span>
+                                        <i class="fa fa-chevron-right"></i>
+                                    </a>
+                                    <ul class="sa-nav__menu sa-nav__menu--sub" data-sa-collapse-content="">
+                                        <li class="sa-nav__menu-item">
+                                            <a href="{{route('admin.addtestimonial')}}" class="sa-nav__link"><span
+                                                    class="sa-nav__menu-item-padding"></span><span
+                                                    class="sa-nav__title">Add Testimonial</span></a>
+                                        </li>
+                                        <li class="sa-nav__menu-item">
+                                            <a href="{{route('admin.testimonials')}}" class="sa-nav__link"><span
+                                                    class="sa-nav__menu-item-padding"></span><span
+                                                    class="sa-nav__title">Testimonial</span></a>
+                                        </li>
+
+
+                                    </ul>
+                                </li> 
+                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
+                                    data-sa-collapse-item="sa-nav__menu-item--open">
+                                    <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
+                                        <img class="sidebaar2" style="width:20px;" src="{{asset('assets/images/logo/17.png')}}" >
+                                        <span class="sa-nav__title">Contact-Form</span>
+                                        <i class="fa fa-chevron-right"></i>
+                                    </a>
+                                    <ul class="sa-nav__menu sa-nav__menu--sub" data-sa-collapse-content="">
+                                        <li class="sa-nav__menu-item">
+                                            <a href="{{route('admin.contact-form')}}" class="sa-nav__link"><span
+                                                    class="sa-nav__menu-item-padding"></span><span
+                                                    class="sa-nav__title">forms</span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
+                                    data-sa-collapse-item="sa-nav__menu-item--open">
+                                    <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
                                         <img class="sidebaar2" style="width:20px;"
                                             src="{{ asset('assets/images/logo/18.png') }}">
                                         <span class="sa-nav__title">Settings</span>
