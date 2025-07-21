@@ -4,7 +4,7 @@
     <div class="login-section pt-50 pb-90">
         <div class="container">
             <div class="row d-flex justify-content-center g-4">
-                <div class="col-xl-6 col-lg-8 col-md-10">
+                <div class="col-xl-5 col-lg-8 col-md-10">
                     <div class="form-wrapper wow fadeInUp" data-wow-duration="1.5s" data-wow-delay=".2s">
                         <div class="form-title">
                             <h3>Log In</h3>

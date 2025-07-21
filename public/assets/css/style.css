@@ -4503,7 +4503,7 @@ a.ui-button:active,
 }
 
 .h1-story-area::after {
-    content: url(../images/bg/frem-01.png);
+    /* content: url(../images/bg/frem-01.png); */
     position: absolute;
     right: 0;
     top: -50%;
@@ -12340,9 +12340,35 @@ footer.style2 .social-area ul li:hover a i {
 
 .shop-details-page .nav1 {
     justify-content: space-between;
-    margin: 15px;
-    gap: 30px
+    /* margin: 15px;
+    gap: 30px */
+
+    justify-content: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex-wrap: nowrap !important;
 }
+
+/* For Webkit browsers (Chrome, Safari, Edge) */
+.shop-details-page .nav1::-webkit-scrollbar {
+  height: 4px; /* control thickness */
+}
+
+.shop-details-page .nav1::-webkit-scrollbar-track {
+  background: transparent;  
+}
+
+.shop-details-page .nav1::-webkit-scrollbar-thumb {
+  /* background-color: rgba(0, 0, 0, 0.3;   */
+  border-radius: 2px;
+}
+
+/* For Firefox */
+.shop-details-page .nav1 {
+  scrollbar-width: thin;           
+  /* scrollbar-color: rgba(0, 0, 0, 0.3) transparent;  */
+}
+
 
 @media(max-width:1399px) {
     .shop-details-page .nav1 {
@@ -12364,8 +12390,10 @@ footer.style2 .social-area ul li:hover a i {
 
 .shop-details-page .nav1 .nav-link {
     height: 132px;
-    min-width: 113px;
-    padding: 10px;
+    /* min-width: 113px;
+    padding: 10px; */
+    min-width: 100px;
+    padding: 5px;
     background: #f2f2f2;
     border-radius: 3px;
     position: relative
@@ -12669,7 +12697,8 @@ footer.style2 .social-area ul li:hover a i {
 
 @media(max-width:767px) {
     .shop-details-page .nav2 {
-        gap: 20px
+        /* gap: 20px */
+        gap: 10px
     }
 }
 
@@ -13117,7 +13146,8 @@ footer.style2 .social-area ul li:hover a i {
     color: var(--title-color-dark);
     font-family: var(--font-cormorant);
     opacity: 1;
-    padding: 15px;
+    /* padding: 15px; */
+    padding: 15px 5px;
     vertical-align: top;
     text-align: center;
     border-width: 1px;
@@ -13153,7 +13183,8 @@ footer.style2 .social-area ul li:hover a i {
     border-width: 1px;
     border-color: #eee;
     vertical-align: middle;
-    padding: 15px
+    /* padding: 15px */
+    padding: 15px 5px !important;
 }
 
 .table-wrapper .eg-table tbody tr td a {
@@ -13163,7 +13194,8 @@ footer.style2 .social-area ul li:hover a i {
 }
 
 .table-wrapper .eg-table tbody tr td a{
-    font-size: 20px ;
+    /* font-size: 20px ; */
+    font-size: 15px ;
 }
 
 .table-wrapper .eg-table tbody tr td a:hover {
@@ -15004,7 +15036,9 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
     padding-bottom: 28px !important;
 }
 .shop-details-page .nav2 .nav-link {
-    padding: 10px 5px;}
+    /* padding: 10px 5px; */
+    padding: 10px 15px;
+}
     
     .breadcrumb {
     background-color: transparent;
@@ -15691,22 +15725,23 @@ header.style-3 .main-menu ul > li ul.sub-menu > li a:hover{
 }
 
 
-/* @media (min-width: 768px) {
+@media (min-width: 768px) {
   .container, .container-md, .container-sm {
-     max-width: 1250px
+     /* max-width: 1250px */
+     max-width: 95%;
   }
-} */
+}
 
-@media (min-width: 1400px) {
+/* @media (min-width: 1400px) {
   .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
     max-width: 1320px;
   }
-}
-@media (min-width: 1200px) {
+} */
+/* @media (min-width: 1200px) {
   .container, .container-lg, .container-md, .container-sm, .container-xl {
     max-width: 1120px;
   }
-}
+} */
 /* @media (min-width: 992px) {
   .container, .container-lg, .container-md, .container-sm {
     max-width: 960px;
@@ -15885,3 +15920,18 @@ margin-bottom: 0px !important;
 }
 
 
+
+@media screen  and (max-width: 576px) {
+     .banner-data{
+        display: flex;
+        justify-content: center;
+     }
+
+     .category_banner_img , .about-banner-img , .shop-banner-img , .wishlist-banner-img , .product-banner-img , .cart-banner-img ,.contact-banner-img
+     {
+        width: 70%;
+     }
+
+     
+    
+}
