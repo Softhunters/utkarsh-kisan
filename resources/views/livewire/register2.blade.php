@@ -57,7 +57,7 @@
 
                                 </div>
 
-                                 
+
 
                                 <div id="checkboxed_error" class="field_error text-danger"></div>
 
@@ -72,8 +72,9 @@
                                         <div class="form-group">
 
                                             <input type="checkbox" name="checkbox" value ="1" id="html" />
- 
+
                                             <label for="html">I agree to the Terms & Condition</label>
+                                            <div id="checkbox_error" class="field_error text-danger"></div>
 
                                         </div>
 
@@ -103,8 +104,8 @@
 
                         <div class="form-poicy-area">
 
-                            <p>By clicking the "signup" button, you create a Utkarsh Kisan account, and you agree to Utkarsh Kisan's <a
-                                    href="#">Terms & Conditions</a> & <a href="#">Privacy Policy.</a></p>
+                            <p>By clicking the "signup" button, you create a Utkarsh Kisan account, and you agree to Utkarsh
+                                Kisan's <a href="#">Terms & Conditions</a> & <a href="#">Privacy Policy.</a></p>
 
                         </div>
 

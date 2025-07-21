@@ -26,6 +26,7 @@ use App\Livewire\Admin\Category\EditSubCategoryComponent;
 use App\Livewire\Admin\Category\EditSubSubCategoryComponent;
 use App\Livewire\Admin\Category\SubCategoryComponent;
 use App\Livewire\Admin\Category\SubSubCategoryComponent;
+use App\Livewire\Admin\Contact\ContactFormComponent;
 use App\Livewire\Admin\Coupon\AddCouponComponent;
 use App\Livewire\Admin\Coupon\CouponComponent;
 use App\Livewire\Admin\Coupon\EditCouponComponent;
@@ -43,6 +44,9 @@ use App\Livewire\Admin\Slider\SliderComponent;
 use App\Livewire\Admin\Tax\AddTaxComponent;
 use App\Livewire\Admin\Tax\EditTaxComponent;
 use App\Livewire\Admin\Tax\TaxComponent;
+use App\Livewire\Admin\Testimonial\AddTestimonialComponent;
+use App\Livewire\Admin\Testimonial\EditTestimonialComponent;
+use App\Livewire\Admin\Testimonial\TestimonialComponent;
 use App\Livewire\Admin\User\UserComponent;
 use App\Livewire\Admin\WebsettingComponent;
 use App\Livewire\Frontend\AboutUsComponent;
@@ -54,6 +58,7 @@ use App\Livewire\Frontend\HomeComponent;
 use App\Livewire\Frontend\OrderDetailsComponent;
 use App\Livewire\Frontend\OrdersComponent;
 use App\Livewire\Frontend\ProductDetailsComponent;
+use App\Livewire\Frontend\SearchComponent;
 use App\Livewire\Frontend\ShopComponent;
 use App\Livewire\Frontend\VendorProductComponent;
 use App\Livewire\Frontend\WishlistComponent;
@@ -101,10 +106,10 @@ Route::get('/vendor/product_list/{slug}', VendorProductComponent::class)->name('
 Route::get('/category/{category_slug}/{scategory_slug?}', CategorySearchComponent::class)->name('product.category');
 Route::get('/product-detail/{slug}', ProductDetailsComponent::class)->name('product-details');
 
-
+Route::get('/search', SearchComponent::class)->name('searchs');
 
 Route::get('/contact-us', ContactUsComponent::class)->name('contact-us');
-Route::get('/about-us',AboutUsComponent::class)->name('about-us');
+Route::get('/about-us', AboutUsComponent::class)->name('about-us');
 
 Route::get('/vdrregistor', [RegisterController::class, 'vdrregisterview'])->name('vdrregisterview');
 Route::get('/uregisteor', [RegisterController::class, 'uregisteorview'])->name('udregisteorview');
@@ -171,7 +176,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/coupon/add', AddCouponComponent::class)->name('admin.addcoupon');
         Route::get('/coupon/edit/{cid}', EditCouponComponent::class)->name('admin.editcoupon');
 
+        Route::get('/testimonials', TestimonialComponent::class)->name('admin.testimonials');
+        Route::get('/testimonial/add', AddTestimonialComponent::class)->name('admin.addtestimonial');
+        Route::get('/testimonial/edit/{tid}', EditTestimonialComponent::class)->name('admin.edittestimonial');
+
         Route::get('websetting', WebsettingComponent::class)->name('admin.websetting');
+        Route::get('/contact', ContactFormComponent::class)->name('admin.contact-form');
 
         Route::get('/vendor/list/{type}', [VendorController::class, 'index'])
             ->whereIn('type', ['active', 'deactivated', 'unverified'])

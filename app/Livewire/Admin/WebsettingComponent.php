@@ -55,7 +55,6 @@ class WebsettingComponent extends Component
         $this->validateOnly($fields,[
             'email' => 'required|email',
              'phone' => 'required',
-             'phone2' => 'required',
              'address' => 'required',
              'map' => 'required',
              'twiter' => 'required',
@@ -92,7 +91,6 @@ class WebsettingComponent extends Component
         $this->validate([
              'email' => 'required|email',
              'phone' => 'required',
-             'phone2' => 'required',
              'address' => 'required',
              'map' => 'required',
              'twiter' => 'required',
