@@ -21,7 +21,7 @@
 
                         </div>
 
-                        <form class="w-100" action="{{ route('vlogin') }}" id="frmLogin" method="post">
+                        <form class="w-100" action="{{ route('vlogin') }}" id="" method="post">
 
                             @csrf
 
@@ -33,8 +33,13 @@
 
                                         <label>Enter Your Email *</label>
 
-                                        <input type="email" name ="email" placeholder="Enter Your Email" />
-
+                                        <input type="text" name ="email" value="{{old('email')}}" placeholder="Enter Your Email" />
+                                        @error('email')
+                                            <div
+                                                style="color: #a94442;">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
 
                                 </div>
@@ -46,7 +51,12 @@
                                         <label>Password *</label>
 
                                         <input type="password" name="password" id="password" placeholder="Password" />
-
+                                        @error('password')
+                                            <div
+                                                style="color: #a94442;">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                         <i class="bi bi-eye-slash" id="togglePassword"></i>
 
                                     </div>
@@ -108,8 +118,8 @@
 
                         <div class="form-poicy-area">
 
-                            <p>By clicking the "signup" button, you create a Petshop account, and you agree to Petshop's <a
-                                    href="#">Terms & Conditions</a> & <a href="#">Privacy Policy.</a></p>
+                            <p>By clicking the "Log In" button, you agree to Utkarsh Kisan Vendor <a href="#">Terms &
+                                    Conditions</a> & <a href="#">Privacy Policy.</a></p>
 
                         </div>
 

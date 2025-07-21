@@ -285,7 +285,7 @@ class AddProductComponent extends Component
         $product->save();
 
         ProductHistory::create([
-            'seller_id' => '1',
+            'seller_id' => Auth::id(),
             'product_id' => $product->id,
             'type' => 'add',
             'quantity' => $product->quantity,

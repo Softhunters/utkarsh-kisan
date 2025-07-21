@@ -63,7 +63,7 @@
 
                                         <label>Enter Your Email *</label>
 
-                                        <input name="email" type="email" required placeholder="Email"
+                                        <input name="email" type="text" required placeholder="Email"
                                             class="form-control rounded">
 
                                         <div id="email_error" class="field_error text-danger"></div>
@@ -148,8 +148,7 @@
 
                         <div class="form-poicy-area">
 
-                            <p>By clicking the "signup" button, you create a Utkarsh Kisan account, and you agree to Utkarsh
-                                Kisan's <a href="#">Terms & Conditions</a> & <a href="#">Privacy Policy.</a></p>
+                            <p>By clicking the "Create Account" button, you create an Utkarsh Kisan Vendor account, and you agree to Utkarsh Kisan's Vendor <a href="#">Terms & Conditions</a> & <a href="#">Privacy Policy.</a></p>
 
                         </div>
 

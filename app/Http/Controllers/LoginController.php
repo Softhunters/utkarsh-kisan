@@ -59,17 +59,20 @@ class LoginController extends Controller
     }
     public function vendorloginAuth(Request $request)
     {
-        //dd($request);
         $valid = Validator::make($request->all(), [
-            'email' => 'required',
+            'email' => 'required|email',
             'password' => 'required',
         ], [
             'email.required' => 'The Email field is required.',
+            'email.email' => 'The Email format is not valid.',
             'password.required' => 'The Password field is required.',
         ]);
         if (!$valid->passes()) {
-            return response()->json(['status' => 'error', 'msg' => 'Email and password field are required']);
+            return redirect()->back()
+                ->withErrors($valid)
+                ->withInput();
         }
+
 
         if ($this->attemptLogin($request)) {
 
@@ -79,7 +82,7 @@ class LoginController extends Controller
                     'error' => 'No Kisan account found.',
                 ]);
             }
-            
+
             if (Auth::user()->status == 0 || Auth::user()->is_active == 3) {
                 Auth::logout();
                 return redirect()->back()->withErrors([
