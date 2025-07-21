@@ -19,7 +19,7 @@ class SubCategoryComponent extends Component
 
         SubCategory::where('category_id', $id)->update(['status' => 3]);
 
-        Product::whereIn('category_id', $id)->update(['status' => 3]);
+        Product::where('category_id', $id)->update(['status' => 3]);
 
         session()->flash('message', 'Category has been deleted successfully!');
     }
@@ -29,7 +29,7 @@ class SubCategoryComponent extends Component
         $category->status = 0;
         $category->save();
 
-        Product::whereIn('subcategory_id', $id)->update(['status' => 0]);
+        Product::where('subcategory_id', $id)->update(['status' => 0]);
 
         session()->flash('message', 'SubCategory has been Deactive successfully!');
         $this->js('window.location.reload()');
@@ -40,7 +40,7 @@ class SubCategoryComponent extends Component
         $category->status = 1;
         $category->save();
 
-        Product::whereIn('subcategory_id', $id)->update(['status' => 1]);
+        Product::where('subcategory_id', $id)->update(['status' => 1]);
 
         session()->flash('message', 'SubCategory has been Active successfully!');
         $this->js('window.location.reload()');
@@ -51,7 +51,7 @@ class SubCategoryComponent extends Component
         $category->status = 3;
         $category->save();
 
-        Product::whereIn('subcategory_id', $id)->update(['status' => 3]);
+        Product::where('subcategory_id', $id)->update(['status' => 3]);
 
         session()->flash('message', 'Sub-Category has been deleted successfully!');
         $this->js('window.location.reload()');

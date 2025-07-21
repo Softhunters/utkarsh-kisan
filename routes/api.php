@@ -120,4 +120,6 @@ Route::middleware(['auth:sanctum'])->prefix('vendor')->group(function () {
     Route::get('/product-order-history', [ApiVendorController::class, 'productOrderHistory']);
     Route::get('/product-history/{id}', [ApiVendorController::class, 'productHistory']);
 
+    Route::get('/home', [ApiVendorController::class, 'vendorHome']);
+
 });

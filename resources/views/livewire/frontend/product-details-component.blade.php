@@ -20,8 +20,10 @@
                                 <li class="breadcrumb-item"><a href="{{ route('index') }}">Home</a></li>
                                 <li class="breadcrumb-item active d-flex flex-wrap" aria-current="page">
                                     {{-- {{ $product->name }}  --}}
-                                    {{ substr($product->name, 0, 30) }}
-                                
+
+                                    {{ substr($product->name, 0, 50) }}
+
+
                                 </li>
                             </ol>
                         </nav>
@@ -171,7 +173,7 @@
                                 <a href="{{ route('cart') }}" class="primary-btn3">Already In Cart</a>
                             @else
                                 <a href="#"
-                                    wire:click.prevent="AddtoCart({{ $product->id }},{{ $product->sale_price }},{{ $product->seller->vendor_id??'' }})"
+                                    wire:click.prevent="AddtoCart({{ $product->id }},{{ $product->sale_price }},{{ $product->seller->vendor_id ?? '' }})"
                                     class="primary-btn3">Add to cart</a>
                             @endif
 
@@ -199,14 +201,14 @@
                                 <li>
                                     @if (in_array($product->id, $wishp))
                                         <a href="#"
-                                            wire:click.prevent="removeFromWishlist({{ $product->id }})">
+                                            wire:click.prevent="removeFromWishlist({{ $product->id }},{{ $fproduct->seller->vendor_id ?? '' }})">
                                             <span>
                                                 <svg width="14" height="13" viewBox="0 0 14 13"
-                                                    xmlns="http://www.w3.org/2000/svg"  fill="#699a39">
+                                                    xmlns="http://www.w3.org/2000/svg" fill="#699a39">
                                                     <path
                                                         d="M12.4147 1.51371C11.0037 0.302997 8.92573 0.534835 7.61736 1.87434L7.12993 2.38954L6.61684 1.87434C5.33413 0.534835 3.23047 0.302997 1.81948 1.51371C0.203258 2.90473 0.126295 5.37767 1.56294 6.87174L6.53988 12.0237C6.84773 12.3586 7.38647 12.3586 7.69433 12.0237L12.6713 6.87174C14.1079 5.37767 14.0309 2.90473 12.4147 1.51371Z" />
-                                                        
-                                                    </svg>
+
+                                                </svg>
                                             </span> Remove form wishlist
                                         </a>
                                     @else
@@ -370,8 +372,8 @@
                                                     @empty
                                                         <p>No Review Posted Yet!</p>
                                                         @endforelse --}}
-                                                        <p>No Review Posted Yet!</p>
-                                                    </ul>
+                                                    <p>No Review Posted Yet!</p>
+                                                </ul>
                                             </div>
                                         </div>
                                         @if ($reviewyes)
@@ -564,10 +566,10 @@
         </div>
         <div class="container">
             <div class="row">
-                <div class="swiper essential-items-slider" wire:ignore>
+                <div class="swiper essential-items-slider">
                     <div class="swiper-wrapper">
                         @foreach ($related_products as $fproduct)
-                            <div class="swiper-slide">
+                            <div class="col-lg-3 col-md-3 col-6">
                                 <div class="collection-card">
                                     <div class="offer-card">
                                         <span>{{ $fproduct->discount_value }}% Off</span>
@@ -577,16 +579,18 @@
                                             Out</span>
                                     @endif
                                     <div class="collection-img @if ($fproduct->stock_status == 'outofstock') blured @endif">
-                                        <a href="{{ route('product-details', ['slug' => $fproduct->slug]) }}"> <img
+                                        <a href="{{ route('product-details', ['slug' => $fproduct->slug]) }}"><img
                                                 class="img-gluid"
-                                                src="{{ asset('admin/product/feat') }}/{{ $fproduct->image }}" alt
-                                                height="136px" width="153px" /></a>
+                                                src="{{ asset('admin/product/feat') }}/{{ $fproduct->image }}"
+                                                alt="" height="136px" width="153px" /> </a>
+                                        {{-- <a href="#"><img class="img-gluid" src="{{asset('admin/product/feat')}}/{{$product->image}}" alt="" height="136px" width="153px" /> </a> --}}
                                         <div class="view-dt-btn">
                                             <div class="plus-icon">
                                                 <i class="bi bi-plus"></i>
                                             </div>
                                             <a href="{{ route('product-details', ['slug' => $fproduct->slug]) }}">View
                                                 Details</a>
+                                            {{-- <a href="#">View Details</a> --}}
                                         </div>
                                         <ul class="cart-icon-list">
                                             <li>
@@ -594,29 +598,32 @@
                                                     <!--<a href="#"><img src="{{ asset('assets/images/icon/Icon-cart3.svg') }}" alt /></a>-->
                                                 @else
                                                     <a href="#"
-                                                        wire:click.prevent="FAddtoCart({{ $fproduct->id }},{{ $fproduct->sale_price }})"><img
+                                                        wire:click.prevent="AddtoCart({{ $fproduct->id }},{{ $fproduct->sale_price }},{{ $fproduct->seller->vendor_id ?? '' }})"><img
                                                             src="{{ asset('assets/images/icon/Icon-cart3.svg') }}"
                                                             alt /></a>
                                                 @endif
                                             </li>
                                             <li>
                                                 @if (in_array($fproduct->id, $wishp))
+                                         
                                                     <a href="#"
-                                                        wire:click.prevent="removeFromWishlist({{ $fproduct->id }},{{ $fproduct->sale_price }})"><img
-                                                            src="{{ asset('assets/images/icon/Icon-favorites.svg') }}"
+                                                        wire:click.prevent="removeFromWishlist({{ $fproduct->id }},{{ $fproduct->seller->vendor_id ?? '' }})"><img
+                                                            src="{{ asset('assets/images/icon/Icon-favorites3.svg') }}"
                                                             alt /></a>
                                                 @else
                                                     <a href="#"
-                                                        wire:click.prevent="FaddToWishlist({{ $fproduct->id }},{{ $fproduct->sale_price }})"><img
+                                                        wire:click.prevent="addToWishlist({{ $fproduct->id }},{{ $fproduct->sale_price }})"><img
                                                             src="{{ asset('assets/images/icon/Icon-favorites.svg') }}"
                                                             alt /></a>
                                                 @endif
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="collection-content">
-                                        <p class="fixed"><a
+                                    <div class="collection-content text-center">
+                                        <p class="fixed">
+                                            <a
                                                 href="{{ route('product-details', ['slug' => $fproduct->slug]) }}">{{ $fproduct->name }}</a>
+                                            {{-- <a href="#">{{$product->name}}</a> --}}
                                         </p>
                                         <div class="price priceds">
                                             <h6>₹{{ $fproduct->sale_price }}</h6>
@@ -647,7 +654,9 @@
                                                     @php $ratingAvg--; @endphp
                                                 @endforeach
                                             </ul>
-                                            {{-- <span>{{ number_format($ratingAv, 2) }} ({{ $ratingCount }})</span> --}}
+
+
+                                            {{-- <span>{{number_format($ratingAv,2)}}  ({{$ratingCount}})</span> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -660,7 +669,8 @@
         </div>
     </div>
     <!-- Vendor Details Modal -->
-    <div class="modal fade" id="vendorModal" tabindex="-1" aria-labelledby="vendorModalLabel" aria-hidden="true" wire:ignore>
+    <div class="modal fade" id="vendorModal" tabindex="-1" aria-labelledby="vendorModalLabel" aria-hidden="true"
+        wire:ignore>
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -684,10 +694,14 @@
                                 <tbody>
                                     @foreach ($product->vendorProducts as $vp)
                                         <tr>
-                                            <td><a href="{{route('vendorProduct',['slug'=>$vp->vendor_id])}}">{{ $vp->vendor->name ?? 'N/A' }}</a></td>
+                                            <td><a
+                                                    href="{{ route('vendorProduct', ['slug' => $vp->vendor_id]) }}">{{ $vp->vendor->name ?? 'N/A' }}</a>
+                                            </td>
                                             <td>₹{{ number_format($vp->price) }}</td>
                                             <td>{{ $vp->quantity }}</td>
-                                            <td><a href="#" wire:click.prevent="AddtoCart({{ $vp->product_id }},{{ $vp->price }},{{ $vp->vendor_id??'' }})" class="primary-btn3">Add to cart</a></td>
+                                            <td><a href="#"
+                                                    wire:click.prevent="AddtoCart({{ $vp->product_id }},{{ $vp->price }},{{ $vp->vendor_id ?? '' }})"
+                                                    class="primary-btn3">Add to cart</a></td>
                                             <td>{!! $vp->additional_info !!}</td>
                                         </tr>
                                     @endforeach
@@ -709,7 +723,7 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/jquery.nice-number.min.js') }}"></script>
-    
+
     <script>
         var incremented = 1,
             decremented = 1;

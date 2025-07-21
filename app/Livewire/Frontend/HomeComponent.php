@@ -177,7 +177,7 @@ class HomeComponent extends Component
         $brands = Brand::where('is_home', 1)->where('status', 1)->get();
         $banners = Banner::where('status', 1)->where('for', 'home')->get();
         // $cbanners = Banner::where('status',1)->where('for','1')->get();
-        $products = Product::with(['seller', 'category', 'subCategories'])
+        $products = Product::whereHas('vendorProducts')->with(['seller', 'category', 'subCategories'])
             ->where('featured', '!=', 1)
             ->where('sale_price', '>', 0)
             ->where('status', 1)
@@ -186,7 +186,7 @@ class HomeComponent extends Component
             ->take(8)
             ->get();
 
-        $fproducts = Product::with(['seller', 'category', 'subCategories'])
+        $fproducts = Product::whereHas('vendorProducts')->with(['seller', 'category', 'subCategories'])
             ->where('featured', 1)
             ->where('status', 1)
             ->where('stock_status', 'instock')
@@ -194,7 +194,7 @@ class HomeComponent extends Component
             ->take(8)
             ->get();
 
-        $oproducts = Product::with(['seller', 'category', 'subCategories'])
+        $oproducts = Product::whereHas('vendorProducts')->with(['seller', 'category', 'subCategories'])
             ->where('sale_price', '>', 0)
             ->where('status', 1)
             ->where('discount_value', '>', 10)

@@ -3,12 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Banner;
+use App\Models\Brand;
 use App\Models\Cart;
+use App\Models\Category;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ProductHistory;
 use App\Models\Review;
+use App\Models\Slider;
+use App\Models\SubCategory;
+use App\Models\Testimonial;
 use App\Models\User;
 use App\Models\VendorProduct;
 use App\Models\VendorProfile;
@@ -416,7 +422,7 @@ class ApiVendorController extends Controller
 
             return $product;
         });
-
+        // dd($vendorProducts);
         return response()->json([
             'status' => true,
             'result' => $vendorProducts
@@ -438,6 +444,26 @@ class ApiVendorController extends Controller
         return response()->json([
             'status' => true,
             'result' => $productHistory
+        ], 200);
+    }
+
+    public function vendorHome(Request $request)
+    {
+
+        $result['sliders'] = Slider::where('for', 'home')->where('status', 1)->get();
+        $result['categorys'] = Category::where('status', '1')->where('is_home', '1')->get();
+        $result['subcategorys'] = SubCategory::leftJoin('categories', 'categories.id', 'sub_categories.category_id')->select('sub_categories.*', 'categories.slug as cname')->where('sub_categories.is_home', 1)->where('sub_categories.status', 1)->get();
+        $result['brands'] = Brand::where('is_home', 1)->where('status', 1)->get();
+        $result['banners'] = Banner::where('status', 1)->where('for', 'home')->get();
+        $result['cbanners'] = Banner::where('status', 1)->where('for', '1')->get();
+        $result['products'] = Product::with('seller')->where('sale_price', '>', 0)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8);
+        $result['fproducts'] = Product::with('seller')->where('featured', 1)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8);
+        // $result['sum'] = Product::withAvg('reviews', 'rating')->get();
+        $result['testimonials'] = Testimonial::where('status', 1)->get();
+
+        return response()->json([
+            'status' => true,
+            'result' => $result
         ], 200);
     }
 }

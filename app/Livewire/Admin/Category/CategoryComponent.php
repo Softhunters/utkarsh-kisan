@@ -19,7 +19,7 @@ class CategoryComponent extends Component
 
         SubCategory::where('category_id', $id)->update(['status' => 3]);
 
-        Product::whereIn('category_id', $id)->update(['status' => 3]);
+        Product::where('category_id', $id)->update(['status' => 3]);
 
         session()->flash('message', 'Category has been deleted successfully!');
         $this->js('window.location.reload()');
@@ -43,7 +43,7 @@ class CategoryComponent extends Component
 
         SubCategory::where('category_id', $id)->update(['status' => 0]);
 
-        Product::whereIn('category_id', $id)->update(['status' => 0]);
+        Product::where('category_id', $id)->update(['status' => 0]);
 
         session()->flash('message', 'Category has been Deactive successfully!');
         $this->js('window.location.reload()');
@@ -56,7 +56,7 @@ class CategoryComponent extends Component
 
         SubCategory::where('category_id', $id)->update(['status' => 1]);
 
-        Product::whereIn('category_id', $id)->update(['status' => 1]);
+        Product::where('category_id', $id)->update(['status' => 1]);
 
         session()->flash('message', 'Category has been Active successfully!');
         $this->js('window.location.reload()');

@@ -45,8 +45,7 @@
                         </form>
 
                         <div class="form-poicy-area mt-3">
-                            <p>By clicking the "signup" button, you create a Utkarsh Kisan account, and you agree to Utkarsh
-                                Kisan's <a href="#">Terms & Conditions</a> & <a href="#">Privacy Policy</a>.</p>
+                            <p>By continuing, you agree to Utkarsh Kisan <a href="#">Terms & Conditions</a> & <a href="#">Privacy Policy</a>.</p>
                         </div>
 
                     </div>
