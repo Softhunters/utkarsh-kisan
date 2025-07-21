@@ -8,7 +8,7 @@
         </div>
         <div class="container">
             <div class="row justify-content-center align-items-center text-center">
-                <div class="col-sm-6 align-items-center">
+                <div class="col-sm-6  align-items-center banner-data">
                     <div class="banner-content">
                         <h1>{{$category_name}}</h1>
                         <nav aria-label="breadcrumb">
@@ -31,11 +31,11 @@
                     </div>
                 </div>
                 <div class="col-sm-6">
-                    <div class="banner-img d-sm-block d-none ">
+                    <div class="banner-img d-block  ">
                          {{-- <div class="banner-img-bg">
                             <img class="img-fluid" src="{{asset('assets/images/bg/inner-banner-vec.png')}}" alt />
                         </div>  --}}
-                        <img class="img-fluid" src="{{asset('assets/images/bg/inner-banner-img.png')}}" alt />
+                        <img class="img-fluid category_banner_img" src="{{asset('assets/images/bg/inner-banner-img.png')}}"  alt />
                     </div>
                 </div>
             </div>

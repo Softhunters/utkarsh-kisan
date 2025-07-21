@@ -12,7 +12,7 @@
         </div> -->
         <div class="container">
             <div class="row justify-content-center align-items-center text-center">
-                <div class="col-lg-6 align-items-center">
+                <div class="col-sm-6 align-items-center banner-data">
                     <div class="banner-content">
                         <h1>Product Detail</h1>
                         <nav aria-label="breadcrumb">
@@ -20,19 +20,21 @@
                                 <li class="breadcrumb-item"><a href="{{ route('index') }}">Home</a></li>
                                 <li class="breadcrumb-item active d-flex flex-wrap" aria-current="page">
                                     {{-- {{ $product->name }}  --}}
+
                                     {{ substr($product->name, 0, 50) }}
+
 
                                 </li>
                             </ol>
                         </nav>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="banner-img d-lg-block d-none">
+                <div class="col-sm-6">
+                    <div class="banner-img d-block">
                         <!-- <div class="banner-img-bg">
                             <img class="img-fluid" src="{{ asset('assets/images/bg/inner-banner-vec.png') }}" alt />
                         </div> -->
-                        <img class="img-fluid" src="{{ asset('assets/images/bg/inner-banner-img.png') }}" alt />
+                        <img class="img-fluid product-banner-img" src="{{ asset('assets/images/bg/inner-banner-img.png') }}" alt />
                     </div>
                 </div>
             </div>

@@ -6,7 +6,7 @@
         </div> -->
         <div class="container">
             <div class="row justify-content-center align-items-center text-center">
-                <div class="col-lg-6 align-items-center">
+                <div class="col-sm-6 align-items-center banner-data">
                     <div class="banner-content">
                         <h1>Cart</h1>
                         <nav aria-label="breadcrumb">
@@ -17,12 +17,12 @@
                         </nav>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="banner-img d-lg-block d-none">
+                <div class="col-sm-6">
+                    <div class="banner-img d-block">
                         <!-- <div class="banner-img-bg">
                             <img class="img-fluid" src="{{ asset('assets/images/bg/inner-banner-vec.png') }}" alt />
                         </div> -->
-                        <img class="img-fluid" src="{{ asset('assets/images/bg/inner-banner-img.png') }}" alt />
+                        <img class="img-fluid cart-banner-img" src="{{ asset('assets/images/bg/inner-banner-img.png') }}" alt />
                     </div>
                 </div>
             </div>
@@ -70,7 +70,11 @@
                                                 <img src="{{ asset('admin/product/feat') }}/{{ $item->image }}" alt />
                                             </td>
                                             <td data-label="Food Name"><a
-                                                    href="{{ route('product-details', ['slug' => $item->slug]) }}">{{ $item->name }}</a>
+                                                    href="{{ route('product-details', ['slug' => $item->slug]) }}">
+                                                    {{-- {{ $item->name }} --}}
+                                                    {{ substr($item->name, 0, 20) }}
+                                                
+                                                </a>
                                             </td>
                                             <td data-label="Unite Price"><del>₹{{ $item->regular_price }}</del></td>
                                             <td data-label="Discount Price">₹{{ $item->sale_price }}</td>
@@ -193,7 +197,10 @@
                                             </td>
                                             <!--<img src="{{ asset('admin/product/feat') }}/{{ $item->product->image }}" alt />-->
                                             <td data-label="Food Name"><a
-                                                    href="{{ route('product-details', ['slug' => $item->product->slug]) }}">{{ $item->product->name }}</a>
+                                                    href="{{ route('product-details', ['slug' => $item->product->slug]) }}">
+                                                    {{-- {{ $item->product->name }}  --}}
+                                                {{ substr( $item->product->name, 0, 20) }}
+                                                </a>
                                             </td>
                                             <td data-label="Unite Price">
                                                 <del>₹{{ $item->product->regular_price }}</del></td>
