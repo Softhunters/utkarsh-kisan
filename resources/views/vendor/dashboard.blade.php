@@ -20,7 +20,7 @@
                 <div class="col-12 col-md-4 d-flex">
                     <div class="card saw-indicator flex-grow-1" data-sa-container-query='{"340":"saw-indicator--size--lg"}'>
                         <div class="sa-widget-header saw-indicator__header">
-                            <h2 class="sa-widget-header__title">Total Users</h2>
+                            <h2 class="sa-widget-header__title">Number of Orders</h2>
 
                         </div>
 
@@ -31,10 +31,10 @@
 
 
                             <div class="saw-indicator__body">
-                                <div class="saw-indicator__value"><a href="{{ route('admin.users') }}"
-                                        class="sa-nav__link">{{ $users }}</a></div>
+                                <div class="saw-indicator__value"><a href="{{ route('vendor.orders') }}"
+                                        class="sa-nav__link">{{ $totalVendorOrders }}</a></div>
                                 <div class="saw-indicator__delta saw-indicator__delta--rise">
-                                    <div class="saw-indicator__delta-direction">
+                                    {{-- <div class="saw-indicator__delta-direction">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9"
                                             viewBox="0 0 9 9" fill="currentColor">
                                             <path d="M9,0L8,6.1L2.8,1L9,0z"></path>
@@ -43,10 +43,10 @@
                                                 transform="matrix(0.7071 -0.7071 0.7071 0.7071 -2.864 4.0858)"
                                                 width="7.1" height="2"></rect>
                                         </svg>
-                                    </div>
-                                    <div class="saw-indicator__delta-value">34.7%</div>
+                                    </div> --}}
+                                    {{-- <div class="saw-indicator__delta-value">34.7%</div> --}}
                                 </div>
-                                <div class="saw-indicator__caption">Compared to April 2021</div>
+                                {{-- <div class="saw-indicator__caption">Compared to April 2021</div> --}}
                             </div>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                 <div class="col-12 col-md-4 d-flex">
                     <div class="card saw-indicator flex-grow-1" data-sa-container-query='{"340":"saw-indicator--size--lg"}'>
                         <div class="sa-widget-header saw-indicator__header">
-                            <h2 class="sa-widget-header__title">Total Products</h2>
+                            <h2 class="sa-widget-header__title">Number of Products</h2>
                         </div>
 
                         <div class="d-flex">
@@ -63,10 +63,10 @@
                             </div>
 
                             <div class="saw-indicator__body">
-                                <div class="saw-indicator__value"><a href="{{ route('admin.products2') }}"
-                                        class="sa-nav__link">{{ $products_c }}</a></div>
+                                <div class="saw-indicator__value"><a href="javascript:void()"
+                                        class="sa-nav__link">{{ $totalProducts }}</a></div>
                                 <div class="saw-indicator__delta saw-indicator__delta--fall">
-                                    <div class="saw-indicator__delta-direction">
+                                    {{-- <div class="saw-indicator__delta-direction">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9"
                                             viewBox="0 0 9 9" fill="currentColor">
                                             <path d="M2.8,8L8,2.9L9,9L2.8,8z"></path>
@@ -74,10 +74,10 @@
                                             <rect x="0" y="2.5" transform="matrix(0.7071 0.7071 -0.7071 0.7071 3.5 -1.4497)"
                                                 width="7.1" height="2"></rect>
                                         </svg>
-                                    </div>
-                                    <div class="saw-indicator__delta-value">12.0%</div>
+                                    </div> --}}
+                                    {{-- <div class="saw-indicator__delta-value">12.0%</div> --}}
                                 </div>
-                                <div class="saw-indicator__caption">Compared to April 2021</div>
+                                {{-- <div class="saw-indicator__caption">Compared to April 2021</div> --}}
                             </div>
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                 <div class="col-12 col-md-4 d-flex">
                     <div class="card saw-indicator flex-grow-1" data-sa-container-query='{"340":"saw-indicator--size--lg"}'>
                         <div class="sa-widget-header saw-indicator__header">
-                            <h2 class="sa-widget-header__title">Total Pets</h2>
+                            <h2 class="sa-widget-header__title">My Products</h2>
                         </div>
 
                         <div class="d-flex">
@@ -93,121 +93,27 @@
                                 <img class="sidebaar1" src="{{ asset('assets/images/logo/3 (2).png') }}">
                             </div>
 
-                            
+                            <div class="saw-indicator__body">
+                                <div class="saw-indicator__value"><a href="{{ route('vendor.products') }}"
+                                        class="sa-nav__link">{{ $vendorProducts }}</a></div>
+                                <div class="saw-indicator__delta saw-indicator__delta--fall">
+                                    {{-- <div class="saw-indicator__delta-direction">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9"
+                                            viewBox="0 0 9 9" fill="currentColor">
+                                            <path d="M2.8,8L8,2.9L9,9L2.8,8z"></path>
+                                            <circle cx="1" cy="1" r="1"></circle>
+                                            <rect x="0" y="2.5" transform="matrix(0.7071 0.7071 -0.7071 0.7071 3.5 -1.4497)"
+                                                width="7.1" height="2"></rect>
+                                        </svg>
+                                    </div> --}}
+                                    {{-- <div class="saw-indicator__delta-value">12.0%</div> --}}
+                                </div>
+                                {{-- <div class="saw-indicator__caption">Compared to April 2021</div> --}}
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-12 col-lg-4 col-xxl-3 d-flex">
-                    <div class="card flex-grow-1 saw-pulse" data-sa-container-query='{"560":"saw-pulse--size--lg"}'>
-                        <div class="sa-widget-header saw-pulse__header">
-                            <h2 class="sa-widget-header__title">Active users</h2>
-
-                        </div>
-                        <div class="saw-pulse__counter">{{ $active_u }}</div>
-                        <div class="sa-widget-table saw-pulse__table">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>User Id</th>
-                                        <th class="text-end">User Name</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($users_data as $user)
-                                        <tr>
-                                            <td><a href="#" class="text-reset">{{ $user->id }}</a></td>
-                                            <td class="text-end">{{ $user->name }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-8 col-xxl-9 d-flex">
-                    <div class="card flex-grow-1 saw-chart"
-                        data-sa-data='[{"label":"Jan","value":50},{"label":"Feb","value":130},{"label":"Mar","value":525},{"label":"Apr","value":285},{"label":"May","value":470},{"label":"Jun","value":130},{"label":"Jul","value":285},{"label":"Aug","value":240},{"label":"Sep","value":710},{"label":"Oct","value":470},{"label":"Nov","value":640},{"label":"Dec","value":1110}]'>
-                        <div class="sa-widget-header saw-chart__header">
-                            <h2 class="sa-widget-header__title">Income statistics</h2>
-
-                        </div>
-                        <div class="saw-chart__body">
-                            <div class="saw-chart__container"><canvas></canvas></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-4 col-xxl-3 d-flex">
-                    <div class="card flex-grow-1 saw-pulse" data-sa-container-query='{"560":"saw-pulse--size--lg"}'>
-                        <div class="sa-widget-header saw-pulse__header">
-                            <h2 class="sa-widget-header__title">Brands</h2>
-                        </div>
-                        <div class="saw-table__body sa-widget-table text-nowrap">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Name</th>
-                                        <th>Image</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($brands as $brand)
-                                        <tr>
-                                            <td>{{ $brand->id }}</td>
-                                            <td>
-                                                {{-- <a href="{{ route('brand-products', ['brand_slug' => $brand->brand_slug]) }}"
-                                                    class="text-reset">{{ $brand->brand_name }}</a> --}}
-                                                </td>
-                                            <td>
-                                                {{-- <a href="{{ route('brand-products', ['brand_slug' => $brand->brand_slug]) }}"
-                                                    class="text-reset"><img
-                                                        src="{{ asset('admin/brand') }}/{{ $brand->brand_image }}"
-                                                        width="60" /></a> --}}
-                                                    </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-8 col-xxl-9 d-flex">
-                    <div class="card flex-grow-1 saw-chart">
-                        <div class="sa-widget-header saw-chart__header">
-                            <h2 class="sa-widget-header__title">Category Details</h2>
-                        </div>
-                        <div class="saw-table__body sa-widget-table text-nowrap">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Category</th>
-                                        <th>Sub Category</th>
-                                        <th>Sub Sub Category</th>
-                                        <th>Total Products</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($categories as $category)
-                                        <tr>
-                                            <td>{{ $category->id }}</td>
-                                            <td>
-                                                {{-- <a href="{{ route('product.category', ['category_slug' => $category->slug]) }}"
-                                                    class="items">{{ $category->name }}</a> --}}
-                                                </td>
-                                            <td>{{ $category->subCategories->count() }}</td>
-                                            <td>{{ $category->subsubCategories->count() }}</td>
-                                            <td>{{ $category->productcount->count() }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                
                 <div class="col-12 col-lg-8 col-xxl-7 d-flex">
                     <div class="card flex-grow-1 saw-table">
                         <div class="sa-widget-header saw-table__header">
@@ -249,17 +155,17 @@
                                     @foreach ($products as $product)
                                         <tr>
                                             <td>
-                                                {{-- <a href="{{ route('product-details', ['slug' => $product->slug]) }}"
-                                                    class="text-reset">{{ $product->id }}</a> --}}
-                                                </td>
+                                                <a href="{{ route('product-details', ['slug' => $product->slug]) }}"
+                                                    class="text-reset">{{ $product->id }}</a>
+                                            </td>
                                             <td>
                                                 <div class="d-flex fs-6">
                                                     <div class="badge badge-sa-primary">Pending</div>
                                                 </div>
                                             </td>
                                             <td>
-                                                {{-- <a
-                                                    href="{{ route('product-details', ['slug' => $product->slug]) }}">{{ $product->name }}</a> --}}
+                                                <a
+                                                    href="{{ route('product-details', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                             </td>
                                             <td><img src="{{ asset('admin/product/feat') }}/{{ $product->image }}"
                                                     width="60" /></td>
@@ -274,7 +180,7 @@
                 <div class="col-12 col-lg-8 col-xxl-7 d-flex">
                     <div class="card flex-grow-1 saw-table">
                         <div class="sa-widget-header saw-table__header">
-                            <h2 class="sa-widget-header__title">Top Products</h2>
+                            <h2 class="sa-widget-header__title">Top Selling Products</h2>
                             <div class="sa-widget-header__actions">
                                 <div class="dropdown">
                                     <button type="button" class="btn btn-sm btn-sa-muted d-block"
@@ -298,7 +204,7 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="saw-table__body sa-widget-table text-nowrap">
+                        <div class="saw-table__body sa-widget-table text-nowrap">
                             <table>
                                 <thead>
                                     <tr>
@@ -309,26 +215,25 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($topProducts as $tproduct)
+                                    @foreach ($topSellingProducts as $tproduct)
                                         <tr>
-                                            <td><a href="{{ route('product-details', ['slug' => $tproduct->product->slug]) }}"
-                                                    class="text-reset">{{ $tproduct->product->id }}</a></td>
+                                            <td><a href="{{ route('product-details', ['slug' => $tproduct->slug]) }}"
+                                                    class="text-reset">{{ $tproduct->id }}</a></td>
                                             <td>
                                                 <div class="d-flex fs-6">
                                                     <div class="badge badge-sa-primary">Pending</div>
                                                 </div>
                                             </td>
                                             <td><a
-                                                    href="{{ route('product-details', ['slug' => $tproduct->product->slug]) }}">{{ $tproduct->product->name }}</a>
+                                                    href="{{ route('product-details', ['slug' => $tproduct->slug]) }}">{{ $tproduct->name }}</a>
                                             </td>
-                                            <td><img src="{{ asset('admin/product/feat') }}/{{ $tproduct->product->image }}"
+                                            <td><img src="{{ asset('admin/product/feat') }}/{{ $tproduct->image }}"
                                                     width="60" /></td>
                                         </tr>
                                     @endforeach
-
                                 </tbody>
                             </table>
-                        </div> --}}
+                        </div>
                     </div>
                 </div>
 
