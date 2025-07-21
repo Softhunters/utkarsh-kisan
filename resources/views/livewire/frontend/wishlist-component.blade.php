@@ -6,7 +6,7 @@
         </div> -->
         <div class="container">
             <div class="row justify-content-center align-items-center text-center">
-                <div class="col-lg-6 align-items-center">
+                <div class="col-sm-6 align-items-center banner-data">
                     <div class="banner-content">
                         <h1>Wishlist</h1>
                         <nav aria-label="breadcrumb">
@@ -17,12 +17,12 @@
                         </nav>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="banner-img d-lg-block d-none">
+                <div class="col-sm-6">
+                    <div class="banner-img d-block ">
                         <!-- <div class="banner-img-bg">
                             <img class="img-fluid" src="{{ asset('assets/images/bg/inner-banner-vec.png') }}" alt />
                         </div> -->
-                        <img class="img-fluid" src="{{ asset('assets/images/bg/inner-banner-img.png') }}" alt />
+                        <img class="img-fluid wishlist-banner-img"  src="{{ asset('assets/images/bg/inner-banner-img.png') }}" alt />
                     </div>
                 </div>
             </div>
@@ -64,7 +64,10 @@
                                                     alt="" width="130px" height="160px" />
                                             </td>
                                             <td data-label="Food Name"><a
-                                                    href="{{ route('product-details', ['slug' => $item->slug]) }}">{{ $item->name }}</a>
+                                                    href="{{ route('product-details', ['slug' => $item->slug]) }}">
+                                                    {{-- {{ $item->name }}  --}}
+                                                      {{ substr($item->name, 0, 30) }}
+                                                </a>
                                             </td>
                                            
                                             <td data-label="seller name" class="seller_data">{{ $item->seller_name??'' }}</td>
