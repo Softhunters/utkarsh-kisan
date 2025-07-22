@@ -38,7 +38,7 @@ class HomeComponent extends Component
                 $wishlist->product_id = $product_id;
                 $wishlist->product_name = $product->name;
                 $wishlist->product_image = $product->image;
-                $wishlist->price = $product->sale_price;
+                $wishlist->price = $product_price;
                 $wishlist->quantity = '1';
                 $wishlist->seller_id = $seller_id;
                 $wishlist->save();
@@ -58,7 +58,7 @@ class HomeComponent extends Component
                 'product_image' => $product->image,
                 'quantity' => '1',
                 'seller_id' => $seller_id,
-                'price' => $product->sale_price
+                'price' => $product_price
             ];
             Session()->put('wishlist', $wishlist);
 
@@ -123,7 +123,7 @@ class HomeComponent extends Component
                 $cart->product_id = $product_id;
                 $cart->product_name = $product->name;
                 $cart->product_image = $product->image;
-                $cart->price = $product->sale_price;
+                $cart->price = $product_price;
                 $cart->quantity = '1';
                 $cart->seller_id = $seller_id;
                 $cart->save();
@@ -144,7 +144,7 @@ class HomeComponent extends Component
                 'product_image' => $product->image,
                 'quantity' => '1',
                 'seller_id' => $seller_id,
-                'price' => $product->sale_price
+                'price' => $product_price
             ];
             Session()->put('cart', $cart);
 
@@ -177,7 +177,15 @@ class HomeComponent extends Component
         $brands = Brand::where('is_home', 1)->where('status', 1)->get();
         $banners = Banner::where('status', 1)->where('for', 'home')->get();
         // $cbanners = Banner::where('status',1)->where('for','1')->get();
-        $products = Product::whereHas('vendorProducts')->with(['seller', 'category', 'subCategories'])
+        $products = Product::whereHas('activeVendorProducts')
+            ->with([
+                'seller',
+                'category',
+                'subCategories',
+                'bestSeller' => function ($q) {
+                    $q->select('id', 'product_id', 'vendor_id', 'price');
+                }
+            ])
             ->where('featured', '!=', 1)
             ->where('sale_price', '>', 0)
             ->where('status', 1)
@@ -186,7 +194,15 @@ class HomeComponent extends Component
             ->take(8)
             ->get();
 
-        $fproducts = Product::whereHas('vendorProducts')->with(['seller', 'category', 'subCategories'])
+        $fproducts = Product::whereHas('activeVendorProducts')
+            ->with([
+                'seller',
+                'category',
+                'subCategories',
+                'bestSeller' => function ($q) {
+                    $q->select('id', 'product_id', 'vendor_id', 'price');
+                }
+            ])
             ->where('featured', 1)
             ->where('status', 1)
             ->where('stock_status', 'instock')
@@ -194,7 +210,15 @@ class HomeComponent extends Component
             ->take(8)
             ->get();
 
-        $oproducts = Product::whereHas('vendorProducts')->with(['seller', 'category', 'subCategories'])
+        $oproducts = Product::whereHas('activeVendorProducts')
+            ->with([
+                'seller',
+                'category',
+                'subCategories',
+                'bestSeller' => function ($q) {
+                    $q->select('id', 'product_id', 'vendor_id', 'price');
+                }
+            ])
             ->where('sale_price', '>', 0)
             ->where('status', 1)
             ->where('discount_value', '>', 10)
@@ -210,7 +234,7 @@ class HomeComponent extends Component
             ->get();
 
         // // $products = Product::where('sale_price','>',0)->where('status',1)->where('featured',1)->where('stock_status','instock')->inRandomOrder()->get()->take(12);
-        $testimonials = Testimonial::where('status',1)->get();
+        $testimonials = Testimonial::where('status', 1)->get();
         //    dd($fproducts); 
         return view('livewire.frontend.home-component', compact('testimonials', 'banners', 'sliders', 'oproducts', 'fproducts', 'categorys', 'subcategorys', 'products', 'brands'))->layout('layouts.main');
     }

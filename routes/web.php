@@ -104,7 +104,7 @@ Route::get('/thankyou', ThankyouComponent::class)->name('thankyou');
 Route::get('/shop', ShopComponent::class)->name('shop');
 Route::get('/vendor/product_list/{slug}', VendorProductComponent::class)->name('vendorProduct');
 Route::get('/category/{category_slug}/{scategory_slug?}', CategorySearchComponent::class)->name('product.category');
-Route::get('/product-detail/{slug}', ProductDetailsComponent::class)->name('product-details');
+Route::get('/product-detail/{slug}/{vendor_id?}', ProductDetailsComponent::class)->name('product-details');
 
 Route::get('/search', SearchComponent::class)->name('searchs');
 

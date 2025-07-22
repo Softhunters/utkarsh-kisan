@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend;
 
+use App\Models\VendorProduct;
 use Livewire\Component;
 use App\Models\Product;
 use App\Models\ProductVariant;
@@ -22,6 +23,7 @@ class ProductDetailsComponent extends Component
 {
     use WithFileUploads;
     public $slug;
+    public $vendor_id;
     public $quntiti;
     // public $wish;
     public $rimages;
@@ -87,7 +89,7 @@ class ProductDetailsComponent extends Component
         }
     }
 
-    public function addToWishlist(Request $request, $product_id, $product_price)
+    public function addToWishlist(Request $request, $product_id, $product_price, $seller_id=null)
     {
         $id = $product_id;
         if (Auth::check()) {
@@ -103,7 +105,8 @@ class ProductDetailsComponent extends Component
                 $wishlist->product_id = $product_id;
                 $wishlist->product_name = $product->name;
                 $wishlist->product_image = $product->image;
-                $wishlist->price = $product->sale_price;
+                $wishlist->seller_id = $seller_id;
+                $wishlist->price = $product_price;
                 $wishlist->quantity = $this->quntiti;
                 $wishlist->save();
                 session()->flash('success', 'Item added to wishlist!');
@@ -119,7 +122,8 @@ class ProductDetailsComponent extends Component
                 'product_name' => $product->name,
                 'product_image' => $product->image,
                 'quantity' => $this->quntiti,
-                'price' => $product->sale_price
+                'seller_id' => $seller_id,
+                'price' => $product_price
             ];
             Session()->put('wishlist', $wishlist);
 
@@ -161,7 +165,7 @@ class ProductDetailsComponent extends Component
         }
         // return;
     }
-    public function AddtoCart(Request $request, $product_id, $product_price, $seller_id=null)
+    public function AddtoCart(Request $request, $product_id, $product_price, $seller_id = null)
     {
         $id = $product_id;
         // dd($id);
@@ -179,7 +183,7 @@ class ProductDetailsComponent extends Component
                 $cart->product_id = $product_id;
                 $cart->product_name = $product->name;
                 $cart->product_image = $product->image;
-                $cart->price = $product->sale_price;
+                $cart->price = $product_price;
                 $cart->quantity = $this->quntiti;
                 $cart->seller_id = $seller_id;
                 $cart->save();
@@ -198,7 +202,7 @@ class ProductDetailsComponent extends Component
                 'product_name' => $product->name,
                 'product_image' => $product->image,
                 'quantity' => $this->quntiti,
-                'price' => $product->sale_price,
+                'price' => $product_price,
                 'seller_id' => $seller_id
             ];
             Session()->put('cart', $cart);
@@ -211,11 +215,25 @@ class ProductDetailsComponent extends Component
     }
     public function render(Request $request)
     {
-        if (!$this->variant_id) {
+        if ($this->vendor_id) {
+            $product = Product::with([
+                'seller',
+                'bestSeller' => function ($q) {
+                    $q->where('vendor_id', $this->vendor_id)
+                        ->select('id', 'product_id', 'vendor_id', 'price');
+                }
+            ])
+                ->where('slug', $this->slug)
+                ->first();
+
+        } elseif (!$this->variant_id) {
             $product = Product::with('seller')->where('slug', $this->slug)->first();
         } else {
             $product = Product::with('seller')->where('id', $this->variant_id)->first();
         }
+
+        $otherVendors = VendorProduct::where('product_id', $product->id)->whereNot('vendor_id', $this->vendor_id)->where('status', 1)->get();
+
         if ($product->parent_id) {
             $varaiants = Product::where('parent_id', $product->parent_id)->orWhere('id', $product->parent_id)->get();
         } else {
@@ -240,9 +258,28 @@ class ProductDetailsComponent extends Component
         }
 
         $shareButtons = \Share::page(route('product-details', ['slug' => $product->slug]))->facebook()->twitter()->linkedin()->telegram()->whatsapp()->reddit();
-        $popular_products = Product::where('status', 1)->inRandomOrder()->limit(8)->get();
-        $related_products = Product::where('category_id', $product->category_id)->where('status', 1)->inRandomOrder()->limit(8)->get();
-        return view('livewire.frontend.product-details-component', ['product' => $product, 'shareButtons' => $shareButtons, 'varaiants' => $varaiants, 'popular_products' => $popular_products, 'related_products' => $related_products])->layout('layouts.main');
+        $popular_products = Product::whereHas('activeVendorProducts')
+            ->with([
+                'bestSeller' => function ($q) {
+                    $q->select('id', 'product_id', 'vendor_id', 'price');
+                }
+            ])
+            ->where('status', 1)
+            ->inRandomOrder()
+            ->limit(8)
+            ->get();
+        $related_products = Product::whereHas('activeVendorProducts')
+            ->with([
+                'bestSeller' => function ($q) {
+                    $q->select('id', 'product_id', 'vendor_id', 'price');
+                }
+            ])
+            ->where('category_id', $product->category_id)
+            ->where('status', 1)
+            ->inRandomOrder()
+            ->limit(8)
+            ->get();
+        return view('livewire.frontend.product-details-component', ['otherVendors' => $otherVendors, 'product' => $product, 'shareButtons' => $shareButtons, 'varaiants' => $varaiants, 'popular_products' => $popular_products, 'related_products' => $related_products])->layout('layouts.main');
     }
 
     public function checkout(Request $request, $id, $sale_price)
@@ -262,7 +299,7 @@ class ProductDetailsComponent extends Component
         return;
     }
 
-    public function FAddtoCart(Request $request, $product_id, $product_price)
+    public function FAddtoCart(Request $request, $product_id, $product_price, $seller_id = null)
     {
         $id = $product_id;
         if (Auth::check()) {
@@ -280,7 +317,8 @@ class ProductDetailsComponent extends Component
                 $cart->product_id = $product_id;
                 $cart->product_name = $product->name;
                 $cart->product_image = $product->image;
-                $cart->price = $product->sale_price;
+                $cart->price = $product_price;
+                $cart->seller_id = $seller_id;
                 $cart->quantity = '1';
                 $cart->save();
                 session()->flash('success', 'Item added to Cart!');
@@ -298,8 +336,9 @@ class ProductDetailsComponent extends Component
                 'product_id' => $product->id,
                 'product_name' => $product->name,
                 'product_image' => $product->image,
+                $cart->seller_id = $seller_id,
                 'quantity' => '1',
-                'price' => $product->sale_price
+                'price' => $product_price
             ];
             Session()->put('cart', $cart);
 
@@ -310,7 +349,7 @@ class ProductDetailsComponent extends Component
 
         return;
     }
-    public function FaddToWishlist(Request $request, $product_id, $product_price)
+    public function FaddToWishlist(Request $request, $product_id, $product_price, $seller_id = null)
     {
         $id = $product_id;
         if (Auth::check()) {
@@ -325,7 +364,8 @@ class ProductDetailsComponent extends Component
                 $wishlist->product_id = $product_id;
                 $wishlist->product_name = $product->name;
                 $wishlist->product_image = $product->image;
-                $wishlist->price = $product->sale_price;
+                $wishlist->price = $product_price;
+                $wishlist->seller_id = $seller_id;
                 $wishlist->quantity = '1';
                 $wishlist->save();
                 session()->flash('success', 'Item added to wishlist!');
@@ -343,6 +383,7 @@ class ProductDetailsComponent extends Component
                 'product_name' => $product->name,
                 'product_image' => $product->image,
                 'quantity' => '1',
+                'seller_id' => $seller_id,
                 'price' => $product->sale_price
             ];
             Session()->put('wishlist', $wishlist);

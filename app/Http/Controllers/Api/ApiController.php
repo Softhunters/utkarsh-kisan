@@ -50,8 +50,8 @@ class ApiController extends Controller
         $result['brands'] = Brand::where('is_home', 1)->where('status', 1)->get();
         $result['banners'] = Banner::where('status', 1)->where('for', 'home')->get();
         $result['cbanners'] = Banner::where('status', 1)->where('for', '1')->get();
-        $result['products'] = Product::whereHas('vendorProducts')->with('seller')->where('sale_price', '>', 0)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8);
-        $result['fproducts'] = Product::whereHas('vendorProducts')->with('seller')->where('featured', 1)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8);
+        $result['products'] = Product::whereHas('activeVendorProducts')->with('seller')->where('sale_price', '>', 0)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8);
+        $result['fproducts'] = Product::whereHas('activeVendorProducts')->with('seller')->where('featured', 1)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8);
         // $result['sum'] = Product::withAvg('reviews', 'rating')->get();
         $result['testimonials'] = Testimonial::where('status', 1)->get();
 

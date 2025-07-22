@@ -53,7 +53,7 @@
 
                     <div class="d-flex">
                         <div class="col-md-6">
-                            <img class="sidebaar1" src="{{ asset('assets/images/logo/2 (2).png') }}">
+                            <img class="sidebaar1" src="{{ asset('assets/images/dash1.png') }}">
                         </div>
 
                         <div class="saw-indicator__body">
@@ -84,7 +84,7 @@
 
                     <div class="d-flex">
                         <div class="col-md-6">
-                            <img class="sidebaar1" src="{{ asset('assets/images/logo/3 (2).png') }}">
+                            <img class="sidebaar1" src="{{ asset('assets/images/dash3.png') }}">
                         </div>
 
                         <div class="saw-indicator__body">
@@ -116,7 +116,7 @@
 
                     <div class="d-flex">
                         <div class="col-md-6">
-                            <img class="sidebaar1" src="{{ asset('assets/images/logo/3 (2).png') }}">
+                            <img class="sidebaar1" src="{{ asset('assets/images/dash2.png') }}">
                         </div>
 
                         <div class="saw-indicator__body">

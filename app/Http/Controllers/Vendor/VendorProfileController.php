@@ -25,7 +25,7 @@ class VendorProfileController extends Controller
             'city' => 'required|exists:cities,id',
             'pin_code' => 'required',
             'id_proof_type' => 'required|string',
-            'proof_image' => 'nullable',
+            'proof_image' => 'required',
             'gstin_number' => 'nullable',
             'gstin_image' => 'nullable',
         ]);

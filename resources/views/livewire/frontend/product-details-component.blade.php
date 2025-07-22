@@ -34,7 +34,8 @@
                         <!-- <div class="banner-img-bg">
                             <img class="img-fluid" src="{{ asset('assets/images/bg/inner-banner-vec.png') }}" alt />
                         </div> -->
-                        <img class="img-fluid product-banner-img" src="{{ asset('assets/images/bg/inner-banner-img.png') }}" alt />
+                        <img class="img-fluid product-banner-img"
+                            src="{{ asset('assets/images/bg/inner-banner-img.png') }}" alt />
                     </div>
                 </div>
             </div>
@@ -128,7 +129,7 @@
                             </span>
                         </div>
                         <div class="price-tag d-flex gap-3">
-                            <h4>₹{{ $product->sale_price }} <del>₹{{ $product->regular_price }}</del></h4>
+                            <h4>₹{{ $product->bestSeller->price }} <del>₹{{ $product->regular_price }}</del></h4>
                             <spna class="percent">({{ $product->discount_value }}% off)</spna>
                             <spna class="percent">Inclusive of all taxes</spna>
                         </div>
@@ -173,24 +174,25 @@
                                 <a href="{{ route('cart') }}" class="primary-btn3">Already In Cart</a>
                             @else
                                 <a href="#"
-                                    wire:click.prevent="AddtoCart({{ $product->id }},{{ $product->sale_price }},{{ $product->seller->vendor_id ?? '' }})"
+                                    wire:click.prevent="AddtoCart({{ $product->id }},{{ $product->bestSeller->price }},{{ $product->bestSeller->vendor_id ?? '' }})"
                                     class="primary-btn3">Add to cart</a>
                             @endif
 
                         </div>
                         @auth
                             <div class="buy-now-btn">
-                                <a wire:click.prevent="checkout({{ $product->id }},{{ $product->sale_price }})">Buy
+                                <a wire:click.prevent="checkout({{ $product->id }},{{ $product->bestSeller->price }})">Buy
                                     Now</a>
                             </div>
                         @endauth
-                        <div class="buy-now-btn mt-3">
-                            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal"
-                                data-bs-target="#vendorModal">
-                                Other Sellers Information
-                            </button>
-                        </div>
-
+                        @if ($otherVendors->count() > 0)
+                            <div class="buy-now-btn mt-3">
+                                <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal"
+                                    data-bs-target="#vendorModal">
+                                    Other Sellers Information
+                                </button>
+                            </div>
+                        @endif
                         <div class="compare-wishlist-area d-lg-flex wishs">
                             <ul>
                                 <!--<li>-->
@@ -201,7 +203,7 @@
                                 <li>
                                     @if (in_array($product->id, $wishp))
                                         <a href="#"
-                                            wire:click.prevent="removeFromWishlist({{ $product->id }},{{ $fproduct->seller->vendor_id ?? '' }})">
+                                            wire:click.prevent="removeFromWishlist({{ $product->id }},{{ $fproduct->bestSeller->vendor_id ?? '' }})">
                                             <span>
                                                 <svg width="14" height="13" viewBox="0 0 14 13"
                                                     xmlns="http://www.w3.org/2000/svg" fill="#699a39">
@@ -213,7 +215,7 @@
                                         </a>
                                     @else
                                         <a href="#"
-                                            wire:click.prevent="addToWishlist({{ $product->id }},{{ $product->sale_price }})">
+                                            wire:click.prevent="addToWishlist({{ $product->id }},{{ $product->bestSeller->price }})">
                                             <span><img src="{{ asset('assets/images/icon/Icon-favorites2.svg') }}"
                                                     alt /></span> Add to wishlist
                                         </a>
@@ -579,7 +581,8 @@
                                             Out</span>
                                     @endif
                                     <div class="collection-img @if ($fproduct->stock_status == 'outofstock') blured @endif">
-                                        <a href="{{ route('product-details', ['slug' => $fproduct->slug]) }}"><img
+                                        <a
+                                            href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}"><img
                                                 class="img-gluid"
                                                 src="{{ asset('admin/product/feat') }}/{{ $fproduct->image }}"
                                                 alt="" height="136px" width="153px" /> </a>
@@ -588,7 +591,8 @@
                                             <div class="plus-icon">
                                                 <i class="bi bi-plus"></i>
                                             </div>
-                                            <a href="{{ route('product-details', ['slug' => $fproduct->slug]) }}">View
+                                            <a
+                                                href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}">View
                                                 Details</a>
                                             {{-- <a href="#">View Details</a> --}}
                                         </div>
@@ -598,21 +602,20 @@
                                                     <!--<a href="#"><img src="{{ asset('assets/images/icon/Icon-cart3.svg') }}" alt /></a>-->
                                                 @else
                                                     <a href="#"
-                                                        wire:click.prevent="AddtoCart({{ $fproduct->id }},{{ $fproduct->sale_price }},{{ $fproduct->seller->vendor_id ?? '' }})"><img
+                                                        wire:click.prevent="AddtoCart({{ $fproduct->id }},{{ $fproduct->bestSeller->price }},{{ $fproduct->bestSeller->vendor_id ?? '' }})"><img
                                                             src="{{ asset('assets/images/icon/Icon-cart3.svg') }}"
                                                             alt /></a>
                                                 @endif
                                             </li>
                                             <li>
                                                 @if (in_array($fproduct->id, $wishp))
-                                         
                                                     <a href="#"
-                                                        wire:click.prevent="removeFromWishlist({{ $fproduct->id }},{{ $fproduct->seller->vendor_id ?? '' }})"><img
+                                                        wire:click.prevent="removeFromWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->vendor_id ?? '' }})"><img
                                                             src="{{ asset('assets/images/icon/Icon-favorites3.svg') }}"
                                                             alt /></a>
                                                 @else
                                                     <a href="#"
-                                                        wire:click.prevent="addToWishlist({{ $fproduct->id }},{{ $fproduct->sale_price }})"><img
+                                                        wire:click.prevent="addToWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->price }})"><img
                                                             src="{{ asset('assets/images/icon/Icon-favorites.svg') }}"
                                                             alt /></a>
                                                 @endif
@@ -622,11 +625,11 @@
                                     <div class="collection-content text-center">
                                         <p class="fixed">
                                             <a
-                                                href="{{ route('product-details', ['slug' => $fproduct->slug]) }}">{{ $fproduct->name }}</a>
+                                                href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}">{{ $fproduct->name }}</a>
                                             {{-- <a href="#">{{$product->name}}</a> --}}
                                         </p>
                                         <div class="price priceds">
-                                            <h6>₹{{ $fproduct->sale_price }}</h6>
+                                            <h6>₹{{ $fproduct->bestSeller->price }}</h6>
                                             <del>₹{{ $fproduct->regular_price }}</del>
                                         </div>
                                         <div class="review">
@@ -679,7 +682,7 @@
                 </div>
                 <div class="modal-body">
 
-                    @if ($product->vendorProducts->count())
+                    @if ($otherVendors->count())
                         <div class="table-responsive">
                             <table class="table table-borderless align-middle">
                                 <thead class="table-light">
@@ -692,7 +695,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($product->vendorProducts as $vp)
+                                    @foreach ($otherVendors as $vp)
                                         <tr>
                                             <td><a
                                                     href="{{ route('vendorProduct', ['slug' => $vp->vendor_id]) }}">{{ $vp->vendor->name ?? 'N/A' }}</a>

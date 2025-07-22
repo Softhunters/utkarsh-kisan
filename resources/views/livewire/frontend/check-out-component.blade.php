@@ -11,7 +11,7 @@
                 <div class="col-md-8">
                     <div class="card mb-md-5">
                         <div class="card-body">
-                            <div class="row pb-4">
+                            <div class="row">
                                 @if(isset($ships[0]))
                                     <div class="row">
                                         @foreach($ships as $ship)
@@ -37,11 +37,11 @@
                                         
                                         
                                     </div>
-                                    <div class="text-lg-right  mt-4">
+                                    <div class="text-lg-right  mt-4 mb-4">
                                         <a href="#" data-toggle="modal" data-dismiss="modal" data-target="#address_model"  wire:click.prevent="addressmodal"  class="btn btn-primary btn-sm edit_btn Address_btn"> Add Another Address</a>
                                     </div>
                                 @else
-                                    <div class="text-center mb-4">
+                                    <div class="text-center">
                                         <a href="#" data-toggle="modal" data-dismiss="modal" data-target="#address_model"  wire:click.prevent="addressmodal" class="btn btn-primary btn-sm edit_btn"> Add Your First Addres</a>
                                     </div>
                                 @endif 
@@ -50,7 +50,7 @@
                             @if(isset($ships[0]))
                                 @if(Session::has('message'))
                                     <div class="alert alert-success">
-                                        <strong>Alert</strong>{{Session::get('message')}}
+                                        <strong>Alert </strong>{{Session::get('message')}}
                                     </div>
                                 @endif
                                 @if(Session::has('stripe_error'))
