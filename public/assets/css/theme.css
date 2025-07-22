@@ -3385,7 +3385,7 @@ input[type="button"].btn-block {
 .collapse:not(.show) {
     display: none;
 }
-.collapsing {
+ .collapsing {
     position: relative;
     height: 0;
     overflow: hidden;
@@ -11463,7 +11463,8 @@ a.text-danger:focus {
 }
 a.text-light:hover,
 a.text-light:focus {
-    color: #abbef1 !important;
+    /* color: #abbef1 !important; */
+    color: var(--primary-color3);
 }
 .text-dark {
     color: #343a40 !important;
