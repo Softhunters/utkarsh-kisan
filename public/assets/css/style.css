@@ -12351,7 +12351,7 @@ footer.style2 .social-area ul li:hover a i {
 
 /* For Webkit browsers (Chrome, Safari, Edge) */
 .shop-details-page .nav1::-webkit-scrollbar {
-  height: 4px; /* control thickness */
+  height: 4px ; /* control thickness */
 }
 
 .shop-details-page .nav1::-webkit-scrollbar-track {
@@ -12366,7 +12366,8 @@ footer.style2 .social-area ul li:hover a i {
 /* For Firefox */
 .shop-details-page .nav1 {
   scrollbar-width: thin;           
-  /* scrollbar-color: rgba(0, 0, 0, 0.3) transparent;  */
+  scrollbar-color:rgb(245, 245, 245)
+   transparent; 
 }
 
 
@@ -12390,11 +12391,11 @@ footer.style2 .social-area ul li:hover a i {
 
 .shop-details-page .nav1 .nav-link {
     height: 132px;
-    /* min-width: 113px;
-    padding: 10px; */
-    min-width: 100px;
+    min-width: 113px;
+    /* padding: 10px;  */
+     
     padding: 5px;
-    background: #f2f2f2;
+    /* background: #f2f2f2; */
     border-radius: 3px;
     position: relative
 }
@@ -15728,7 +15729,15 @@ header.style-3 .main-menu ul > li ul.sub-menu > li a:hover{
 @media (min-width: 768px) {
   .container, .container-md, .container-sm {
      /* max-width: 1250px */
-     max-width: 95%;
+     max-width: 90%;
+  }
+}
+ 
+
+@media screen  and (min-width:1500px) {
+    .container, .container-md, .container-sm {
+     /* max-width: 1250px */
+     max-width: 1400px;
   }
 }
 

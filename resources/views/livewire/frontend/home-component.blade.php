@@ -343,24 +343,29 @@
                                             </div>
                                             <ul class="cart-icon-list">
                                                 <li>
-                                                    @if (in_array($product->id, $cartp))
+                                                    @if (in_array($fproduct->id, $cartp))
                                                         <!--<a href="#"><img src="{{ asset('assets/images/icon/Icon-cart3.svg') }}" alt /></a>-->
                                                     @else
                                                         <a href="#"
-                                                            wire:click.prevent="AddtoCart({{ $product->id }},{{ $product->bestSeller->price }},{{ $product->bestSeller->vendor_id ?? '' }})"><img
+                                                            wire:click.prevent="AddtoCart({{ $fproduct->id }},{{ $fproduct->bestSeller->price }},{{ $fproduct->bestSeller->vendor_id ?? '' }})"><img
+
                                                                 src="{{ asset('assets/images/icon/Icon-cart3.svg') }}"
                                                                 alt /></a>
                                                     @endif
                                                 </li>
                                                 <li>
-                                                    @if (in_array($product->id, $wishp))
+                                                    @if (in_array($fproduct->id, $wishp))
                                                         <a href="#"
-                                                            wire:click.prevent="removeFromWishlist({{ $product->id }},{{ $product->bestSeller->vendor_id ?? '' }})"><img
+
+                                                            wire:click.prevent="removeFromWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->vendor_id ?? '' }})"><img
+
                                                                 src="{{ asset('assets/images/icon/Icon-favorites3.svg') }}"
                                                                 alt /></a>
                                                     @else
                                                         <a href="#"
-                                                            wire:click.prevent="addToWishlist({{ $product->id }},{{ $product->bestSeller->price }})"><img
+
+                                                            wire:click.prevent="addToWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->price }})"><img
+
                                                                 src="{{ asset('assets/images/icon/Icon-favorites.svg') }}"
                                                                 alt /></a>
                                                     @endif

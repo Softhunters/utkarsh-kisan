@@ -7,9 +7,9 @@
         p, li {
       color: #4d4b4b !important;
    }
-        .container {
+        /* .container {
             max-width: 95% !important;
-        }
+        } */
 
 
         h1,
@@ -66,6 +66,20 @@
                 padding: 20px 15px;
             }
         }
+           @media (min-width: 768px) {
+  .container, .container-md, .container-sm {
+     /* max-width: 1250px */
+     max-width: 95%;
+  }
+}
+ 
+
+@media screen  and (min-width:1500px) {
+    .container, .container-md, .container-sm {
+     /* max-width: 1250px */
+     max-width: 1450px;
+  }
+}
     </style>
 
 

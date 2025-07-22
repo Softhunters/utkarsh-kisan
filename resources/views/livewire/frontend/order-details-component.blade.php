@@ -120,10 +120,10 @@
                     </div>
                     <div class="col-lg-8 col-md-8 col-12">
                         <div class="ml-0 ml-md-4 mt-md-n3">
-                            <div class="d-none d-md-block">
+                            <div class=" d-md-block">
 
                                 <div class="row mb-md-5">
-                                    <div class="col">
+                                    <div class="col-lg-7  col-12 ">
                                         <h5 class="mb-1 text-orange">Order Details</h5>
                                         <p class="mb-0 text-orange small">
                                             You have full control to manage your own account setting.
@@ -146,7 +146,7 @@
                                         @foreach ($orderitems as $orderitem)
                                             <div class="col-md-6 col-sm-6 col-12">
                                                 <div class="cart_product border-0">
-                                                    <div class="cart_item px-0">
+                                                    <div class="cart_item px-0 d-flex">
                                                         <div class="cart_item_image">
                                                             <img src="{{ asset('admin/product/feat') }}/{{ $orderitem->product->image }}"
                                                                 alt="shop">
@@ -178,7 +178,7 @@
                                                                     @else
                                                                         @if ($orderitem->rstatus != 1)
                                                                             <a href="#"
-                                                                                class="btn btn-rounded btn-primary text-white"
+                                                                                class="" style="color: var(--primary-color3);"
                                                                                 wire:click.prevent="cancelOrderItem({{ $orderitem->id }})">
                                                                                 {{-- <img src="{{ asset('img/logo/tras.png') }}"
                                                                                     alt=""
@@ -187,7 +187,7 @@
                                                                             </a>
                                                                         @else
                                                                             <a href="#"
-                                                                                class="btn btn-rounded btn-primary text-white">
+                                                                                class="" style="color: var(--primary-color3);">
                                                                                 {{-- <img src="{{ asset('img/logo/tras.png') }}"
                                                                                     alt=""
                                                                                     style="width:20px;"> --}}
