@@ -51,9 +51,10 @@
                                     <tr>
 
                                         <th>Image</th>
+                                        <th>Seller Name</th>
                                         <th>Item Name</th>
                                         <th>Unit Price</th>
-                                        <th>Discount Price</th>
+                                        <th>Sale Price</th>
                                         <th>Quantity</th>
                                         <th>Subtotal</th>
                                         <th>Delete</th>
@@ -69,7 +70,14 @@
                                             <td data-label="Image">
                                                 <img src="{{ asset('admin/product/feat') }}/{{ $item->image }}" alt />
                                             </td>
-                                            <td data-label="Food Name"><a
+                                            <td data-label="Seller Name"><a
+                                                    href="{{ route('product-details', ['slug' => $item->slug]) }}">
+                                                    {{-- {{ $item->name }} --}}
+                                                    {{ substr($item->seller->name, 0, 20) }}
+                                                
+                                                </a>
+                                            </td>
+                                            <td data-label="Item Name"><a
                                                     href="{{ route('product-details', ['slug' => $item->slug]) }}">
                                                     {{-- {{ $item->name }} --}}
                                                     {{ substr($item->name, 0, 20) }}
@@ -314,7 +322,7 @@
 
                             @if (Session::has('cmessage'))
                                 <div class="alert alert-success">
-                                    <strong>Alert</strong>{{ Session::get('cmessage') }}
+                                    <strong>Alert </strong>{!! Session::get('cmessage') !!}
                                 </div>
                             @endif
                         </ul>

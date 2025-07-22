@@ -337,11 +337,14 @@ class CartComponent extends Component
                 session()->flash('info', 'Cart Qunatity is out of stock please! change qunatity');
                 return;
             }
-            
+
             return redirect()->route('check-out');
         } else {
-            session()->flash('cmessage', 'Login First');
+            $url = route('new-user-login');
+            $message = "<span><a href=\"{$url}\" style='color:#0f5132;text-decoration:underline'>Login</a> First</span>";
+            session()->flash('cmessage', $message);
             $this->dispatch('show-edit-post-modal');
+
             return;
         }
     }

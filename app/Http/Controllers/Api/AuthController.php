@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Str;
@@ -478,6 +480,9 @@ class AuthController extends Controller
                     $user = Auth::user();
                     session(['user_id' => Auth::id()]);
 
+                    $this->movewishlist($request);
+                    $this->movecart($request);
+
                     return response()->json([
                         'status' => true,
                         'message' => 'User Logged In Successfully',
@@ -496,7 +501,7 @@ class AuthController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'This Mobile is number not registor!'
+                    'message' => 'This Mobile is number not register!'
                 ], 200);
             }
 
@@ -715,6 +720,63 @@ class AuthController extends Controller
                 'message' => $th->getMessage()
             ], 500);
         }
+    }
+
+    public function movewishlist($request)
+    {
+        if (Session::has('wishlist')) {
+
+            foreach (Session::get('wishlist') as $id => $cart) {
+
+                $wproduct = Wishlist::where('product_id', $cart['product_id'])->where('user_id', Auth::user()->id)->first();
+                if ($wproduct) {
+                    // session()->flash('info','Item alreday in wishlist!');
+                    // return;
+                } else {
+                    $carModel = new Wishlist();
+                    $carModel['user_id'] = Auth::user()->id;
+                    $carModel['product_id'] = $cart['product_id'];
+                    $carModel['product_name'] = $cart['product_name'];
+                    $carModel['product_image'] = $cart['product_image'];
+                    $carModel['quantity'] = $cart['quantity'];
+                    $carModel['seller_id'] = $cart['seller_id'] ?? 1;
+                    $carModel['price'] = $cart['price'];
+                    $carModel->save();
+                }
+            }
+            Session::forget('wishlist');
+            return;
+        }
+        return;
+    }
+
+    public function movecart($request)
+    {
+        if (Session::has('cart')) {
+            foreach (Session::get('cart') as $id => $cart) {
+                $wproduct = Cart::where('product_id', $cart['product_id'])->where('user_id', Auth::user()->id)->first();
+                if ($wproduct) {
+
+                    // session()->flash('info','item alreday in Cart!');
+                    // return;
+                } else {
+
+                    $carModel = new Cart();
+                    $carModel['user_id'] = Auth::user()->id;
+                    $carModel['product_id'] = $cart['product_id'];
+                    $carModel['product_name'] = $cart['product_name'];
+                    $carModel['product_image'] = $cart['product_image'];
+                    $carModel['quantity'] = $cart['quantity'];
+                    $carModel['seller_id'] = $cart['seller_id'] ?? 1;
+                    $carModel['price'] = $cart['price'];
+                    $carModel->save();
+                }
+            }
+            Session::forget('cart');
+            return;
+        }
+
+        return;
     }
 
     public function VOtpLogin(Request $request)

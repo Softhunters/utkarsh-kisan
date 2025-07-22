@@ -101,10 +101,10 @@
                                                     </div>
 
                                                     <div class="col-md-6 mb-3">
-                                                        <label>Proof Image <small class="text-muted">(Upload only PDF
-                                                                format)</small></label>
-                                                        <input type="file" name="proof_image" class="form-control"
-                                                            accept=".pdf">
+                                                        <label>Upload ID Proof <small class="text-muted">(PDF
+                                                                Format)</small></label>
+                                                        <input type="file" name="proof_image" class="form-control"  
+                                                            accept=".pdf" required>
                                                         @if ($vendorProfile->proof_image)
                                                             <a href="{{ asset( $vendorProfile->proof_image) }}"
                                                                 target="_blank">View Current</a>
@@ -120,8 +120,8 @@
                                                             value="{{ $vendorProfile->gstin_number ?? '' }}">
                                                     </div>
                                                     <div class="col-md-6 mb-3">
-                                                        <label>GSTIN Image <small class="text-muted">(Upload only PDF
-                                                                format)</small></label>
+                                                        <label>Upload GSTIN Proof <small class="text-muted">(PDF
+                                                                Format)</small></label>
                                                         <input type="file" name="gstin_image" class="form-control"
                                                             accept=".pdf">
                                                         @if ($vendorProfile->gstin_image)

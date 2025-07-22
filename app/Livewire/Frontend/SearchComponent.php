@@ -58,7 +58,7 @@ class SearchComponent extends Component
         $brand_id = Brand::where('brand_slug', 'like', '%' . $this->search . '%')->first() ? Brand::where('brand_slug', 'like', '%' . $this->search . '%')->first()->id : '';
         $subcategory_id = SubCategory::where('slug', 'like', '%' . $this->search . '%')->first() ? SubCategory::where('slug', 'like', '%' . $this->search . '%')->first()->id : '';
         // dd($category_id);
-        $query = Product::whereBetween('sale_price', [$this->min_price, $this->max_price])->where('status', 1);
+        $query = Product::whereHas('activeVendorProducts')->whereBetween('sale_price', [$this->min_price, $this->max_price])->where('status', 1);
         if ($category_id) {
             $query = $query->where('category_id', $category_id);
         } elseif ($subcategory_id) {

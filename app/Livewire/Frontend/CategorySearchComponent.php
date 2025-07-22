@@ -85,7 +85,7 @@ class CategorySearchComponent extends Component
             $category_name =$category->name;
             $filter= "";
         }
-        $query = Product::whereBetween('regular_price',[$this->min_price,$this->max_price])->where('status',1)->whereNull('parent_id');
+        $query = Product::whereHas('activeVendorProducts')->whereBetween('regular_price',[$this->min_price,$this->max_price])->where('status',1)->whereNull('parent_id');
         if($this->category_slug){
             $query=$query->where('category_id',$category->id);
         }
