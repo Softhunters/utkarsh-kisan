@@ -8,29 +8,28 @@
                     <div class="form-wrapper wow fadeInUp" data-wow-duration="1.5s" data-wow-delay=".2s">
                         <div class="form-title">
                             <h3>Log In</h3>
+                            {{-- <p>New Member? <a href="{{ route('new-user-register') }}">signup here</a></p> --}}
                         </div>
 
                         <form id="frmLogin" method="POST">
                             @csrf
 
-                            {{-- Step 1: Enter phone number --}}
                             <div id="loginStep">
                                 <div class="form-inner">
                                     <label>Enter Your Phone Number *</label>
                                     <input type="text" name="number" id="number" class="form-control"
-                                           placeholder="Enter your phone number" required>
+                                        placeholder="Enter your phone number" required>
                                 </div>
                                 <div id="login_msg" class="text-danger mt-2"></div>
                                 <button type="submit" class="account-btn mt-3" id="sendOtpBtn">Send OTP</button>
                             </div>
 
-                            {{-- Step 2: Enter OTP --}}
                             <div id="otpStep" class="d-none">
                                 <div class="form-inner mb-3">
                                     <div class="d-flex justify-content-between gap-2 otp-inputs">
                                         @for ($i = 1; $i <= 6; $i++)
                                             <input type="text" maxlength="1" class="otp-digit form-control text-center"
-                                                   name="otp[]">
+                                                name="otp[]">
                                         @endfor
                                     </div>
                                 </div>
@@ -43,29 +42,10 @@
 
                                 <button type="button" class="account-btn" id="verifyOtpBtn">Verify OTP</button>
                             </div>
-
-                            {{-- Step 3: Enter Name and Email --}}
-                            <div id="profileStep" class="d-none">
-                                <div class="form-inner">
-                                    <label>Your Name *</label>
-                                    <input type="text" name="name" id="name" class="form-control"
-                                           placeholder="Enter your name">
-                                </div>
-                                <div class="form-inner mt-3">
-                                    <label>Your Email *</label>
-                                    <input type="email" name="email" id="email" class="form-control"
-                                           placeholder="Enter your email">
-                                </div>
-
-                                <div id="profile_msg" class="text-success mt-2"></div>
-
-                                <button type="button" class="account-btn mt-3" id="updateProfileBtn">Update Profile</button>
-                            </div>
                         </form>
 
                         <div class="form-poicy-area mt-3">
-                            <p>By continuing, you agree to Utkarsh Kisan <a href="#">Terms & Conditions</a> & <a
-                                    href="#">Privacy Policy</a>.</p>
+                            <p>By continuing, you agree to Utkarsh Kisan <a href="#">Terms & Conditions</a> & <a href="#">Privacy Policy</a>.</p>
                         </div>
 
                     </div>
@@ -125,6 +105,7 @@
                 });
             });
 
+
             $('#verifyOtpBtn').on('click', function() {
                 const number = $('#number').val();
                 const userOtp = $('.otp-digit').map(function() {
@@ -144,13 +125,9 @@
                     },
                     success: function(res) {
                         if (res.status) {
-                            if (res.need_profile) {
-                                $('#otpStep').hide();
-                                $('#profileStep').removeClass('d-none');
-                            } else {
-                                $('#otp_msg').text("Login successful. Redirecting...");
-                                window.location.href = "/";
-                            }
+                            $('#otp_msg').text("Login successful. Redirecting...");
+
+                            window.location.href = "/";
                         } else {
                             $('#otp_msg').text(res.message);
                         }
@@ -158,28 +135,6 @@
                 });
             });
 
-            $('#updateProfileBtn').on('click', function() {
-                const name = $('#name').val();
-                const email = $('#email').val();
-
-                $.ajax({
-                    url: '/api/update-profile',
-                    method: 'POST',
-                    data: {
-                        name: name,
-                        email: email,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(res) {
-                        if (res.status) {
-                            $('#profile_msg').text("Profile updated. Redirecting...");
-                            window.location.href = "/";
-                        } else {
-                            $('#profile_msg').text(res.message);
-                        }
-                    }
-                });
-            });
 
             $(document).on('keyup', '.otp-digit', function() {
                 if (this.value.length === 1) {

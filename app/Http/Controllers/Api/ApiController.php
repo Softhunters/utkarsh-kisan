@@ -50,10 +50,17 @@ class ApiController extends Controller
         $result['brands'] = Brand::where('is_home', 1)->where('status', 1)->get();
         $result['banners'] = Banner::where('status', 1)->where('for', 'home')->get();
         $result['cbanners'] = Banner::where('status', 1)->where('for', '1')->get();
-        $result['products'] = Product::whereHas('activeVendorProducts')->with('seller')->where('sale_price', '>', 0)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8);
-        $result['fproducts'] = Product::whereHas('activeVendorProducts')->with('seller')->where('featured', 1)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8);
+
         // $result['sum'] = Product::withAvg('reviews', 'rating')->get();
         $result['testimonials'] = Testimonial::where('status', 1)->get();
+
+        if (Auth::check()) {
+            $result['products'] = Product::whereHas('activeVendorProducts')->with('seller')->where('sale_price', '>', 0)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8);
+            $result['fproducts'] = Product::whereHas('activeVendorProducts')->with('seller')->where('featured', 1)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8);
+        } else {
+            $result['products'] = Product::whereHas('activeVendorProducts')->with('seller')->where('sale_price', '>', 0)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8);
+            $result['fproducts'] = Product::whereHas('activeVendorProducts')->with('seller')->where('featured', 1)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8);
+        }
 
         return response()->json([
             'status' => true,
@@ -79,7 +86,11 @@ class ApiController extends Controller
         if (isset($request->sid)) {
             $result['subcategory'] = SubCategory::where('slug', $request->sid)->first();
             $result['scbanners'] = Banner::where('status', 1)->where('for', $result['subcategory']->id)->get();
-            $query = Product::whereBetween('regular_price', [$mip, $map])->where('category_id', $result['category']->id)->where('subcategory_id', $result['subcategory']->id)->with(['reviews', 'brands'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->where('status', 1);
+            if (Auth::check()) {
+                $query = Product::whereBetween('regular_price', [$mip, $map])->where('category_id', $result['category']->id)->where('subcategory_id', $result['subcategory']->id)->with(['reviews', 'brands'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->where('status', 1);
+            } else {
+                $query = Product::whereBetween('regular_price', [$mip, $map])->where('category_id', $result['category']->id)->where('subcategory_id', $result['subcategory']->id)->with(['reviews', 'brands'])->withAvg('reviews', 'rating')->where('status', 1);
+            }
         } else {
             $result['cbanners'] = Banner::where('status', 1)->where('for', $result['category']->id)->get();
 
@@ -99,17 +110,15 @@ class ApiController extends Controller
         if ($request->brandtype != null) {
             $query = $query->whereIn('brand_id', $request->brandtype);
         }
-        if ($request->breedtype != null) {
-            $query = $query->whereIn('breed_id', $request->breedtype);
-        }
-        if ($request->flavourtype != null) {
-            $query = $query->whereIn('flavour_id', $request->flavourtype);
-        }
         if ($request->discount != null) {
             $query = $query->where('discount_value', '>', max($request->discount));
         }
 
-        $query = $query->distinct()->select('products.*')->with(['brands', 'seller'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withCount('reviews');
+        if (Auth::check()) {
+            $query = $query->distinct()->select('products.*')->with(['brands', 'seller'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withCount('reviews');
+        } else {
+            $query = $query->distinct()->select('products.*')->with(['brands', 'seller'])->withAvg('reviews', 'rating')->withCount('reviews');
+        }
 
         $result['products'] = $query->paginate($per_page);
 
@@ -126,7 +135,11 @@ class ApiController extends Controller
         // $result['category'] = Category::where('id',$request->id)->first();
         // $result['subcategorys'] = SubCategory::where('category_id',$request->id)->get();
         //  $result['cbanners'] = Banner::where('status',1)->where('for',$request->id)->get();
-        $result['product'] = Product::where('slug', $request->id)->with(['questions', 'category', 'subCategories', 'brands', 'seller'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->first();
+        if (Auth::check()) {
+            $result['product'] = Product::where('slug', $request->id)->with(['questions', 'category', 'subCategories', 'brands', 'seller'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->first();
+        } else {
+            $result['product'] = Product::where('slug', $request->id)->with(['questions', 'category', 'subCategories', 'brands', 'seller'])->withAvg('reviews', 'rating')->first();
+        }
         if ($result['product']->parent_id) {
             $result['varaiants'] = Product::where('parent_id', $result['product']->parent_id)->orWhere('id', $result['product']->parent_id)->select('products.id', 'products.variant_detail', 'products.regular_price', 'products.sale_price', 'products.slug')->get();
         } else {
@@ -200,7 +213,11 @@ class ApiController extends Controller
 
         $query = $query->distinct()->select('products.*');
 
-        $result['products'] = $query->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withCount('reviews')->with(['brands', 'seller'])->paginate($per_page);
+        if (Auth::check()) {
+            $result['products'] = $query->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withCount('reviews')->with(['brands', 'seller'])->paginate($per_page);
+        } else {
+            $result['products'] = $query->withAvg('reviews', 'rating')->withCount('reviews')->with(['brands', 'seller'])->paginate($per_page);
+        }
 
         return response()->json([
             'status' => true,
@@ -229,7 +246,7 @@ class ApiController extends Controller
             $wish->user_id = Auth::user()->id;
             $wish->quantity = '1';
             $wish->product_name = $product->name;
-            $wish->seller_id = $request->sid??1;
+            $wish->seller_id = $request->sid ?? 1;
             $wish->product_image = $product->image;
             $wish->save();
             return response()->json([
@@ -301,7 +318,7 @@ class ApiController extends Controller
             $wish->price = $product->sale_price;
             $wish->user_id = Auth::user()->id;
             $wish->quantity = $request->qty;
-            $wish->seller_id = $request->sid??1;
+            $wish->seller_id = $request->sid ?? 1;
             $wish->product_name = $product->name;
             $wish->product_image = $product->image;
             $wish->save();
@@ -334,12 +351,12 @@ class ApiController extends Controller
             'seller:id,name',
             'product.reviews'
         ])->where('user_id', Auth::id())->get();
-      
+
 
         $result['cart'] = $carts->map(function ($cart) {
             $product = $cart->product;
             $sellerProduct = $cart->sellerProduct;
-          
+
             return [
                 'id' => $cart->id,
                 'product_id' => $product->id,
@@ -644,7 +661,7 @@ class ApiController extends Controller
                 $cart->product_id = $wishlist->product_id;
                 $cart->product_name = $wishlist->product_name;
                 $cart->product_image = $wishlist->product_image;
-                $cart->seller_id = $wishlist->seller_id??1;
+                $cart->seller_id = $wishlist->seller_id ?? 1;
                 $cart->price = $wishlist->price;
                 $cart->quantity = $wishlist->quantity;
                 $cart->save();
@@ -679,7 +696,7 @@ class ApiController extends Controller
                 $cart->product_name = $wishlist->product_name;
                 $cart->product_image = $wishlist->product_image;
                 $cart->price = $wishlist->price;
-                $cart->seller_id = $wishlist->seller_id??1;
+                $cart->seller_id = $wishlist->seller_id ?? 1;
                 $cart->quantity = $wishlist->quantity;
                 $cart->save();
                 $wishlist->delete();

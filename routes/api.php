@@ -30,21 +30,24 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/home', [ApiController::class, 'home']);
+Route::get('/product-detail/{id}', [ApiController::class, 'ProductData']);
+Route::get('/category/{id}/{sid?}', [ApiController::class, 'CategoryData']);
+Route::get('/brand/{brand_slug}', [ApiController::class, 'BrandDetail']);
+
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/home', [ApiController::class, 'home']);
 
     Route::get('/vedndor-products/{vid}', [ApiController::class, 'vendorProducts']);
 
 
-    Route::get('/category/{id}/{sid?}', [ApiController::class, 'CategoryData']);
-    Route::get('/product-detail/{id}', [ApiController::class, 'ProductData']);
     Route::get('/product/brands', [ApiController::class, 'BrandData']);
-    Route::get('/brand/{brand_slug}', [ApiController::class, 'BrandDetail']);
     Route::get('/addwishlist/{id}/{sid?}', [ApiController::class, 'Addwishlist']);
     Route::get('/addcart/{id}/{qty?}', [ApiController::class, 'Addcart']);
     Route::get('/getwishlist', [ApiController::class, 'GetWishlist']);
     Route::get('/getcart', [ApiController::class, 'GetCart']);
     Route::get('/profile', [AuthController::class, 'Profile']);
+    Route::post('profile/update', [AuthController::class, 'profileUpdate']);
     Route::get('/logout', [AuthController::class, 'logout']);
 
     Route::get('/search/{s}', [ApiController::class, 'SearchData']);

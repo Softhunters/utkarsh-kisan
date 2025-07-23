@@ -58,24 +58,28 @@ class ShopComponent extends Component
             }
         }
         // dd($this->pagesize);
-        $query = Product::whereBetween('sale_price', [$this->min_price, $this->max_price])->where('status', 1);
+        $query = Product::whereHas('activeVendorProducts')
+            ->with([
+                'bestSeller' => function ($q) {
+                    $q->select('id', 'product_id', 'vendor_id', 'price');
+                }
+            ])
+            ->withMin('vendorProducts', 'price')
+            ->whereHas('vendorProducts', function ($q) {
+                $q->whereBetween('price', [$this->min_price, $this->max_price]);
+            })
+            ->where('status', 1);
         if ($this->sorting == "date") {
             $query = $query->orderBy('products.created_at', 'DESC');
         }
         if ($this->sorting == "price") {
-            $query = $query->orderBy('sale_price', 'ASC');
+            $query = $query->orderBy('vendor_products_min_price', 'ASC');
         }
         if ($this->sorting == "price-desc") {
-            $query = $query->orderBy('sale_price', 'DESC');
+            $query = $query->orderBy('vendor_products_min_price', 'DESC');
         }
         if ($this->brandtype != null) {
             $query = $query->whereIn('brand_id', $this->brandtype);
-        }
-        if ($this->breedtype != null) {
-            $query = $query->whereIn('breed_id', $this->breedtype);
-        }
-        if ($this->flavourtype != null) {
-            $query = $query->whereIn('flavour_id', $this->flavourtype);
         }
 
         //    $query=$query->distinct()->select('products.*',DB::raw('((products.regular_price - products.sale_price)/products.regular_price)*100 as offerdiscount'));
@@ -127,7 +131,7 @@ class ShopComponent extends Component
                 $wishlist->product_id = $product_id;
                 $wishlist->product_name = $product->name;
                 $wishlist->product_image = $product->image;
-                $wishlist->price = $product->sale_price;
+                $wishlist->price = $product_price;
                 $wishlist->quantity = '1';
                 $wishlist->seller_id = $seller_id;
                 $wishlist->save();
@@ -147,7 +151,7 @@ class ShopComponent extends Component
                 'product_image' => $product->image,
                 'quantity' => '1',
                 'seller_id' => $seller_id,
-                'price' => $product->sale_price
+                'price' => $product_price
             ];
             Session()->put('wishlist', $wishlist);
             session()->flash('success', 'Item added to Wishlist!');
@@ -211,7 +215,7 @@ class ShopComponent extends Component
                 $cart->product_id = $product_id;
                 $cart->product_name = $product->name;
                 $cart->product_image = $product->image;
-                $cart->price = $product->sale_price;
+                $cart->price = $product_price;
                 $cart->quantity = '1';
                 $cart->seller_id = $seller_id;
                 $cart->save();

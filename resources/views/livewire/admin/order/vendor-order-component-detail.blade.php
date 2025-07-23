@@ -72,10 +72,45 @@
                                                             class="sa-price__decimal"></span></div>
                                                 </td>
                                                 <td class="text-end">{{ $orderitem->quantity }}</td>
-                                                <td class="text-end">
+                                                
+                                                <td class="text-end"
+                                                    style="display: flex;justify-content: space-evenly;padding-bottom: 0px;padding-top: 23px;">
                                                     <div class="sa-price"><span class="sa-price__symbol">₹</span><span
                                                             class="sa-price__integer">{{ $orderitem->price * $orderitem->quantity }}</span><span
-                                                            class="sa-price__decimal">.00</span></div>
+                                                            class="sa-price__decimal">.00</span>
+                                                    </div>
+                                                    @if ($orderitem->status != 'delivered' || $orderitem->status != 'canceled')
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-sa-muted btn-sm" type="button"
+                                                                id="order-context-menu-0" data-bs-toggle="dropdown"
+                                                                aria-expanded="false" aria-label="More">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="3"
+                                                                    height="13" fill="currentColor">
+                                                                    <path
+                                                                        d="M1.5,8C0.7,8,0,7.3,0,6.5S0.7,5,1.5,5S3,5.7,3,6.5S2.3,8,1.5,8z M1.5,3C0.7,3,0,2.3,0,1.5S0.7,0,1.5,0 S3,0.7,3,1.5S2.3,3,1.5,3z M1.5,10C2.3,10,3,10.7,3,11.5S2.3,13,1.5,13S0,12.3,0,11.5S0.7,10,1.5,10z">
+                                                                    </path>
+                                                                </svg>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-end"
+                                                                aria-labelledby="order-context-menu-0">
+                                                                @if ($orderitem->status == 'ordered')
+                                                                    <li><a class="dropdown-item" href="#"
+                                                                            wire:click.prevent="updateOrderStatus({{ $orderitem->id }},'accepted')">
+                                                                            Accepted</a></li>
+                                                                    <li><a class="dropdown-item" href="#"
+                                                                            wire:click.prevent="updateOrderStatus({{ $orderitem->id }},'rejected')">Rejected</a>
+                                                                    </li>
+                                                                @elseif($orderitem->status == 'accepted')
+                                                                    <li><a class="dropdown-item" href="#"
+                                                                            wire:click.prevent="updateOrderStatus({{ $orderitem->id }},'canceled')">
+                                                                            Canceled</a></li>
+                                                                    <li><a class="dropdown-item" href="#"
+                                                                            wire:click.prevent="updateOrderStatus({{ $orderitem->id }},'delivered')">
+                                                                            Delivered</a></li>
+                                                                @endif
+                                                            </ul>
+                                                        </div>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -102,7 +137,7 @@
                                             <td colspan="3">Discount</td>
                                             <td class="text-end">
                                                 <div class="sa-price"><span class="sa-price__symbol">₹</span><span
-                                                        class="sa-price__integer">-{{$discount}}</span><span
+                                                        class="sa-price__integer">-{{ $discount }}</span><span
                                                         class="sa-price__decimal"></span></div>
                                             </td>
                                         </tr>
@@ -112,7 +147,7 @@
                                             </td>
                                             <td class="text-end">
                                                 <div class="sa-price"><span class="sa-price__symbol">₹</span><span
-                                                        class="sa-price__integer">{{$shipping}}</span><span
+                                                        class="sa-price__integer">{{ $shipping }}</span><span
                                                         class="sa-price__decimal"></span></span></div>
                                             </td>
                                         </tr>
@@ -173,8 +208,8 @@
                             <div class="card-body pt-4 fs-exact-14">
                                 {{ $order->name }}<br />
                                 {{ $order->line1 }}, {{ $order->line2 }}<br />
-                                {{ $order->zipcode }}, {{ $order->city->city }}<br />
-                                {{ $order->state->name }}, {{ $order->country->name }}
+                                {{ $order->zipcode }}, {{ $order->city->name ?? '' }}<br />
+                                {{ $order->state->name ?? '' }}, {{ $order->country->name ?? '' }}
                             </div>
                         </div>
                         <div class="card mt-5">

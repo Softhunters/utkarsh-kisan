@@ -93,7 +93,7 @@ class ProductDetailsComponent extends Component
     {
         $id = $product_id;
         if (Auth::check()) {
-            $wproduct = Wishlist::where('product_id', $product_id)->where('user_id', Auth::user()->id)->first();
+            $wproduct = Wishlist::where('product_id', $product_id)->where('user_id', Auth::user()->id)->where('seller_id', $seller_id)->first();
 
             if ($wproduct) {
                 session()->flash('info', 'Item alreday in wishlist!');
@@ -170,7 +170,7 @@ class ProductDetailsComponent extends Component
         $id = $product_id;
         // dd($id);
         if (Auth::check()) {
-            $wproduct = Cart::where('product_id', $product_id)->where('user_id', Auth::user()->id)->first();
+            $wproduct = Cart::where('product_id', $product_id)->where('user_id', Auth::user()->id)->where('seller_id', $seller_id)->first();
             // dd($wproduct);
             if ($wproduct) {
                 session()->flash('info', 'Item alreday in Cart');
@@ -304,7 +304,7 @@ class ProductDetailsComponent extends Component
         $id = $product_id;
         if (Auth::check()) {
             //dd('gfgf');
-            $wproduct = Cart::where('product_id', $product_id)->where('user_id', Auth::user()->id)->first();
+            $wproduct = Cart::where('product_id', $product_id)->where('user_id', Auth::user()->id)->where('seller_id', $seller_id)->first();
             if ($wproduct) {
 
                 session()->flash('info', 'Item alreday added to Cart');
@@ -353,7 +353,7 @@ class ProductDetailsComponent extends Component
     {
         $id = $product_id;
         if (Auth::check()) {
-            $wproduct = Wishlist::where('product_id', $product_id)->where('user_id', Auth::user()->id)->first();
+            $wproduct = Wishlist::where('product_id', $product_id)->where('user_id', Auth::user()->id)->where('seller_id', $seller_id)->first();
             if ($wproduct) {
                 session()->flash('info', 'Item alreday in wishlist!');
                 return;

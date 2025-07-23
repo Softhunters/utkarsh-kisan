@@ -118,8 +118,8 @@
 
                         <div class="form-poicy-area">
 
-                            <p>By clicking the "Log In" button, you agree to Utkarsh Kisan Vendor <a href="#">Terms &
-                                    Conditions</a> & <a href="#">Privacy Policy.</a></p>
+                            <p>By clicking the "Log In" button, you agree to Utkarsh Kisan <a href="{{route('vendor-terms-and-conditions')}}">Vendor Terms &
+                                    Conditions</a> & <a href="{{route('terms-and-conditions')}}">Privacy Policy.</a></p>
 
                         </div>
 

@@ -49,11 +49,19 @@
                                 @if (isset($setting->phone2))
                                     <h6><a href="tel:{{ $setting->phone2 }}">{{ $setting->phone2 }}</a></h6>
                                 @endif
+                            </div>
+                        </div>
+                        <div class="hotline mb-80">
+                            <h3>Email Us Now</h3>
+                            <div class="icon">
+                                <img src="{{ asset('assets/images/icon/email-icon.png') }}" alt />
+                            </div>
+                            <div class="info">
                                 <h6><a href="mailto:{{ $setting->email }}">{{ $setting->email }}</a></h6>
                             </div>
                         </div>
                         <div class="location">
-                            <h3>Call Us Now</h3>
+                            <h3>Address </h3>
                             <div class="icon">
                                 <img src="{{ asset('assets/images/icon/location4.svg') }}" alt />
                             </div>

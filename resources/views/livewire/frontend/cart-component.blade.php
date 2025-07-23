@@ -68,44 +68,42 @@
                                         <tr>
 
                                             <td data-label="Image">
-                                                <img src="{{ asset('admin/product/feat') }}/{{ $item->image }}" alt />
+                                                <img src="{{ asset('admin/product/feat') }}/{{ $item->product->image }}" alt />
                                             </td>
                                             <td data-label="Seller Name"><a
-                                                    href="{{ route('product-details', ['slug' => $item->slug]) }}">
-                                                    {{-- {{ $item->name }} --}}
-                                                    {{ substr($item->seller->name, 0, 20) }}
-                                                
+                                                    href="#">
+                                                    {{ $item->vendor_name }}
                                                 </a>
                                             </td>
                                             <td data-label="Item Name"><a
-                                                    href="{{ route('product-details', ['slug' => $item->slug]) }}">
+                                                    href="{{ route('product-details', ['slug' => $item->product->slug, 'vendor_id' => $item->seller_id]) }}">
                                                     {{-- {{ $item->name }} --}}
-                                                    {{ substr($item->name, 0, 20) }}
+                                                    {{ substr($item->product->name, 0, 20) }}
                                                 
                                                 </a>
                                             </td>
-                                            <td data-label="Unite Price"><del>₹{{ $item->regular_price }}</del></td>
-                                            <td data-label="Discount Price">₹{{ $item->sale_price }}</td>
+                                            <td data-label="Unite Price"><del>₹{{ $item->product->regular_price }}</del></td>
+                                            <td data-label="Discount Price">₹{{ $item->vendor_price }}</td>
                                             <td data-label="Quantity">
                                                 @if (Auth::check())
-                                                    @if ($item->stock_status === 'instock')
+                                                    @if ($item->product->stock_status === 'instock')
                                                         <div class="qty-input btn mt-4 mt-md-0 d-flex align-items-center  ">
                                                             <a class="btn btn-increase" href="#"
-                                                                wire:click.prevent="decreaseQuantity('{{ $item->id }}')">-</a>
+                                                                wire:click.prevent="decreaseQuantity('{{ $item->product_id }}')">-</a>
                                                             <input class="form-control me-0" type="text"
-                                                                name="product-quatity" value="{{ $item->qty }}"
+                                                                name="product-quatity" value="{{ $item->quantity }}"
                                                                 data-max="5" pattern="[0-9]*" 
                                                                 style="width:100px !important"
                                                                 >
 
-                                                            @if ($item->quantity - $item->qty > 3)
+                                                            {{-- @if ($item->quantity - $item->qty > 3) --}}
                                                                 <a class="btn btn-increase" href="#"
-                                                                    wire:click.prevent="increaseQuantity('{{ $item->id }}')">+</a>
+                                                                    wire:click.prevent="increaseQuantity('{{ $item->product_id }}')">+</a>
                                                                 <input class="frm-input " value="1" type="hidden"
                                                                     id ="outofqty" name="outofqty"
                                                                     wire:model="out_of_qty">
                                                                 @php $this->out_of_qty = "" @endphp
-                                                            @endif
+                                                            {{-- @endif --}}
                                                         </div>
                                                     @else
                                                         <input class="frm-input" value="1" type="hidden"
@@ -114,7 +112,7 @@
                                                         <p> Out of Stock</p>
                                                     @endif
                                                 @else
-                                                    @if ($item->stock_status === 'instock')
+                                                    @if ($item->product->stock_status === 'instock')
                                                         <!--<div class="nice-number">-->
                                                         <!--    <button type="button"><i class="bi bi-dash"></i></button>-->
                                                         <!--    <input type="number" value="1" min="1" data-nice-number-initialized="true" style="width: 2ch;">-->
@@ -124,14 +122,14 @@
 
                                                         <div class="qty-input btn mt-4 mt-md-0 d-flex align-items-center">
                                                             <a class="btn btn-increase" href="#"
-                                                                wire:click.prevent="decreaseQuantity('{{ $item->id }}')">-</a>
+                                                                wire:click.prevent="decreaseQuantity('{{ $item->product_id }}')">-</a>
                                                             <input type="text" class="form-control me-0"
-                                                                name="product-quatity" value="{{ $item->qty }}"
+                                                                name="product-quatity" value="{{ $item->quantity }}"
                                                                 data-max="5" pattern="[0-9]*" 
                                                                 style="width:100px !important"
                                                                 >
                                                             <a class="btn btn-increase" href="#"
-                                                                wire:click.prevent="increaseQuantity('{{ $item->id }}')">+</a>
+                                                                wire:click.prevent="increaseQuantity('{{ $item->product_id }}')">+</a>
                                                         </div>
                                                     @else
                                                         <p> Out of Stock</p>
@@ -139,11 +137,11 @@
                                                 @endif
                                             </td>
                                             <td data-label="Subtotal">
-                                                ₹{{ number_format($item->sale_price * $item->qty, 2) }}</td>
+                                                ₹{{ number_format($item->vendor_price * $item->quantity, 2) }}</td>
                                             <td data-label="Delete">
                                                 <div class="delete-icon">
                                                     <a href="#"
-                                                        wire:click.prevent="removeFromCart({{ $item->id }})">
+                                                        wire:click.prevent="removeFromCart({{ $item->product_id }})">
                                                         <i class="bi bi-x"></i>
                                                     </a>
                                                 </div>
@@ -152,7 +150,7 @@
                                                 <td>
                                                     <div class="cart_product_remove">
                                                         <a href="#"
-                                                            wire:click.prevent="Savetolater({{ $item->id }})">
+                                                            wire:click.prevent="Savetolater({{ $item->product_id }})">
                                                             <i class="ti-trash"></i> Save For Later</a>
                                                     </div>
                                                 </td>

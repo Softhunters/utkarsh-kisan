@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend;
 
+use DB;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Session;
@@ -44,19 +45,36 @@ class CartComponent extends Component
         $this->discount = 0;
         if (Auth::check()) {
             $cartlsit = Cart::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
-            $cart = Product::whereIn('id', $cartlsit)->get();
+            // $cart = Product::whereIn('id', $cartlsit)->get();
+            $cart = Cart::where('carts.user_id', auth()->id())
+                ->join('products', 'carts.product_id', '=', 'products.id')
+                ->join('vendor_products', function ($join) {
+                    $join->on('vendor_products.product_id', '=', 'carts.product_id')
+                        ->on('vendor_products.vendor_id', '=', 'carts.seller_id');
+                })
+                ->join('users', 'vendor_products.vendor_id', '=', 'users.id')
+                ->select(
+                    'carts.*',
+                    'products.name as product_name',
+                    'products.image as product_image',
+                    'vendor_products.price as vendor_price',
+                    'users.name as vendor_name'
+                )
+                ->get();
+
             $catlistnumber = Product::whereIn('id', $cartlsit)->pluck('category_id')->toArray();
             $count = Cart::where('user_id', Auth::user()->id)->get()->count();
             $subtotalc = 0;
             $taxtotalc = 0;
             foreach ($cart as $item) {
-                $dffg = Cart::where('user_id', Auth::user()->id)->where('product_id', $item->id)->first();
-                $item['qty'] = $dffg->quantity;
+                // $dffg = Cart::where('user_id', Auth::user()->id)->where('product_id', $item->product_id)->first();
+                // // dd($item);
+                // $item['qty'] = $dffg->quantity;
 
 
-                $subtotalc = $subtotalc + $item->sale_price * $dffg->quantity;
-                $taxtotalc = $taxtotalc + (($item->taxslab->value * $item->sale_price) * ($dffg->quantity) / 100);
-                $pricesoff = $pricesoff + (($item->regular_price - $item->sale_price) * ($dffg->quantity));
+                $subtotalc = $subtotalc + $item->vendor_price * $item->quantity;
+                $taxtotalc = $taxtotalc + (($item->product->taxslab->value * $item->vendor_price) * ($item->quantity) / 100);
+                $pricesoff = $pricesoff + (($item->product->regular_price - $item->vendor_price) * ($item->quantity));
 
             }
             // dd($subtotalc,$taxtotalc);
@@ -65,7 +83,7 @@ class CartComponent extends Component
             $this->totalamount = $taxtotalc + $subtotalc;
 
             $savelater = SaveForLater::where('user_id', Auth::user()->id)->get();
-
+// dd($item->regular_price);
             // dd($pricesoff);
         } else {
             if (Session::has('cart')) {
@@ -80,10 +98,10 @@ class CartComponent extends Component
 
                 foreach ($cart as $item) {
                     //dd($cartlist[$item->id]['quantity']);
-                    $subtotalc = $subtotalc + $item->sale_price * $cartlist[$item->id]['quantity'];
-                    $taxtotalc = $taxtotalc + (($item->taxslab->value * $item->sale_price) * ($cartlist[$item->id]['quantity']) / 100);
+                    $subtotalc = $subtotalc + $item->vendor_price * $cartlist[$item->id]['quantity'];
+                    $taxtotalc = $taxtotalc + (($item->taxslab->value * $item->vendor_price) * ($cartlist[$item->id]['quantity']) / 100);
                     $item['qty'] = $cartlist[$item->id]['quantity'];
-                    $pricesoff = $pricesoff + (($item->regular_price - $item->sale_price) * $cartlist[$item->id]['quantity']);
+                    $pricesoff = $pricesoff + (($item->product->regular_price - $item->vendor_price) * $cartlist[$item->id]['quantity']);
 
                 }
                 $this->taxvalue = $taxtotalc;
