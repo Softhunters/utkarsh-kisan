@@ -88,7 +88,7 @@
     <p class="mb-0"><strong>Effective Date:</strong> 10-07-2025</p>
     <p><strong>Applies To:</strong> All users of the Utkarsh Kisan platform (buyers, sellers, vendors, and visitors)</p>
 
-    <p>Welcome to <strong> Utkarsh Kisan, </strong> an agri-commerce platform operated by <strong> Utkarsh Kisan Pvt. Ltd. </strong> These Terms and Conditions govern your use of our mobile application, website, and associated services.</p>
+    <p>Welcome to <strong> Utkarsh Kisan, </strong> an agri-commerce platform operated by <strong> Veer Enterprises. </strong> These Terms and Conditions govern your use of our mobile application, website, and associated services.</p>
 
     <p>By accessing or using Utkarsh Kisan, you agree to comply with and be legally bound by these terms. If you do not agree with any of the terms, you should not use the platform.</p>
 

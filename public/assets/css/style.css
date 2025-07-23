@@ -15944,3 +15944,21 @@ margin-bottom: 0px !important;
      
     
 }
+
+
+.footer-text{
+    font-size: 1rem !important;
+  font-weight: 500 !important;
+  /* color: var(--title-color2); */
+  /* font-family: var(--font-cabin) !important; */
+  transition: .35s !important;
+}
+
+
+@media screen and (max-width: 768px) {
+    .widget-title{
+        display: flex;
+        justify-content: center;
+    }
+    
+}
