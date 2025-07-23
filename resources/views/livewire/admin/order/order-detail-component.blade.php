@@ -338,8 +338,8 @@
                             <div class="card-body pt-4 fs-exact-14">
                                 {{ $order->name }}<br />
                                 {{ $order->line1 }}, {{ $order->line2 }}<br />
-                                {{ $order->zipcode }}, {{ $order->city->city }}<br />
-                                {{ $order->state->name }}, {{ $order->country->name }}
+                                {{ $order->zipcode }}, {{ $order->city->name??'' }}<br />
+                                {{ $order->state->name??'' }}, {{ $order->country->name??'' }}
                             </div>
                         </div>
                         <div class="card mt-5">
