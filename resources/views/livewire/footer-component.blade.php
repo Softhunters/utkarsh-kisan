@@ -3,15 +3,15 @@
             <div class="row pt-40 pb-40 justify-content-center mb-4">
                 <div class="col-lg-3 col-md-3">
                     <div class="footer-widget">
-                        <div class="footer-icon">
+                        <div class="footer-icon  ">
                             <img src="{{asset('admin/logos/utkarsh_logo.png')}}" style="width:200px;" class="foot" alt />
                         </div>
-                        <!-- <div class="widget-title">
-                            <h2>
-                                want <span>to Take</span><br />
-                                your pet Food, <span>our Shop</span>?
-                            </h2>
-                        </div> -->
+                     <div class="widget-title footer-text  text-center "  >
+                            <h5 style="width: 200px " class="text-center">
+                                 
+                               Utkarsh Kisan is a part of <div> Veer Enterprises </div>
+                            </h5>
+                        </div>
                         <!-- <div class="footer-btn">
                             <a class="primary-btn6" href="#">Shop Now</a>
                         </div> -->
