@@ -521,7 +521,7 @@ class AuthController extends Controller
                 } else {
                     return response()->json([
                         'status' => false,
-                        'message' => 'This Otp is Wrong!'
+                        'message' => 'The OTP you entered is incorrect. Please try again.'
                     ], 200);
 
                 }
@@ -699,6 +699,9 @@ class AuthController extends Controller
                 $request->all(),
                 [
                     'number' => 'required'
+                ],
+                [
+                    'number.required' => 'The phone number field is required.',
                 ]
             );
 
@@ -718,7 +721,7 @@ class AuthController extends Controller
 
                 return response()->json([
                     'status' => true,
-                    'message' => '6 digit Otp send to your registor mobile number!',
+                    'message' => "We've sent a 6-digit OTP to your registered mobile number.",
                     'otp' => $otp
                 ], 200);
             } else {
@@ -736,7 +739,7 @@ class AuthController extends Controller
 
                 return response()->json([
                     'status' => true,
-                    'message' => '6 digit Otp send to your mobile number!',
+                    'message' => "We've sent a 6-digit OTP to your registered mobile number.",
                     'otp' => $otp
                 ], 200);
 
@@ -840,14 +843,14 @@ class AuthController extends Controller
                     $user = Auth::user();
                     return response()->json([
                         'status' => true,
-                        'message' => 'User Logged In Successfully',
+                        'message' => 'You have successfully logged in',
                         'token' => $user->createToken("API TOKEN")->plainTextToken
                     ], 200);
 
                 } else {
                     return response()->json([
                         'status' => false,
-                        'message' => 'This Otp is Wrong!'
+                        'message' => 'The OTP you entered is incorrect. Please try again!'
                     ], 200);
 
                 }

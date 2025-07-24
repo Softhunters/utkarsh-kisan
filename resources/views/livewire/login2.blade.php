@@ -18,7 +18,7 @@
                                 <div class="form-inner">
                                     <label>Enter Your Phone Number *</label>
                                     <input type="text" name="number" id="number" class="form-control"
-                                           placeholder="Enter your phone number" required>
+                                        placeholder="Enter your phone number" required>
                                 </div>
                                 <div id="login_msg" class="text-danger mt-2"></div>
                                 <button type="submit" class="account-btn mt-3" id="sendOtpBtn">Send OTP</button>
@@ -30,7 +30,7 @@
                                     <div class="d-flex justify-content-between gap-2 otp-inputs">
                                         @for ($i = 1; $i <= 6; $i++)
                                             <input type="text" maxlength="1" class="otp-digit form-control text-center"
-                                                   name="otp[]">
+                                                name="otp[]">
                                         @endfor
                                     </div>
                                 </div>
@@ -49,17 +49,20 @@
                                 <div class="form-inner">
                                     <label>Your Name *</label>
                                     <input type="text" name="name" id="name" class="form-control"
-                                           placeholder="Enter your name">
+                                        placeholder="Enter your name">
+                                    <div id="profile_name_msg" class="text-danger mt-2"></div>
+
                                 </div>
                                 <div class="form-inner mt-3">
                                     <label>Your Email *</label>
                                     <input type="email" name="email" id="email" class="form-control"
-                                           placeholder="Enter your email">
+                                        placeholder="Enter your email">
+                                    <div id="profile_email_msg" class="text-danger mt-2"></div>
+
                                 </div>
 
-                                <div id="profile_msg" class="text-success mt-2"></div>
 
-                                <button type="button" class="account-btn mt-3" id="updateProfileBtn">Update Profile</button>
+                                <button type="button" class="account-btn mt-3" id="updateProfileBtn">Continue</button>
                             </div>
                         </form>
 
@@ -107,7 +110,7 @@
                         $('#loginStep').hide();
                         $('#otpStep').removeClass('d-none');
                     } else {
-                        $('#login_msg').text(res.message);
+                        $('#login_msg').text(res.errors.number);
                     }
                 });
             });
@@ -144,7 +147,7 @@
                     },
                     success: function(res) {
                         if (res.status) {
-                            if (res.need_profile) {
+                            if (res.profile) {
                                 $('#otpStep').hide();
                                 $('#profileStep').removeClass('d-none');
                             } else {
@@ -152,7 +155,7 @@
                                 window.location.href = "/";
                             }
                         } else {
-                            $('#otp_msg').text(res.message);
+                            $('#otp_msg').text(res.errors.otp);
                         }
                     }
                 });
@@ -163,7 +166,7 @@
                 const email = $('#email').val();
 
                 $.ajax({
-                    url: '/api/update-profile',
+                    url: '/profile/update',
                     method: 'POST',
                     data: {
                         name: name,
@@ -175,7 +178,8 @@
                             $('#profile_msg').text("Profile updated. Redirecting...");
                             window.location.href = "/";
                         } else {
-                            $('#profile_msg').text(res.message);
+                            $('#profile_name_msg').text(res.errors.name);
+                            $('#profile_email_msg').text(res.errors.email);
                         }
                     }
                 });

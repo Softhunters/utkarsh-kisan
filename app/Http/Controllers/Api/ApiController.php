@@ -54,7 +54,7 @@ class ApiController extends Controller
         // $result['sum'] = Product::withAvg('reviews', 'rating')->get();
         $result['testimonials'] = Testimonial::where('status', 1)->get();
 
-        if (Auth::check()) {
+        if (auth('sanctum')->user()) {
             $result['products'] = Product::whereHas('activeVendorProducts')->with('seller')->where('sale_price', '>', 0)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8);
             $result['fproducts'] = Product::whereHas('activeVendorProducts')->with('seller')->where('featured', 1)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8);
         } else {
@@ -86,7 +86,7 @@ class ApiController extends Controller
         if (isset($request->sid)) {
             $result['subcategory'] = SubCategory::where('slug', $request->sid)->first();
             $result['scbanners'] = Banner::where('status', 1)->where('for', $result['subcategory']->id)->get();
-            if (Auth::check()) {
+            if (auth('sanctum')->user()) {
                 $query = Product::whereBetween('regular_price', [$mip, $map])->where('category_id', $result['category']->id)->where('subcategory_id', $result['subcategory']->id)->with(['reviews', 'brands'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->where('status', 1);
             } else {
                 $query = Product::whereBetween('regular_price', [$mip, $map])->where('category_id', $result['category']->id)->where('subcategory_id', $result['subcategory']->id)->with(['reviews', 'brands'])->withAvg('reviews', 'rating')->where('status', 1);
@@ -114,7 +114,7 @@ class ApiController extends Controller
             $query = $query->where('discount_value', '>', max($request->discount));
         }
 
-        if (Auth::check()) {
+        if (auth('sanctum')->user()) {
             $query = $query->distinct()->select('products.*')->with(['brands', 'seller'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withCount('reviews');
         } else {
             $query = $query->distinct()->select('products.*')->with(['brands', 'seller'])->withAvg('reviews', 'rating')->withCount('reviews');
@@ -131,11 +131,9 @@ class ApiController extends Controller
 
     public function ProductData(Request $request)
     {
+        $userl = auth('sanctum')->user();
 
-        // $result['category'] = Category::where('id',$request->id)->first();
-        // $result['subcategorys'] = SubCategory::where('category_id',$request->id)->get();
-        //  $result['cbanners'] = Banner::where('status',1)->where('for',$request->id)->get();
-        if (Auth::check()) {
+        if ($userl) {
             $result['product'] = Product::where('slug', $request->id)->with(['questions', 'category', 'subCategories', 'brands', 'seller'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->first();
         } else {
             $result['product'] = Product::where('slug', $request->id)->with(['questions', 'category', 'subCategories', 'brands', 'seller'])->withAvg('reviews', 'rating')->first();
@@ -153,7 +151,7 @@ class ApiController extends Controller
             ->select('vendor_products.*', 'users.name as seller_name')
             ->get();
         $result['seller_cart_list'] = Cart::where('product_id', $result['product']->id)
-            ->where('user_id', Auth::id())
+            ->where('user_id', auth('sanctum')->user()->id)
             ->select('seller_id')->get();
         return response()->json([
             'status' => true,
@@ -213,7 +211,7 @@ class ApiController extends Controller
 
         $query = $query->distinct()->select('products.*');
 
-        if (Auth::check()) {
+        if (auth('sanctum')->user()) {
             $result['products'] = $query->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withCount('reviews')->with(['brands', 'seller'])->paginate($per_page);
         } else {
             $result['products'] = $query->withAvg('reviews', 'rating')->withCount('reviews')->with(['brands', 'seller'])->paginate($per_page);
@@ -324,7 +322,7 @@ class ApiController extends Controller
             $wish->save();
             return response()->json([
                 'status' => true,
-                'msg' => 'Product Added to Cart',
+                'msg' => 'Product has been added to your cart',
                 // 'result' => $result
             ], 200);
 
