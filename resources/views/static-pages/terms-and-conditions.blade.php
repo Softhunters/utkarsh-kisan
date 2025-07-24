@@ -88,7 +88,7 @@
     <p class="mb-0"><strong>Effective Date:</strong> 10-07-2025</p>
     <p><strong>Applies To:</strong> All users of the Utkarsh Kisan platform (buyers, sellers, vendors, and visitors)</p>
 
-    <p>Welcome to <strong> Utkarsh Kisan, </strong> an agri-commerce platform operated by <strong> Veer Enterprises. </strong> These Terms and Conditions govern your use of our mobile application, website, and associated services.</p>
+    <p>Welcome to <strong> Utkarsh Kisan, </strong> an agri-commerce platform operated by <strong> VEER ENTERPRISES. </strong> These Terms and Conditions govern your use of our mobile application, website, and associated services.</p>
 
     <p>By accessing or using Utkarsh Kisan, you agree to comply with and be legally bound by these terms. If you do not agree with any of the terms, you should not use the platform.</p>
 
@@ -99,7 +99,7 @@
     <p> <strong>"Buyer" </strong> means a user purchasing goods from the platform.</p>
     <p> <strong>"Seller"  or "Vendor"  </strong> refers to a registered farmer or verified seller listing agricultural goods.</p>
     <p> <strong> "User" </strong> includes both buyers and sellers, as well as visitors browsing the platform.</p>
-    <p> <strong>"Company", "We", "Us", or "Our" </strong> refers to Utkarsh Kisan Pvt. Ltd.</p>
+    <p> <strong>"Company", "We", "Us", or "Our" </strong> refers to Utkarsh Kisan.</p>
 
     <hr />
 
@@ -187,7 +187,7 @@
     <hr />
 
     <h4>9. Intellectual Property</h4>
-    <p>All content on Utkarsh Kisan — including branding, text, images, logos, and software — is the intellectual property of Utkarsh Kisan Pvt. Ltd. No part may be copied, reused, or reproduced without written permission.</p>
+    <p>All content on Utkarsh Kisan — including branding, text, images, logos, and software — is the intellectual property of Utkarsh Kisan. No part may be copied, reused, or reproduced without written permission.</p>
 
     <hr />
 

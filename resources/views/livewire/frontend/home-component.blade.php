@@ -829,7 +829,7 @@
         </div>
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-xxl-11">
+                <div class="col-xxl-11 mb-60">
                     <div class="swiper h3-testimonil-slider" wire:ignore>
                         <div class="swiper-wrapper">
                             @foreach ($testimonials as $testimonial)
