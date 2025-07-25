@@ -161,6 +161,13 @@ class ApiVendorController extends Controller
         // $result['subcategorys'] = SubCategory::where('category_id',$request->id)->get();
         //  $result['cbanners'] = Banner::where('status',1)->where('for',$request->id)->get();
         $result['product'] = Product::where('slug', $request->id)->with(['questions', 'category', 'subCategories', 'brands', 'seller'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->first();
+        if ($result['product']) {
+            $discount = round((($result['product']->regular_price - $result['product']->seller->price) / $result['product']->regular_price) * 100, 2);
+            $discount = max($discount, 0);
+
+            $result['product']->discount_value = (string) $discount;
+            $result['product']->sale_price = str($result['product']->seller->price);
+        }
         if ($result['product']->parent_id) {
             $result['varaiants'] = Product::where('parent_id', $result['product']->parent_id)->orWhere('id', $result['product']->parent_id)->select('products.id', 'products.variant_detail', 'products.regular_price', 'products.sale_price', 'products.slug')->get();
         } else {

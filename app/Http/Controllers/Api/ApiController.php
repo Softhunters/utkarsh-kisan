@@ -55,11 +55,80 @@ class ApiController extends Controller
         $result['testimonials'] = Testimonial::where('status', 1)->get();
 
         if (auth('sanctum')->user()) {
-            $result['products'] = Product::whereHas('activeVendorProducts')->with('seller')->where('sale_price', '>', 0)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8);
-            $result['fproducts'] = Product::whereHas('activeVendorProducts')->with('seller')->where('featured', 1)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8);
+            $result['products'] = Product::whereHas('activeVendorProducts')
+                ->whereHas('category', function ($q) {
+                    $q->where('status', 1);
+                })
+                ->whereHas('subCategories', function ($q) {
+                    $q->where('status', 1);
+                })
+                ->where('sale_price', '>', 0)
+                ->where('status', operator: 1)->inRandomOrder()
+                ->with(['brands', 'seller'])
+                ->withAvg('wishlist', 'user_id')
+                ->withAvg('cart', 'user_id')
+                ->withAvg('reviews', 'rating')
+                ->withCount('reviews')->get()->take(8)
+                ->map(function ($product) {
+                    $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                    $discount = max($discount, 0);
+
+                    $product->discount_value = (string) $discount;
+                    $product->sale_price = str($product->seller->price);
+                    $product->stock_status = str($product->seller->stock_status);
+                    return $product;
+                });
+            ;
+            $result['fproducts'] = Product::whereHas('activeVendorProducts')
+                ->whereHas('category', function ($q) {
+                    $q->where('status', 1);
+                })
+                ->whereHas('subCategories', function ($q) {
+                    $q->where('status', 1);
+                })
+                ->with('seller')->where('featured', 1)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8)
+                ->map(function ($product) {
+                    $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                    $discount = max($discount, 0);
+                    $product->discount_value = (string) $discount;
+                    $product->sale_price = str($product->seller->price);
+                    $product->stock_status = str($product->seller->stock_status);
+                    return $product;
+                });
         } else {
-            $result['products'] = Product::whereHas('activeVendorProducts')->with('seller')->where('sale_price', '>', 0)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8);
-            $result['fproducts'] = Product::whereHas('activeVendorProducts')->with('seller')->where('featured', 1)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8);
+            $result['products'] = Product::whereHas('activeVendorProducts')
+                ->whereHas('category', function ($q) {
+                    $q->where('status', 1);
+                })
+                ->whereHas('subCategories', function ($q) {
+                    $q->where('status', 1);
+                })
+                ->with('seller')->where('sale_price', '>', 0)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8)
+                ->map(function ($product) {
+                    $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                    $discount = max($discount, 0);
+                    $product->discount_value = (string) $discount;
+                    $product->sale_price = str($product->seller->price);
+                    $product->stock_status = str($product->seller->stock_status);
+                    return $product;
+                });
+            ;
+            $result['fproducts'] = Product::whereHas('activeVendorProducts')
+                ->whereHas('category', function ($q) {
+                    $q->where('status', 1);
+                })
+                ->whereHas('subCategories', function ($q) {
+                    $q->where('status', 1);
+                })
+                ->with('seller')->where('featured', 1)->where('status', 1)->inRandomOrder()->with(['brands'])->withAvg('reviews', 'rating')->withCount('reviews')->get()->take(8)
+                ->map(function ($product) {
+                    $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                    $discount = max($discount, 0);
+                    $product->discount_value = (string) $discount;
+                    $product->sale_price = str($product->seller->price);
+                    $product->stock_status = str($product->seller->stock_status);
+                    return $product;
+                });
         }
 
         return response()->json([
@@ -122,6 +191,19 @@ class ApiController extends Controller
 
         $result['products'] = $query->paginate($per_page);
 
+        $result['products']->setCollection(
+            $result['products']->getCollection()->map(function ($product) {
+                $discount = 0;
+                if ($product->regular_price > 0 && isset($product->seller->price)) {
+                    $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                    $discount = max($discount, 0);
+                }
+
+                $product->discount_value = (string) $discount;
+                $product->sale_price = str($product->seller->price ?? 0);
+                return $product;
+            })
+        );
 
         return response()->json([
             'status' => true,
@@ -137,6 +219,14 @@ class ApiController extends Controller
             $result['product'] = Product::where('slug', $request->id)->with(['questions', 'category', 'subCategories', 'brands', 'seller'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->first();
         } else {
             $result['product'] = Product::where('slug', $request->id)->with(['questions', 'category', 'subCategories', 'brands', 'seller'])->withAvg('reviews', 'rating')->first();
+        }
+        if ($result['product']) {
+            $discount = round((($result['product']->regular_price - $result['product']->seller->price) / $result['product']->regular_price) * 100, 2);
+            $discount = max($discount, 0);
+
+            $result['product']->discount_value = (string) $discount;
+            $result['product']->stock_status = $result['product']->seller->stock_status;
+            $result['product']->sale_price = str($result['product']->seller->price);
         }
         if ($result['product']->parent_id) {
             $result['varaiants'] = Product::where('parent_id', $result['product']->parent_id)->orWhere('id', $result['product']->parent_id)->select('products.id', 'products.variant_detail', 'products.regular_price', 'products.sale_price', 'products.slug')->get();
@@ -216,6 +306,21 @@ class ApiController extends Controller
         } else {
             $result['products'] = $query->withAvg('reviews', 'rating')->withCount('reviews')->with(['brands', 'seller'])->paginate($per_page);
         }
+
+        $result['products']->setCollection(
+            $result['products']->getCollection()->map(function ($product) {
+                $discount = 0;
+                if ($product->regular_price > 0 && isset($product->seller->price)) {
+                    $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                    $discount = max($discount, 0);
+                }
+
+                $product->discount_value = (string) $discount;
+                $product->sale_price = str($product->seller->price ?? 0);
+                $product->stock_status = str($product->seller->stock_status);
+                return $product;
+            })
+        );
 
         return response()->json([
             'status' => true,
@@ -345,7 +450,7 @@ class ApiController extends Controller
         //     ->withAvg('reviews', 'rating')->get();
 
         $carts = Cart::with([
-            'product:id,name,image,slug,regular_price,sale_price',
+            'product:id,name,image,slug,regular_price,sale_price,discount_value',
             'seller:id,name',
             'product.reviews'
         ])->where('user_id', Auth::id())->get();
@@ -355,12 +460,20 @@ class ApiController extends Controller
             $product = $cart->product;
             $sellerProduct = $cart->sellerProduct;
 
+            $price = $sellerProduct->price ?? $product->sale_price;
+            $discount = 0;
+            if ($product->regular_price > 0 && $price) {
+                $discount = round((($product->regular_price - $price) / $product->regular_price) * 100, 2);
+                $discount = max($discount, 0);
+            }
+
             return [
                 'id' => $cart->id,
                 'product_id' => $product->id,
                 'user_id' => $cart->user_id,
                 'seller_id' => $cart->seller_id,
                 'product_name' => $product->name,
+                'discount_value' => (string) $discount,
                 'product_image' => $product->image,
                 'price' => $sellerProduct->price ?? $product->sale_price,
                 'quantity' => $cart->quantity,
@@ -508,7 +621,7 @@ class ApiController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'mobile' => ['required', 'numeric', 'digits:10'],
             'line1' => ['required', 'string', 'max:255'],
-            'landmark' => ['required', 'string', 'max:255'],
+            'landmark' => ['nullable', 'string', 'max:255'],
             'country_id' => ['required', 'not_in:null'],
             'state_id' => ['required', 'not_in:null'],
             'city_id' => ['required', 'not_in:null'],
@@ -520,7 +633,6 @@ class ApiController extends Controller
             'mobile.numeric' => 'Mobile number must be numeric.',
             'mobile.digits' => 'Mobile number must be exactly 10 digits.',
             'line1.required' => 'Address line is required.',
-            'landmark.required' => 'Landmark is required.',
             'country_id.required' => 'Country is required.',
             'country_id.not_in' => 'Please select a valid country.',
             'state_id.required' => 'State is required.',
@@ -652,7 +764,7 @@ class ApiController extends Controller
         $wishlist = Wishlist::findOrFail($id);
 
         if ($wishlist) {
-            $cartcheck = Cart::where('user_id', Auth::user()->id)->where('product_id', $id)->where('seller_id', $wishlist->seller_id)->first();
+            $cartcheck = Cart::where('user_id', Auth::user()->id)->where('product_id', $wishlist->product_id)->where('seller_id', $wishlist->seller_id)->first();
             if (!isset($cartcheck)) {
                 $cart = new Cart();
                 $cart->user_id = Auth::user()->id;
@@ -686,7 +798,7 @@ class ApiController extends Controller
         $wishlist = Cart::findOrFail($id);
         // dd($wishlist);
         if ($wishlist) {
-            $cartcheck = Wishlist::where('user_id', Auth::user()->id)->where('product_id', $id)->where('seller_id', $wishlist->seller_id)->first();
+            $cartcheck = Wishlist::where('user_id', Auth::user()->id)->where('product_id', $wishlist->product_id)->where('seller_id', $wishlist->seller_id)->first();
             if (!isset($cartcheck)) {
                 $cart = new Wishlist();
                 $cart->user_id = Auth::user()->id;
@@ -757,7 +869,14 @@ class ApiController extends Controller
             $map = $request->map;
 
 
-        $query = Product::whereBetween('regular_price', [$mip, $map])->where('status', 1);
+        $query = Product::whereHas('activeVendorProducts')
+            ->whereHas('category', function ($q) {
+                $q->where('status', 1);
+            })
+            ->whereHas('subCategories', function ($q) {
+                $q->where('status', 1);
+            })
+            ->whereBetween('regular_price', [$mip, $map])->where('status', 1);
 
         if ($request->sorting == "date") {
             $query = $query->orderBy('created_at', 'DESC');
@@ -788,7 +907,19 @@ class ApiController extends Controller
         $result['products'] = $query->paginate($per_page);
 
 
+        $result['products']->setCollection(
+            $result['products']->getCollection()->map(function ($product) {
+                $discount = 0;
+                if ($product->regular_price > 0 && isset($product->seller->price)) {
+                    $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                    $discount = max($discount, 0);
+                }
 
+                $product->discount_value = (string) $discount;
+                $product->sale_price = str($product->seller->price ?? 0);
+                return $product;
+            })
+        );
 
 
 

@@ -16,7 +16,10 @@ class Product extends Model
     }
     public function activeVendorProducts()
     {
-        return $this->hasMany(VendorProduct::class, 'product_id')->where('status', 1);
+        return $this->hasMany(VendorProduct::class, 'product_id')
+            ->where('status', 1)
+            ->where('stock_status', 'instock')
+        ;
     }
     public function category()
     {
@@ -69,7 +72,9 @@ class Product extends Model
 
     public function seller()
     {
-        return $this->hasOne(VendorProduct::class, 'product_id');
+        return $this->hasOne(VendorProduct::class, 'product_id')
+            ->where('status', 1)
+            ->orderBy('price', 'asc');
     }
     public function sellerAll()
     {
