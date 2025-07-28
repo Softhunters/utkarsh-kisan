@@ -42,7 +42,6 @@
             <div class="sa-entity-layout" data-sa-container-query='{"920":"sa-entity-layout--size--md"}'>
                 <div class="sa-entity-layout__body">
                     <div class="sa-entity-layout__main">
-
                         <div class="card mt-5">
                             <div class="card-body px-5 py-4 d-flex align-items-center justify-content-between">
                                 <h2 class="mb-0 fs-exact-18 me-4">Items</h2>
@@ -338,8 +337,8 @@
                             <div class="card-body pt-4 fs-exact-14">
                                 {{ $order->name }}<br />
                                 {{ $order->line1 }}, {{ $order->line2 }}<br />
-                                {{ $order->zipcode }}, {{ $order->city->name??'' }}<br />
-                                {{ $order->state->name??'' }}, {{ $order->country->name??'' }}
+                                {{ $order->zipcode }}, {{ $order->city->name ?? '' }}<br />
+                                {{ $order->state->name ?? '' }}, {{ $order->country->name ?? '' }}
                             </div>
                         </div>
                         <div class="card mt-5">

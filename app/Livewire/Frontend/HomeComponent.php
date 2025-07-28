@@ -190,6 +190,12 @@ class HomeComponent extends Component
             ->where('sale_price', '>', 0)
             ->where('status', 1)
             ->where('stock_status', 'instock')
+            ->whereHas('category', function ($q) {
+                $q->where('status', 1);
+            })
+            ->whereHas('subCategories', function ($q) {
+                $q->where('status', 1);
+            })
             ->inRandomOrder()
             ->take(8)
             ->get();
@@ -206,6 +212,12 @@ class HomeComponent extends Component
             ->where('featured', 1)
             ->where('status', 1)
             ->where('stock_status', 'instock')
+            ->whereHas('category', function ($q) {
+                $q->where('status', 1);
+            })
+            ->whereHas('subCategories', function ($q) {
+                $q->where('status', 1);
+            })
             ->inRandomOrder()
             ->take(8)
             ->get();

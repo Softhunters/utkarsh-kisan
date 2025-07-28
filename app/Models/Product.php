@@ -16,7 +16,10 @@ class Product extends Model
     }
     public function activeVendorProducts()
     {
-        return $this->hasMany(VendorProduct::class, 'product_id')->where('status', 1);
+        return $this->hasMany(VendorProduct::class, 'product_id')
+            ->where('status', 1)
+            ->where('stock_status', 'instock')
+        ;
     }
     public function category()
     {
@@ -45,13 +48,21 @@ class Product extends Model
         return $this->hasMany(Question::class, 'product_id');
     }
 
-    public function wishlist()
+    public function wishlistWeb()
     {
         return $this->hasMany(Wishlist::class, 'product_id')->where('user_id', Auth::user()->id);
     }
-    public function cart()
+    public function cartWeb()
     {
         return $this->hasMany(Cart::class, 'product_id')->where('user_id', Auth::user()->id);
+    }
+    public function wishlist()
+    {
+        return $this->hasMany(Wishlist::class, 'product_id')->where('user_id', auth('sanctum')->user()->id);
+    }
+    public function cart()
+    {
+        return $this->hasMany(Cart::class, 'product_id')->where('user_id', auth('sanctum')->user()->id);
     }
 
     public function brands()
@@ -61,7 +72,9 @@ class Product extends Model
 
     public function seller()
     {
-        return $this->hasOne(VendorProduct::class, 'product_id');
+        return $this->hasOne(VendorProduct::class, 'product_id')
+            ->where('status', 1)
+            ->orderBy('price', 'asc');
     }
     public function sellerAll()
     {
@@ -74,6 +87,11 @@ class Product extends Model
             ->where('status', 1)
             ->where('stock_status', 'instock')
             ->orderBy('price', 'asc');
+    }
+
+    public function productHistories()
+    {
+        return $this->hasMany(ProductHistory::class);
     }
 
 }

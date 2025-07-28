@@ -31,6 +31,8 @@ use App\Livewire\Admin\Coupon\AddCouponComponent;
 use App\Livewire\Admin\Coupon\CouponComponent;
 use App\Livewire\Admin\Coupon\EditCouponComponent;
 use App\Livewire\Admin\DashboardComponent;
+use App\Livewire\Admin\Inventory\InventoryComponent;
+use App\Livewire\Admin\Inventory\InventoryDetailComponent;
 use App\Livewire\Admin\Order\OrderComponent;
 use App\Livewire\Admin\Order\OrderDetailComponent;
 use App\Livewire\Admin\Order\VendorOrderComponent;
@@ -65,6 +67,8 @@ use App\Livewire\Frontend\WishlistComponent;
 
 // use App
 use App\Livewire\ThankyouComponent;
+use App\Livewire\Vendor\Inventory\VendorInventoryComponent;
+use App\Livewire\Vendor\Inventory\VendorInventoryDetailComponent;
 use Illuminate\Support\Facades\Route;
 
 use App\Livewire\User\AccountComponent;
@@ -133,6 +137,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/user/orders', OrdersComponent::class)->name('orders');
     Route::get('/order/{id}', OrderDetailsComponent::class)->name('order-details');
 
+    Route::post('profile/update', [AuthController::class, 'profileUpdate']);
+
 
     // Admin Routes
     Route::middleware(['authadmin'])->prefix('admin')->group(function () {
@@ -183,6 +189,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('websetting', WebsettingComponent::class)->name('admin.websetting');
         Route::get('/contact', ContactFormComponent::class)->name('admin.contact-form');
 
+        Route::get('/inventory', InventoryComponent::class)->name('admin.inventory');
+        Route::get('/inventory-details/{id}', InventoryDetailComponent::class)->name('admin.inventory.details');
+
         Route::get('/vendor/list/{type}', [VendorController::class, 'index'])
             ->whereIn('type', ['active', 'deactivated', 'unverified'])
             ->name('vendor.list');
@@ -223,6 +232,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         //orders
         Route::get('/orders', VendorOrderComponent::class)->name('vendor.orders');
         Route::get('/order/detail/{id}', VendorOrderComponentDetail::class)->name('vendor.order-detail');
+
+        //product inventory
+        Route::get('/inventory', VendorInventoryComponent::class)->name('vendor.inventory');
+        Route::get('/inventory-details/{id}', VendorInventoryDetailComponent::class)->name('vendor.inventory.details');
+
     });
 
 

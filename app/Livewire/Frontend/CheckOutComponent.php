@@ -24,10 +24,11 @@ use Exception;
 use Stripe;
 use Carbon\Carbon;
 use Easebuzz\Easebuzz;
-
+use Razorpay\Api\Api;
 
 class CheckOutComponent extends Component
 {
+    protected $listeners = ['razorpayPaymentSuccess'];
     public $subtotalfinal;
     public $shopping_charge;
     public $finaldiscount;
@@ -432,6 +433,44 @@ class CheckOutComponent extends Component
             // $data =  $easebuzzObj->initiatePaymentAPI($postData); 
             // dd($data);
         }
+    }
+    public function placeorderazorpay()
+    {
+        $api = new Api(config('razorpay.key'), config('razorpay.secret'));
+
+        $orderData = [
+            'receipt' => 'order_rcptid_' . uniqid(),
+            'amount' => $this->shiptotal * 100,
+            'currency' => 'INR',
+            'payment_capture' => 1,
+        ];
+
+        $razorpayOrder = $api->order->create($orderData);
+
+        $this->dispatch('initiate-razorpay', [
+            'order_id' => $razorpayOrder['id'],
+            'amount' => $this->shiptotal * 100,
+            'name' => auth()->user()->name,
+            'email' => auth()->user()->email,
+            'contact' => $this->mobile,
+            'key' => config('razorpay.key'),
+        ]);
+    }
+
+    public function razorpayPaymentSuccess($paymentId)
+    {
+        dd($paymentId);
+        // Store the payment in DB, mark order as paid
+        Order::create([
+            'user_id' => auth()->id(),
+            'payment_id' => $paymentId,
+            'status' => 'paid',
+            'amount' => $this->shiptotal,
+            // ...
+        ]);
+
+        session()->flash('message', 'Payment Successful!');
+        return redirect()->route('order.success');
     }
 
     public function makeTransaction($order_id, $status, $mode, $tran_id, $amount)

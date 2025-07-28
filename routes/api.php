@@ -31,13 +31,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/home', [ApiController::class, 'home']);
-Route::get('/product-detail/{id}', [ApiController::class, 'ProductData']);
 Route::get('/category/{id}/{sid?}', [ApiController::class, 'CategoryData']);
 Route::get('/brand/{brand_slug}', [ApiController::class, 'BrandDetail']);
+Route::get('/product-detail/{id}', [ApiController::class, 'ProductData']);
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-
+    
     Route::get('/vedndor-products/{vid}', [ApiController::class, 'vendorProducts']);
 
 
