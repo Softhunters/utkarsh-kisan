@@ -126,7 +126,7 @@
                                             
                                             <div class="mb-3 col-12 col-lg-6">
                                                 <label class="form-label" for="fname">Email</label>
-                                                <input type="email" id="fname" class="form-control" placeholder="Email" value="{{Auth::user()->email}}" readonly>
+                                                <input type="email" id="fname" class="form-control" placeholder="Email" value="{{Auth::user()->email}}" wire:model="email">
                                             </div>
                                             <div class="mb-3 col-12 col-lg-6">
                                                 <label class="form-label custom-upload-btn" for="lname" >Photo Upload</label>

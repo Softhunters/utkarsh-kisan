@@ -126,7 +126,7 @@ Route::get('/adminlogin', [LoginController::class, 'adminlogin']);
 Route::post('/adminlogin', [LoginController::class, 'adminloginauth'])->name('adminlogin');
 Route::post('/mobile-login', [AuthController::class, 'OtpLogin']);
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -137,7 +137,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/user/orders', OrdersComponent::class)->name('orders');
     Route::get('/order/{id}', OrderDetailsComponent::class)->name('order-details');
 
-    Route::post('profile/update', [AuthController::class, 'profileUpdate']);
+    Route::post('profile/update2', [AuthController::class, 'profileUpdate2']);
 
 
     // Admin Routes
@@ -243,7 +243,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 });
 
 
-
+Route::get('/routeclear', function () {
+    Artisan::call('optimize:clear');
+});
 
 Route::get('/terms-conditions', function () {
     return view('static-pages.terms-and-conditions');

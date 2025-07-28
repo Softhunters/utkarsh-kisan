@@ -64,8 +64,7 @@
     </style>
 
     @livewireStyles
-    @livewireScripts
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 
     <style>
         .badge {
@@ -224,6 +223,8 @@
         <!--<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>-->
         <!-- Modify theme scripts (Do not remove) -->
         <!--<script src="https://thinkpureindia.jaipurdreams.com/assets/js/theme.js"></script>-->
+        @livewireScripts
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
         @stack('scripts')
 
 

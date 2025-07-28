@@ -51,6 +51,7 @@ class AccountComponent extends Component
         $this->validate([
             'name'=>'required',
             'phone' => 'required|numeric|digits:10|unique:users,phone,'.$this->u_id.'',
+            'email' => 'required|email|unique:users,email,'.$this->u_id.'',
         ]);
         if($this->newprofile)
         {
@@ -62,6 +63,7 @@ class AccountComponent extends Component
         $user = User::find($this->u_id);
         $user->name = $this->name;
         $user->phone = $this->phone;
+        $user->email = $this->email;
         if($this->newprofile){
             if($user->profile)
             {

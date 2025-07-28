@@ -19,6 +19,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\VendorOrderMail;
 use App\Mail\OrderMail;
 use Exception;
 use Stripe;
@@ -233,6 +234,9 @@ class CheckOutComponent extends Component
                 $orderItem->quantity = $item->quantity;
                 $orderItem->options = $item->product->tax_id;
                 $orderItem->save();
+
+                Mail::to($orderItem->sellerMail->email)->send(new VendorOrderMail($orderItem, $order));
+
             }
             $this->makeTransaction($order->id, 'pending', 'cod', null, '0');
             $this->resetCart();
@@ -436,6 +440,11 @@ class CheckOutComponent extends Component
     }
     public function placeorderazorpay()
     {
+        if (!$this->selected_address) {
+            session()->flash('message', 'Please! select delivery address');
+            return;
+        }
+
         $api = new Api(config('razorpay.key'), config('razorpay.secret'));
 
         $orderData = [
@@ -459,18 +468,60 @@ class CheckOutComponent extends Component
 
     public function razorpayPaymentSuccess($paymentId)
     {
-        dd($paymentId);
-        // Store the payment in DB, mark order as paid
-        Order::create([
-            'user_id' => auth()->id(),
-            'payment_id' => $paymentId,
-            'status' => 'paid',
-            'amount' => $this->shiptotal,
-            // ...
-        ]);
 
+        $this->payment_type = 'razorpay';
+
+        $ship = ShippingAddress::find($this->selected_address);
+        if ($ship) {
+            $order = new Order();
+            $order->user_id = Auth::user()->id;
+            $order->subtotal = session()->get('checkout')['subtotal'];
+            $order->discount = session()->get('checkout')['discount'];
+            $order->tax = session()->get('checkout')['tax'];
+            $order->shipping_charge = $this->shopping_charge;
+            $order->total = session()->get('checkout')['subtotal'] + $this->shopping_charge + $this->codvalue; //session()->get('checkout')['total'];
+            $order->name = $ship->name;
+            $order->mobile = $ship->mobile;
+            $order->mobile_optional = $ship->mobile_optional;
+            $order->line1 = $ship->line1;
+            $order->line2 = $ship->line2;
+            $order->landmark = $ship->landmark;
+            $order->city_id = $ship->city_id;
+            $order->state_id = $ship->state_id;
+            $order->country_id = $ship->country_id;
+            $order->zipcode = $ship->zipcode;
+            $order->order_number = Carbon::now()->timestamp;
+            $order->status = 'ordered';
+            $order->save();
+            $carts = Cart::where('user_id', Auth::user()->id)->get();
+            foreach ($carts as $item) {
+                $orderItem = new OrderItem();
+                if (isset($item->sellerProduct) && !empty($item->sellerProduct)) {
+                    $orderItem->price = $item->sellerProduct->price;
+                    $orderItem->seller_id = $item->seller_id;
+
+                } else {
+                    $orderItem->price = $item->product->sale_price;
+                    $orderItem->seller_id = 1;
+                }
+                $orderItem->product_id = $item->product_id;
+                $orderItem->order_id = $order->id;
+                $orderItem->mrp_price = $item->product->regular_price;
+                $orderItem->gst = $item->product->taxslab->value;
+                $orderItem->quantity = $item->quantity;
+                $orderItem->options = $item->product->tax_id;
+                $orderItem->save();
+
+                Mail::to($orderItem->sellerMail->email)->send(new VendorOrderMail($orderItem, $order));
+
+            }
+            $this->makeTransaction($order->id, 'approved', $this->payment_type, $paymentId, $this->shiptotal);
+            $this->resetCart();
+            $this->sendOrderConfirmationMail($order);
+
+        }
         session()->flash('message', 'Payment Successful!');
-        return redirect()->route('order.success');
+        return redirect()->route('thankyou');
     }
 
     public function makeTransaction($order_id, $status, $mode, $tran_id, $amount)
@@ -492,7 +543,7 @@ class CheckOutComponent extends Component
     }
     public function sendOrderConfirmationMail($order)
     {
-        // Mail::to(Auth::user()->email)->send(new OrderMail($order));
+        Mail::to(Auth::user()->email)->send(new OrderMail($order));
     }
     public function close()
     {

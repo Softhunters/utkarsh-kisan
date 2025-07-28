@@ -358,6 +358,38 @@ class AuthController extends Controller
             'message' => 'Profile updated successfully'
         ], 200);
     }
+    public function profileUpdate2(Request $request)
+    {
+        $validateUser = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|string',
+                'email' => 'required|email|unique:users,email',
+            ]
+        );
+
+        if ($validateUser->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $validateUser->errors()
+            ], 200);
+        }
+
+        // User::where('id', Auth::id())->update(['email' => $request->email, 'name' => $request->name]);
+
+        $user = User::findOrFail(Auth::id());
+        $user->email = $request->email;
+        $user->name = $request->name;
+        $user->save();
+
+        event(new Registered($user));
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Profile updated successfully'
+        ], 200);
+    }
 
     public function ReverifyAccountOTP(Request $request)
     {
