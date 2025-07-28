@@ -137,7 +137,7 @@
                         @if (isset($varaiants[1]))
                             <div class="varient mt-4 ">
                                 <h6 class="font-weight-bold text-dark mb-3">Product Varient</h6>
-                                <div class="row box-checkbox d-flex gap-3">
+                                <div class="row box-checkbox d-flex g-3 ">
                                     <!-- <label tabindex="0" class="wi">
                                         <input tabindex="-1" type="checkbox" checked name=""  wire:click.prevent="changeparameter({{ $product->id }})"/>
                                         <div class="icon-box">
@@ -250,25 +250,27 @@
             <div class="">
                 <div class="row mb-70">
                     <div class="col-lg-12">
-                        <div class="nav nav2 nav nav-pills" id="v-pills-tab2" role="tablist"
-                            aria-orientation="vertical">
-                            <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
-                                data-bs-target="#v-pills-home" type="button" role="tab"
-                                aria-controls="v-pills-home" aria-selected="false">Description</button>
-                            @if ($product->short_description)
-                                <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-profile" type="button" role="tab"
-                                    aria-controls="v-pills-profile" aria-selected="true">Additional Info</button>
-                            @endif
-                            @if ($product->manufacturer_details)
-                                <button class="nav-link" id="v-pills-manufact-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-manufact" type="button" role="tab"
-                                    aria-controls="v-pills-manufact" aria-selected="true">Manufacturer Info</button>
-                            @endif
-                            <button class="nav-link" id="v-pills-common-tab" data-bs-toggle="pill"
-                                data-bs-target="#v-pills-common" type="button" role="tab"
-                                aria-controls="v-pills-common" aria-selected="true">Review</button>
-                            <!-- <button class="nav-link" id="v-pills-qa-tab" data-bs-toggle="pill" data-bs-target="#v-pills-qa" type="button" role="tab" aria-controls="v-pills-qa" aria-selected="true">Q & A</button> -->
+                        <div class="tab-box"> 
+                            <div class="nav nav2 nav nav-pills" id="v-pills-tab2" role="tablist"
+                                aria-orientation="vertical" >
+                                <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
+                                    data-bs-target="#v-pills-home" type="button" role="tab"
+                                    aria-controls="v-pills-home" aria-selected="false">Description</button>
+                                @if ($product->short_description)
+                                    <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill"
+                                        data-bs-target="#v-pills-profile" type="button" role="tab"
+                                        aria-controls="v-pills-profile" aria-selected="true">Additional Info</button>
+                                @endif
+                                @if ($product->manufacturer_details)
+                                    <button class="nav-link" id="v-pills-manufact-tab" data-bs-toggle="pill"
+                                        data-bs-target="#v-pills-manufact" type="button" role="tab"
+                                        aria-controls="v-pills-manufact" aria-selected="true">Manufacturer Info</button>
+                                @endif
+                                <button class="nav-link" id="v-pills-common-tab" data-bs-toggle="pill"
+                                    data-bs-target="#v-pills-common" type="button" role="tab"
+                                    aria-controls="v-pills-common" aria-selected="true">Review</button>
+                                <!-- <button class="nav-link" id="v-pills-qa-tab" data-bs-toggle="pill" data-bs-target="#v-pills-qa" type="button" role="tab" aria-controls="v-pills-qa" aria-selected="true">Q & A</button> -->
+                            </div>
                         </div>
                         <div class="tab-content tab-content2" id="v-pills-tabContent2">
                             <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel"

@@ -12343,7 +12343,7 @@ footer.style2 .social-area ul li:hover a i {
     /* margin: 15px;
     gap: 30px */
 
-    justify-content: center;
+    /* justify-content: center; */
   overflow-x: auto;
   overflow-y: hidden;
   flex-wrap: nowrap !important;
@@ -12373,13 +12373,13 @@ footer.style2 .social-area ul li:hover a i {
 
 @media(max-width:1399px) {
     .shop-details-page .nav1 {
-        justify-content: center
+        /* justify-content: center */
     }
 }
 
 @media(max-width:767px) {
     .shop-details-page .nav1 {
-        justify-content: center
+        /* justify-content: center */
     }
 }
 
@@ -12481,7 +12481,8 @@ footer.style2 .social-area ul li:hover a i {
 .shop-details-page .shop-details-content h3 {
     /* font-size: 2.188rem; */
     font-size: 1.8rem;
-    font-weight: 700;
+    /* font-weight: 700; */
+    font-weight: 500;
     color: var(--title-color1);
     font-family: var(--font-dosis);
     margin-bottom: 10px;
@@ -12699,8 +12700,23 @@ footer.style2 .social-area ul li:hover a i {
 @media(max-width:767px) {
     .shop-details-page .nav2 {
         /* gap: 20px */
-        gap: 10px
+        /* gap: 10px */
+
+        width: 700px !important;
+        flex-wrap: nowrap !important;
     }
+    .tab-box{
+        display: flex;
+        overflow-x:auto;
+
+    }
+     .shop-details-page .nav2 .nav-link {
+  padding: 15px 15px !important;
+     }
+     .shop-details-page .nav2 .nav-link{
+        width: 200px !important;
+        font-size: 1rem !important;
+     }
 }
 
 .shop-details-page .nav2 .nav-link {
@@ -14995,6 +15011,10 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
     .primary-btn6 {
     padding: 10px 26px;
     transition: .5s;
+}
+
+.shop-details-page .shop-details-content h3{
+    font-size: 1.1rem !important;
 }
 
 .offer-banner-area .offer-banner-card .offer-right {
