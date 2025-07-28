@@ -39,7 +39,7 @@
                         <button class="account-btn" type="submit">Verify OTP</button>
 
                         <div class="form-poicy-area mt-3">
-                            <p>By verifying, you agree to our <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy.</a></p>
+                            <p>By verifying, you agree to our <a href="{{route('terms-and-conditions')}}">Terms & Conditions</a> and <a href="{{route('privacy-policy')}}">Privacy Policy.</a></p>
                         </div>
                     </form>
 

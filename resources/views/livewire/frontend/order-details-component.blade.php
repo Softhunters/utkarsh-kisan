@@ -1,5 +1,5 @@
 <div>
-
+  
     @section('page_css')
         <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
@@ -50,13 +50,23 @@
                             <a class="d-xl-none d-lg-none d-md-none text-inherit fw-bold" href="#">Sidebar
                                 Menu</a>
                             <!-- Button -->
-                            <button class="navbar-toggler d-md-none rounded bg-primary text-light" type="button"
+                            {{-- <button class="navbar-toggler d-md-none rounded bg-primary text-light" type="button"
                                 data-toggle="collapse" data-target="#sidenav" aria-controls="sidenav"
                                 aria-expanded="false" aria-label="Toggle navigation">
                                 <span><i class="fa-solid fa-bars"></i></span>
+                            </button> --}}
+                            <button class="navbar-toggler d-md-none bg-primary text-light" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#sidenav" aria-controls="sidenav"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                                <span><i class="fa-solid fa-bars"></i></span>
                             </button>
+
+
+
                             <!-- Collapse navbar -->
                             <div class="collapse navbar-collapse" id="sidenav">
+
+                                {{-- <div class="collapse navbar-collapse show" id="sidenav"> --}}
                                 <div class="navbar-nav flex-column">
                                     <!-- List -->
                                     <div class="border-bottom">
@@ -177,8 +187,8 @@
                                                                             href="#">Post Review</a>
                                                                     @else
                                                                         @if ($orderitem->rstatus != 1)
-                                                                            <a href="#"
-                                                                                class="" style="color: var(--primary-color3);"
+                                                                            <a href="#" class=""
+                                                                                style="color: var(--primary-color3);"
                                                                                 wire:click.prevent="cancelOrderItem({{ $orderitem->id }})">
                                                                                 {{-- <img src="{{ asset('img/logo/tras.png') }}"
                                                                                     alt=""
@@ -186,8 +196,8 @@
                                                                                 Cancel Item
                                                                             </a>
                                                                         @else
-                                                                            <a href="#"
-                                                                                class="" style="color: var(--primary-color3);">
+                                                                            <a href="#" class=""
+                                                                                style="color: var(--primary-color3);">
                                                                                 {{-- <img src="{{ asset('img/logo/tras.png') }}"
                                                                                     alt=""
                                                                                     style="width:20px;"> --}}
@@ -347,7 +357,7 @@
                                             <li class="timeline-item @if ($order->status == 'canceled') active @endif">
                                                 <div class="timeline-figure">
                                                     <span class="tile tile-circle tile-sm">
-                                                     <i class="bx bxs-x-circle orderDetailICon text-white"></i>    
+                                                        <i class="bx bxs-x-circle orderDetailICon text-white"></i>
                                                     </span>
                                                 </div>
                                                 <div class="timeline-body">
@@ -491,4 +501,5 @@
             });
         });
     </script>
-@endpush
+   
+ @endpush

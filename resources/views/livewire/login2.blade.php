@@ -67,8 +67,8 @@
                         </form>
 
                         <div class="form-poicy-area mt-3">
-                            <p>By continuing, you agree to Utkarsh Kisan <a href="#">Terms & Conditions</a> & <a
-                                    href="#">Privacy Policy</a>.</p>
+                            <p>By continuing, you agree to Utkarsh Kisan <a href="{{route('terms-and-conditions')}}">Terms & Conditions</a> & <a
+                                    href="{{route('privacy-policy')}}">Privacy Policy</a>.</p>
                         </div>
 
                     </div>

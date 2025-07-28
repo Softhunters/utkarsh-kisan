@@ -54,7 +54,7 @@
                         <div class="hotline mb-80">
                             <h3>Email Us Now</h3>
                             <div class="icon">
-                                <img src="{{ asset('assets/images/icon/email-icon.png') }}" alt />
+                                <img src="{{ asset('assets/images/icon/email.svg') }}" alt />
                             </div>
                             <div class="info">
                                 <h6><a href="mailto:{{ $setting->email }}">{{ $setting->email }}</a></h6>

@@ -105,7 +105,7 @@
                         <div class="form-poicy-area">
 
                             <p>By clicking the "signup" button, you create a Utkarsh Kisan account, and you agree to Utkarsh
-                                Kisan's <a href="#">Terms & Conditions</a> & <a href="#">Privacy Policy.</a></p>
+                                Kisan's <a href="{{route('terms-and-conditions')}}">Terms & Conditions</a> & <a href="{{route('privacy-policy')}}">Privacy Policy.</a></p>
 
                         </div>
 
