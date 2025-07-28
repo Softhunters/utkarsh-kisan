@@ -9,7 +9,7 @@
                      <div class="widget-title footer-text  text-center "  >
                             <h5 style="width: 200px " class="text-center">
                                  
-                               Utkarsh Kisan is a part of <span> Veer Enterprises </span>
+                               Utkarsh Kisan is a part of <span> VEER ENTERPRISES </span>
                             </h5>
                         </div>
                         <!-- <div class="footer-btn">
