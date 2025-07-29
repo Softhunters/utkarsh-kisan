@@ -21,7 +21,7 @@
                                 <li class="breadcrumb-item active d-flex flex-wrap" aria-current="page">
                                     {{-- {{ $product->name }}  --}}
 
-                                    {{ substr($product->name, 0, 50) }}
+                                    {{ substr($product->name, 0, 30) }}
 
 
                                 </li>
@@ -686,14 +686,14 @@
 
                     @if ($otherVendors->count())
                         <div class="table-responsive">
-                            <table class="table table-borderless align-middle">
+                            <table class="table table-borderless align-middle vendor_table">
                                 <thead class="table-light">
                                     <tr>
-                                        <th style="width: 15%;">Vendor Name</th>
-                                        <th style="width: 10%;">Price</th>
-                                        <th style="width: 10%;">Quantity</th>
-                                        <th style="width: 10%;">Action</th>
-                                        <th style="width: 60%;">Additional Info</th>
+                                        <th  >Vendor Name</th>
+                                        <th  >Price</th>
+                                        <th  >Quantity</th>
+                                        <th  >Action</th>
+                                        <th  >Additional Info</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -706,7 +706,7 @@
                                             <td>{{ $vp->quantity }}</td>
                                             <td><a href="#"
                                                     wire:click.prevent="AddtoCart({{ $vp->product_id }},{{ $vp->price }},{{ $vp->vendor_id ?? '' }})"
-                                                    class="primary-btn3">Add to cart</a></td>
+                                                    class="primary-btn3 add_cartBtn">Add to cart</a></td>
                                             <td>{!! $vp->additional_info !!}</td>
                                         </tr>
                                     @endforeach

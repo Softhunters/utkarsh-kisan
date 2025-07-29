@@ -39,7 +39,7 @@
             <div class="row align-items-center g-lg-4 gy-5">
                 <div class="col-lg-5 col-md-5">
                     <div class="contact-left">
-                        <div class="hotline mb-80">
+                        <div class="hotline mb-50">
                             <h3>Call Us Now</h3>
                             <div class="icon">
                                 <img src="{{ asset('assets/images/icon/phone-icon4.svg') }}" alt />
@@ -51,7 +51,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="hotline mb-80">
+                        <div class="hotline mb-50">
                             <h3>Email Us Now</h3>
                             <div class="icon">
                                 <img src="{{ asset('assets/images/icon/email.svg') }}" alt />
@@ -83,31 +83,31 @@
                         @endif
                         <form wire:submit.prevent="addContactform">
                             <div class="row">
-                                <div class="col-lg-12 mb-40">
+                                <div class="col-lg-12 mb-30">
                                     <div class="form-inner">
                                         <input type="text" wire:model="name" placeholder="Enter your name" />
                                         @error('name') <p class="text-danger">{{$message}}</p> @enderror
                                     </div>
                                 </div>
-                                <div class="col-lg-12 mb-40">
+                                <div class="col-lg-12 mb-30">
                                     <div class="form-inner">
                                         <input type="text" wire:model="phone" placeholder="phone" />
                                         @error('phone') <p class="text-danger">{{$message}}</p> @enderror
                                     </div>
                                 </div>
-                                <div class="col-lg-6 mb-40">
+                                <div class="col-lg-6 mb-30">
                                     <div class="form-inner">
                                         <input type="text" wire:model="email" placeholder="Enter your email" />
                                         @error('email') <p class="text-danger">{{$message}}</p> @enderror
                                     </div>
                                 </div>
-                                <div class="col-lg-6 mb-40">
+                                <div class="col-lg-6 mb-30">
                                     <div class="form-inner">
                                         <input type="text" wire:model="subject" placeholder="Subject" />
                                         @error('subject') <p class="text-danger">{{$message}}</p> @enderror
                                     </div>
                                 </div>
-                                <div class="col-lg-12 mb-40">
+                                <div class="col-lg-12 mb-30">
                                     <div class="form-inner">
                                         <textarea wire:model="message" placeholder="Your message"></textarea>
                                         @error('message') <p class="text-danger">{{$message}}</p> @enderror
@@ -127,9 +127,9 @@
         </div>
     </div>
     <div class="location-map">
-        <div class="vector">
+        {{-- <div class="vector">
             <img src="{{ asset('assets/images/bg/map-vector.png') }}" alt />
-        </div>
+        </div> --}}
         <iframe src="{{ $setting->map }}" style="border: 0;" allowfullscreen loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
