@@ -11754,7 +11754,8 @@ footer.style2 .social-area ul li:hover a i {
     display: flex;
     align-items: center;
     position: relative;
-    padding: 60px 50px 45px;
+    /* padding: 60px 50px 45px; */
+    padding: 40px 20px;
     border-radius: 10px;
     border: 1px solid rgba(244, 111, 48, .2);
     max-width: 420px;
@@ -14828,7 +14829,9 @@ footer.style2 .footer-widget .widget-title h2 {
         display: flex;
         align-items: center;
         position: relative;
-        padding: 58px 22px 45px;}
+        /* padding: 58px 22px 45px;} */
+        padding: 40px 10px;
+    }
     .collection-card .collection-content .review span {
         font-family: var(--font-cabin);
         font-weight: 400;
@@ -14906,7 +14909,9 @@ header.style-3 .main-menu ul>li ul.sub-menu>li a {
     display: flex;
     align-items: center;
     position: relative;
-    padding: 50px 25px 45px;}
+    /* padding: 50px 25px 45px;  */
+    padding: 40px 10px !important;
+}
     
     .inner-page-banner .banner-content h1 {
     font-size: 2rem;}
@@ -15984,3 +15989,42 @@ margin-bottom: 0px !important;
     }
     
 }
+
+
+
+.add_cartBtn{
+
+     font-size: 14px !important;
+     background-color: var(--white) !important;
+     color: var(--primary-color3) !important;
+
+
+}
+
+.add_cartBtn:hover{
+background-color: var(--white) !important;
+color:var(--btn-hoverbg) !important;
+}
+
+
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 100% !important;
+     
+  }
+
+   
+}
+
+@media screen  and (max-width: 576px) {
+    .vendor_table{
+    width: 700px !important;
+  }
+
+  .contact-pages .contact-form h2{
+    font-size: 2rem !important;
+    text-align: center !important;
+  }
+    
+}
+

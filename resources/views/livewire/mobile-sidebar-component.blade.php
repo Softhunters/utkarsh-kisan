@@ -46,7 +46,7 @@
                                     <h5 class="shop-widget-title">Price Range</h5>
                                     <div class="range-widget" wire:ignore>
                                         <div id="slider-rangem" class="price-filter-range" ></div>
-                                        <div class="mt-25 d-flex justify-content-between gap-5">
+                                        <div class="mt-25 d-flex justify-content-between g-2">
                                               
                                             <input type="number" min="10" max="{{$max -1}}" oninput="validity.valid||(value='10');" id="min_pricem" class="price-range-field rans nice_num1" />
                                             <input type="number" min="10" max="{{$max}}" oninput="validity.valid||(value={{$max}});" id="max_pricem" class="price-range-field rans nice_num2" />

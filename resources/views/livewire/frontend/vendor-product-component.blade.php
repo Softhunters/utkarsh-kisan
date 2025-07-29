@@ -9,20 +9,26 @@
             <div class="row justify-content-center align-items-center text-center">
                 <div class="col-lg-6 align-items-center">
                     <div class="banner-content">
-                        <h1>{{$sellerinfo->name}} Seller product list</h1>
+                        <h1>
+                            {{-- {{$sellerinfo->name}}  --}}
+                             {{ explode(' ', $sellerinfo->name)[0] }}'s
+                              product list</h1>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{route('index')}}">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">{{$sellerinfo->name}} Seller product list</li>
+                                <li class="breadcrumb-item active" aria-current="page">
+                                    {{-- {{$sellerinfo->name}} --}}
+                                   {{ explode(' ', $sellerinfo->name)[0] }}'s
+                                       product list</li>
                             </ol>
                         </nav>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="banner-img d-lg-block d-none">
-                        <div class="banner-img-bg">
+                        {{-- <div class="banner-img-bg">
                             <img class="img-fluid" src="{{asset('assets/images/bg/inner-banner-vec.png')}}" alt />
-                        </div>
+                        </div> --}}
                         <img class="img-fluid" src="{{asset('assets/images/bg/inner-banner-img.png')}}" alt />
                     </div>
                 </div>
@@ -39,10 +45,10 @@
                                     <h5 class="shop-widget-title">Price Range</h5>
                                     <div class="range-widget" wire:ignore>
                                         <div id="slider-range" class="price-filter-range" ></div>
-                                        <div class="mt-25 d-flex justify-content-between gap-5">
+                                        <div class="mt-25 d-flex justify-content-between g-2">
                                               
-                                            <input type="number" min="10" max="{{$max -1}}" oninput="validity.valid||(value='10');" id="min_price" class="price-range-field rans " />
-                                            <input type="number" min="10" max="{{$max}}" oninput="validity.valid||(value={{$max}});" id="max_price" class="price-range-field rans" />
+                                            <input type="number" min="10" max="{{$max -1}}" oninput="validity.valid||(value='10');" id="min_price" class="price-range-field rans nice_num1" />
+                                            <input type="number" min="10" max="{{$max}}" oninput="validity.valid||(value={{$max}});" id="max_price" class="price-range-field rans nice_num2" />
                                         </div>
                                     </div>
                                 </div>
