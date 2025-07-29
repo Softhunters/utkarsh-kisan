@@ -156,14 +156,32 @@ class ApiController extends Controller
             $result['subcategory'] = SubCategory::where('slug', $request->sid)->first();
             $result['scbanners'] = Banner::where('status', 1)->where('for', $result['subcategory']->id)->get();
             if (auth('sanctum')->user()) {
-                $query = Product::whereBetween('regular_price', [$mip, $map])->where('category_id', $result['category']->id)->where('subcategory_id', $result['subcategory']->id)->with(['reviews', 'brands'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->where('status', 1);
+                $query = Product::whereHas('activeVendorProducts')
+                    ->whereHas('category', function ($q) {
+                        $q->where('status', 1);
+                    })
+                    ->whereHas('subCategories', function ($q) {
+                        $q->where('status', 1);
+                    })->whereBetween('regular_price', [$mip, $map])->where('category_id', $result['category']->id)->where('subcategory_id', $result['subcategory']->id)->with(['reviews', 'brands'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->where('status', 1);
             } else {
-                $query = Product::whereBetween('regular_price', [$mip, $map])->where('category_id', $result['category']->id)->where('subcategory_id', $result['subcategory']->id)->with(['reviews', 'brands'])->withAvg('reviews', 'rating')->where('status', 1);
+                $query = Product::whereHas('activeVendorProducts')
+                    ->whereHas('category', function ($q) {
+                        $q->where('status', 1);
+                    })
+                    ->whereHas('subCategories', function ($q) {
+                        $q->where('status', 1);
+                    })->whereBetween('regular_price', [$mip, $map])->where('category_id', $result['category']->id)->where('subcategory_id', $result['subcategory']->id)->with(['reviews', 'brands'])->withAvg('reviews', 'rating')->where('status', 1);
             }
         } else {
             $result['cbanners'] = Banner::where('status', 1)->where('for', $result['category']->id)->get();
 
-            $query = Product::whereBetween('regular_price', [$mip, $map])->where('category_id', $result['category']->id)->where('status', 1);
+            $query = Product::whereHas('activeVendorProducts')
+                ->whereHas('category', function ($q) {
+                    $q->where('status', 1);
+                })
+                ->whereHas('subCategories', function ($q) {
+                    $q->where('status', 1);
+                })->whereBetween('regular_price', [$mip, $map])->where('category_id', $result['category']->id)->where('status', 1);
 
         }
 
@@ -274,7 +292,13 @@ class ApiController extends Controller
 
         $result['brand'] = Brand::where('brand_slug', $request->brand_slug)->first();
 
-        $query = Product::where('brand_id', $result['brand']->id)->whereBetween('regular_price', [$mip, $map])->where('status', 1);
+        $query = Product::whereHas('activeVendorProducts')
+            ->whereHas('category', function ($q) {
+                $q->where('status', 1);
+            })
+            ->whereHas('subCategories', function ($q) {
+                $q->where('status', 1);
+            })->where('brand_id', $result['brand']->id)->whereBetween('regular_price', [$mip, $map])->where('status', 1);
 
         if ($request->sorting == "date") {
             $query = $query->orderBy('products.created_at', 'DESC');
@@ -341,7 +365,13 @@ class ApiController extends Controller
                 // 'result' => $result
             ], 200);
         }
-        $product = Product::where('id', $request->id)->first();
+        // $product = Product::where('id', $request->id)->first();
+        $product = Product::where('products.id', $request->id)
+            ->join('vendor_products', 'vendor_products.product_id', '=', 'products.id')
+            ->where('vendor_products.vendor_id', $request->sid)
+            ->select('products.*', 'vendor_products.price as sale_price')
+            ->first();
+        // dd($product);
         if (isset($product)) {
             $wish = new Wishlist();
             $wish->product_id = $product->id;
@@ -361,10 +391,10 @@ class ApiController extends Controller
         } else {
 
             return response()->json([
-                'status' => true,
+                'status' => false,
                 'msg' => 'Product Not Found',
                 // 'result' => $result
-            ], 404);
+            ], 200);
         }
     }
 
@@ -375,9 +405,9 @@ class ApiController extends Controller
             ->leftJoin('wishlists', 'products.id', '=', 'wishlists.product_id')
             ->leftJoin('users', 'wishlists.seller_id', '=', 'users.id')
             ->withAvg('reviews', 'rating')->get();
+        // dd($result['wishlist']);
         return response()->json([
             'status' => true,
-
             'result' => $result
         ], 200);
 
@@ -414,7 +444,13 @@ class ApiController extends Controller
                 // 'result' => $result
             ], 200);
         }
-        $product = Product::where('id', $request->id)->first();
+        // $product = Product::where('id', $request->id)->first();
+        $product = Product::where('products.id', $request->id)
+            ->join('vendor_products', 'vendor_products.product_id', '=', 'products.id')
+            ->where('vendor_products.vendor_id', $request->sid)
+            ->select('products.*', 'vendor_products.price as sale_price')
+            ->first();
+
         if (isset($product)) {
             $wish = new Cart();
             $wish->product_id = $product->id;
@@ -512,42 +548,58 @@ class ApiController extends Controller
             $result['sorting'] = $request->sorting;
 
 
-        $category_id = Category::where('slug', 'like', '%' . $search . '%')->first() ? Category::where('slug', 'like', '%' . $search . '%')->first()->id : '';
-        $brand_id = Brand::where('brand_slug', 'like', '%' . $search . '%')->first() ? Brand::where('brand_slug', 'like', '%' . $search . '%')->first()->id : '';
-        $subcategory_id = SubCategory::where('slug', 'like', '%' . $search . '%')->first() ? SubCategory::where('slug', 'like', '%' . $search . '%')->first()->id : '';
+        $category = Category::where('slug', 'like', '%' . $search . '%')->first();
+        $subcategory = SubCategory::where('slug', 'like', '%' . $search . '%')->first();
+        $brand = Brand::where('brand_slug', 'like', '%' . $search . '%')->first();
 
-        $query = Product::with('seller')->where('status', 1)->whereBetween('regular_price', [$mip, $map]);
+        $category_id = $category ? $category->id : null;
+        $subcategory_id = $subcategory ? $subcategory->id : null;
+        $brand_id = $brand ? $brand->id : null;
+
+        $query = Product::query()
+            ->where('status', 1)
+            ->whereHas('activeVendorProducts')
+            ->with([
+                'seller', // gets all sellers
+                'brands'
+            ])
+            ->withCount('reviews')
+            ->withMin('activeVendorProducts as sale_price', 'price');
+
         if ($category_id) {
-            $query = $query->where('category_id', $category_id);
+            $query->where('products.category_id', $category_id);
         } elseif ($subcategory_id) {
-            $query = $query->where('subcategory_id', $subcategory_id);
+            $query->where('products.subcategory_id', $subcategory_id);
         } elseif ($brand_id) {
-            $query = $query->where('brand_id', $brand_id);
-        } else {
-            $query = $query->where('name', 'like', '%' . $search . '%');
+            $query->where('products.brand_id', $brand_id);
+        } elseif (strlen($search) >= 3) {
+            $query = $query->where('products.name', 'like', '%' . $search . '%');
         }
 
         if ($request->sorting == "date") {
-            $query = $query->orderBy('created_at', 'DESC');
+            $query->orderBy('products.created_at', 'DESC');
         }
         if ($request->sorting == "price") {
-            $query = $query->orderBy('regular_price', 'ASC');
+            $query->orderBy('vendor_products.price', 'ASC');
         }
         if ($request->sorting == "price-desc") {
-            $query = $query->orderBy('regular_price', 'DESC');
-        }
-        if ($request->brandtype != null) {
-            $query = $query->whereIn('brand_id', $request->brandtype);
-        }
-        if ($request->discount != null) {
-            $query = $query->where('discount_value', '>', max($request->discount));
+            $query->orderBy('vendor_products.price', 'DESC');
         }
 
-        $query = $query->distinct()->select('products.*');
+        if (!empty($request->brandtype)) {
+            $query->whereIn('products.brand_id', $request->brandtype);
+        }
 
-        // $result['products']=$query->paginate($per_page);
-        $result['products'] = $query->with(['brands'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->withCount('reviews')->paginate($per_page);
+        if (!empty($request->discount)) {
+            $query->where('products.discount_value', '>', max($request->discount));
+        }
 
+        $result['products'] = $query->withAvg('reviews', 'rating')
+            ->withAvg('wishlist', 'user_id')
+            ->withAvg('cart', 'user_id')
+            ->distinct('products.id')
+            ->paginate($per_page);
+        // dd($request);
         // $products=$query->paginate($this->pagesize);
 
         return response()->json([
@@ -736,7 +788,16 @@ class ApiController extends Controller
 
     public function UserOrder(Request $request)
     {
-        $result['order'] = Order::where('user_id', Auth::user()->id)->with(['transaction'])->get();
+        $orders = Order::where('user_id', Auth::user()->id)->with(['transaction'])->get();
+        \Log::info('info' . $orders);
+        $orders->map(function ($order) {
+            $order->transaction->mode = ($order->transaction->mode == 'cod') ? 'cod' : 'online';
+            
+            return $order;
+        });
+        
+        $result['order'] = $orders;
+
         return response()->json([
             'status' => true,
             'result' => $result
@@ -748,12 +809,13 @@ class ApiController extends Controller
     {
         $id = $request->oid;
         $result['order'] = Order::where('id', $id)->with(['transaction'])->first();
+        $result['order']->transaction->mode = ($result['order']->transaction->mode == 'cod') ? 'cod' : 'online';
+
         $result['orderitem'] = OrderItem::where('order_id', $id)->with(['product', 'seller'])->get();
 
         return response()->json([
             'status' => true,
             'result' => $result
-
         ], 200);
 
     }
@@ -1405,15 +1467,58 @@ class ApiController extends Controller
                     $orderItem->options = $item->product->tax_id;
                     $orderItem->save();
                 }
+
+                $payment_status = $request->payment_type == 'razorpay' ? 'approved' : 'pending';
                 // $this->rewardingpoints($order->id, $rewardpoint);
-                $this->makeTransaction($order->id, 'pending', 'cod', null, '0');
-                $this->resetCart();
-                // $this->sendOrderConfirmationMail($order);
+                if ($request->payment_type == 'cod') {
+                    $this->makeTransaction($order->id, $payment_status, $request->payment_type, null, $request->subtotal);
+                    $this->resetCart();
+                    $this->sendOrderConfirmationMail($order);
+                }
 
                 return response()->json([
                     'status' => true,
                     'message' => 'Order has been Submited Successfully',
                     'result' => $order
+                ], 200);
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+
+
+    }
+    public function completepayment(Request $request)
+    {
+        try {
+            $valid = Validator::make($request->all(), [
+                'transaction_id' => 'required',
+                'order_id' => 'required',
+                'status' => 'required',
+            ]);
+            if (!$valid->passes()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $valid->errors()
+                ], 200);
+            } else {
+
+                $order = Order::findOrFail($request->order_id);
+
+                $payment_status = ($request->status == 'failed') ? 'declined' : ($request->status == 'success' ? 'approved' : 'pending');
+
+                $this->makeTransaction($order->id, $payment_status, 'razorpay', $request->transaction_id, $order->subtotal);
+                $this->resetCart();
+                $this->sendOrderConfirmationMail($order);
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Payment has been completed Successfully',
                 ], 200);
             }
 

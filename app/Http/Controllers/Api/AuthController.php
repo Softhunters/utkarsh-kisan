@@ -521,7 +521,15 @@ class AuthController extends Controller
             }
 
             $userc = User::where('phone', $request->number)->first();
+
+
             if (isset($userc)) {
+                if ($userc->utype != 'USR') {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Access denied. Your account is registered for the Vendor app and cannot be used to log in to the user app.'
+                    ], 200);
+                }
                 if ($userc->otp == $request->otp) {
                     Auth::login($userc);
                     if (Auth::user()->status == 0 || Auth::user()->is_active == 3) {
@@ -698,9 +706,11 @@ class AuthController extends Controller
 
             $user = User::where('phone', $request->number)->where('utype', 'VDR')->first();
             if (isset($user)) {
-                // $otp= rand(100000, 999999);
-                $otp = "123456";
-                User::where('phone', $request->number)->update(['otp' => $otp]);
+                $otp= rand(100000, 999999);
+                // $otp = "123456";
+                User::where('phone', $request->number)->where('utype', 'VDR')->update(['otp' => $otp]);
+
+                sendOtp($request->number, $otp);
 
                 return response()->json([
                     'status' => true,
@@ -745,11 +755,13 @@ class AuthController extends Controller
                 ], 200);
             }
 
-            $user = User::where('phone', $request->number)->first();
+            $user = User::where('phone', $request->number)->where('utype', 'USR')->first();
             if (isset($user)) {
-                // $otp= rand(100000, 999999);
-                $otp = "123456";
+                $otp = rand(100000, 999999);
+                // $otp = "123456";
                 User::where('phone', $request->number)->update(['otp' => $otp]);
+
+                sendOtp($request->number, $otp);
 
                 return response()->json([
                     'status' => true,
@@ -765,9 +777,12 @@ class AuthController extends Controller
                     'password' => Hash::make($request->number),
                 ]);
 
-                // $otp= rand(100000, 999999);
-                $otp = "123456";
-                User::where('phone', $request->number)->update(['otp' => $otp]);
+                $otp = rand(100000, 999999);
+                // $otp = '123456';
+
+                User::where('phone', $request->number)->where('utype', 'USR')->update(['otp' => $otp]);
+
+                sendOtp($request->number, $otp);
 
                 return response()->json([
                     'status' => true,
@@ -865,6 +880,12 @@ class AuthController extends Controller
 
             $userc = User::where('phone', $request->number)->where('utype', 'VDR')->first();
             if (isset($userc)) {
+                if ($userc->utype != 'VDR') {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Access denied. Your account is registered for the User app and cannot be used to log in to the Vendor app.'
+                    ], 200);
+                }
                 if ($userc->otp == $request->otp) {
                     Auth::login($userc);
 

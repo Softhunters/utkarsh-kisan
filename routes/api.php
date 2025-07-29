@@ -37,7 +37,7 @@ Route::get('/product-detail/{id}', [ApiController::class, 'ProductData']);
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    
+
     Route::get('/vedndor-products/{vid}', [ApiController::class, 'vendorProducts']);
 
 
@@ -78,10 +78,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/add-review/{id}', [ApiController::class, 'AddReview']);
     Route::post('/add-review', [ApiController::class, 'StoreReview']);
     Route::post('/order-place', [ApiController::class, 'OrderPlace']);
+    Route::post('/completepayment', [ApiController::class, 'completepayment']);
     Route::get('/order-cancel/{id}/{oid?}', [ApiController::class, 'OrderCancel']);
 
     Route::get('/referral_code/{rcode}', [AuthController::class, 'ApplyRcode']);
     Route::get('/wallet', [ApiController::class, 'Userwallet']);
+
 
 
 
