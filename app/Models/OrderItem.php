@@ -50,4 +50,8 @@ class OrderItem extends Model
     {
         return $this->belongsTo(User::class, 'seller_id')->select('users.id', 'users.name');
     }
+    public function sellerMail()
+    {
+        return $this->belongsTo(User::class, 'seller_id')->select('users.id', 'users.name', 'users.email');
+    }
 }

@@ -102,8 +102,8 @@ class AddProductComponent extends Component
             $size[$kvalue] = explode(",", $attribute_valuesf[$kvalue]);
         }
         //dd($size[$kvalue]);
+        $para = [];
         if ($number == 0) {
-            $para = [];
             return $para;
         } elseif ($number == 1) {
             foreach ($size[$keysvalue[0]] as $namefd) {

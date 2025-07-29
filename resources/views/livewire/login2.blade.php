@@ -166,7 +166,7 @@
                 const email = $('#email').val();
 
                 $.ajax({
-                    url: '/profile/update',
+                    url: '/profile/update2',
                     method: 'POST',
                     data: {
                         name: name,

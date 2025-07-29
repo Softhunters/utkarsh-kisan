@@ -358,12 +358,38 @@
             </div>
         </div>
     </div>
+
+    <div x-data x-init="window.addEventListener('initiate-razorpay', event => {
+        const data = Array.isArray(event.detail) ? event.detail[0] : event.detail;
+    
+        const options = {
+            key: data.key,
+            amount: data.amount,
+            currency: 'INR',
+            name: data.name || 'Company Name',
+            description: 'Order Payment',
+            order_id: data.order_id,
+            handler: function(response) {
+                $wire.razorpayPaymentSuccess(response.razorpay_payment_id);
+            },
+            prefill: {
+                name: data.name || '',
+                email: data.email || '',
+                contact: data.contact || ''
+            },
+            theme: {
+                color: '#3399cc'
+            }
+        };
+    
+        const rzp = new Razorpay(options);
+        rzp.open();
+    })">
+        <!-- Your component HTML -->
+    </div>
 </div>
 
-
-
 @push('scripts')
-
     <script>
         window.addEventListener('close-modal', event => {
             $('#address_model').modal('hide');
@@ -375,7 +401,8 @@
         });
     </script>
 
-    <script>
+    {{-- <script>
+        
         document.addEventListener('DOMContentLoaded', function() {
             window.addEventListener('initiate-razorpay', function(event) {
                 const data = Array.isArray(event.detail) ? event.detail[0] : event.detail;
@@ -388,12 +415,13 @@
                     description: "Order Payment",
                     order_id: data.order_id,
                     handler: function(response) {
-                        if (window.Livewire && typeof window.Livewire.emit === 'function') {
-                            window.Livewire.emit('razorpayPaymentSuccess', response
-                                .razorpay_payment_id);
-                        } else {
-                            console.error("Livewire is not available.");
-                        }
+                        // if (window.Livewire && typeof window.Livewire.emit === 'function') {
+                        // window.Livewire.emit('razorpayPaymentSuccess', response
+                        //     .razorpay_payment_id);
+                        $wire.razorpayPaymentSuccess(response.razorpay_payment_id);
+                        // } else {
+                        //     console.error("Livewire is not available.");
+                        // }
                     },
                     prefill: {
                         name: data.name || '',
@@ -409,5 +437,5 @@
                 rzp.open();
             });
         });
-    </script>
+    </script> --}}
 @endpush
