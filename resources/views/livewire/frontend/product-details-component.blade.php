@@ -154,7 +154,7 @@
                                                     @if ($av->id == $product->id) checked @endif name="" />
                                                 <div class="icon-box">
                                                     <div class="label">{{ $av->variant_detail }}</div>
-                                                    <span class="value">₹{{ $av->sale_price }}</span>
+                                                    <span class="value">₹{{ $av->bestSeller->price ?? 'N/A' }}</span>
                                                 </div>
                                             </label>
                                         </a>

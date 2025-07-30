@@ -89,7 +89,7 @@ class ProductDetailsComponent extends Component
         }
     }
 
-    public function addToWishlist(Request $request, $product_id, $product_price, $seller_id=null)
+    public function addToWishlist(Request $request, $product_id, $product_price, $seller_id = null)
     {
         $id = $product_id;
         if (Auth::check()) {
@@ -215,7 +215,7 @@ class ProductDetailsComponent extends Component
     }
     public function render(Request $request)
     {
-        if ($this->vendor_id) {
+        if ($this->vendor_id && $this->variant_id) {
             $product = Product::with([
                 'seller',
                 'bestSeller' => function ($q) {
@@ -223,22 +223,39 @@ class ProductDetailsComponent extends Component
                         ->select('id', 'product_id', 'vendor_id', 'price');
                 }
             ])
+                ->where('id', $this->variant_id)
+                ->first();
+        } else {
+            $product = Product::with([
+                'seller',
+                'bestSeller' => function ($q) {
+                    $q->where('vendor_id', $this->vendor_id);
+                }
+            ])
                 ->where('slug', $this->slug)
                 ->first();
-
-        } elseif (!$this->variant_id) {
-            $product = Product::with('seller')->where('slug', $this->slug)->first();
-        } else {
-            $product = Product::with('seller')->where('id', $this->variant_id)->first();
         }
+
+  
+        $varaiants = Product::with([
+            'seller',
+            'bestSeller' => function ($q) {
+                $q->where('vendor_id', $this->vendor_id)
+                    ->select('id', 'product_id', 'vendor_id', 'price');
+            }
+        ])
+            ->where(function ($query) use ($product) {
+                $query->where('parent_id', $product->parent_id ?: $product->id)
+                    ->orWhere('id', $product->parent_id ?: $product->id);
+            })
+            ->whereHas('bestSeller', function ($q) {
+                $q->where('vendor_id', $this->vendor_id);
+            })
+            ->get();
+
 
         $otherVendors = VendorProduct::where('product_id', $product->id)->whereNot('vendor_id', $this->vendor_id)->where('status', 1)->get();
 
-        if ($product->parent_id) {
-            $varaiants = Product::where('parent_id', $product->parent_id)->orWhere('id', $product->parent_id)->get();
-        } else {
-            $varaiants = Product::where('parent_id', $product->id)->orWhere('id', $product->id)->get();
-        }
         if (Auth::check()) {
             $this->cartp = Cart::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
             $this->wishp = Wishlist::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();

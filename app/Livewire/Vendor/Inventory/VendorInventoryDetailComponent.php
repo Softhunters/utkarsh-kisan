@@ -14,9 +14,16 @@ class VendorInventoryDetailComponent extends Component
     }
     public function render()
     {
-        $product = Product::with(['productHistories.seller', 'productHistories.orderItem'])
+        $product = Product::with([
+            'productHistories' => function ($q) {
+                $q->where('seller_id', auth()->id());
+            },
+            'productHistories.seller',
+            'productHistories.orderItem'
+        ])
             ->where('id', $this->product_id)
             ->first();
+
         return view('livewire.vendor.inventory.vendor-inventory-detail-component', compact('product'))->layout('layouts.vendor1');
     }
 }
