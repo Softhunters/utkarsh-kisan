@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend;
 
+use App\Models\User;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Session;
@@ -20,60 +21,56 @@ class WishlistComponent extends Component
         $count = '';
         if (Auth::check()) {
 
-            $wish = Wishlist::where('user_id', Auth::user()->id)->get();
-            // dd($wish);
-            $product_ids = $wish->pluck('product_id')->toArray();
-            $seller_ids = $wish->pluck('seller_id')->toArray();
-            //  dd($seller_ids);
-            // $wishlist = Product::whereIn('id', $product_ids)->get();
-            $wishlist = Product::whereIn('products.id', $product_ids)
-                ->leftJoin('vendor_products', 'products.id', '=', 'vendor_products.product_id')
-                ->leftJoin('users', 'vendor_products.vendor_id', '=', 'users.id')
-                // ->where(function ($query) use ($seller_ids) {
-                //     $query->whereNull('vendor_products.vendor_id')
-                //         ->orWhereIn('vendor_products.vendor_id', array_filter($seller_ids));
-                // })
-                ->select(
-                    'products.*',
-                    'vendor_products.vendor_id as seller_id',
-                    'users.name as seller_name'
-                )
+            $wishlistItems = Wishlist::with(['product.vendorProducts', 'seller'])
+                ->where('user_id', Auth::id())
                 ->get();
-                
-            $count = Wishlist::where('user_id', Auth::user()->id)->get()->count();
-            foreach ($wishlist as $item) {
-                $dffg = Wishlist::where('user_id', Auth::user()->id)->where('product_id', $item->id)->first();
 
-                $item['qty'] = $dffg->quantity;
+            $count = $wishlistItems->count();
+
+            $wishlist = [];
+
+            foreach ($wishlistItems as $item) {
+                $product = $item->product;
+                $vendorPrice = $product->vendorProducts
+                    ->where('vendor_id', $item->seller_id)
+                    ->first()?->price;
+
+                $product->qty = $item->quantity;
+                $product->seller_name = $item->seller->name ?? null;
+                $product->vendor_price = $vendorPrice ?? $product->sale_price;
+
+                $wishlist[] = $product;
             }
+
 
         } else {
             if (Session::has('wishlist')) {
-                $wish = $request->session()->get('wishlist');
+                $wish = session('wishlist');
                 $product_ids = array_keys($wish);
-                $seller_ids = array_column($wish, 'seller_id');
-                // $wishlist = Product::whereIn('id', $product_ids)->get();
-                $wishlist = Product::whereIn('products.id', $product_ids)
-                    ->leftJoin('vendor_products', 'products.id', '=', 'vendor_products.product_id')
-                    ->leftJoin('users', 'vendor_products.vendor_id', '=', 'users.id')
-                    ->where(function ($query) use ($seller_ids) {
-                        $query->whereNull('vendor_products.vendor_id')
-                            ->orWhereIn('vendor_products.vendor_id', array_filter($seller_ids));
-                    })
-                    ->select(
-                        'products.*',
-                        'vendor_products.vendor_id as seller_id',
-                        'users.name as seller_name'
-                    )
-                    ->get();
-                // dd($wishlist);
 
-                $count = $wishlist->count();
-                foreach ($wishlist as $item) {
-                    $item['qty'] = $wish[$item->id]['quantity'];
+                $products = Product::with(['vendorProducts', 'seller'])
+                    ->whereIn('id', $product_ids)
+                    ->get();
+
+                $wishlist = [];
+
+                foreach ($products as $product) {
+                    $seller_id = $wish[$product->id]['seller_id'];
+                    $seller_name = User::find($seller_id)->name;
+                    $vendorPrice = $product->vendorProducts
+                        ->where('vendor_id', $seller_id)
+                        ->first()?->price;
+
+                    $product->qty = $wish[$product->id]['quantity'];
+                    $product->vendor_price = $vendorPrice ?? $product->sale_price;
+                    $product->seller_name = $seller_name;
+
+                    $wishlist[] = $product;
                 }
+
             }
         }
+        // dd($wishlist);
         return view('livewire.frontend.wishlist-component', ['wishlist' => $wishlist, 'count' => $count])->layout('layouts.main');
     }
 

@@ -92,8 +92,9 @@ class CategorySearchComponent extends Component
             ->withMin('vendorProducts', 'price')
             ->whereHas('vendorProducts', function ($q) {
                 $q->whereBetween('price', [$this->min_price, $this->max_price]);
-            })->where('status', 1)
-            ->whereNull('parent_id');
+            })
+            ->where('status', 1);
+            // ->whereNull('parent_id');
 
         if ($this->category_slug) {
             $query = $query->where('category_id', $category->id);

@@ -50,7 +50,7 @@
         <div class="sa-app__sidebar">
             <div class="sa-sidebar">
                 <div class="sa-sidebar__header">
-                    <a class="sa-sidebar__logo" href="{{ route('admin.dashboard') }}">
+                    <a class="sa-sidebar__logo" href="{{ route('vendor.dashboard') }}">
                         <!-- logo -->
                         <div class="sa-sidebar-logo text-center">
                             <img src="{{ asset('admin/logos/utkarsh_logo.png') }}" alt="images"
@@ -94,6 +94,25 @@
                                             <a href="{{ route('vendor.products') }}" class="sa-nav__link"><span
                                                     class="sa-nav__menu-item-padding"></span><span
                                                     class="sa-nav__title">Product List</span></a>
+                                        </li>
+
+
+                                    </ul>
+                                </li>
+                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
+                                    data-sa-collapse-item="sa-nav__menu-item--open">
+                                    <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
+                                        <img class="sidebaar2" style="width:20px;"
+                                            src="{{ asset('assets/images/logo/4.png') }}">
+                                        <span class="sa-nav__title">Product Inventory</span>
+                                        <i class="fa fa-chevron-right"></i>
+                                    </a>
+                                    <ul class="sa-nav__menu sa-nav__menu--sub" data-sa-collapse-content="">
+                                     
+                                        <li class="sa-nav__menu-item">
+                                            <a href="{{ route('vendor.inventory') }}" class="sa-nav__link"><span
+                                                    class="sa-nav__menu-item-padding"></span><span
+                                                    class="sa-nav__title">Inventory List</span></a>
                                         </li>
 
 

@@ -179,7 +179,7 @@
                                                     alt /></a>
                                         @else
                                             <a href="#"
-                                                wire:click.prevent="addToWishlist({{ $product->id }},{{ $product->bestSeller->price }})"><img
+                                                wire:click.prevent="addToWishlist({{ $product->id }},{{ $product->bestSeller->price }},{{ $product->bestSeller->vendor_id ?? '' }})"><img
                                                     src="{{ asset('assets/images/icon/Icon-favorites.svg') }}"
                                                     alt /></a>
                                         @endif
@@ -364,7 +364,7 @@
                                                     @else
                                                         <a href="#"
 
-                                                            wire:click.prevent="addToWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->price }})"><img
+                                                            wire:click.prevent="addToWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->price }},{{ $fproduct->bestSeller->vendor_id ?? '' }})"><img
 
                                                                 src="{{ asset('assets/images/icon/Icon-favorites.svg') }}"
                                                                 alt /></a>
@@ -496,7 +496,7 @@
                                                         <!--<a href="#"><img src="{{ asset('assets/images/icon/Icon-cart3.svg') }}" alt /></a>-->
                                                     @else
                                                         <a href="#"
-                                                            wire:click.prevent="AddtoCart({{ $fproduct->id }},{{ $fproduct->bestSeller->price }},{{ $product->bestSeller->vendor_id ?? '' }})"><img
+                                                            wire:click.prevent="AddtoCart({{ $fproduct->id }},{{ $fproduct->bestSeller->price }},{{ $fproduct->bestSeller->vendor_id ?? '' }})"><img
                                                                 src="{{ asset('assets/images/icon/Icon-cart3.svg') }}"
                                                                 alt /></a>
                                                     @endif
@@ -504,12 +504,12 @@
                                                 <li>
                                                     @if (in_array($fproduct->id, $wishp))
                                                         <a href="#"
-                                                            wire:click.prevent="removeFromWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->price }},{{ $product->bestSeller->vendor_id ?? '' }})"><img
+                                                            wire:click.prevent="removeFromWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->price }},{{ $fproduct->bestSeller->vendor_id ?? '' }})"><img
                                                                 src="{{ asset('assets/images/icon/Icon-favorites3.svg') }}"
                                                                 alt /></a>
                                                     @else
                                                         <a href="#"
-                                                            wire:click.prevent="addToWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->price }})"><img
+                                                            wire:click.prevent="addToWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->price }},{{ $fproduct->bestSeller->vendor_id ?? '' }})"><img
                                                                 src="{{ asset('assets/images/icon/Icon-favorites.svg') }}"
                                                                 alt /></a>
                                                     @endif

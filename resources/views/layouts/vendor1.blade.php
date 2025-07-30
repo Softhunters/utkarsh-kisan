@@ -50,7 +50,7 @@
         <div class="sa-app__sidebar">
             <div class="sa-sidebar">
                 <div class="sa-sidebar__header">
-                    <a class="sa-sidebar__logo" href="{{ route('admin.dashboard') }}">
+                    <a class="sa-sidebar__logo" href="{{ route('vendor.dashboard') }}">
                         <!-- logo -->
                         <div class="sa-sidebar-logo text-center">
                             <img src="{{ asset('admin/logos/utkarsh_logo.png') }}" alt="images"
