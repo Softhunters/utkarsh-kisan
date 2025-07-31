@@ -185,7 +185,7 @@
                                     Now</a>
                             </div>
                         @endauth
-                        @if ($otherVendors->count() > 0)
+                        @if ($otherVendors->count() > 1)
                             <div class="buy-now-btn mt-3">
                                 <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal"
                                     data-bs-target="#vendorModal">
@@ -584,7 +584,7 @@
                                     @endif
                                     <div class="collection-img @if ($fproduct->stock_status == 'outofstock') blured @endif">
                                         <a
-                                            href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}"><img
+                                            href="{{ route('product-details', ['slug' => $fproduct->slug]) }}"><img
                                                 class="img-gluid"
                                                 src="{{ asset('admin/product/feat') }}/{{ $fproduct->image }}"
                                                 alt="" height="136px" width="153px" /> </a>
@@ -594,7 +594,7 @@
                                                 <i class="bi bi-plus"></i>
                                             </div>
                                             <a
-                                                href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}">View
+                                                href="{{ route('product-details', ['slug' => $fproduct->slug]) }}">View
                                                 Details</a>
                                             {{-- <a href="#">View Details</a> --}}
                                         </div>
@@ -627,7 +627,7 @@
                                     <div class="collection-content text-center">
                                         <p class="fixed">
                                             <a
-                                                href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}">{{ $fproduct->name }}</a>
+                                                href="{{ route('product-details', ['slug' => $fproduct->slug]) }}">{{ $fproduct->name }}</a>
                                             {{-- <a href="#">{{$product->name}}</a> --}}
                                         </p>
                                         <div class="price priceds">

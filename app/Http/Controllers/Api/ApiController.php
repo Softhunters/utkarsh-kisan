@@ -234,10 +234,44 @@ class ApiController extends Controller
         $userl = auth('sanctum')->user();
 
         if ($userl) {
-            $result['product'] = Product::where('slug', $request->id)->with(['questions', 'category', 'subCategories', 'brands', 'seller'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->first();
+            $result['product'] = Product::where('slug', $request->id)
+                ->with(['questions', 'category', 'subCategories', 'brands', 'seller'])
+                ->withAvg('reviews', 'rating')
+                ->withAvg('wishlist', 'user_id')
+                ->withAvg('cart', 'user_id')
+                ->first();
         } else {
-            $result['product'] = Product::where('slug', $request->id)->with(['questions', 'category', 'subCategories', 'brands', 'seller'])->withAvg('reviews', 'rating')->first();
+            $result['product'] = Product::where('slug', $request->id)
+                ->with(['questions', 'category', 'subCategories', 'brands', 'seller'])
+                ->withAvg('reviews', 'rating')
+                ->first();
         }
+
+        $product = $result['product'];
+        $parentId = $product->parent_id ?: $product->id;
+
+        $result['varaiants'] = Product::with([
+            'bestSeller' => function ($q) {
+                $q->select('id', 'product_id', 'vendor_id', 'price');
+            }
+        ])
+            ->where(function ($query) use ($parentId) {
+                $query->where('parent_id', $parentId)
+                    ->orWhere('id', $parentId);
+            })
+            ->whereHas('bestSeller')
+            ->get()
+            ->map(function ($variant) {
+                return [
+                    'id' => $variant->id,
+                    'variant_detail' => $variant->variant_detail,
+                    'regular_price' => number_format($variant->regular_price, 2),
+                    'sale_price' => number_format($variant->bestSeller->price ?? $variant->sale_price, 2),
+                    'slug' => $variant->slug,
+                ];
+            });
+
+
         if ($result['product']) {
             $discount = round((($result['product']->regular_price - $result['product']->seller->price) / $result['product']->regular_price) * 100, 2);
             $discount = max($discount, 0);
@@ -246,21 +280,24 @@ class ApiController extends Controller
             $result['product']->stock_status = $result['product']->seller->stock_status;
             $result['product']->sale_price = str($result['product']->seller->price);
         }
-        if ($result['product']->parent_id) {
-            $result['varaiants'] = Product::where('parent_id', $result['product']->parent_id)->orWhere('id', $result['product']->parent_id)->select('products.id', 'products.variant_detail', 'products.regular_price', 'products.sale_price', 'products.slug')->get();
-        } else {
-            $result['varaiants'] = Product::where('parent_id', $result['product']->id)->orWhere('id', $result['product']->id)->select('products.id', 'products.variant_detail', 'products.regular_price', 'products.sale_price', 'products.slug')->get();
-        }
+
         $result['shareButtons'] = \Share::page(route('product-details', ['slug' => $result['product']->slug]))->facebook()->twitter()->linkedin()->telegram()->whatsapp()->reddit();
         $result['reviews'] = review::where('product_id', $result['product']->id)->with(['user'])->get();
-        $result['seller_list'] = VendorProduct::leftJoin('users', 'vendor_products.vendor_id', '=', 'users.id')
-            ->where('vendor_products.product_id', $result['product']->id)
-            ->whereNot('vendor_products.vendor_id', $result['product']->seller->vendor_id ?? 1)
-            ->select('vendor_products.*', 'users.name as seller_name')
-            ->get();
+
         $result['seller_cart_list'] = Cart::where('product_id', $result['product']->id)
             ->where('user_id', auth('sanctum')->user()->id)
             ->select('seller_id')->get();
+
+        $sellerQuery = VendorProduct::leftJoin('users', 'vendor_products.vendor_id', '=', 'users.id')
+            ->where('vendor_products.product_id', $result['product']->id)
+            ->select('vendor_products.*', 'users.name as seller_name');
+
+        if ($result['product']->sellerAll->count() === 1) {
+            $sellerQuery->where('vendor_products.vendor_id', '!=', $result['product']->seller->vendor_id ?? 1);
+        }
+
+        $result['seller_list'] = $sellerQuery->orderBy('vendor_products.price', 'asc')->get();
+
         return response()->json([
             'status' => true,
             'result' => $result
@@ -788,14 +825,14 @@ class ApiController extends Controller
 
     public function UserOrder(Request $request)
     {
-        $orders = Order::where('user_id', Auth::user()->id)->with(['transaction'])->get();
-        \Log::info('info' . $orders);
+        $orders = Order::where('user_id', Auth::user()->id)->with(['transaction'])->orderByDesc('id')->get();
+        // \Log::info('info' . $orders);
         $orders->map(function ($order) {
             $order->transaction->mode = ($order->transaction->mode == 'cod') ? 'cod' : 'online';
-            
+
             return $order;
         });
-        
+
         $result['order'] = $orders;
 
         return response()->json([
@@ -1073,7 +1110,9 @@ class ApiController extends Controller
         $pricesoff = 0;
         // $discount = 0;
         $cartlsit = Cart::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
-        $result['cart'] = $cart = Cart::with(['product'])->where('user_id', Auth::user()->id)->get();
+        $result['cart'] = $cart = Cart::with(['product'])
+            ->where('user_id', Auth::user()->id)
+            ->get();
         // $catlistnumber = Product::whereIn('id', $cartlsit)->pluck('category_id')->toArray();
         $count = Cart::where('user_id', Auth::user()->id)->get()->count();
         $subtotalc = 0;
@@ -1084,14 +1123,17 @@ class ApiController extends Controller
             if (isset($item->sellerProduct) && !empty($item->sellerProduct)) {
                 $price = $item->sellerProduct->price;
                 $mprice = $item->product->regular_price;
-
             } else {
                 $price = $item->product->sale_price;
                 $mprice = $item->product->regular_price;
             }
 
             $item['qty'] = $dffg->quantity;
+            $item->product->sale_price = number_format($item->sellerProduct->price, 2, '.', '');
+            $discount = round((($item->product->regular_price - $item->product->seller->price) / $item->product->regular_price) * 100, 2);
+            $discount = max($discount, 0);
 
+            $item->product->discount_value = (string) $discount;
 
             $subtotalc = $subtotalc + $price * $dffg->quantity;
             $taxtotalc = $taxtotalc + (($item->product->taxslab->value * $price) * ($dffg->quantity) / 100);
@@ -1591,8 +1633,17 @@ class ApiController extends Controller
                 if (isset($orderitem)) {
                     $model = OrderItem::find($request->oid);
                     $model->rstatus = '1';
+                    $model->status = 'canceled';
                     $model->canceled_date = DB::raw('CURRENT_DATE');
                     $model->save();
+
+                    $remaining = OrderItem::where('order_id', $id)->where('status', '!=', 'canceled')->count();
+                    if ($remaining === 0) {
+                        Order::where('id', $id)->update([
+                            'status' => 'canceled',
+                            'canceled_date' => now()
+                        ]);
+                    }
 
                     return response()->json([
                         'status' => true,
@@ -1607,7 +1658,7 @@ class ApiController extends Controller
                     $model->canceled_date = DB::raw('CURRENT_DATE');
                     $model->save();
 
-                    OrderItem::where('order_id', $id)->update(['rstatus' => '1', 'canceled_date' => DB::raw('CURRENT_DATE')]);
+                    OrderItem::where('order_id', $id)->update(['rstatus' => '1', 'status' => 'canceled', 'canceled_date' => DB::raw('CURRENT_DATE')]);
 
                     return response()->json([
                         'status' => true,

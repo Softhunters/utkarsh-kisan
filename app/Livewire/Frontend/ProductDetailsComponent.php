@@ -215,12 +215,11 @@ class ProductDetailsComponent extends Component
     }
     public function render(Request $request)
     {
-        if ($this->vendor_id && $this->variant_id) {
+        if ($this->variant_id) {
             $product = Product::with([
                 'seller',
                 'bestSeller' => function ($q) {
-                    $q->where('vendor_id', $this->vendor_id)
-                        ->select('id', 'product_id', 'vendor_id', 'price');
+                        $q->select('id', 'product_id', 'vendor_id', 'price');
                 }
             ])
                 ->where('id', $this->variant_id)
@@ -228,9 +227,6 @@ class ProductDetailsComponent extends Component
         } else {
             $product = Product::with([
                 'seller',
-                'bestSeller' => function ($q) {
-                    $q->where('vendor_id', $this->vendor_id);
-                }
             ])
                 ->where('slug', $this->slug)
                 ->first();
@@ -240,17 +236,14 @@ class ProductDetailsComponent extends Component
         $varaiants = Product::with([
             'seller',
             'bestSeller' => function ($q) {
-                $q->where('vendor_id', $this->vendor_id)
-                    ->select('id', 'product_id', 'vendor_id', 'price');
+                $q->select('id', 'product_id', 'vendor_id', 'price');
             }
         ])
             ->where(function ($query) use ($product) {
                 $query->where('parent_id', $product->parent_id ?: $product->id)
                     ->orWhere('id', $product->parent_id ?: $product->id);
             })
-            ->whereHas('bestSeller', function ($q) {
-                $q->where('vendor_id', $this->vendor_id);
-            })
+            ->whereHas('bestSeller')
             ->get();
 
 

@@ -148,7 +148,7 @@
                                 <span class=" bg-white rounded-sm inline-block text-center solded">Sold Out</span>
                             @endif
                             <div class="collection-img @if ($product->stock_status == 'outofstock') blured @endif">
-                                <a href="{{ route('product-details', ['slug' => $product->slug, 'vendor_id' => $product->bestSeller->vendor_id]) }}"><img
+                                <a href="{{ route('product-details', ['slug' => $product->slug]) }}"><img
                                         class="img-gluid"
                                         src="{{ asset('admin/product/feat') }}/{{ $product->image }}" alt=""
                                         height="136px" width="153px" /> </a>
@@ -157,7 +157,7 @@
                                     <div class="plus-icon">
                                         <i class="bi bi-plus"></i>
                                     </div>
-                                    <a href="{{ route('product-details', ['slug' => $product->slug, 'vendor_id' => $product->bestSeller->vendor_id]) }}">View
+                                    <a href="{{ route('product-details', ['slug' => $product->slug]) }}">View
                                         Details</a>
                                     {{-- <a href="#">View Details</a> --}}
                                 </div>
@@ -189,7 +189,7 @@
                             <div class="collection-content text-center">
                                 <p class="fixed">
                                     <a
-                                        href="{{ route('product-details', ['slug' => $product->slug, 'vendor_id' => $product->bestSeller->vendor_id]) }}">{{ $product->name }}</a>
+                                        href="{{ route('product-details', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                     {{-- <a href="#">{{$product->name}}</a> --}}
                                 </p>
                                 <div class="price priceds">
@@ -325,7 +325,7 @@
                                                 Out</span>
                                         @endif
                                         <div class="collection-img @if ($fproduct->stock_status == 'outofstock') blured @endif">
-                                            <a href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}"><img
+                                            <a href="{{ route('product-details', ['slug' => $fproduct->slug]) }}"><img
                                                     class="img-gluid"
                                                     src="{{ asset('admin/product/feat') }}/{{ $fproduct->image }}"
                                                     alt height="136px" width="153px" /></a>
@@ -337,7 +337,7 @@
                                                 <div class="plus-icon">
                                                     <i class="bi bi-plus"></i>
                                                 </div>
-                                                <a href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}">View
+                                                <a href="{{ route('product-details', ['slug' => $fproduct->slug]) }}">View
                                                     Details</a>
                                                 {{-- <a href="#">View Details</a> --}}
                                             </div>
@@ -375,7 +375,7 @@
                                         <div class="collection-content">
                                             <p class="fixed">
                                                 <a
-                                                    href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}">{{ $fproduct->name }}</a>
+                                                    href="{{ route('product-details', ['slug' => $fproduct->slug]) }}">{{ $fproduct->name }}</a>
                                                 {{-- <a href="#">{{ $fproduct->name }}</a> --}}
                                             </p>
                                             <div class="price priceds">
@@ -479,7 +479,7 @@
                                             <span>{{ $fproduct->discount_value }}% Off</span>
                                         </div>
                                         <div class="collection-img">
-                                            <a href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}"><img
+                                            <a href="{{ route('product-details', ['slug' => $fproduct->slug]) }}"><img
                                                     class="img-gluid"
                                                     src="{{ asset('admin/product/feat') }}/{{ $fproduct->image }}"
                                                     alt height="136px" width="153px" /></a>
@@ -487,7 +487,7 @@
                                                 <div class="plus-icon">
                                                     <i class="bi bi-plus"></i>
                                                 </div>
-                                                <a href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}">View
+                                                <a href="{{ route('product-details', ['slug' => $fproduct->slug]) }}">View
                                                     Details</a>
                                             </div>
                                             <ul class="cart-icon-list">
@@ -518,7 +518,7 @@
                                         </div>
                                         <div class="collection-content">
                                             <p class="fixed"><a
-                                                    href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}">{{ $fproduct->name }}</a>
+                                                    href="{{ route('product-details', ['slug' => $fproduct->slug]) }}">{{ $fproduct->name }}</a>
                                             </p>
                                             <div class="price priceds">
                                                 <h6>₹{{ $fproduct->bestSeller->price }}</h6>

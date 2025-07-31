@@ -136,7 +136,7 @@
                                     @endif
                                     <div class="collection-img @if ($product->stock_status == 'outofstock') blured @endif">
                                         <a
-                                            href="{{ route('product-details', ['slug' => $product->slug, 'vendor_id' => $product->bestSeller->vendor_id]) }}"><img
+                                            href="{{ route('product-details', ['slug' => $product->slug]) }}"><img
                                                 class="img-gluid"
                                                 src="{{ asset('admin/product/feat') }}/{{ $product->image }}"
                                                 alt="" width="130px" height="160px" /></a>
@@ -146,7 +146,7 @@
                                                 <i class="bi bi-plus"></i>
                                             </div>
                                             <a
-                                                href="{{ route('product-details', ['slug' => $product->slug, 'vendor_id' => $product->bestSeller->vendor_id]) }}">View
+                                                href="{{ route('product-details', ['slug' => $product->slug]) }}">View
                                                 Details</a>
                                             {{-- <a href="#">View Details</a> --}}
                                         </div>
@@ -181,7 +181,7 @@
                                     <div class="collection-content text-center">
                                         <p class="fixed">
                                             <a
-                                                href="{{ route('product-details', ['slug' => $product->slug, 'vendor_id' => $product->bestSeller->vendor_id]) }}">{{ $product->name }}</a>
+                                                href="{{ route('product-details', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                             {{-- <a href="#">{{$product->name}}</a> --}}
                                         </p>
                                         <div class="price priceds">
