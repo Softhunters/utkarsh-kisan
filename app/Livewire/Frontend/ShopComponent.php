@@ -94,6 +94,18 @@ class ShopComponent extends Component
 
         $products = $query->paginate($this->pagesize);
         // dd($products);
+
+        $products->getCollection()->transform(function ($product) {
+    $discount = 0;
+    if ($product->regular_price > 0 && isset($product->seller->price)) {
+        $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+        $discount = max($discount, 0);
+    }
+
+    $product->discount_value = (string) $discount;
+    return $product;
+});
+
         $categorys = Category::where('status', 1)->get();
         $brands = Brand::where('status', 1)->get();
 

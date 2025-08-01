@@ -78,7 +78,7 @@ class ApiController extends Controller
                     $product->stock_status = str($product->seller->stock_status);
                     return $product;
                 });
-            ;
+
             $result['fproducts'] = Product::whereHas('activeVendorProducts')
                 ->whereHas('category', function ($q) {
                     $q->where('status', 1);
@@ -155,33 +155,57 @@ class ApiController extends Controller
         if (isset($request->sid)) {
             $result['subcategory'] = SubCategory::where('slug', $request->sid)->first();
             $result['scbanners'] = Banner::where('status', 1)->where('for', $result['subcategory']->id)->get();
-            if (auth('sanctum')->user()) {
-                $query = Product::whereHas('activeVendorProducts')
-                    ->whereHas('category', function ($q) {
-                        $q->where('status', 1);
-                    })
-                    ->whereHas('subCategories', function ($q) {
-                        $q->where('status', 1);
-                    })->whereBetween('regular_price', [$mip, $map])->where('category_id', $result['category']->id)->where('subcategory_id', $result['subcategory']->id)->with(['reviews', 'brands'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->where('status', 1);
+            // if (auth('sanctum')->user()) {
+            //     $query = Product::whereHas('activeVendorProducts')
+            //         ->whereHas('category', function ($q) {
+            //             $q->where('status', 1);
+            //         })
+            //         ->whereHas('subCategories', function ($q) {
+            //             $q->where('status', 1);
+            //         })->whereBetween('regular_price', [$mip, $map])->where('category_id', $result['category']->id)->where('subcategory_id', $result['subcategory']->id)->with(['reviews', 'brands'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->where('status', 1);
+            // } else {
+            //     $query = Product::whereHas('activeVendorProducts')
+            //         ->whereHas('category', function ($q) {
+            //             $q->where('status', 1);
+            //         })
+            //         ->whereHas('subCategories', function ($q) {
+            //             $q->where('status', 1);
+            //         })->whereBetween('regular_price', [$mip, $map])->where('category_id', $result['category']->id)->where('subcategory_id', $result['subcategory']->id)->with(['reviews', 'brands'])->withAvg('reviews', 'rating')->where('status', 1);
+            // }
+
+            if (auth('sanctum')->check() && auth('sanctum')->user()->utype === 'VDR') {
+                // Vendor users: get all products regardless of vendor
+                $query = Product::whereBetween('regular_price', [$mip, $map])
+                    ->where('category_id', $result['category']->id)
+                    ->where('subcategory_id', $result['subcategory']->id)
+                    ->where('status', 1);
             } else {
+                // Non-vendor users: only show products with active vendor
                 $query = Product::whereHas('activeVendorProducts')
-                    ->whereHas('category', function ($q) {
-                        $q->where('status', 1);
-                    })
-                    ->whereHas('subCategories', function ($q) {
-                        $q->where('status', 1);
-                    })->whereBetween('regular_price', [$mip, $map])->where('category_id', $result['category']->id)->where('subcategory_id', $result['subcategory']->id)->with(['reviews', 'brands'])->withAvg('reviews', 'rating')->where('status', 1);
+                    ->whereBetween('regular_price', [$mip, $map])
+                    ->where('category_id', $result['category']->id)
+                    ->where('subcategory_id', $result['subcategory']->id)
+                    ->where('status', 1);
             }
+
         } else {
             $result['cbanners'] = Banner::where('status', 1)->where('for', $result['category']->id)->get();
 
-            $query = Product::whereHas('activeVendorProducts')
-                ->whereHas('category', function ($q) {
-                    $q->where('status', 1);
-                })
-                ->whereHas('subCategories', function ($q) {
-                    $q->where('status', 1);
-                })->whereBetween('regular_price', [$mip, $map])->where('category_id', $result['category']->id)->where('status', 1);
+            if (auth('sanctum')->check() && auth('sanctum')->user()->utype === 'VDR') {
+                $query = Product::whereBetween('regular_price', [$mip, $map])
+                    ->where('category_id', $result['category']->id)
+                    ->where('status', 1);
+            } else {
+                $query = Product::whereHas('activeVendorProducts')
+                    ->whereBetween('regular_price', [$mip, $map])
+                    ->where('category_id', $result['category']->id)
+                    ->where('status', 1);
+            }
+
+            // $query = Product::whereHas('activeVendorProducts')
+            //     ->whereBetween('regular_price', [$mip, $map])
+            //     ->where('category_id', $result['category']->id)
+            //     ->where('status', 1);
 
         }
 
@@ -209,19 +233,38 @@ class ApiController extends Controller
 
         $result['products'] = $query->paginate($per_page);
 
+        // $result['products']->setCollection(
+        //     $result['products']->getCollection()->map(function ($product) {
+        //         $discount = 0;
+        //         if ($product->regular_price > 0 && isset($product->seller->price)) {
+        //             $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+        //             $discount = max($discount, 0);
+        //         }
+
+        //         $product->discount_value = (string) $discount;
+        //         $product->sale_price = str($product->seller->price ?? 0);
+        //         return $product;
+        //     })
+        // );
+
         $result['products']->setCollection(
             $result['products']->getCollection()->map(function ($product) {
                 $discount = 0;
-                if ($product->regular_price > 0 && isset($product->seller->price)) {
-                    $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+
+                $sellerPrice = $product->seller->price ?? $product->sale_price ?? 0;
+
+                if ($product->regular_price > 0) {
+                    $discount = round((($product->regular_price - $sellerPrice) / $product->regular_price) * 100, 2);
                     $discount = max($discount, 0);
                 }
 
                 $product->discount_value = (string) $discount;
-                $product->sale_price = str($product->seller->price ?? 0);
+                $product->sale_price = str($sellerPrice);
+
                 return $product;
             })
         );
+
 
         return response()->json([
             'status' => true,
@@ -284,9 +327,15 @@ class ApiController extends Controller
         $result['shareButtons'] = \Share::page(route('product-details', ['slug' => $result['product']->slug]))->facebook()->twitter()->linkedin()->telegram()->whatsapp()->reddit();
         $result['reviews'] = review::where('product_id', $result['product']->id)->with(['user'])->get();
 
-        $result['seller_cart_list'] = Cart::where('product_id', $result['product']->id)
-            ->where('user_id', auth('sanctum')->user()->id)
-            ->select('seller_id')->get();
+        if (auth('sanctum')->check()) {
+            $result['seller_cart_list'] = Cart::where('product_id', $result['product']->id)
+                ->where('user_id', auth('sanctum')->id())
+                ->select('seller_id')
+                ->get();
+        } else {
+            $result['seller_cart_list'] = collect();
+        }
+
 
         $sellerQuery = VendorProduct::leftJoin('users', 'vendor_products.vendor_id', '=', 'users.id')
             ->where('vendor_products.product_id', $result['product']->id)
@@ -329,13 +378,16 @@ class ApiController extends Controller
 
         $result['brand'] = Brand::where('brand_slug', $request->brand_slug)->first();
 
-        $query = Product::whereHas('activeVendorProducts')
-            ->whereHas('category', function ($q) {
-                $q->where('status', 1);
-            })
+        $query = Product::whereHas('category', function ($q) {
+            $q->where('status', 1);
+        })
             ->whereHas('subCategories', function ($q) {
                 $q->where('status', 1);
             })->where('brand_id', $result['brand']->id)->whereBetween('regular_price', [$mip, $map])->where('status', 1);
+
+        if (auth('sanctum')->user()->utype == "USR") {
+            $query->whereHas('activeVendorProducts');
+        }
 
         if ($request->sorting == "date") {
             $query = $query->orderBy('products.created_at', 'DESC');
@@ -368,20 +420,40 @@ class ApiController extends Controller
             $result['products'] = $query->withAvg('reviews', 'rating')->withCount('reviews')->with(['brands', 'seller'])->paginate($per_page);
         }
 
+        // $result['products']->setCollection(
+        //     $result['products']->getCollection()->map(function ($product) {
+        //         $discount = 0;
+        //         if ($product->regular_price > 0 && isset($product->seller->price)) {
+        //             $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+        //             $discount = max($discount, 0);
+        //         }
+
+        //         $product->discount_value = (string) $discount;
+        //         $product->sale_price = str($product->seller->price ?? 0);
+        //         $product->stock_status = str($product->seller->stock_status);
+        //         return $product;
+        //     })
+        // );
+
         $result['products']->setCollection(
             $result['products']->getCollection()->map(function ($product) {
                 $discount = 0;
-                if ($product->regular_price > 0 && isset($product->seller->price)) {
-                    $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                $sellerPrice = $product->seller->price ?? $product->sale_price ?? $product->regular_price;
+
+                if ($product->regular_price > 0 && isset($sellerPrice)) {
+                    $discount = round((($product->regular_price - $sellerPrice) / $product->regular_price) * 100, 2);
                     $discount = max($discount, 0);
                 }
 
                 $product->discount_value = (string) $discount;
-                $product->sale_price = str($product->seller->price ?? 0);
-                $product->stock_status = str($product->seller->stock_status);
+                $product->sale_price = number_format($sellerPrice, 2);
+
+                $product->stock_status = $product->seller->stock_status ?? $product->stock_status ?? 'instock';
+
                 return $product;
             })
         );
+
 
         return response()->json([
             'status' => true,
@@ -968,57 +1040,85 @@ class ApiController extends Controller
             $map = $request->map;
 
 
-        $query = Product::whereHas('activeVendorProducts')
-            ->whereHas('category', function ($q) {
-                $q->where('status', 1);
-            })
-            ->whereHas('subCategories', function ($q) {
-                $q->where('status', 1);
-            })
-            ->whereBetween('regular_price', [$mip, $map])->where('status', 1);
+        $user = auth('sanctum')->user();
+        $utype = $user?->utype;
 
+        $query = Product::with([
+            'bestSeller' => function ($q) {
+                $q->select('id', 'product_id', 'vendor_id', 'price');
+            }
+        ])
+            ->withMin('vendorProducts', 'price')
+            ->where('products.status', 1);
+
+        // Include products based on user type
+        if ($utype === 'VDR') {
+            // Vendor user: include all products (even if no vendor product)
+        } else {
+            // Other users: only products having at least one active vendor product
+            $query = $query->whereHas('activeVendorProducts');
+        }
+
+        // Apply price filter (only applies to products that have vendor products)
+        if ($request->filled('min_price') && $request->filled('max_price')) {
+            $query->whereHas('vendorProducts', function ($q) use ($request) {
+                $q->whereBetween('price', [$request->min_price, $request->max_price]);
+            });
+        }
+
+        // Sorting
         if ($request->sorting == "date") {
-            $query = $query->orderBy('created_at', 'DESC');
+            $query->orderBy('products.created_at', 'DESC');
         }
         if ($request->sorting == "price") {
-            $query = $query->orderBy('regular_price', 'ASC');
+            $query->orderBy('vendor_products_min_price', 'ASC');
         }
         if ($request->sorting == "price-desc") {
-            $query = $query->orderBy('regular_price', 'DESC');
-        }
-        if ($request->brandtype != null) {
-            $query = $query->whereIn('brand_id', $request->brandtype);
-        }
-        if ($request->breedtype != null) {
-            $query = $query->whereIn('breed_id', $request->breedtype);
-        }
-        if ($request->flavourtype != null) {
-            $query = $query->whereIn('flavour_id', $request->flavourtype);
+            $query->orderBy('vendor_products_min_price', 'DESC');
         }
 
-        if ($request->discount != null) {
-            $query = $query->where('discount_value', '>', max($request->discount));
-
+        // Filter by brand
+        if ($request->filled('brandtype')) {
+            $query->whereIn('products.brand_id', $request->brandtype);
         }
 
-        $query = $query->distinct()->select('products.*')->with(['brands', 'seller'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withCount('reviews')->withAvg('cart', 'user_id');
+        // Filter by discount
+        if ($request->filled('discount')) {
+            $query->where('products.discount_value', '>=', (int) min($request->discount));
+        }
 
+        // Eager load extras
+        $query = $query->with(['brands', 'seller'])
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews');
+
+        if ($user) {
+            $query = $query->withAvg('wishlist', 'user_id')
+                ->withAvg('cart', 'user_id');
+        }
+
+        // Paginate result
         $result['products'] = $query->paginate($per_page);
+
 
 
         $result['products']->setCollection(
             $result['products']->getCollection()->map(function ($product) {
+                $finalPrice = isset($product->seller->price) ? $product->seller->price : $product->sale_price;
+
                 $discount = 0;
-                if ($product->regular_price > 0 && isset($product->seller->price)) {
-                    $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                if ($product->regular_price > 0 && $finalPrice !== null) {
+                    $discount = round((($product->regular_price - $finalPrice) / $product->regular_price) * 100, 2);
                     $discount = max($discount, 0);
                 }
 
                 $product->discount_value = (string) $discount;
-                $product->sale_price = str($product->seller->price ?? 0);
+                $product->sale_price = (string) $finalPrice;
+
                 return $product;
             })
         );
+
 
 
 

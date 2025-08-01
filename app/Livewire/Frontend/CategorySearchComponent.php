@@ -120,6 +120,17 @@ class CategorySearchComponent extends Component
         $query = $query->distinct()->select('products.*');
         $products = $query->paginate($this->pagesize);
 
+        $products->getCollection()->transform(function ($product) {
+            $discount = 0;
+            if ($product->regular_price > 0 && isset($product->seller->price)) {
+                $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                $discount = max($discount, 0);
+            }
+
+            $product->discount_value = (string) $discount;
+            return $product;
+        });
+
         $categorys = Subcategory::where('category_id', $category_id)->where('status', 1)->get();
         $brands = Brand::where('status', 1)->get();
 

@@ -219,7 +219,7 @@ class ProductDetailsComponent extends Component
             $product = Product::with([
                 'seller',
                 'bestSeller' => function ($q) {
-                        $q->select('id', 'product_id', 'vendor_id', 'price');
+                    $q->select('id', 'product_id', 'vendor_id', 'price');
                 }
             ])
                 ->where('id', $this->variant_id)
@@ -232,7 +232,12 @@ class ProductDetailsComponent extends Component
                 ->first();
         }
 
-  
+        $discount = round((($product->regular_price - $product->seller?->price) / $product->regular_price) * 100, 2);
+        $discount = max($discount, 0);
+
+        $product->discount_value = (string) $discount;
+
+
         $varaiants = Product::with([
             'seller',
             'bestSeller' => function ($q) {
@@ -277,7 +282,15 @@ class ProductDetailsComponent extends Component
             ->where('status', 1)
             ->inRandomOrder()
             ->limit(8)
-            ->get();
+            ->get()
+            ->map(function ($product) {
+                $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                $discount = max($discount, 0);
+
+                $product->discount_value = (string) $discount;
+                return $product;
+            });
+
         $related_products = Product::whereHas('activeVendorProducts')
             ->with([
                 'bestSeller' => function ($q) {
@@ -288,7 +301,14 @@ class ProductDetailsComponent extends Component
             ->where('status', 1)
             ->inRandomOrder()
             ->limit(8)
-            ->get();
+            ->get()
+            ->map(function ($product) {
+                $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                $discount = max($discount, 0);
+
+                $product->discount_value = (string) $discount;
+                return $product;
+            });
         return view('livewire.frontend.product-details-component', ['otherVendors' => $otherVendors, 'product' => $product, 'shareButtons' => $shareButtons, 'varaiants' => $varaiants, 'popular_products' => $popular_products, 'related_products' => $related_products])->layout('layouts.main');
     }
 

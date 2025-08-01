@@ -692,9 +692,15 @@ class AuthController extends Controller
             $validateUser = Validator::make(
                 $request->all(),
                 [
-                    'number' => 'required'
+                    'number' => 'required|numeric|digits:10'
+                ],
+                [
+                    'number.required' => 'Please enter your phone number.',
+                    'number.numeric' => 'Phone number must contain only digits.',
+                    'number.digits' => 'Please enter a valid phone number.',
                 ]
             );
+
 
             if ($validateUser->fails()) {
                 return response()->json([
@@ -709,7 +715,7 @@ class AuthController extends Controller
                 if ($user->utype != 'VDR') {
                     return response()->json([
                         'status' => false,
-                        'message' => 'Access denied. Your account is registered for the User app and cannot be used to log in to the Vendor app.'
+                        'message' => 'Access Denied: This phone number is registered for the User Panel and cannot be used to log in to the Vendor Panel.'
                     ], 200);
                 }
                 // $otp= rand(100000, 999999);
@@ -746,12 +752,15 @@ class AuthController extends Controller
             $validateUser = Validator::make(
                 $request->all(),
                 [
-                    'number' => 'required'
+                    'number' => 'required|numeric|digits:10'
                 ],
                 [
-                    'number.required' => 'The phone number field is required.',
+                    'number.required' => 'Please enter your phone number.',
+                    'number.numeric' => 'Phone number must contain only digits.',
+                    'number.digits' => 'Please enter a valid phone number.',
                 ]
             );
+
 
             if ($validateUser->fails()) {
                 return response()->json([
@@ -766,7 +775,7 @@ class AuthController extends Controller
                 if ($user->utype != 'USR') {
                     return response()->json([
                         'status' => false,
-                        'message' => 'Access denied. Your account is registered for the Vendor app and cannot be used to log in to the user app.'
+                        'message' => 'Access Denied: This phone number is registered for the Vendor Panel and cannot be used to log in to the User Panel.'
                     ], 200);
                 }
                 // $otp = rand(100000, 999999);

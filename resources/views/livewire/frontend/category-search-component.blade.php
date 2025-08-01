@@ -141,15 +141,16 @@
                             <div class="col-lg-3 col-md-3 col-6">
                                 <div class="collection-card">
                                     <div class="offer-card">
-                                        <span>{{ $product->discount_value }}% Off</span>
+                                        @if ($product->discount_value != 0)
+                                            <span>{{ $product->discount_value }}% Off</span>
+                                        @endif
                                     </div>
                                     @if ($product->stock_status == 'outofstock')
                                         <span class=" bg-white rounded-sm inline-block text-center solded">Sold
                                             Out</span>
                                     @endif
                                     <div class="collection-img @if ($product->stock_status == 'outofstock') blured @endif">
-                                        <a
-                                            href="{{ route('product-details', ['slug' => $product->slug]) }}"><img
+                                        <a href="{{ route('product-details', ['slug' => $product->slug]) }}"><img
                                                 class="img-gluid"
                                                 src="{{ asset('admin/product/feat') }}/{{ $product->image }}"
                                                 alt="" width="130px" height="160px" /></a>
@@ -158,8 +159,7 @@
                                             <div class="plus-icon">
                                                 <i class="bi bi-plus"></i>
                                             </div>
-                                            <a
-                                                href="{{ route('product-details', ['slug' => $product->slug]) }}">View
+                                            <a href="{{ route('product-details', ['slug' => $product->slug]) }}">View
                                                 Details</a>
                                             {{-- <a href="#">View Details</a> --}}
                                         </div>
