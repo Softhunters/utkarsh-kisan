@@ -21,7 +21,7 @@
 
                         </div>
 
-                        <form class="w-100" method="POST" action="#" id="frmRegistar">
+                        <form class="w-100" method="POST" action="#" id="frmRegistar" enctype="multipart/form-data">
 
                             @csrf
 
@@ -67,6 +67,27 @@
                                             class="form-control rounded">
 
                                         <div id="email_error" class="field_error text-danger"></div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-12">
+
+                                    <div class="mb-3">
+
+                                        <label>Choose a Vendor Plan *</label>
+
+                                        <!-- Your select input with added id -->
+                                        <select name="package" id="package" class="form-control" required>
+                                            <option value="">Select one</option>
+                                            @foreach ($packages as $package)
+                                                <option value="{{ $package->id }}">{{ $package->pname }}</option>
+                                            @endforeach
+                                        </select>
+
+
+                                        <div id="package_error" class="field_error text-danger"></div>
 
                                     </div>
 
@@ -148,7 +169,9 @@
 
                         <div class="form-poicy-area">
 
-                            <p>By clicking the "Create Account" button, you create an Utkarsh Kisan Vendor account, and you agree to Utkarsh Kisan's <a href="{{route('vendor-terms-and-conditions')}}">Vendor Terms & Conditions</a> & <a href="{{route('privacy-policy')}}">Privacy Policy.</a></p>
+                            <p>By clicking the "Create Account" button, you create an Utkarsh Kisan Vendor account, and you
+                                agree to Utkarsh Kisan's <a href="{{ route('vendor-terms-and-conditions') }}">Vendor Terms &
+                                    Conditions</a> & <a href="{{ route('privacy-policy') }}">Privacy Policy.</a></p>
 
                         </div>
 
@@ -169,51 +192,33 @@
     @push('scripts')
         <script>
             jQuery('#frmRegistar').submit(function(e) {
-
-                //alert(jQuery('#frmRegistar').serialize());
-
-                var daat = jQuery('#frmRegistar').serialize();
-
-                //alert(daat);
-
                 e.preventDefault();
 
                 jQuery('.field_error').html('');
 
+                const formData = jQuery(this).serialize();
+                const packageVal = jQuery('select[name="package"]').val();
+
+                console.log('Serialized form data:', formData);
+                console.log('Package field value:', packageVal);
+
                 jQuery.ajax({
-
                     url: '{{ route('udregisteor') }}',
-
-                    data: daat,
-
-                    type: 'post',
-
+                    type: 'POST',
+                    data: formData,
                     success: function(result) {
-
-                        if (result.status == "error") {
-
+                        if (result.status === "error") {
                             jQuery.each(result.error, function(key, val) {
-
                                 jQuery('#' + key + '_error').html(val[0]);
-
                             });
-
                         }
 
-                        if (result.status == "success") {
-
-                            // jQuery('#register_msg').html(result.msg);
-
+                        if (result.status === "success") {
                             jQuery('#frmRegistar')[0].reset();
-
                             jQuery('#thank_you_msg').html(result.msg);
-
                         }
-
                     }
-
                 });
-
             });
         </script>
     @endpush

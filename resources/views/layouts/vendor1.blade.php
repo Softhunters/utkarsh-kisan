@@ -73,6 +73,13 @@
                                     </a>
                                 </li>
 
+                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
+                                    <a href="{{ route('vendor.package') }}" class="sa-nav__link side1 side2">
+                                         <i class="bi bi-box-seam"></i>
+                                        <span class="sa-nav__title">My Package</span>
+                                    </a>
+                                </li>
+
 
 
 

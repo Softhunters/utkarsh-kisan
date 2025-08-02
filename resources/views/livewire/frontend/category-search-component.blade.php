@@ -56,10 +56,10 @@
                                 <div id="slider-range" class="price-filter-range"></div>
                                 <div class="mt-25 d-flex justify-content-between gap-4">
 
-                                    <input type="number" min="10" max="{{ $max - 1 }}"
-                                        oninput="validity.valid||(value='10');" id="min_price"
+                                    <input type="number" min="{{ $min }}" max="{{ $max - 1 }}"
+                                        oninput="validity.valid||(value={{ $min }});" id="min_price"
                                         class="price-range-field rans nice_num1" />
-                                    <input type="number" min="10" max="{{ $max }}"
+                                    <input type="number" min="{{ $min }}" max="{{ $max }}"
                                         oninput="validity.valid||(value={{ $max }});" id="max_price"
                                         class="price-range-field rans nice_num2" />
                                 </div>
@@ -282,7 +282,7 @@
             $("#slider-range").slider({
                 range: true,
                 orientation: "horizontal",
-                min: 10,
+                min: 0,
                 max: <?php echo $max; ?>,
                 values: [0, <?php echo $max / 2; ?>],
                 step: 10,

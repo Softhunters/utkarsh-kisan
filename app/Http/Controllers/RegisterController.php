@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Package;
 use App\Models\User;
 use App\Models\VendorProfile;
 use Illuminate\Http\Request;
@@ -38,11 +39,13 @@ class RegisterController extends Controller
 
     public function uregisteor(Request $request)
     {
+        dd($request->all());
         $valid = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'phone' => ['required', 'numeric', 'digits:10', 'unique:users'],
+            'package' => 'required',
             'checkbox' => 'required'
         ]);
 
@@ -60,6 +63,7 @@ class RegisterController extends Controller
         if ($request->type === 'VDR') {
             VendorProfile::create([
                 'vendor_id' => $user->id,
+                'package_id' => $request->package_id,
                 'status' => 0
             ]);
         }
@@ -80,7 +84,8 @@ class RegisterController extends Controller
     public function vdrregisterview(Request $request)
     {
         $type = 'VDR';
-        return view('livewire.register', compact('type'));
+        $packages = Package::where('status', 1)->get();
+        return view('livewire.register', compact('type', 'packages'));
     }
     public function uregisteorview(Request $request)
     {

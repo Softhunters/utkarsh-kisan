@@ -36,7 +36,7 @@ class ShopComponent extends Component
     {
         $this->sorting = "default";
         $this->pagesize = "10";
-        $this->min = Product::where('status', 1)->min('regular_price');
+        $this->min = 0;
         $this->max = Product::where('status', 1)->max('regular_price');
         $this->min_price = $this->min;
         $this->max_price = $this->max;
@@ -64,47 +64,45 @@ class ShopComponent extends Component
                     $q->select('id', 'product_id', 'vendor_id', 'price');
                 }
             ])
-            ->withMin('vendorProducts', 'price')
-            ->whereHas('vendorProducts', function ($q) {
+            ->whereHas('bestSeller', function ($q) {
                 $q->whereBetween('price', [$this->min_price, $this->max_price]);
             })
-            ->where('status', 1);
+            ->where('products.status', 1)
+            ->select('products.*', DB::raw('(SELECT MIN(price) FROM vendor_products WHERE vendor_products.product_id = products.id) AS best_seller_min_price'));;
+            
         if ($this->sorting == "date") {
             $query = $query->orderBy('products.created_at', 'DESC');
         }
         if ($this->sorting == "price") {
-            $query = $query->orderBy('vendor_products_min_price', 'ASC');
+            $query = $query->orderBy('best_seller_min_price', 'ASC');
         }
         if ($this->sorting == "price-desc") {
-            $query = $query->orderBy('vendor_products_min_price', 'DESC');
+            $query = $query->orderBy('best_seller_min_price', 'DESC');
         }
         if ($this->brandtype != null) {
-            $query = $query->whereIn('brand_id', $this->brandtype);
+            $query = $query->whereIn('products.brand_id', $this->brandtype);
         }
 
         //    $query=$query->distinct()->select('products.*',DB::raw('((products.regular_price - products.sale_price)/products.regular_price)*100 as offerdiscount'));
         if ($this->discount != null) {
             //dd($this->discount);
-            $query = $query->where('discount_value', '>=', (int) min($this->discount));
+            $query = $query->where('products.discount_value', '>=', (int) min($this->discount));
 
         }
 
-        //dd($this->discount);
-        $query = $query->distinct()->select('products.*');
-
         $products = $query->paginate($this->pagesize);
-        // dd($products);
+      
 
         $products->getCollection()->transform(function ($product) {
-    $discount = 0;
-    if ($product->regular_price > 0 && isset($product->seller->price)) {
-        $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
-        $discount = max($discount, 0);
-    }
+            $discount = 0;
+            if ($product->regular_price > 0 && isset($product->seller->price)) {
+                $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                $discount = max($discount, 0);
+            }
 
-    $product->discount_value = (string) $discount;
-    return $product;
-});
+            $product->discount_value = (string) $discount;
+            return $product;
+        });
 
         $categorys = Category::where('status', 1)->get();
         $brands = Brand::where('status', 1)->get();

@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Vendor\DashboardController;
+use App\Http\Controllers\Vendor\PackageController;
 use App\Http\Controllers\Vendor\ProductController;
 use App\Http\Controllers\Vendor\VendorProfileController;
 use App\Livewire\Admin\Attribute\AddAttributeComponent;
@@ -37,6 +38,9 @@ use App\Livewire\Admin\Order\OrderComponent;
 use App\Livewire\Admin\Order\OrderDetailComponent;
 use App\Livewire\Admin\Order\VendorOrderComponent;
 use App\Livewire\Admin\Order\VendorOrderComponentDetail;
+use App\Livewire\Admin\Package\AddPackagecomponent;
+use App\Livewire\Admin\Package\EditPackagecomponent;
+use App\Livewire\Admin\Package\Packagecomponent;
 use App\Livewire\Admin\Product\AddProductComponent;
 use App\Livewire\Admin\Product\EditProductComponent;
 use App\Livewire\Admin\Product\ProductComponent;
@@ -202,6 +206,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/orders', OrderComponent::class)->name('admin.orders');
         Route::get('/order/detail/{id}', OrderDetailComponent::class)->name('admin.order-detail');
 
+        Route::get('/admin/packages', Packagecomponent::class)->name('admin.packages');
+        Route::get('/admin/package/add', AddPackagecomponent::class)->name('admin.addpackage');
+        Route::get('/admin/package/edit/{pid}', EditPackagecomponent::class)->name('admin.editpackage');
     });
 
 
@@ -236,6 +243,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         //product inventory
         Route::get('/inventory', VendorInventoryComponent::class)->name('vendor.inventory');
         Route::get('/inventory-details/{id}', VendorInventoryDetailComponent::class)->name('vendor.inventory.details');
+
+        //package
+        Route::get('/my-package', [PackageController::class, 'index'])->name('vendor.package');
 
     });
 
