@@ -103,7 +103,14 @@ class LoginController extends Controller
             $this->movewishlist($request);
             $this->movecart($request);
 
-            return redirect()->route('vendor.dashboard');
+            $vendor = User::find(Auth::id());
+
+            if ($vendor->vendorPackage) {
+                return redirect()->route('vendor.dashboard');
+            } else {
+                return redirect()->route('vendor.package');
+            }
+
         } else {
             return redirect()->back()->with('error', 'Email or Password not match!');
         }

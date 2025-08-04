@@ -63,18 +63,18 @@
                                                  </div>
                                                      @error('validity') <p class="text-danger">{{$message}}</p> @enderror
                                              </div>
-                                              <div class="mb-4">
+                                              {{-- <div class="mb-4">
                                                  <label for="form-package/validity" class="form-label">Visiting Count</label>
                                                  <div class="input-group input-group--sa-slug">
                                                      <input type="text" placeholder="Visiting Validity" class="form-control" wire:model="count" />
                                                  </div>
                                                   @error('count') <p class="text-danger">{{$message}}</p>
                                                      @enderror
-                                             </div>
+                                             </div> --}}
                                              <div class="mb-4">
                                                 <label class="control-label">Description<span class="text-danger"> *</span></label>
                                                 <div  wire:ignore>
-                                                    <textarea class ="form-control" id="description" placeholder="Description" wire:model="description"></textarea>
+                                                    <textarea class ="form-control" id="description" placeholder="Description" wire:model="description">{{$description}}</textarea>
                                                 </div>
                                                     @error('description') <p class="text-danger">{{$message}}</p> @enderror
                                             </div>

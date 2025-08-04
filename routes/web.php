@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\VendorController;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Api\AuthController;
@@ -142,6 +143,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/order/{id}', OrderDetailsComponent::class)->name('order-details');
 
     Route::post('profile/update2', [AuthController::class, 'profileUpdate2']);
+
+    Route::get('/buy-package/{slug}', [PaymentController::class, 'checkout'])->name('razorpay.checkout');
+    Route::post('/payment/success', [PaymentController::class, 'paymentSuccess'])->name('razorpay.success');
 
 
     // Admin Routes

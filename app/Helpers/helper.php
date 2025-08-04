@@ -34,8 +34,8 @@ function sendOtp($number, $otp)
         CURLOPT_TIMEOUT => 10,
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => 'GET',
-        CURLOPT_SSL_VERIFYHOST => false, 
-        CURLOPT_SSL_VERIFYPEER => false, 
+        CURLOPT_SSL_VERIFYHOST => false,
+        CURLOPT_SSL_VERIFYPEER => false,
     ]);
 
     $response = curl_exec($curl);
@@ -45,4 +45,16 @@ function sendOtp($number, $otp)
 
 
     return;
+}
+function createSlug($value, string $modelClass, $slugField = 'slug')
+{
+    $slug = Str::slug($value);
+    $original = $slug;
+    $i = 1;
+
+    while ($modelClass::where($slugField, $slug)->exists()) {
+        $slug = $original . '-' . $i++;
+    }
+
+    return $slug;
 }

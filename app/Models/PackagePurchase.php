@@ -10,8 +10,8 @@ class PackagePurchase extends Model
     use HasFactory;
 
     protected $guarded = [];
-    public function validitycount()
-    {
-        return $this->belongsTo(Package::class,'package_id');
+   
+    public function package(){
+        return $this->belongsTo(Package::class);
     }
 }

@@ -21,6 +21,7 @@ class VendorProfile extends Model
         'gstin_number',
         'gstin_image',
         'status',
+        'package_id',
         'is_active'
     ];
 

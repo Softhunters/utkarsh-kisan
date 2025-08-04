@@ -39,8 +39,7 @@ class RegisterController extends Controller
 
     public function uregisteor(Request $request)
     {
-        dd($request->all());
-        $valid = Validator::make($request->all(), [
+        $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -49,12 +48,6 @@ class RegisterController extends Controller
             'checkbox' => 'required'
         ]);
 
-        if (!$valid->passes()) {
-            return response()->json([
-                'status' => 'error',
-                'error' => $valid->errors()->toArray()
-            ]);
-        }
 
         // Create the user
         $user = $this->create($request->all());
@@ -63,7 +56,7 @@ class RegisterController extends Controller
         if ($request->type === 'VDR') {
             VendorProfile::create([
                 'vendor_id' => $user->id,
-                'package_id' => $request->package_id,
+                'package_id' => $request->package,
                 'status' => 0
             ]);
         }
@@ -72,13 +65,10 @@ class RegisterController extends Controller
 
 
         // Fire the registration event
-        event(new Registered($user));
+        // event(new Registered($user));
 
 
-        return response()->json([
-            'status' => 'success',
-            'msg' => "Thank you for your interest in Utkarsh Kisan – now you can login."
-        ]);
+        return redirect()->route('vendorlogin');
     }
 
     public function vdrregisterview(Request $request)
