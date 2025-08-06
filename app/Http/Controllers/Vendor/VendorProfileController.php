@@ -25,10 +25,30 @@ class VendorProfileController extends Controller
             'city' => 'required|exists:cities,id',
             'pin_code' => 'required',
             'id_proof_type' => 'required|string',
-            'proof_image' => 'required',
+            'proof_image' => 'nullable',
             'gstin_number' => 'nullable',
             'gstin_image' => 'nullable',
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|email|unique:users,email,' . auth()->id(),
+            'phone' => 'sometimes|string|unique:users,phone,' . auth()->id(),
         ]);
+
+        $user = auth()->user();
+
+        $userUpdates = [];
+        if ($request->has('name')) {
+            $userUpdates['name'] = $request->name;
+        }
+        if ($request->has('email')) {
+            $userUpdates['email'] = $request->email;
+        }
+        if ($request->has('phone')) {
+            $userUpdates['phone'] = $request->phone;
+        }
+
+        if (!empty($userUpdates)) {
+            $user->update($userUpdates);
+        }
 
 
         $data['vendor_id'] = auth()->id();

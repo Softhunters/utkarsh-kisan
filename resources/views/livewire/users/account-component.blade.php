@@ -148,9 +148,13 @@
 
                                         <div class="mb-3 col-12 col-lg-6">
                                             <label class="form-label" for="fname">Email</label>
-                                            <input type="email" id="fname" class="form-control"
+                                            <input type="email" id="fname" class="form-control @error('email') is-invalid @enderror"
                                                 placeholder="Email" value="{{ Auth::user()->email }}"
                                                 wire:model="email">
+                                            @error('email')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong></span>
+                                            @enderror
                                         </div>
                                         <div class="mb-3 col-12 col-lg-6">
                                             <label class="form-label custom-upload-btn" for="lname">Photo

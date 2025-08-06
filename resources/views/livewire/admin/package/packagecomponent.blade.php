@@ -35,7 +35,7 @@
                                  <th>Package Type</th>
                                  <th>Price</th>
                                  <th>Validity</th>
-                                 <th>Visiting Count</th>
+                                 {{-- <th>Visiting Count</th> --}}
                                  <th>Status</th>
                                  <th>Action</th>
                              </tr>
@@ -50,7 +50,7 @@
                                      {{$package->price}}
                                  </td>
                                  <td>{{$package->validity}} Days</td>
-                                 <td>{{$package->count}}</td>
+                                 {{-- <td>{{$package->count}}</td> --}}
                                 <td>@if($package->status==1) 
                                     <a href="#" wire:click.prevent='changeActive({{$package->id}})' onclick="confirm('Are you sure you want to de-active this package?') || event.stopImmediatePropagation()">Active </a>
                                     @else 

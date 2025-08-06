@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('package_id')->constrained()->cascadeOnDelete();
             $table->string('transcation_id')->unique();
-            $table->string('amonut')->unique();
+            $table->string('amonut');
             $table->boolean('status')->default(true);
             $table->dateTime('valid_upto')->nullable();
             $table->integer('count', 20)->nullable();
