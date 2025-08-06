@@ -56,9 +56,9 @@ class WishlistComponent extends Component
 
                 foreach ($products as $product) {
                     $seller_id = $wish[$product->id]['seller_id'];
-                    $seller_name = User::find($seller_id)->name;
+                    $seller_name = $product->vendorProducts
+                        ->first()?->vendor->name;
                     $vendorPrice = $product->vendorProducts
-                        ->where('vendor_id', $seller_id)
                         ->first()?->price;
 
                     $product->qty = $wish[$product->id]['quantity'];
@@ -149,6 +149,7 @@ class WishlistComponent extends Component
                     $cart->product_name = $wishlist->product_name;
                     $cart->product_image = $wishlist->product_image;
                     $cart->price = $wishlist->price;
+                    $cart->seller_id = $wishlist->seller_id;
                     $cart->quantity = $wishlist->quantity;
                     $cart->save();
                     $wishlist->delete();

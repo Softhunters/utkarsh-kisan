@@ -44,10 +44,10 @@
                                 <div id="slider-range" class="price-filter-range"></div>
                                 <div class="mt-25 d-flex justify-content-between gap-5">
 
-                                    <input type="number" min="10" max="{{ $max - 1 }}"
-                                        oninput="validity.valid||(value='10');" id="min_price"
+                                    <input type="number" min="{{$min}}" max="{{ $max - 1 }}"
+                                        oninput="validity.valid||(value=$min);" id="min_price"
                                         class="price-range-field rans  nice_num1" />
-                                    <input type="number" min="10" max="{{ $max }}"
+                                    <input type="number" min="{{$min}}" max="{{ $max }}"
                                         oninput="validity.valid||(value={{ $max }});" id="max_price"
                                         class="price-range-field rans  nice_num2" />
                                 </div>
@@ -128,15 +128,16 @@
                             <div class="col-lg-3 col-md-3 col-6">
                                 <div class="collection-card">
                                     <div class="offer-card">
-                                        <span>{{ $product->discount_value }}% Off</span>
+                                        @if ($product->discount_value != 0)
+                                            <span>{{ $product->discount_value }}% Off</span>
+                                        @endif
                                     </div>
                                     @if ($product->stock_status == 'outofstock')
                                         <span class=" bg-white rounded-sm inline-block text-center solded">Sold
                                             Out</span>
                                     @endif
                                     <div class="collection-img @if ($product->stock_status == 'outofstock') blured @endif">
-                                        <a
-                                            href="{{ route('product-details', ['slug' => $product->slug, 'vendor_id' => $product->bestSeller->vendor_id]) }}"><img
+                                        <a href="{{ route('product-details', ['slug' => $product->slug]) }}"><img
                                                 class="img-gluid"
                                                 src="{{ asset('admin/product/feat') }}/{{ $product->image }}"
                                                 alt="" width="130px" height="160px" /></a>
@@ -145,8 +146,7 @@
                                             <div class="plus-icon">
                                                 <i class="bi bi-plus"></i>
                                             </div>
-                                            <a
-                                                href="{{ route('product-details', ['slug' => $product->slug, 'vendor_id' => $product->bestSeller->vendor_id]) }}">View
+                                            <a href="{{ route('product-details', ['slug' => $product->slug]) }}">View
                                                 Details</a>
                                             {{-- <a href="#">View Details</a> --}}
                                         </div>
@@ -181,7 +181,7 @@
                                     <div class="collection-content text-center">
                                         <p class="fixed">
                                             <a
-                                                href="{{ route('product-details', ['slug' => $product->slug, 'vendor_id' => $product->bestSeller->vendor_id]) }}">{{ $product->name }}</a>
+                                                href="{{ route('product-details', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                             {{-- <a href="#">{{$product->name}}</a> --}}
                                         </p>
                                         <div class="price priceds">
@@ -268,7 +268,7 @@
             $("#slider-range").slider({
                 range: true,
                 orientation: "horizontal",
-                min: 10,
+                min: 0,
                 max: <?php echo $max; ?>,
                 values: [0, <?php echo $max / 2; ?>],
                 step: 10,

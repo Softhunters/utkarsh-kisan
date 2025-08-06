@@ -67,8 +67,8 @@
                         </form>
 
                         <div class="form-poicy-area mt-3">
-                            <p>By continuing, you agree to Utkarsh Kisan <a href="{{route('terms-and-conditions')}}">Terms & Conditions</a> & <a
-                                    href="{{route('privacy-policy')}}">Privacy Policy</a>.</p>
+                            <p>By continuing, you agree to Utkarsh Kisan <a href="{{ route('terms-and-conditions') }}">Terms
+                                    & Conditions</a> & <a href="{{ route('privacy-policy') }}">Privacy Policy</a>.</p>
                         </div>
 
                     </div>
@@ -105,12 +105,17 @@
                 const number = $('#number').val();
 
                 sendOtp(number, function(res) {
+                    console.log(res);
                     if (res.status) {
                         $('#login_msg').text(res.message);
                         $('#loginStep').hide();
                         $('#otpStep').removeClass('d-none');
                     } else {
-                        $('#login_msg').text(res.errors.number);
+                        if (!res.errors) {
+                            $('#login_msg').text(res.message);
+                        } else {
+                            $('#login_msg').text(res.errors.number[0]);
+                        }
                     }
                 });
             });
@@ -178,8 +183,15 @@
                             $('#profile_msg').text("Profile updated. Redirecting...");
                             window.location.href = "/";
                         } else {
-                            $('#profile_name_msg').text(res.errors.name);
-                            $('#profile_email_msg').text(res.errors.email);
+                            $('#profile_name_msg').text('');
+                            $('#profile_email_msg').text('');
+
+                            if (res.errors.name) {
+                                $('#profile_name_msg').text(res.errors.name);
+                            }
+                            if (res.errors.email) {
+                                $('#profile_email_msg').text(res.errors.email);
+                            }
                         }
                     }
                 });

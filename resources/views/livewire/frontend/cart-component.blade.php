@@ -59,9 +59,9 @@
                                         <th>Quantity</th>
                                         <th>Subtotal</th>
                                         <th>Delete</th>
-                                        @auth
+                                        {{-- @auth
                                             <th>Action</th>
-                                        @endauth
+                                        @endauth --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -80,7 +80,7 @@
                                                 </a>
                                             </td>
                                             <td data-label="Item Name"><a
-                                                    href="{{ route('product-details', ['slug' => $i->slug, 'vendor_id' => $item->seller_id]) }}">
+                                                    href="{{ route('product-details', ['slug' => $i->slug]) }}">
                                                     {{-- {{ $item->name }} --}}
                                                     {{ substr($i->name, 0, 20) }}
 
@@ -150,7 +150,7 @@
                                                     </a>
                                                 </div>
                                             </td>
-                                            @auth
+                                            {{-- @auth
                                                 <td>
                                                     <div class="cart_product_remove">
                                                         <a href="#"
@@ -158,7 +158,7 @@
                                                             <i class="ti-trash"></i> Save For Later</a>
                                                     </div>
                                                 </td>
-                                            @endauth
+                                            @endauth --}}
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -171,73 +171,6 @@
                                     class="btn btn-primary wishlist_shopping_btn">Continue
                                     Shopping</button></a>
 
-                        </div>
-                    @endif
-
-                    @if (isset($savelater[0]))
-                        <div class="coupon-area">
-                            <div class="cart-coupon-input">
-                                <h5 class="coupon-title">Save For Later</h5>
-
-                            </div>
-                        </div>
-                        <div class="table-wrapper">
-
-                            <table class="eg-table table cart-table">
-                                <thead>
-                                    <tr>
-
-                                        <th>Image</th>
-                                        <th>Item Name</th>
-                                        <th>Unit Price</th>
-                                        <th>Discount Price</th>
-                                        <th>Delete</th>
-                                        @auth
-                                            <th>Action</th>
-                                        @endauth
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($savelater as $item)
-                                        <tr>
-
-                                            <td data-label="Image">
-                                                <img src="{{ asset('admin/product/feat') }}/{{ $i->image }}"
-                                                    alt />
-                                            </td>
-                                            <!--<img src="{{ asset('admin/product/feat') }}/{{ $i->image }}" alt />-->
-                                            <td data-label="Food Name"><a
-                                                    href="{{ route('product-details', ['slug' => $i->slug]) }}">
-                                                    {{-- {{ $item->product->name }}  --}}
-                                                    {{ substr($i->name, 0, 20) }}
-                                                </a>
-                                            </td>
-                                            <td data-label="Unite Price">
-                                                <del>₹{{ $i->regular_price }}</del>
-                                            </td>
-                                            <td data-label="Discount Price">₹{{ $i->sale_price }}</td>
-                                            <td data-label="Delete">
-                                                <div class="delete-icon">
-                                                    <a href="#"
-                                                        wire:click.prevent="removeFromsavelater({{ $item->id }})">
-                                                        <i class="bi bi-x"></i>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                            @auth
-
-                                                <td>
-                                                    <div class="cart_product_remove">
-                                                        <a href="#"
-                                                            wire:click.prevent="MovetoCart({{ $item->id }})">
-                                                            <i class="ti-trash"></i> Move To Cart</a>
-                                                    </div>
-                                                </td>
-                                            @endauth
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
                         </div>
                     @endif
 

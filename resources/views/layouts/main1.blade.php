@@ -28,7 +28,7 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/swiper-bundle.css') }}" />
 
-    <link rel="stylesheet" href="{{ asset('assets/css/nice-select.css') }}" />
+    {{-- <link rel="stylesheet" href="{{ asset('assets/css/nice-select.css') }}" /> --}}
 
     <link rel="stylesheet" href="{{ asset('assets/css/magnific-popup.css') }}" />
 
@@ -194,7 +194,7 @@
     <script src="{{ asset('assets/js/jquery.timepicker.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/swiper-bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.nice-select.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/jquery.nice-select.js') }}"></script> --}}
     <script src="{{ asset('assets/js/jquery.fancybox.min.js') }}"></script>
     <script src="{{ asset('assets/js/morphext.min.js') }}"></script>
     <script src="{{ asset('assets/js/odometer.min.js') }}"></script>

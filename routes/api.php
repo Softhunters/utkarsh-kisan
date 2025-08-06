@@ -34,6 +34,7 @@ Route::get('/home', [ApiController::class, 'home']);
 Route::get('/category/{id}/{sid?}', [ApiController::class, 'CategoryData']);
 Route::get('/brand/{brand_slug}', [ApiController::class, 'BrandDetail']);
 Route::get('/product-detail/{id}', [ApiController::class, 'ProductData']);
+Route::get('/shop', [ApiController::class, 'Shop']);
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -69,7 +70,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/clearwishlist', [ApiController::class, 'ClearWish']);
 
 
-    Route::get('/shop', [ApiController::class, 'Shop']);
 
     Route::get('/check-out', [ApiController::class, 'Checkout']);
     Route::post('/coupon-apply', [ApiController::class, 'CouponApply']);

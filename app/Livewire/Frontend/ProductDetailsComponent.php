@@ -215,12 +215,11 @@ class ProductDetailsComponent extends Component
     }
     public function render(Request $request)
     {
-        if ($this->vendor_id && $this->variant_id) {
+        if ($this->variant_id) {
             $product = Product::with([
                 'seller',
                 'bestSeller' => function ($q) {
-                    $q->where('vendor_id', $this->vendor_id)
-                        ->select('id', 'product_id', 'vendor_id', 'price');
+                    $q->select('id', 'product_id', 'vendor_id', 'price');
                 }
             ])
                 ->where('id', $this->variant_id)
@@ -228,29 +227,28 @@ class ProductDetailsComponent extends Component
         } else {
             $product = Product::with([
                 'seller',
-                'bestSeller' => function ($q) {
-                    $q->where('vendor_id', $this->vendor_id);
-                }
             ])
                 ->where('slug', $this->slug)
                 ->first();
         }
 
-  
+        $discount = round((($product->regular_price - $product->seller?->price) / $product->regular_price) * 100, 2);
+        $discount = max($discount, 0);
+
+        $product->discount_value = (string) $discount;
+
+
         $varaiants = Product::with([
             'seller',
             'bestSeller' => function ($q) {
-                $q->where('vendor_id', $this->vendor_id)
-                    ->select('id', 'product_id', 'vendor_id', 'price');
+                $q->select('id', 'product_id', 'vendor_id', 'price');
             }
         ])
             ->where(function ($query) use ($product) {
                 $query->where('parent_id', $product->parent_id ?: $product->id)
                     ->orWhere('id', $product->parent_id ?: $product->id);
             })
-            ->whereHas('bestSeller', function ($q) {
-                $q->where('vendor_id', $this->vendor_id);
-            })
+            ->whereHas('bestSeller')
             ->get();
 
 
@@ -284,7 +282,15 @@ class ProductDetailsComponent extends Component
             ->where('status', 1)
             ->inRandomOrder()
             ->limit(8)
-            ->get();
+            ->get()
+            ->map(function ($product) {
+                $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                $discount = max($discount, 0);
+
+                $product->discount_value = (string) $discount;
+                return $product;
+            });
+
         $related_products = Product::whereHas('activeVendorProducts')
             ->with([
                 'bestSeller' => function ($q) {
@@ -295,7 +301,14 @@ class ProductDetailsComponent extends Component
             ->where('status', 1)
             ->inRandomOrder()
             ->limit(8)
-            ->get();
+            ->get()
+            ->map(function ($product) {
+                $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                $discount = max($discount, 0);
+
+                $product->discount_value = (string) $discount;
+                return $product;
+            });
         return view('livewire.frontend.product-details-component', ['otherVendors' => $otherVendors, 'product' => $product, 'shareButtons' => $shareButtons, 'varaiants' => $varaiants, 'popular_products' => $popular_products, 'related_products' => $related_products])->layout('layouts.main');
     }
 

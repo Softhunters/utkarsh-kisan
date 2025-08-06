@@ -104,15 +104,13 @@ class CartComponent extends Component
                 $combinations = collect($cartlist)->map(function ($item) {
                     return [
                         'product_id' => $item['product_id'],
-                        'vendor_id' => $item['seller_id'],
                         'quantity' => $item['quantity'],
                     ];
                 })->values();
 
                 $cart = $combinations->map(function ($pair) {
                     $product = Product::join('vendor_products', function ($join) use ($pair) {
-                        $join->on('vendor_products.product_id', '=', 'products.id')
-                            ->where('vendor_products.vendor_id', $pair['vendor_id']);
+                        $join->on('vendor_products.product_id', '=', 'products.id');
                     })
                         ->join('users', 'vendor_products.vendor_id', '=', 'users.id')
                         ->where('products.id', $pair['product_id'])

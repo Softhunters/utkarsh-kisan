@@ -21,7 +21,8 @@
 
                         </div>
 
-                        <form class="w-100" method="POST" action="#" id="frmRegistar">
+                        <form class="w-100" method="POST" action="{{ route('udregisteor') }}" id="frmRegistar"
+                            enctype="multipart/form-data" autocomplete="off">
 
                             @csrf
 
@@ -33,10 +34,12 @@
 
                                         <label> Name *</label>
 
-                                        <input class="form-control" required name="name" placeholder="Full Name"
-                                            type="text">
+                                        <input class="form-control" value="{{ old('name') }}" name="name"
+                                            placeholder="Full Name" type="text">
 
-                                        <div id="name_error" class="field_error text-danger"></div>
+                                        @error('name')
+                                            <div class="field_error text-danger">{{ $message }}</div>
+                                        @enderror
 
                                     </div>
 
@@ -48,11 +51,12 @@
 
                                         <label>Contact Number *</label>
 
-                                        <input name="phone" type="text" required
+                                        <input name="phone" type="text" value="{{ old('phone') }}"
                                             placeholder="Number"class="form-control rounded checkIsNumber phone-check">
 
-                                        <div id="phone_error" class="field_error text-danger"></div>
-
+                                        @error('phone')
+                                            <div class="field_error text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
                                 </div>
@@ -63,11 +67,36 @@
 
                                         <label>Enter Your Email *</label>
 
-                                        <input name="email" type="text" required placeholder="Email"
-                                            class="form-control rounded">
+                                        <input name="email" value="{{ old('email') }}" type="text" placeholder="Email"
+                                            class="form-control rounded" autocomplete="off">
 
-                                        <div id="email_error" class="field_error text-danger"></div>
+                                        @error('email')
+                                            <div class="field_error text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
 
+                                </div>
+
+                                <div class="col-md-12">
+
+                                    <div class="mb-3">
+
+                                        <label>Choose a Vendor Plan *</label>
+
+                                        <!-- Your select input with added id -->
+                                        <select name="package" id="package" class="form-control">
+                                            <option value="">Select one</option>
+                                            @foreach ($packages as $package)
+                                                <option value="{{ $package->id }}"
+                                                    {{ old('package') == $package->id ? 'selected' : '' }}>
+                                                    {{ $package->pname }}</option>
+                                            @endforeach
+                                        </select>
+
+
+                                        @error('package')
+                                            <div class="field_error text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
                                 </div>
@@ -80,6 +109,8 @@
 
                                         <input type="password" name="password" id="password"
                                             placeholder="Create A Password" />
+
+
 
                                         <i class="bi bi-eye-slash" id="togglePassword"></i>
 
@@ -100,8 +131,9 @@
 
                                     </div>
 
-                                    <div id="password_error" class="field_error text-danger"></div>
-
+                                    @error('password')
+                                        <div class="field_error text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div id="checkboxed_error" class="field_error text-danger"></div>
@@ -119,7 +151,9 @@
                                             <input type="checkbox" name="checkbox" value ="1" id="html" />
 
                                             <label for="html">I agree to the Terms & Condition</label>
-                                            <div id="checkbox_error" class="field_error text-danger"></div>
+                                            @error('checkbox')
+                                                <div class="field_error text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
 
                                     </div>
@@ -128,7 +162,7 @@
 
                             </div>
 
-                            <button class="account-btn">Create Account</button>
+                            <button type="submit" class="account-btn">Create Account</button>
 
                         </form>
 
@@ -148,7 +182,10 @@
 
                         <div class="form-poicy-area">
 
-                            <p>By clicking the "Create Account" button, you create an Utkarsh Kisan Vendor account, and you agree to Utkarsh Kisan's <a href="{{route('vendor-terms-and-conditions')}}">Vendor Terms & Conditions</a> & <a href="{{route('privacy-policy')}}">Privacy Policy.</a></p>
+                            <p>By clicking the "Create Account" button, you create an Utkarsh Kisan Vendor account, and you
+                                agree to Utkarsh Kisan's <a href="{{ route('vendor-terms-and-conditions') }}">Vendor Terms
+                                    &
+                                    Conditions</a> & <a href="{{ route('privacy-policy') }}">Privacy Policy.</a></p>
 
                         </div>
 
@@ -161,60 +198,4 @@
         </div>
 
     </div>
-
-
-
-
-
-    @push('scripts')
-        <script>
-            jQuery('#frmRegistar').submit(function(e) {
-
-                //alert(jQuery('#frmRegistar').serialize());
-
-                var daat = jQuery('#frmRegistar').serialize();
-
-                //alert(daat);
-
-                e.preventDefault();
-
-                jQuery('.field_error').html('');
-
-                jQuery.ajax({
-
-                    url: '{{ route('udregisteor') }}',
-
-                    data: daat,
-
-                    type: 'post',
-
-                    success: function(result) {
-
-                        if (result.status == "error") {
-
-                            jQuery.each(result.error, function(key, val) {
-
-                                jQuery('#' + key + '_error').html(val[0]);
-
-                            });
-
-                        }
-
-                        if (result.status == "success") {
-
-                            // jQuery('#register_msg').html(result.msg);
-
-                            jQuery('#frmRegistar')[0].reset();
-
-                            jQuery('#thank_you_msg').html(result.msg);
-
-                        }
-
-                    }
-
-                });
-
-            });
-        </script>
-    @endpush
 @endsection

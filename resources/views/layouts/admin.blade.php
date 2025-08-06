@@ -49,7 +49,7 @@
         <!-- sa-app__sidebar -->
         <div class="sa-app__sidebar">
             <div class="sa-sidebar">
-                <div class="sa-sidebar__header" >
+                <div class="sa-sidebar__header">
                     <a class="sa-sidebar__logo" href="{{ route('admin.dashboard') }}">
                         <!-- logo -->
                         <div class="sa-sidebar-logo text-center">
@@ -104,7 +104,29 @@
 
                                     </ul>
                                 </li>
+                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
+                                    data-sa-collapse-item="sa-nav__menu-item--open">
+                                    <a href="#" class="sa-nav__link side2 sides2" data-sa-collapse-trigger="">
+                                        <img class="sidebaar2" src="{{ asset('assets/images/logo/package.png') }}"
+                                            alt="images">
+                                        <span class="sa-nav__title">Package</span>
+                                        <i class="fa fa-chevron-right"></i>
+                                    </a>
+                                    <ul class="sa-nav__menu sa-nav__menu--sub " data-sa-collapse-content="">
+                                        <li class="sa-nav__menu-item menued">
+                                            <a href="{{ route('admin.addpackage') }}" class="sa-nav__link"><span
+                                                    class="sa-nav__menu-item-padding"></span><span
+                                                    class="sa-nav__title">Add Package</span></a>
+                                        </li>
+                                        <li class="sa-nav__menu-item">
+                                            <a href="{{ route('admin.packages') }}" class="sa-nav__link"><span
+                                                    class="sa-nav__menu-item-padding"></span><span
+                                                    class="sa-nav__title">Package List</span></a>
+                                        </li>
 
+
+                                    </ul>
+                                </li>
 
 
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
@@ -195,7 +217,7 @@
                                         <i class="fa fa-chevron-right"></i>
                                     </a>
                                     <ul class="sa-nav__menu sa-nav__menu--sub" data-sa-collapse-content="">
-                                     
+
                                         <li class="sa-nav__menu-item">
                                             <a href="{{ route('admin.inventory') }}" class="sa-nav__link"><span
                                                     class="sa-nav__menu-item-padding"></span><span
@@ -492,35 +514,37 @@
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
                                     data-sa-collapse-item="sa-nav__menu-item--open">
                                     <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
-                                       <img class="sidebaar2" style="width:20px;" src="{{asset('assets/images/logo/19.png')}}" >
+                                        <img class="sidebaar2" style="width:20px;"
+                                            src="{{ asset('assets/images/logo/19.png') }}">
                                         <span class="sa-nav__title">Testimonial</span>
                                         <i class="fa fa-chevron-right"></i>
                                     </a>
                                     <ul class="sa-nav__menu sa-nav__menu--sub" data-sa-collapse-content="">
                                         <li class="sa-nav__menu-item">
-                                            <a href="{{route('admin.addtestimonial')}}" class="sa-nav__link"><span
+                                            <a href="{{ route('admin.addtestimonial') }}" class="sa-nav__link"><span
                                                     class="sa-nav__menu-item-padding"></span><span
                                                     class="sa-nav__title">Add Testimonial</span></a>
                                         </li>
                                         <li class="sa-nav__menu-item">
-                                            <a href="{{route('admin.testimonials')}}" class="sa-nav__link"><span
+                                            <a href="{{ route('admin.testimonials') }}" class="sa-nav__link"><span
                                                     class="sa-nav__menu-item-padding"></span><span
                                                     class="sa-nav__title">Testimonial</span></a>
                                         </li>
 
 
                                     </ul>
-                                </li> 
+                                </li>
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon"
                                     data-sa-collapse-item="sa-nav__menu-item--open">
                                     <a href="#" class="sa-nav__link side1 side2" data-sa-collapse-trigger="">
-                                        <img class="sidebaar2" style="width:20px;" src="{{asset('assets/images/logo/17.png')}}" >
+                                        <img class="sidebaar2" style="width:20px;"
+                                            src="{{ asset('assets/images/logo/17.png') }}">
                                         <span class="sa-nav__title">Contact-Form</span>
                                         <i class="fa fa-chevron-right"></i>
                                     </a>
                                     <ul class="sa-nav__menu sa-nav__menu--sub" data-sa-collapse-content="">
                                         <li class="sa-nav__menu-item">
-                                            <a href="{{route('admin.contact-form')}}" class="sa-nav__link"><span
+                                            <a href="{{ route('admin.contact-form') }}" class="sa-nav__link"><span
                                                     class="sa-nav__menu-item-padding"></span><span
                                                     class="sa-nav__title">forms</span></a>
                                         </li>
@@ -674,8 +698,9 @@
                             <span class="sa-toolbar-user__avatar sa-symbol sa-symbol--shape--rounded"><img
                                     src="{{ asset('admin1/images/customers/customer-4-64x64.jpg') }}" width="64"
                                     height="64" alt="" /></span>
-                            <span class="sa-toolbar-user__info"><span class="sa-toolbar-user__title">{{auth()->user()->name}}</span><span
-                                    class="sa-toolbar-user__subtitle">{{auth()->user()->email}}</span></span>
+                            <span class="sa-toolbar-user__info"><span
+                                    class="sa-toolbar-user__title">{{ auth()->user()->name }}</span><span
+                                    class="sa-toolbar-user__subtitle">{{ auth()->user()->email }}</span></span>
                         </button>
                         <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
                             {{-- <li><a class="dropdown-item" href="#">Profile</a></li>
@@ -707,7 +732,7 @@
             <!-- sa-app__body / end -->
             <!-- sa-app__footer -->
             <div class="sa-app__footer d-block d-md-flex">
-                <!-- copyright -->Utkarsh Kisan Admin © {{date('Y')}}
+                <!-- copyright -->Utkarsh Kisan Admin © {{ date('Y') }}
                 <div class="m-auto"></div>
                 {{-- <div>Powered by HTML — Design by <a href="https://themeforest.net/user/kos9/portfolio">Kos</a></div> --}}
                 <!-- copyright / end -->

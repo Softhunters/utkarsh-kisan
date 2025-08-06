@@ -39,7 +39,7 @@
                             <tr>
                                 <td><input type="checkbox" class="form-check-input m-0 fs-exact-16 d-block"
                                         aria-label="..." /></td>
-                                <td><a href="{{ route('product-details', ['slug' => $inventory['slug'], 'vendor_id' => $inventory['vendor_id']]) }}"
+                                <td><a href="{{ route('product-details', ['slug' => $inventory['slug']]) }}"
                                         class="text-reset" target="_blank">{{ $inventory['name'] }}</a></td>
                                 <td>{{ $inventory['price'] }}</td>
                                 <td>{{ $inventory['total_add'] }}</td>
