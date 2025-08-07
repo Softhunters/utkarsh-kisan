@@ -224,13 +224,20 @@ class ProductDetailsComponent extends Component
             ])
                 ->where('id', $this->variant_id)
                 ->first();
+                // dd('hello');
         } else {
             $product = Product::with([
                 'seller',
             ])
                 ->where('slug', $this->slug)
                 ->first();
+                //   dd($product);
         }
+
+        if (!$product || $product->activeVendorProducts?->isEmpty()) {
+            $this->redirectt();
+        }
+
 
         $discount = round((($product->regular_price - $product->seller?->price) / $product->regular_price) * 100, 2);
         $discount = max($discount, 0);
@@ -310,6 +317,10 @@ class ProductDetailsComponent extends Component
                 return $product;
             });
         return view('livewire.frontend.product-details-component', ['otherVendors' => $otherVendors, 'product' => $product, 'shareButtons' => $shareButtons, 'varaiants' => $varaiants, 'popular_products' => $popular_products, 'related_products' => $related_products])->layout('layouts.main');
+    }
+
+    public function redirectt(){
+        return redirect()->to('/');
     }
 
     public function checkout(Request $request, $id, $sale_price)

@@ -18,7 +18,31 @@
                     </div>
                 </div>
                 <div class="row g-4" style="padding-top:20px">
-                    <div class="col-lg-4 col-xl-4 col-md-4 col-12">
+                    @foreach ($packages as $package)
+                        <div class="col-lg-4 col-xl-4 col-md-4 col-12">
+                            <div class="services-card1">
+                                <img class="services-card-vec mark-logo"
+                                    src="{{ asset('/assets/images/icon/mark-logo.svg') }}" alt="" />
+                                <!--<div class="icon">-->
+                                <!--    <img src="{{ asset('assets/images/icon/daycare-center2.svg') }}"-->
+                                <!--        alt="" />-->
+                                <!--</div>-->
+                                <div class="content">
+                                    <h3><a href="#">🌾 {{ $package->pname }} </a></h3>
+                                    <h4><a href="#" class="subscription_price">Price - ₹{{ $package->price }}/year
+                                        </a></h4>
+
+                                    {!! $package->description !!}
+                                </div>
+
+                                <div class="d-flex justify-content-center">
+                                    <a class="primary-btn1 py-1 px-3 border-0" href="{{ route('buy-package') }}">Buy Now</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    @endforeach
+                    {{-- <div class="col-lg-4 col-xl-4 col-md-4 col-12">
                         <div class="services-card1">
                             <img class="services-card-vec mark-logo" src="{{ asset('/assets/images/icon/mark-logo.svg') }}"
                                 alt="" />
@@ -28,7 +52,7 @@
                             <!--</div>-->
                             <div class="content">
                                 <h3><a href="#">🌾 Farmer Plan </a></h3>
-                                <h4><a href="#" class="subscription_price">Price - ₹499/year </a></h4>
+                                <h4><a href="#" class="subscription_price">Price - ₹299/year </a></h4>
 
                                 <p>Perfect for individual farmers looking to grow their reach and sell their produce
                                     directly to customers and bulk buyers.</p>
@@ -41,8 +65,11 @@
                                 </ul>
                                 <p>One-time yearly payment. No middlemen. No extra fees.</p>
                             </div>
-                            <!-- <a class="more-btn" href="#">More Details<img
-                                    src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a> -->
+
+                            <div class="d-flex justify-content-center">
+                                <a class="primary-btn1 py-1 px-3 border-0" href="{{ route('buy-package') }}">Buy Now</a>
+                            </div>
+
                         </div>
                     </div>
                     <div class="col-lg-4 col-xl-4 col-md-4 col-12">
@@ -67,8 +94,11 @@
                                 </ul>
                                 <p>Grow your factory business online — without giving away a share of your profits.</p>
                             </div>
-                            <!-- <a class="more-btn" href="#">More Details<img
-                                    src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a> -->
+
+                            <div class="d-flex justify-content-center">
+                                <a class="primary-btn1 py-1 px-3 border-0" href="{{ route('buy-package') }}">Buy Now</a>
+                            </div>
+
                         </div>
                     </div>
                     <div class="col-lg-4 col-xl-4 col-md-4 col-12">
@@ -94,10 +124,13 @@
                                 </ul>
                                 <p>Grow your factory business online — without giving away a share of your profits.</p>
                             </div>
-                            <!-- <a class="more-btn" href="#">More Details<img
-                                    src="{{ asset('assets/images/icon/btn-arrow1.svg') }}" alt="" /></a> -->
+
+                            <div class="d-flex justify-content-center">
+                                <a class="primary-btn1 py-1 px-3 border-0" href="{{ route('buy-package') }}">Buy Now</a>
+                            </div>
+
                         </div>
-                    </div>
+                    </div> --}}
 
                 </div>
             </div>

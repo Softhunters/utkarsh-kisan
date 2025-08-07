@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\VendorController;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Vendor\DashboardController;
@@ -134,6 +135,7 @@ Route::post('/mobile-login', [AuthController::class, 'OtpLogin']);
 Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/buy-package', [PaymentController::class, 'buyPackage'])->name('buy-package');
 
 
 
@@ -277,9 +279,7 @@ Route::get('/shipping-policy', function () {
 Route::get('/vendor-terms-conditions', function () {
     return view('static-pages.vendor-terms-conditions');
 })->name('vendor-terms-and-conditions');
-Route::get('/vendor-subscription', function () {
-    return view('static-pages.vendor-subscription');
-})->name('vendor-subscription');
+Route::get('/vendor-subscription', [HomeController::class, 'vendorSubsription'])->name('vendor-subscription');
 Route::get('/new-user-login', function () {
     return view('livewire.login2');
 })->name('new-user-login');
