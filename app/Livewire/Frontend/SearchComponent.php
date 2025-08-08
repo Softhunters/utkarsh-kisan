@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend;
 
+use DB;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use App\Models\Brand;
@@ -31,8 +32,8 @@ class SearchComponent extends Component
     {
         $this->sorting = "default";
         $this->pagesize = "12";
-        $this->min = Product::where('status', 1)->min('sale_price');
-        $this->max = Product::where('status', 1)->max('sale_price');
+        $this->min = 0;
+        $this->max = Product::where('status', 1)->max('regular_price');
         $this->min_price = $this->min;
         $this->max_price = $this->max;
         $this->search = $request->search;
@@ -58,7 +59,17 @@ class SearchComponent extends Component
         $brand_id = Brand::where('brand_slug', 'like', '%' . $this->search . '%')->first() ? Brand::where('brand_slug', 'like', '%' . $this->search . '%')->first()->id : '';
         $subcategory_id = SubCategory::where('slug', 'like', '%' . $this->search . '%')->first() ? SubCategory::where('slug', 'like', '%' . $this->search . '%')->first()->id : '';
         // dd($category_id);
-        $query = Product::whereHas('activeVendorProducts')->whereBetween('sale_price', [$this->min_price, $this->max_price])->where('status', 1);
+        $query = Product::whereHas('activeVendorProducts')
+            ->with([
+                'bestSeller' => function ($q) {
+                    $q->select('id', 'product_id', 'vendor_id', 'price');
+                }
+            ])
+            ->whereHas('bestSeller', function ($q) {
+                $q->whereBetween('price', [$this->min_price, $this->max_price]);
+            })
+            ->where('status', 1);
+
         if ($category_id) {
             $query = $query->where('category_id', $category_id);
         } elseif ($subcategory_id) {
@@ -66,11 +77,25 @@ class SearchComponent extends Component
         } elseif ($brand_id) {
             $query = $query->where('brand_id', $brand_id);
         } else {
-            $query = $query->where('name', 'like', '%' . $this->search . '%')->orwhere('meta_tag', 'like', '%' . $this->search . '%');
+            $query = $query->where(function ($q) {
+                $q->where('name', 'like', '%' . $this->search . '%')
+                    ->orWhere('meta_tag', 'like', '%' . $this->search . '%');
+            });
         }
 
         $query = $query->distinct()->select('products.*');
         $products = $query->paginate(20);
+
+        $products->getCollection()->transform(function ($product) {
+            $discount = 0;
+            if ($product->regular_price > 0 && isset($product->seller->price)) {
+                $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                $discount = max($discount, 0);
+            }
+
+            $product->discount_value = (string) $discount;
+            return $product;
+        });
         // dd($products);
 
         $brands = Brand::where('status', 1)->get();

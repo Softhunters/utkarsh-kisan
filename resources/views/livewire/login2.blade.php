@@ -36,6 +36,7 @@
                                 </div>
 
                                 <div id="otp_msg" class="text-success mb-2"></div>
+                                <div id="otp_timer" class="text-success mb-2"></div>
 
                                 <div class="text-end mb-3">
                                     <a href="#" id="resendOtp" class="resend_otp">Resend OTP</a>
@@ -105,11 +106,12 @@
                 const number = $('#number').val();
 
                 sendOtp(number, function(res) {
-                    console.log(res);
+
                     if (res.status) {
                         $('#login_msg').text(res.message);
                         $('#loginStep').hide();
                         $('#otpStep').removeClass('d-none');
+                        startOtpTimer();
                     } else {
                         if (!res.errors) {
                             $('#login_msg').text(res.message);
@@ -160,7 +162,7 @@
                                 window.location.href = "/";
                             }
                         } else {
-                            $('#otp_msg').text(res.errors.otp);
+                            $('#otp_msg').text(res.message);
                         }
                     }
                 });
@@ -202,6 +204,27 @@
                     $(this).next('.otp-digit').focus();
                 }
             });
+
+            function startOtpTimer() {
+                const resendLink = $('#resendOtp');
+                const otpMsg = $('#otp_timer');
+
+                let timer = 60;
+                resendLink.hide();
+
+                const interval = setInterval(() => {
+                    let minutes = Math.floor(timer / 60);
+                    let seconds = timer % 60;
+                    otpMsg.text(`You can resend OTP in ${minutes}:${seconds.toString().padStart(2, '0')}`);
+                    timer--;
+
+                    if (timer < 0) {
+                        clearInterval(interval);
+                        otpMsg.text('');
+                        resendLink.show();
+                    }
+                }, 1000);
+            }
         </script>
     @endpush
 @endsection

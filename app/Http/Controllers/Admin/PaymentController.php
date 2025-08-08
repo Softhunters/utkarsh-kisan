@@ -6,11 +6,24 @@ use App\Http\Controllers\Controller;
 use App\Models\Package;
 use App\Models\PackagePurchase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Razorpay\Api\Api;
 
 
 class PaymentController extends Controller
 {
+    public function buyPackage()
+    {
+        if (Auth::check()) {
+            if (Auth::user()->utype == 'VDR') {
+                return redirect()->route('vendor.package');
+            } else {
+                return redirect()->route('vdrregisterview');
+            }
+        } else {
+            return redirect()->route('vdrregisterview');
+        }
+    }
     public function checkout($slug)
     {
         $package = Package::where('pslug', $slug)->firstOrFail();

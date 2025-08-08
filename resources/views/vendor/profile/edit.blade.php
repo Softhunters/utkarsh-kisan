@@ -35,16 +35,50 @@
                                                 @csrf
 
                                                 <div class="row">
+
+                                                    <h5 class="mb-3 mt-2">Vendor Details</h5>
+
+                                                    <div class="col-md-12 mb-3">
+                                                        <label>Name <span class="text-danger">*</span></label>
+                                                        <input type="text" name="name" class="form-control"
+                                                            value="{{ auth()->user()->name ?? '' }}" required>
+                                                        @error('name')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
+                                                    </div>
+
+                                                    <div class="col-md-12 mb-3">
+                                                        <label>Email <span class="text-danger">*</span></label>
+                                                        <input type="text" name="email" class="form-control"
+                                                            value="{{ auth()->user()->email ?? '' }}" required>
+                                                        @error('email')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
+                                                    </div>
+
+                                                    <div class="col-md-12 mb-3">
+                                                        <label>Phone Number <span class="text-danger">*</span></label>
+                                                        <input type="text" name="phone" class="form-control"
+                                                            value="{{ auth()->user()->phone ?? '' }}" required>
+                                                        @error('phone')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
+                                                    </div>
+
                                                     <!-- Address Details -->
                                                     <h5 class="mb-3 mt-2">Address Details</h5>
 
                                                     <div class="col-md-12 mb-3">
-                                                        <label>Address</label>
+                                                        <label>Address <span class="text-danger">*</span></label>
                                                         <input type="text" name="address" class="form-control"
                                                             value="{{ $vendorProfile->address ?? '' }}" required>
+                                                        @error('address')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
+
                                                     <div class="col-md-4 mb-3">
-                                                        <label>Country</label>
+                                                        <label>Country <span class="text-danger">*</span></label>
                                                         <select name="country" id="countryDropdown" class="form-control"
                                                             required>
                                                             <option value="">Select Country</option>
@@ -55,37 +89,49 @@
                                                                 </option>
                                                             @endforeach
                                                         </select>
+                                                        @error('country')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
 
                                                     <div class="col-md-4 mb-3">
-                                                        <label>State</label>
+                                                        <label>State <span class="text-danger">*</span></label>
                                                         <select name="state" id="stateDropdown" class="form-control"
                                                             required>
                                                             <option value="{{ $vendorProfile->state ?? '' }}">
                                                                 {{ $vendorProfile->state ?? 'Select State' }}</option>
                                                         </select>
+                                                        @error('state')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
 
                                                     <div class="col-md-4 mb-3">
-                                                        <label>City</label>
+                                                        <label>City <span class="text-danger">*</span></label>
                                                         <select name="city" id="cityDropdown" class="form-control"
                                                             required>
                                                             <option value="{{ $vendorProfile->city ?? '' }}">
                                                                 {{ $vendorProfile->city ?? 'Select City' }}</option>
                                                         </select>
+                                                        @error('city')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
 
                                                     <div class="col-md-6 mb-4">
-                                                        <label>Pin Code</label>
+                                                        <label>Pin Code <span class="text-danger">*</span></label>
                                                         <input type="text" name="pin_code" class="form-control"
                                                             value="{{ $vendorProfile->pin_code ?? '' }}" required>
+                                                        @error('pin_code')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
 
                                                     <!-- ID Proof Section -->
                                                     <h5 class="mb-3 mt-4">ID Proof</h5>
 
                                                     <div class="col-md-6 mb-3">
-                                                        <label>ID Proof Type</label>
+                                                        <label>ID Proof Type <span class="text-danger">*</span></label>
                                                         <select name="id_proof_type" class="form-control" required>
                                                             <option value="">Select ID Proof Type</option>
                                                             <option value="Aadhar Card"
@@ -98,17 +144,23 @@
                                                                 {{ isset($vendorProfile) && $vendorProfile->id_proof_type == 'Voter ID' ? 'selected' : '' }}>
                                                                 Voter ID</option>
                                                         </select>
+                                                        @error('id_proof_type')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
 
                                                     <div class="col-md-6 mb-3">
-                                                        <label>Upload ID Proof <small class="text-muted">(PDF
+                                                        <label>Upload ID Proof  <span class="text-danger">*</span><small class="text-muted">(PDF
                                                                 Format)</small></label>
-                                                        <input type="file" name="proof_image" class="form-control"  
-                                                            accept=".pdf" required>
+                                                        <input type="file" name="proof_image" class="form-control"
+                                                            accept=".pdf">
                                                         @if ($vendorProfile->proof_image)
-                                                            <a href="{{ asset( $vendorProfile->proof_image) }}"
+                                                            <a href="{{ asset($vendorProfile->proof_image) }}"
                                                                 target="_blank">View Current</a>
                                                         @endif
+                                                        @error('proof_image')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
 
                                                     <!-- GSTIN Section -->
@@ -118,7 +170,11 @@
                                                         <label>GSTIN Number</label>
                                                         <input type="text" name="gstin_number" class="form-control"
                                                             value="{{ $vendorProfile->gstin_number ?? '' }}">
+                                                        @error('gstin_number')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
+
                                                     <div class="col-md-6 mb-3">
                                                         <label>Upload GSTIN Proof <small class="text-muted">(PDF
                                                                 Format)</small></label>
@@ -128,13 +184,18 @@
                                                             <a href="{{ asset($vendorProfile->gstin_image) }}"
                                                                 target="_blank">View Current</a>
                                                         @endif
+                                                        @error('gstin_image')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
+
                                                 </div>
 
                                                 <div class="text-center mt-4">
                                                     <button class="btn btn-primary">Update Profile</button>
                                                 </div>
                                             </form>
+
 
                                         </div>
 

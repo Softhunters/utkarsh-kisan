@@ -184,10 +184,10 @@
                                                         {!! $package->description !!}
                                                     </div>
 
-                                                    <li class="listItem mt-3"><i class="bi bi-check icon"></i>
+                                                    {{-- <li class="listItem mt-3"><i class="bi bi-check icon"></i>
                                                         <blockquote class="priceTag">{{ $package->count }} Count
                                                         </blockquote>
-                                                    </li>
+                                                    </li> --}}
                                                 </ul>
                                                 <span class="price"><i class="fa-solid fa-indian-rupee-sign"></i>
                                                     {{ preg_replace('/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/i', "$1,", $package->price) }}

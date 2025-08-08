@@ -6,6 +6,7 @@ use App\Models\Package;
 use App\Models\User;
 use App\Models\VendorProfile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -73,6 +74,11 @@ class RegisterController extends Controller
 
     public function vdrregisterview(Request $request)
     {
+        if(Auth::check()){
+            if(Auth::user()->utype == 'VDR'){
+                return redirect()->route('vendor.dashboard');
+            }
+        }
         $type = 'VDR';
         $packages = Package::where('status', 1)->get();
         return view('livewire.register', compact('type', 'packages'));

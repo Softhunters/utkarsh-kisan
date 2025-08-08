@@ -59,6 +59,7 @@ class LoginController extends Controller
     }
     public function vendorloginAuth(Request $request)
     {
+        
         $valid = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required',
@@ -128,7 +129,12 @@ class LoginController extends Controller
     }
     public function vendorlogin(Request $request)
     {
-        //dd($request);
+        if(Auth::check()){
+            if(Auth::user()->utype == 'VDR'){
+                return redirect()->route('vendor.dashboard');
+            }
+        }
+        
         return view('livewire.login');
     }
 
