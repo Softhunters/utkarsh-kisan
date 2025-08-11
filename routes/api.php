@@ -97,12 +97,16 @@ Route::get('/vendor/websetting', [ApiController::class, 'WebSetting']);
 Route::post('/vendor/get-otp', [AuthController::class, 'VGenrateOtp']);
 Route::post('/vendor/mobile-login', [AuthController::class, 'VOtpLogin']);
 
+Route::get('package-list', [ApiController::class, 'packageList']);
+
 Route::middleware(['auth:sanctum'])->prefix('vendor')->group(function () {
     Route::get('/dashboard', [ApiVendorController::class, 'home']);
 
     Route::get('profile', [ApiVendorController::class, 'Profile']);
     Route::post('profile/update', [ApiVendorController::class, 'profileUpdate']);
 
+    Route::get('my-package', [ApiVendorController::class, 'myPackage']);
+    Route::post('completepayment', [ApiVendorController::class, 'completepayment']);
 
     Route::get('/variant', [ApiVendorController::class, 'variant']);
     Route::post('/variant/create', [ApiVendorController::class, 'addVariant']);

@@ -79,14 +79,14 @@
                                                     @error('description') <p class="text-danger">{{$message}}</p> @enderror
                                             </div>
 
-                                             <div class="mb-4">
+                                             {{-- <div class="mb-4">
                                                  <label for="form-package/upto" class="form-label">Package Valid Upto</label>
                                                  <div class="input-group input-group--sa-slug">
                                                      <input class="form-control input-md" type="date" id="sale-date"
                                                          placeholder="YYYY/MM/DD hh:mm:ss" wire:model="up_to" />
                                                  </div>
                                                     @error('count') <p class="text-danger">{{$message}}</p> @enderror
-                                             </div>
+                                             </div> --}}
 
 
 

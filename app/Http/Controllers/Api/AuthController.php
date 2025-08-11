@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\VendorProfile;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -596,6 +597,7 @@ class AuthController extends Controller
                 'password' => ['required', 'string', 'min:8'],
                 'phone' => ['required', 'numeric', 'digits:10', 'unique:users'],
                 'device_token' => 'required',
+                'package' => 'required',
                 'utype' => 'required'
             ]);
             if (!$valid->passes()) {
@@ -607,6 +609,15 @@ class AuthController extends Controller
             } else {
 
                 event(new Registered($user = $this->create($request->all())));
+
+                if ($user->utype === 'VDR') {
+                    VendorProfile::create([
+                        'vendor_id' => $user->id,
+                        'package_id' => $request->package,
+                        'status' => 0
+                    ]);
+                }
+
                 return response()->json([
                     'status' => true,
                     'message' => 'User Created Successfully',
@@ -662,9 +673,13 @@ class AuthController extends Controller
                 if (!isset(Auth::user()->referral_code)) {
                     User::where('id', Auth::user()->id)->update(['referral_code' => $this->ticket_number()]);
                 }
+
                 $user = Auth::user();
+                $isVenPack = ($user->vendorPackage) ? true : false;
+
                 return response()->json([
                     'status' => true,
+                    'isSubscriptionBuy' => $isVenPack,
                     'message' => 'User Logged In Successfully',
                     'token' => $user->createToken("API TOKEN")->plainTextToken
                 ], 200);
@@ -915,8 +930,11 @@ class AuthController extends Controller
                         User::where('id', Auth::user()->id)->update(['referral_code' => $this->ticket_number()]);
                     }
                     $user = Auth::user();
+                    $isVenPack = ($user->vendorPackage) ? true : false;
+
                     return response()->json([
                         'status' => true,
+                        'isSubscriptionBuy' => $isVenPack,
                         'message' => 'You have successfully logged in',
                         'token' => $user->createToken("API TOKEN")->plainTextToken
                     ], 200);

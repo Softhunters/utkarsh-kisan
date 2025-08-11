@@ -66,15 +66,19 @@ class PaymentController extends Controller
         $package = Package::findOrFail($request->package_id);
         $validUpto = now()->addDays($package->validity);
 
-        PackagePurchase::create([
-            'user_id' => auth()->id(),
-            'package_id' => $package->id,
-            'transcation_id' => $request->razorpay_payment_id,
-            'amonut' => $package->price,
-            'status' => 1,
-            'valid_upto' => $validUpto,
-            'count' => $package->count,
-        ]);
+        PackagePurchase::updateOrCreate(
+            [
+                'user_id' => auth()->id(),
+                'package_id' => $package->id,
+            ],
+            [
+                'transcation_id' => $request->transaction_id,
+                'amonut' => $package->price,
+                'status' => 1,
+                'valid_upto' => $validUpto,
+                'count' => $package->count,
+            ]
+        );
 
         return redirect()->route('vendor.package')->with('success', 'Payment completed successfully!');
     }

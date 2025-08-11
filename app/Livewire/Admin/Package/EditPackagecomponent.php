@@ -73,12 +73,14 @@ class EditPackagecomponent extends Component
             $package->pslug = $slug;
         }
 
+        $validUpto = now()->addDays($this->validity);
+
         $package->pname = $this->pname;
         $package->ptype = $this->ptype;
         $package->price = $this->price;
         $package->validity = $this->validity;
         // $package->count = $this->count;
-        $package->up_to_date = $this->up_to;
+        $package->up_to_date = $validUpto;
         $package->description = $this->description;
         $package->save();
 

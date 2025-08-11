@@ -63,6 +63,6 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function vendorPackage(){
-        return $this->hasOne(PackagePurchase::class);
+        return $this->hasOne(PackagePurchase::class)->where('status', 1);
     }
 }

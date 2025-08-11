@@ -100,7 +100,7 @@
                                                  @enderror
                                              </div>
 
-                                             <div class="mb-4">
+                                             {{-- <div class="mb-4">
                                                  <label for="form-package/upto" class="form-label">Package Valid
                                                      Upto</label>
                                                  <div class="input-group input-group--sa-slug ">
@@ -111,7 +111,7 @@
                                                  @error('up_to')
                                                      <p class="text-danger">{{ $message }}</p>
                                                  @enderror
-                                             </div>
+                                             </div> --}}
 
 
 
