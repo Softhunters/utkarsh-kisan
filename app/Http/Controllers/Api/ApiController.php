@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Package;
 use App\Models\VendorProduct;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -1674,15 +1675,15 @@ class ApiController extends Controller
 
     }
 
-    public function rewardingpoints($order_id, $rewardpoint)
-    {
-        $modelR = new RewardTransaction();
-        $modelR->user_id = Auth::user()->id;
-        $modelR->order_id = $order_id;
-        $modelR->point = $rewardpoint;
-        $modelR->save();
-        return;
-    }
+    // public function rewardingpoints($order_id, $rewardpoint)
+    // {
+    //     $modelR = new RewardTransaction();
+    //     $modelR->user_id = Auth::user()->id;
+    //     $modelR->order_id = $order_id;
+    //     $modelR->point = $rewardpoint;
+    //     $modelR->save();
+    //     return;
+    // }
 
     public function makeTransaction($order_id, $status, $mode, $tran_id, $amount)
     {
@@ -1778,22 +1779,40 @@ class ApiController extends Controller
         }
     }
 
-    public function Userwallet(Request $request)
-    {
-        $walletd = WalletTransaction::where('user_id', Auth::user()->id)->get();
-        $rewardd = RewardTransaction::where('user_id', Auth::user()->id)->get();
+    // public function Userwallet(Request $request)
+    // {
+    //     $walletd = WalletTransaction::where('user_id', Auth::user()->id)->get();
+    //     $rewardd = RewardTransaction::where('user_id', Auth::user()->id)->get();
 
 
-        $result['twallet'] = ($walletd->where('status', '1')->sum('amount') - $walletd->where('status', '2')->sum('amount'));
-        $result['treward'] = ($rewardd->where('status', '1')->sum('point') - $rewardd->where('status', '2')->sum('point'));
-        $result['wallethistory'] = WalletTransaction::Leftjoin('orders', 'orders.id', '=', 'wallet_transactions.order_id')->select('orders.order_number', 'wallet_transactions.*')->where('wallet_transactions.user_id', Auth::user()->id)->get();
-        $result['rewardhistory'] = RewardTransaction::Leftjoin('orders', 'orders.id', '=', 'reward_transactions.order_id')->select('orders.order_number', 'reward_transactions.*')->where('reward_transactions.user_id', Auth::user()->id)->get();
+    //     $result['twallet'] = ($walletd->where('status', '1')->sum('amount') - $walletd->where('status', '2')->sum('amount'));
+    //     $result['treward'] = ($rewardd->where('status', '1')->sum('point') - $rewardd->where('status', '2')->sum('point'));
+    //     $result['wallethistory'] = WalletTransaction::Leftjoin('orders', 'orders.id', '=', 'wallet_transactions.order_id')->select('orders.order_number', 'wallet_transactions.*')->where('wallet_transactions.user_id', Auth::user()->id)->get();
+    //     $result['rewardhistory'] = RewardTransaction::Leftjoin('orders', 'orders.id', '=', 'reward_transactions.order_id')->select('orders.order_number', 'reward_transactions.*')->where('reward_transactions.user_id', Auth::user()->id)->get();
 
 
-        return response()->json([
-            'status' => true,
-            'result' => $result
-        ], 200);
+    //     return response()->json([
+    //         'status' => true,
+    //         'result' => $result
+    //     ], 200);
+    // }
+
+    public function packageList(){
+
+        $result['package_list'] = Package::where('status', 1)->get();
+
+        if($result['package_list']){
+            return response()->json([
+                'status' => true,
+                'result' => $result
+            ], 200);
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => 'No Package found!'
+            ], 200);
+        }
+
     }
 
 }

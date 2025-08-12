@@ -9,6 +9,8 @@ use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Package;
+use App\Models\PackagePurchase;
 use App\Models\Product;
 use App\Models\ProductHistory;
 use App\Models\Review;
@@ -209,8 +211,11 @@ class ApiVendorController extends Controller
 
         $isVendorExist = VendorProduct::where('product_id', $result['product']->id)->where('vendor_id', Auth::id())->first();
         $result['edit'] = isset($isVendorExist) ? 'yes' : 'no';
+        $isVenPack = (auth()->user()->vendorPackage) ? true : false;
+
         return response()->json([
             'status' => true,
+            'isSubscriptionBuy' => $isVenPack,
             'result' => $result
 
         ], 200);
@@ -518,5 +523,70 @@ class ApiVendorController extends Controller
             'status' => true,
             'result' => $result
         ], 200);
+    }
+
+    public function myPackage()
+    {
+        $id = Auth::id();
+
+        $vendor = User::with(['vendorProfile', 'vendorPackage'])->where('id', $id)->first();
+        $package = Package::where('id', $vendor->vendorProfile->package_id)->first();
+        $package_info = PackagePurchase::where('package_id', $package->id)->where('user_id', Auth::id())->first();
+
+        $package->status = $package_info->status ?? 0;
+        $package->up_to_date = $package_info->valid_upto ?? null;
+
+        return response()->json([
+            'status' => true,
+            'result' => $package
+        ], 200);
+    }
+
+    public function completepayment(Request $request)
+    {
+        try {
+            $valid = Validator::make($request->all(), [
+                'transaction_id' => 'required|string|min:8',
+                'package_id' => 'required|exists:packages,id',
+            ]);
+            if (!$valid->passes()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $valid->errors()
+                ], 200);
+            } else {
+
+                $package = Package::findOrFail($request->package_id);
+                $validUpto = now()->addDays($package->validity);
+
+                PackagePurchase::updateOrCreate(
+                    [
+                        'user_id' => auth()->id(),
+                        'package_id' => $package->id,
+                    ],
+                    [
+                        'transcation_id' => $request->transaction_id,
+                        'amonut' => $package->price,
+                        'status' => 1,
+                        'valid_upto' => $validUpto,
+                        'count' => $package->count,
+                    ]
+                );
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Payment has been completed Successfully',
+                ], 200);
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+
+
     }
 }
