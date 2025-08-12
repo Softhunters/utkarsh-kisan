@@ -72,8 +72,7 @@
                                         @endphp
                                         <tr>
                                             <td data-label="Image">
-                                                <img src="{{ asset('admin/product/feat') }}/{{ $i->image }}"
-                                                    alt />
+                                                <img src="{{ asset('admin/product/feat') }}/{{ $i->image }}" alt />
                                             </td>
                                             <td data-label="Seller Name"><a href="#">
                                                     {{ $item->vendor_name }}
@@ -83,11 +82,15 @@
                                                     href="{{ route('product-details', ['slug' => $i->slug]) }}">
                                                     {{-- {{ $item->name }} --}}
                                                     {{ substr($i->name, 0, 20) }}
+                                                    @if ($item->vendor_stock_status == 'outofstock')
+                                                        <p class="text-danger">Out of Stock</p>
+                                                    @endif
 
                                                 </a>
                                             </td>
                                             <td data-label="Unite Price">
-                                                <del>₹{{ $i->regular_price }}</del></td>
+                                                <del>₹{{ $i->regular_price }}</del>
+                                            </td>
                                             <td data-label="Discount Price">₹{{ $item->vendor_price }}</td>
                                             <td data-label="Quantity">
                                                 @if (Auth::check())

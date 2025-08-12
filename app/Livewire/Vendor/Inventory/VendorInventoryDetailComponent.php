@@ -14,6 +14,7 @@ class VendorInventoryDetailComponent extends Component
     }
     public function render()
     {
+       
         $product = Product::with([
             'productHistories' => function ($q) {
                 $q->where('seller_id', auth()->id());

@@ -253,6 +253,7 @@ class ApiController extends Controller
                 $discount = 0;
 
                 $sellerPrice = $product->seller->price ?? $product->sale_price ?? 0;
+                $stock_status = $product->seller->stock_status ?? $product->stock_status;
 
                 if ($product->regular_price > 0) {
                     $discount = round((($product->regular_price - $sellerPrice) / $product->regular_price) * 100, 2);
@@ -261,6 +262,7 @@ class ApiController extends Controller
 
                 $product->discount_value = (string) $discount;
                 $product->sale_price = str($sellerPrice);
+                $product->stock_status = $stock_status;
 
                 return $product;
             })
@@ -626,6 +628,7 @@ class ApiController extends Controller
                 'slug' => $product->slug,
                 'regular_price' => $product->regular_price,
                 'seller_name' => $cart->seller->name ?? null,
+                'stock_status' => $cart->sellerProduct->stock_status ?? null,
                 'reviews_avg_rating' => $product->reviews->avg('rating'),
                 'created_at' => $cart->created_at,
                 'updated_at' => $cart->updated_at,
@@ -1030,7 +1033,7 @@ class ApiController extends Controller
 
     public function Shop(Request $request)
     {
-        $result['per_page'] = $per_page = 20;
+        $result['per_page'] = $per_page = 200;
         $mip = Product::where('status', 1)->min('regular_price');
         $map = Product::where('status', 1)->max('regular_price');
         if ($request->has('per_page'))
@@ -1105,7 +1108,8 @@ class ApiController extends Controller
 
         $result['products']->setCollection(
             $result['products']->getCollection()->map(function ($product) {
-                $finalPrice = isset($product->seller->price) ? $product->seller->price : $product->sale_price;
+                $finalPrice = isset($product->seller) ? $product->seller->price : $product->sale_price;
+                $stock_status = isset($product->seller) ? $product->seller->stock_status : $product->stock_status;
 
                 $discount = 0;
                 if ($product->regular_price > 0 && $finalPrice !== null) {
@@ -1115,15 +1119,11 @@ class ApiController extends Controller
 
                 $product->discount_value = (string) $discount;
                 $product->sale_price = (string) $finalPrice;
+                $product->stock_status = $stock_status;
 
                 return $product;
             })
         );
-
-
-
-
-
 
 
         // $result['products'] = Product::where('status',1)->with(['reviews','questions','category','subCategories','brands'])->withAvg('wishlist','user_id')->withAvg('cart','user_id')->withAvg('reviews', 'rating')->paginate($per_page);
@@ -1222,6 +1222,15 @@ class ApiController extends Controller
             $dffg = Cart::where('id', $item->id)->first();
 
             if (isset($item->sellerProduct) && !empty($item->sellerProduct)) {
+
+                if ($item->sellerProduct->stock_status == 'outofstock') {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'One or more products in your cart are out of stock. Please remove them to proceed.'
+                    ], 200);
+                }
+
+
                 $price = $item->sellerProduct->price;
                 $mprice = $item->product->regular_price;
             } else {
@@ -1239,6 +1248,8 @@ class ApiController extends Controller
             $subtotalc = $subtotalc + $price * $dffg->quantity;
             $taxtotalc = $taxtotalc + (($item->product->taxslab->value * $price) * ($dffg->quantity) / 100);
             $pricesoff = $pricesoff + (($mprice - $price) * ($dffg->quantity));
+
+
 
         }
         // dd($subtotalc,$taxtotalc);
@@ -1797,16 +1808,17 @@ class ApiController extends Controller
     //     ], 200);
     // }
 
-    public function packageList(){
+    public function packageList()
+    {
 
         $result['package_list'] = Package::where('status', 1)->get();
 
-        if($result['package_list']){
+        if ($result['package_list']) {
             return response()->json([
                 'status' => true,
                 'result' => $result
             ], 200);
-        }else{
+        } else {
             return response()->json([
                 'status' => false,
                 'message' => 'No Package found!'

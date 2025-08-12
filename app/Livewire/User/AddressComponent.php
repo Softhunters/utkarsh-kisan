@@ -28,6 +28,13 @@ class AddressComponent extends Component
     public $address_delete_id;
     public $ship_id;
 
+    public function mount()
+    {
+        if (!$this->country_id) {
+            $this->country_id = Country::where('iso3', 'IND')->value('id');
+        }
+    }
+
     public function render()
     {
         $countries = Country::all();

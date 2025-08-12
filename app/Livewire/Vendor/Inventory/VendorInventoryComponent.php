@@ -3,6 +3,8 @@
 namespace App\Livewire\Vendor\Inventory;
 
 use App\Models\Product;
+use App\Models\ProductHistory;
+use App\Models\VendorProduct;
 use Auth;
 use Livewire\Component;
 use Str;
@@ -13,28 +15,31 @@ class VendorInventoryComponent extends Component
     {
         $vendorId = Auth::id();
 
-        $products = Product::with([
-            'activeVendorProducts' => fn($q) => $q->where('vendor_id', $vendorId),
-            'productHistories' => fn($q) => $q->where('seller_id', $vendorId),
-        ])
-            ->whereHas('activeVendorProducts', fn($q) => $q->where('vendor_id', $vendorId))
-            ->get();
+        $products = VendorProduct::with(['product'])->where('vendor_id', $vendorId)->get();
 
-        $inventories = $products->map(function ($product) use ($vendorId) {
-            $histories = $product->productHistories;
+        // $products = Product::with([
+        //     'activeVendorProducts' => fn($q) => $q->where('vendor_id', $vendorId),
+        //     'productHistories' => fn($q) => $q->where('seller_id', $vendorId),
+        // ])
+        //     ->whereHas('activeVendorProducts', fn($q) => $q->where('vendor_id', $vendorId))
+        //     ->get();
+// dd($products);
+        $inventories = $products->map(function ($vproduct) use ($vendorId) {
+            // $histories = $product->productHistories;
+            $histories = ProductHistory::where('seller_id', $vendorId)->where('product_id', $vproduct->product_id)->get();
 
             $totalAdded = $histories->where('type', 'add')->sum('quantity');
             $totalSpent = $histories->where('type', 'minus')->sum('quantity');
             $available = $totalAdded - $totalSpent;
 
-            // Get this vendor's price from activeVendorProducts
-            $vendorPrice = optional($product->activeVendorProducts->first())->price;
-            $vendorId = optional($product->activeVendorProducts->first())->vendor_id;
+            // // Get this vendor's price from activeVendorProducts
+            $vendorPrice = $vproduct->price;
+            // $vendorId = optional($product->activeVendorProducts->first())->vendor_id;
 
             return [
-                'id' => $product->id,
-                'name' => Str::limit($product->name, 60),
-                'slug' => $product->slug,
+                'id' => $vproduct->product->id,
+                'name' => Str::limit($vproduct->product->name, 60),
+                'slug' => $vproduct->product->slug,
                 'price' => $vendorPrice,
                 'total_add' => $totalAdded,
                 'total_spent' => $totalSpent,

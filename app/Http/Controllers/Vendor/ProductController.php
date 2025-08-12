@@ -93,6 +93,7 @@ class ProductController extends Controller
 
         if ($request->add_quantity) {
             $product->quantity += $request->add_quantity;
+            $product->stock_status = 'instock';
             $product->save();
 
             ProductHistory::create([

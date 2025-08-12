@@ -160,7 +160,7 @@
                                         <span class="text-muted">0.00 (0)</span>
                                     </div>
 
-                                    <p class="mb-0"><strong>Qty:</strong> ${product.quantity}</p>
+                                   
                                 </div>
                             </div>
                         </div>`;

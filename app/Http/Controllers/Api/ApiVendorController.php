@@ -190,12 +190,14 @@ class ApiVendorController extends Controller
 
         if ($result['product']) {
             $price = (isset($result['product']->seller)) ? $result['product']->seller->price : $result['product']->sale_price;
+            $stock_status = (isset($result['product']->seller)) ? $result['product']->seller->stock_status : $result['product']->stock_status;
 
             $discount = round((($result['product']->regular_price - $price) / $result['product']->regular_price) * 100, 2);
             $discount = max($discount, 0);
 
             $result['product']->discount_value = (string) $discount;
             $result['product']->sale_price = str($price);
+            $result['product']->stock_status = str($stock_status);
         }
 
         $result['shareButtons'] = \Share::page(route('product-details', ['slug' => $result['product']->slug]))->facebook()->twitter()->linkedin()->telegram()->whatsapp()->reddit();

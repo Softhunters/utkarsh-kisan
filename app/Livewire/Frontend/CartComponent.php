@@ -58,6 +58,7 @@ class CartComponent extends Component
                     'products.name as product_name',
                     'products.image as product_image',
                     'vendor_products.price as vendor_price',
+                    'vendor_products.stock_status as vendor_stock_status',
                     'users.name as vendor_name'
                 )
                 ->get();
@@ -88,7 +89,7 @@ class CartComponent extends Component
         } else {
             if (Session::has('cart')) {
                 $cartlist = $request->session()->get('cart');
-                // // dd($cartlist);
+                // dd($cartlist);
                 // dd($cartlist);
                 $product_ids = array_keys($cartlist);
                 // $cart = Product::whereIn('products.id', $product_ids)
@@ -104,19 +105,22 @@ class CartComponent extends Component
                 $combinations = collect($cartlist)->map(function ($item) {
                     return [
                         'product_id' => $item['product_id'],
+                        'seller_id' => $item['seller_id'],
                         'quantity' => $item['quantity'],
                     ];
                 })->values();
-
+                // dd($combinations);
                 $cart = $combinations->map(function ($pair) {
                     $product = Product::join('vendor_products', function ($join) use ($pair) {
                         $join->on('vendor_products.product_id', '=', 'products.id');
                     })
                         ->join('users', 'vendor_products.vendor_id', '=', 'users.id')
                         ->where('products.id', $pair['product_id'])
+                        ->where('vendor_products.vendor_id', $pair['seller_id'])
                         ->select(
                             'products.*',
                             'vendor_products.price as vendor_price',
+                            'vendor_products.stock_status as vendor_stock_status',
                             'users.name as vendor_name',
                             'vendor_products.vendor_id'
                         )
@@ -146,7 +150,7 @@ class CartComponent extends Component
                 $this->taxvalue = $taxtotalc;
                 $this->subtotal = $subtotalc;
                 $this->totalamount = $taxtotalc + $subtotalc;
-                //dd($cart);   
+                // dd($cart);   
             }
         }
 
@@ -386,6 +390,22 @@ class CartComponent extends Component
     public function checkout()
     {
         if (Auth::check()) { //dd($this->out_of_stock, $this->out_of_qty);
+
+            $cart = Cart::with(['product'])
+                ->where('user_id', Auth::user()->id)
+                ->get();
+
+            foreach ($cart as $item) {
+
+                if (isset($item->sellerProduct) && !empty($item->sellerProduct)) {
+
+                    if ($item->sellerProduct->stock_status == 'outofstock') {
+                        session()->flash('info', 'Remove Out Of stock Product please!');
+                        return;
+                    }
+                }
+            }
+
             if ($this->out_of_stock) {
                 session()->flash('info', 'Remove Out Of stock Product please!');
                 return;

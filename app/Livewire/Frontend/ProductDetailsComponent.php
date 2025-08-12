@@ -243,7 +243,9 @@ class ProductDetailsComponent extends Component
         $discount = max($discount, 0);
 
         $product->discount_value = (string) $discount;
+        $product->stock_status = $product->seller?->stock_status;
 
+        // dd($product);
 
         $varaiants = Product::with([
             'seller',

@@ -68,6 +68,10 @@ class CheckOutComponent extends Component
     public function mount()
     {
         $this->ship_to_different = 1;
+
+        if (!$this->country_id) {
+            $this->country_id = Country::where('iso3', 'IND')->value('id');
+        }
     }
     public function verifyForCheckout()
     {
@@ -106,6 +110,7 @@ class CheckOutComponent extends Component
             $this->codvalue = 0;
         }
         $countries = Country::all();
+
         $states = State::where('country_id', $this->country_id)->orderBy('name', 'ASC')->get();
         $cities = City::where('state_id', $this->st_id)->orderBy('name', 'ASC')->get();
         $ships = ShippingAddress::where('user_id', Auth::user()->id)->get();

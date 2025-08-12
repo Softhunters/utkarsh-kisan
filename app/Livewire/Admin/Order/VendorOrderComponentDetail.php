@@ -6,11 +6,13 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ProductHistory;
+use App\Models\VendorProduct;
 use DB;
 use Livewire\Component;
 
 class VendorOrderComponentDetail extends Component
 {
+    public $order_id;
     public function mount($id)
     {
         $this->order_id = $id;
@@ -20,13 +22,13 @@ class VendorOrderComponentDetail extends Component
     public function updateOrderStatus($order_item_id, $status)
     {
         $order = OrderItem::find($order_item_id);
-
         if (!$order) {
             return response()->json([
                 'status' => false,
                 'message' => 'Order item not found.'
             ], 200);
         }
+
 
         $order->status = $status;
         if ($status == "delivered") {
@@ -70,6 +72,7 @@ class VendorOrderComponentDetail extends Component
                     ->where('vendor_id', $order->seller_id)
                     ->first();
 
+
                 if (!$vproduct) {
                     return response()->json([
                         'status' => false,
@@ -108,6 +111,7 @@ class VendorOrderComponentDetail extends Component
 
     public function render()
     {
+        // dd($this->order_id);
         $order = Order::where('id', $this->order_id)->first();
         $orderitems = OrderItem::with('seller')
             ->where('order_id', $order->id)
