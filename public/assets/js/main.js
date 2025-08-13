@@ -48,16 +48,16 @@
         $(this).addClass("active");
     });
     $(".grid").masonry({ itemSelector: ".grid-item" });
-    $("select").niceSelect();
-    const togglePassword = document.querySelector("#togglePassword");
-    const password = document.querySelector("#password");
-    if (togglePassword) {
-        togglePassword.addEventListener("click", function (e) {
-            const type = password.getAttribute("type") === "password" ? "text" : "password";
-            password.setAttribute("type", type);
-            this.classList.toggle("bi-eye");
-        });
-    }
+    // $("select").niceSelect();
+    // const togglePassword = document.querySelector("#togglePassword");
+    // const password = document.querySelector("#password");
+    // if (togglePassword) {
+    //     togglePassword.addEventListener("click", function (e) {
+    //         const type = password.getAttribute("type") === "password" ? "text" : "password";
+    //         password.setAttribute("type", type);
+    //         this.classList.toggle("bi-eye");
+    //     });
+    // }
     const togglePassword2 = document.getElementById("togglePassword2");
     const password2 = document.querySelector("#password2");
     if (togglePassword2) {

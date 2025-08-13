@@ -22,7 +22,8 @@
                         <!-- <div class="banner-img-bg">
                             <img class="img-fluid" src="{{ asset('assets/images/bg/inner-banner-vec.png') }}" alt />
                         </div> -->
-                        <img class="img-fluid cart-banner-img" src="{{ asset('assets/images/bg/inner-banner-img.png') }}" alt />
+                        <img class="img-fluid cart-banner-img"
+                            src="{{ asset('assets/images/bg/inner-banner-img.png') }}" alt />
                     </div>
                 </div>
             </div>
@@ -58,51 +59,54 @@
                                         <th>Quantity</th>
                                         <th>Subtotal</th>
                                         <th>Delete</th>
-                                        @auth
+                                        {{-- @auth
                                             <th>Action</th>
-                                        @endauth
+                                        @endauth --}}
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($cart as $item)
+                                        @php
+                                            $i = $item->product ? $item->product : $item;
+                                            $id = $item->product?->id ?? $item->id;
+                                        @endphp
                                         <tr>
-
                                             <td data-label="Image">
-                                                <img src="{{ asset('admin/product/feat') }}/{{ $item->product->image }}" alt />
+                                                <img src="{{ asset('admin/product/feat') }}/{{ $i->image }}"
+                                                    alt />
                                             </td>
-                                            <td data-label="Seller Name"><a
-                                                    href="#">
+                                            <td data-label="Seller Name"><a href="#">
                                                     {{ $item->vendor_name }}
                                                 </a>
                                             </td>
                                             <td data-label="Item Name"><a
-                                                    href="{{ route('product-details', ['slug' => $item->product->slug, 'vendor_id' => $item->seller_id]) }}">
+                                                    href="{{ route('product-details', ['slug' => $i->slug]) }}">
                                                     {{-- {{ $item->name }} --}}
-                                                    {{ substr($item->product->name, 0, 20) }}
-                                                
+                                                    {{ substr($i->name, 0, 20) }}
+
                                                 </a>
                                             </td>
-                                            <td data-label="Unite Price"><del>₹{{ $item->product->regular_price }}</del></td>
+                                            <td data-label="Unite Price">
+                                                <del>₹{{ $i->regular_price }}</del></td>
                                             <td data-label="Discount Price">₹{{ $item->vendor_price }}</td>
                                             <td data-label="Quantity">
                                                 @if (Auth::check())
-                                                    @if ($item->product->stock_status === 'instock')
-                                                        <div class="qty-input btn mt-4 mt-md-0 d-flex align-items-center  ">
+                                                    @if ($i->stock_status === 'instock')
+                                                        <div
+                                                            class="qty-input btn mt-4 mt-md-0 d-flex align-items-center  ">
                                                             <a class="btn btn-increase" href="#"
-                                                                wire:click.prevent="decreaseQuantity('{{ $item->product_id }}')">-</a>
+                                                                wire:click.prevent="decreaseQuantity('{{ $id }}')">-</a>
                                                             <input class="form-control me-0" type="text"
                                                                 name="product-quatity" value="{{ $item->quantity }}"
-                                                                data-max="5" pattern="[0-9]*" 
-                                                                style="width:100px !important"
-                                                                >
+                                                                data-max="5" pattern="[0-9]*"
+                                                                style="width:100px !important">
 
                                                             {{-- @if ($item->quantity - $item->qty > 3) --}}
-                                                                <a class="btn btn-increase" href="#"
-                                                                    wire:click.prevent="increaseQuantity('{{ $item->product_id }}')">+</a>
-                                                                <input class="frm-input " value="1" type="hidden"
-                                                                    id ="outofqty" name="outofqty"
-                                                                    wire:model="out_of_qty">
-                                                                @php $this->out_of_qty = "" @endphp
+                                                            <a class="btn btn-increase" href="#"
+                                                                wire:click.prevent="increaseQuantity('{{ $id }}')">+</a>
+                                                            <input class="frm-input " value="1" type="hidden"
+                                                                id ="outofqty" name="outofqty" wire:model="out_of_qty">
+                                                            @php $this->out_of_qty = "" @endphp
                                                             {{-- @endif --}}
                                                         </div>
                                                     @else
@@ -112,7 +116,7 @@
                                                         <p> Out of Stock</p>
                                                     @endif
                                                 @else
-                                                    @if ($item->product->stock_status === 'instock')
+                                                    @if ($i->stock_status === 'instock')
                                                         <!--<div class="nice-number">-->
                                                         <!--    <button type="button"><i class="bi bi-dash"></i></button>-->
                                                         <!--    <input type="number" value="1" min="1" data-nice-number-initialized="true" style="width: 2ch;">-->
@@ -120,16 +124,16 @@
                                                         <!--</div>-->
 
 
-                                                        <div class="qty-input btn mt-4 mt-md-0 d-flex align-items-center">
+                                                        <div
+                                                            class="qty-input btn mt-4 mt-md-0 d-flex align-items-center">
                                                             <a class="btn btn-increase" href="#"
-                                                                wire:click.prevent="decreaseQuantity('{{ $item->product_id }}')">-</a>
+                                                                wire:click.prevent="decreaseQuantity('{{ $id }}')">-</a>
                                                             <input type="text" class="form-control me-0"
                                                                 name="product-quatity" value="{{ $item->quantity }}"
-                                                                data-max="5" pattern="[0-9]*" 
-                                                                style="width:100px !important"
-                                                                >
+                                                                data-max="5" pattern="[0-9]*"
+                                                                style="width:100px !important">
                                                             <a class="btn btn-increase" href="#"
-                                                                wire:click.prevent="increaseQuantity('{{ $item->product_id }}')">+</a>
+                                                                wire:click.prevent="increaseQuantity('{{ $id }}')">+</a>
                                                         </div>
                                                     @else
                                                         <p> Out of Stock</p>
@@ -141,20 +145,20 @@
                                             <td data-label="Delete">
                                                 <div class="delete-icon">
                                                     <a href="#"
-                                                        wire:click.prevent="removeFromCart({{ $item->product_id }})">
+                                                        wire:click.prevent="removeFromCart({{ $id }})">
                                                         <i class="bi bi-x"></i>
                                                     </a>
                                                 </div>
                                             </td>
-                                            @auth
+                                            {{-- @auth
                                                 <td>
                                                     <div class="cart_product_remove">
                                                         <a href="#"
-                                                            wire:click.prevent="Savetolater({{ $item->product_id }})">
+                                                            wire:click.prevent="Savetolater({{ $id }})">
                                                             <i class="ti-trash"></i> Save For Later</a>
                                                     </div>
                                                 </td>
-                                            @endauth
+                                            @endauth --}}
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -164,75 +168,9 @@
                         <div class="empty-wishlist text-center mb-3">
                             <p style="text-align:center;">No Item Added In CART</p>
                             <a href="{{ route('shop') }}"><button
-                                    class="btn btn-primary wishlist_shopping_btn" >Continue
+                                    class="btn btn-primary wishlist_shopping_btn">Continue
                                     Shopping</button></a>
 
-                        </div>
-                    @endif
-
-                    @if (isset($savelater[0]))
-                        <div class="coupon-area">
-                            <div class="cart-coupon-input">
-                                <h5 class="coupon-title">Save For Later</h5>
-
-                            </div>
-                        </div>
-                        <div class="table-wrapper">
-
-                            <table class="eg-table table cart-table">
-                                <thead>
-                                    <tr>
-
-                                        <th>Image</th>
-                                        <th>Item Name</th>
-                                        <th>Unit Price</th>
-                                        <th>Discount Price</th>
-                                        <th>Delete</th>
-                                        @auth
-                                            <th>Action</th>
-                                        @endauth
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($savelater as $item)
-                                        <tr>
-
-                                            <td data-label="Image">
-                                                <img src="{{ asset('admin/product/feat') }}/{{ $item->product->image }}"
-                                                    alt />
-                                            </td>
-                                            <!--<img src="{{ asset('admin/product/feat') }}/{{ $item->product->image }}" alt />-->
-                                            <td data-label="Food Name"><a
-                                                    href="{{ route('product-details', ['slug' => $item->product->slug]) }}">
-                                                    {{-- {{ $item->product->name }}  --}}
-                                                {{ substr( $item->product->name, 0, 20) }}
-                                                </a>
-                                            </td>
-                                            <td data-label="Unite Price">
-                                                <del>₹{{ $item->product->regular_price }}</del></td>
-                                            <td data-label="Discount Price">₹{{ $item->product->sale_price }}</td>
-                                            <td data-label="Delete">
-                                                <div class="delete-icon">
-                                                    <a href="#"
-                                                        wire:click.prevent="removeFromsavelater({{ $item->id }})">
-                                                        <i class="bi bi-x"></i>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                            @auth
-
-                                                <td>
-                                                    <div class="cart_product_remove">
-                                                        <a href="#"
-                                                            wire:click.prevent="MovetoCart({{ $item->id }})">
-                                                            <i class="ti-trash"></i> Move To Cart</a>
-                                                    </div>
-                                                </td>
-                                            @endauth
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
                         </div>
                     @endif
 

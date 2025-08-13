@@ -9,8 +9,8 @@
         </div> --}}
         <div class="container">
             <div class="row justify-content-center align-items-center text-center">
-                <div class="col-lg-6 align-items-center">
-                    <div class="banner-content">
+                <div class="col-sm-6 align-items-center banner-data">
+                    <div class="banner-content  ">
                         <h1>Shop</h1>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
@@ -20,12 +20,13 @@
                         </nav>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="banner-img d-lg-block d-none">
+                <div class="col-sm-6">
+                    <div class="banner-img d-block  ">
                         {{-- <div class="banner-img-bg">
                             <img class="img-fluid" src="{{asset('assets/images/bg/inner-banner-vec.png')}}" alt />
                         </div> --}}
-                        <img class="img-fluid" src="{{ asset('assets/images/bg/inner-banner-img.png') }}" alt />
+                        <img class="img-fluid shop-banner-img"
+                            src="{{ asset('assets/images/bg/inner-banner-img.png') }}" alt />
                     </div>
                 </div>
             </div>
@@ -43,10 +44,10 @@
                                 <div id="slider-range" class="price-filter-range"></div>
                                 <div class="mt-25 d-flex justify-content-between gap-5">
 
-                                    <input type="number" min="10" max="{{ $max - 1 }}"
-                                        oninput="validity.valid||(value='10');" id="min_price"
+                                    <input type="number" min="{{$min}}" max="{{ $max - 1 }}"
+                                        oninput="validity.valid||(value=$min);" id="min_price"
                                         class="price-range-field rans  nice_num1" />
-                                    <input type="number" min="10" max="{{ $max }}"
+                                    <input type="number" min="{{$min}}" max="{{ $max }}"
                                         oninput="validity.valid||(value={{ $max }});" id="max_price"
                                         class="price-range-field rans  nice_num2" />
                                 </div>
@@ -127,7 +128,9 @@
                             <div class="col-lg-3 col-md-3 col-6">
                                 <div class="collection-card">
                                     <div class="offer-card">
-                                        <span>{{ $product->discount_value }}% Off</span>
+                                        @if ($product->discount_value != 0)
+                                            <span>{{ $product->discount_value }}% Off</span>
+                                        @endif
                                     </div>
                                     @if ($product->stock_status == 'outofstock')
                                         <span class=" bg-white rounded-sm inline-block text-center solded">Sold
@@ -154,7 +157,7 @@
                                                         <!--<a href="#"><img src="{{ asset('assets/images/icon/Icon-cart3.svg') }}" alt /></a>-->
                                                     @else
                                                         <a href="#"
-                                                            wire:click.prevent="AddtoCart({{ $product->id }},{{ $product->sale_price }},{{ $product->seller->vendor_id ?? '' }})"><img
+                                                            wire:click.prevent="AddtoCart({{ $product->id }},{{ $product->bestSeller->price }},{{ $product->bestSeller->vendor_id ?? '' }})"><img
                                                                 src="{{ asset('assets/images/icon/Icon-cart3.svg') }}"
                                                                 alt /></a>
                                                     @endif
@@ -162,12 +165,12 @@
                                                 <li>
                                                     @if (in_array($product->id, $wishp))
                                                         <a href="#"
-                                                            wire:click.prevent="removeFromWishlist({{ $product->id }},{{ $product->seller->vendor_id ?? '' }})"><img
+                                                            wire:click.prevent="removeFromWishlist({{ $product->id }},{{ $product->bestSeller->vendor_id ?? '' }})"><img
                                                                 src="{{ asset('assets/images/icon/Icon-favorites3.svg') }}"
                                                                 alt /></a>
                                                     @else
                                                         <a href="#"
-                                                            wire:click.prevent="addToWishlist({{ $product->id }},{{ $product->sale_price }},{{ $product->seller->vendor_id ?? '' }})"><img
+                                                            wire:click.prevent="addToWishlist({{ $product->id }},{{ $product->bestSeller->price }},{{ $product->bestSeller->vendor_id ?? '' }})"><img
                                                                 src="{{ asset('assets/images/icon/Icon-favorites.svg') }}"
                                                                 alt /></a>
                                                     @endif
@@ -182,7 +185,7 @@
                                             {{-- <a href="#">{{$product->name}}</a> --}}
                                         </p>
                                         <div class="price priceds">
-                                            <h6>₹{{ $product->sale_price }}</h6>
+                                            <h6>₹{{ $product->bestSeller->price }}</h6>
                                             <del>₹{{ $product->regular_price }}</del>
                                         </div>
                                         <div class="review">
@@ -265,7 +268,7 @@
             $("#slider-range").slider({
                 range: true,
                 orientation: "horizontal",
-                min: 10,
+                min: 0,
                 max: <?php echo $max; ?>,
                 values: [0, <?php echo $max / 2; ?>],
                 step: 10,

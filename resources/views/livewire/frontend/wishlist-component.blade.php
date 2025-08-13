@@ -43,7 +43,7 @@
                                         <th>Item Name</th>
                                         <th>Seller Name</th>
                                         <th>Unit Price</th>
-                                        <th>Discount Price</th>
+                                        <th>Sale Price</th>
                                         <th>Quantity</th>
                                         <th>Subtotal</th>
                                         <th>Action</th>
@@ -72,7 +72,7 @@
                                            
                                             <td data-label="seller name" class="seller_data">{{ $item->seller_name??'' }}</td>
                                             <td data-label="Unite Price"><del>₹{{ $item->regular_price }}</del></td>
-                                            <td data-label="Discount Price">₹{{ $item->sale_price }}</td>
+                                            <td data-label="Discount Price">₹{{ $item->vendor_price }}</td>
                                             <td data-label="Quantity">
                                                 <div class="quantity d-flex align-items-center">
                                                     <div class="quantity-nav nice-number d-flex align-items-center">
@@ -80,7 +80,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td data-label="Subtotal">₹{{ $item->sale_price * $item->qty }}</td>
+                                            <td data-label="Subtotal">₹{{ $item->vendor_price * $item->qty }}</td>
                                             <td><a href="#" wire:click.prevent="MoveTOCart({{ $item->id }})">
                                                     <i class="ti-trash"></i> Move to Cart</a></td>
                                         </tr>

@@ -102,8 +102,8 @@ class AddProductComponent extends Component
             $size[$kvalue] = explode(",", $attribute_valuesf[$kvalue]);
         }
         //dd($size[$kvalue]);
+        $para = [];
         if ($number == 0) {
-            $para = [];
             return $para;
         } elseif ($number == 1) {
             foreach ($size[$keysvalue[0]] as $namefd) {
@@ -177,8 +177,8 @@ class AddProductComponent extends Component
             'stock_status' => 'required',
             'featured' => 'required',
             'quantity' => 'required|numeric',
-            'image' => 'required|mimes:jpeg,jpg,png',
-            'images' => 'required',
+            'image' => 'required|mimes:jpeg,jpg,png,webp',
+            'images.*' => 'required|mimes:jpeg,jpg,png,webp',
             'category_id' => 'required',
             'scategory_id' => 'required',
             'brand_id' => 'required',
@@ -223,8 +223,8 @@ class AddProductComponent extends Component
             'stock_status' => 'required',
             'featured' => 'required',
             'quantity' => 'required|numeric',
-            'image' => 'required|mimes:jpeg,jpg,png',
-            'images' => 'required',
+            'image' => 'required|mimes:jpeg,jpg,png,webp',
+            'images.*' => 'required|mimes:jpeg,jpg,png,webp',
             'category_id' => 'required',
             'scategory_id' => 'required',
             'brand_id' => 'required',

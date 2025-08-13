@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\VendorController;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Vendor\DashboardController;
+use App\Http\Controllers\Vendor\PackageController;
 use App\Http\Controllers\Vendor\ProductController;
 use App\Http\Controllers\Vendor\VendorProfileController;
 use App\Livewire\Admin\Attribute\AddAttributeComponent;
@@ -37,6 +40,9 @@ use App\Livewire\Admin\Order\OrderComponent;
 use App\Livewire\Admin\Order\OrderDetailComponent;
 use App\Livewire\Admin\Order\VendorOrderComponent;
 use App\Livewire\Admin\Order\VendorOrderComponentDetail;
+use App\Livewire\Admin\Package\AddPackagecomponent;
+use App\Livewire\Admin\Package\EditPackagecomponent;
+use App\Livewire\Admin\Package\Packagecomponent;
 use App\Livewire\Admin\Product\AddProductComponent;
 use App\Livewire\Admin\Product\EditProductComponent;
 use App\Livewire\Admin\Product\ProductComponent;
@@ -126,9 +132,10 @@ Route::get('/adminlogin', [LoginController::class, 'adminlogin']);
 Route::post('/adminlogin', [LoginController::class, 'adminloginauth'])->name('adminlogin');
 Route::post('/mobile-login', [AuthController::class, 'OtpLogin']);
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/buy-package', [PaymentController::class, 'buyPackage'])->name('buy-package');
 
 
 
@@ -137,7 +144,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/user/orders', OrdersComponent::class)->name('orders');
     Route::get('/order/{id}', OrderDetailsComponent::class)->name('order-details');
 
-    Route::post('profile/update', [AuthController::class, 'profileUpdate']);
+    Route::post('profile/update2', [AuthController::class, 'profileUpdate2']);
+
+    Route::get('/buy-package/{slug}', [PaymentController::class, 'checkout'])->name('razorpay.checkout');
+    Route::post('/payment/success', [PaymentController::class, 'paymentSuccess'])->name('razorpay.success');
 
 
     // Admin Routes
@@ -202,6 +212,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/orders', OrderComponent::class)->name('admin.orders');
         Route::get('/order/detail/{id}', OrderDetailComponent::class)->name('admin.order-detail');
 
+        Route::get('/admin/packages', Packagecomponent::class)->name('admin.packages');
+        Route::get('/admin/package/add', AddPackagecomponent::class)->name('admin.addpackage');
+        Route::get('/admin/package/edit/{pid}', EditPackagecomponent::class)->name('admin.editpackage');
     });
 
 
@@ -237,13 +250,18 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/inventory', VendorInventoryComponent::class)->name('vendor.inventory');
         Route::get('/inventory-details/{id}', VendorInventoryDetailComponent::class)->name('vendor.inventory.details');
 
+        //package
+        Route::get('/my-package', [PackageController::class, 'index'])->name('vendor.package');
+
     });
 
 
 });
 
 
-
+Route::get('/routeclear', function () {
+    Artisan::call('optimize:clear');
+});
 
 Route::get('/terms-conditions', function () {
     return view('static-pages.terms-and-conditions');
@@ -261,9 +279,7 @@ Route::get('/shipping-policy', function () {
 Route::get('/vendor-terms-conditions', function () {
     return view('static-pages.vendor-terms-conditions');
 })->name('vendor-terms-and-conditions');
-Route::get('/vendor-subscription', function () {
-    return view('static-pages.vendor-subscription');
-})->name('vendor-subscription');
+Route::get('/vendor-subscription', [HomeController::class, 'vendorSubsription'])->name('vendor-subscription');
 Route::get('/new-user-login', function () {
     return view('livewire.login2');
 })->name('new-user-login');

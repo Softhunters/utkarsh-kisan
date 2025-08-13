@@ -129,8 +129,10 @@
                             </span>
                         </div>
                         <div class="price-tag d-flex gap-3">
-                            <h4>₹{{ $product->bestSeller->price }} <del>₹{{ $product->regular_price }}</del></h4>
-                            <spna class="percent">({{ $product->discount_value }}% off)</spna>
+                            <h4>₹{{ $product->bestSeller?->price }} <del>₹{{ $product->regular_price }}</del></h4>
+                            @if ($product->discount_value != 0)
+                                <spna class="percent">({{ $product->discount_value }}% off)</spna>
+                            @endif
                             <spna class="percent">Inclusive of all taxes</spna>
                         </div>
                         <!--<p>Donec bibendum enim ut elit porta ullamcorper. Vestibulum Nai wekemdini iaculis vitae nulla. Morbi mattis nec mi ac mollis.</p>-->
@@ -154,7 +156,7 @@
                                                     @if ($av->id == $product->id) checked @endif name="" />
                                                 <div class="icon-box">
                                                     <div class="label">{{ $av->variant_detail }}</div>
-                                                    <span class="value">₹{{ $av->sale_price }}</span>
+                                                    <span class="value">₹{{ $av->bestSeller?->price ?? 'N/A' }}</span>
                                                 </div>
                                             </label>
                                         </a>
@@ -174,18 +176,18 @@
                                 <a href="{{ route('cart') }}" class="primary-btn3">Already In Cart</a>
                             @else
                                 <a href="#"
-                                    wire:click.prevent="AddtoCart({{ $product->id }},{{ $product->bestSeller->price }},{{ $product->bestSeller->vendor_id ?? '' }})"
+                                    wire:click.prevent="AddtoCart({{ $product->id }},{{ $product->bestSeller?->price }},{{ $product->bestSeller?->vendor_id ?? '' }})"
                                     class="primary-btn3">Add to cart</a>
                             @endif
 
                         </div>
                         @auth
                             <div class="buy-now-btn">
-                                <a wire:click.prevent="checkout({{ $product->id }},{{ $product->bestSeller->price }})">Buy
+                                <a wire:click.prevent="checkout({{ $product->id }},{{ $product->bestSeller?->price }})">Buy
                                     Now</a>
                             </div>
                         @endauth
-                        @if ($otherVendors->count() > 0)
+                        @if ($otherVendors->count() > 1)
                             <div class="buy-now-btn mt-3">
                                 <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal"
                                     data-bs-target="#vendorModal">
@@ -203,7 +205,7 @@
                                 <li>
                                     @if (in_array($product->id, $wishp))
                                         <a href="#"
-                                            wire:click.prevent="removeFromWishlist({{ $product->id }},{{ $fproduct->bestSeller->vendor_id ?? '' }})">
+                                            wire:click.prevent="removeFromWishlist({{ $product->id }},{{ $fproduct->bestSeller?->vendor_id ?? '' }})">
                                             <span>
                                                 <svg width="14" height="13" viewBox="0 0 14 13"
                                                     xmlns="http://www.w3.org/2000/svg" fill="#699a39">
@@ -215,7 +217,7 @@
                                         </a>
                                     @else
                                         <a href="#"
-                                            wire:click.prevent="addToWishlist({{ $product->id }},{{ $product->bestSeller->price }})">
+                                            wire:click.prevent="addToWishlist({{ $product->id }},{{ $product->bestSeller?->price }})">
                                             <span><img src="{{ asset('assets/images/icon/Icon-favorites2.svg') }}"
                                                     alt /></span> Add to wishlist
                                         </a>
@@ -250,9 +252,9 @@
             <div class="">
                 <div class="row mb-70">
                     <div class="col-lg-12">
-                        <div class="tab-box"> 
+                        <div class="tab-box">
                             <div class="nav nav2 nav nav-pills" id="v-pills-tab2" role="tablist"
-                                aria-orientation="vertical" >
+                                aria-orientation="vertical">
                                 <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
                                     data-bs-target="#v-pills-home" type="button" role="tab"
                                     aria-controls="v-pills-home" aria-selected="false">Description</button>
@@ -264,7 +266,8 @@
                                 @if ($product->manufacturer_details)
                                     <button class="nav-link" id="v-pills-manufact-tab" data-bs-toggle="pill"
                                         data-bs-target="#v-pills-manufact" type="button" role="tab"
-                                        aria-controls="v-pills-manufact" aria-selected="true">Manufacturer Info</button>
+                                        aria-controls="v-pills-manufact" aria-selected="true">Manufacturer
+                                        Info</button>
                                 @endif
                                 <button class="nav-link" id="v-pills-common-tab" data-bs-toggle="pill"
                                     data-bs-target="#v-pills-common" type="button" role="tab"
@@ -576,15 +579,16 @@
                             <div class="col-lg-3 col-md-3 col-6">
                                 <div class="collection-card">
                                     <div class="offer-card">
-                                        <span>{{ $fproduct->discount_value }}% Off</span>
+                                        @if ($fproduct->discount_value != 0)
+                                            <span>{{ $fproduct->discount_value }}% Off</span>
+                                        @endif
                                     </div>
                                     @if ($fproduct->stock_status == 'outofstock')
                                         <span class=" bg-white rounded-sm inline-block text-center solded">Sold
                                             Out</span>
                                     @endif
                                     <div class="collection-img @if ($fproduct->stock_status == 'outofstock') blured @endif">
-                                        <a
-                                            href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}"><img
+                                        <a href="{{ route('product-details', ['slug' => $fproduct->slug]) }}"><img
                                                 class="img-gluid"
                                                 src="{{ asset('admin/product/feat') }}/{{ $fproduct->image }}"
                                                 alt="" height="136px" width="153px" /> </a>
@@ -593,8 +597,7 @@
                                             <div class="plus-icon">
                                                 <i class="bi bi-plus"></i>
                                             </div>
-                                            <a
-                                                href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}">View
+                                            <a href="{{ route('product-details', ['slug' => $fproduct->slug]) }}">View
                                                 Details</a>
                                             {{-- <a href="#">View Details</a> --}}
                                         </div>
@@ -604,7 +607,7 @@
                                                     <!--<a href="#"><img src="{{ asset('assets/images/icon/Icon-cart3.svg') }}" alt /></a>-->
                                                 @else
                                                     <a href="#"
-                                                        wire:click.prevent="AddtoCart({{ $fproduct->id }},{{ $fproduct->bestSeller->price }},{{ $fproduct->bestSeller->vendor_id ?? '' }})"><img
+                                                        wire:click.prevent="AddtoCart({{ $fproduct->id }},{{ $fproduct->bestSeller?->price }},{{ $fproduct->bestSeller?->vendor_id ?? '' }})"><img
                                                             src="{{ asset('assets/images/icon/Icon-cart3.svg') }}"
                                                             alt /></a>
                                                 @endif
@@ -612,12 +615,12 @@
                                             <li>
                                                 @if (in_array($fproduct->id, $wishp))
                                                     <a href="#"
-                                                        wire:click.prevent="removeFromWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->vendor_id ?? '' }})"><img
+                                                        wire:click.prevent="removeFromWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller?->vendor_id ?? '' }})"><img
                                                             src="{{ asset('assets/images/icon/Icon-favorites3.svg') }}"
                                                             alt /></a>
                                                 @else
                                                     <a href="#"
-                                                        wire:click.prevent="addToWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->price }})"><img
+                                                        wire:click.prevent="addToWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller?->price }})"><img
                                                             src="{{ asset('assets/images/icon/Icon-favorites.svg') }}"
                                                             alt /></a>
                                                 @endif
@@ -627,11 +630,11 @@
                                     <div class="collection-content text-center">
                                         <p class="fixed">
                                             <a
-                                                href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}">{{ $fproduct->name }}</a>
+                                                href="{{ route('product-details', ['slug' => $fproduct->slug]) }}">{{ $fproduct->name }}</a>
                                             {{-- <a href="#">{{$product->name}}</a> --}}
                                         </p>
                                         <div class="price priceds">
-                                            <h6>₹{{ $fproduct->bestSeller->price }}</h6>
+                                            <h6>₹{{ $fproduct->bestSeller?->price }}</h6>
                                             <del>₹{{ $fproduct->regular_price }}</del>
                                         </div>
                                         <div class="review">
@@ -689,18 +692,19 @@
                             <table class="table table-borderless align-middle vendor_table">
                                 <thead class="table-light">
                                     <tr>
-                                        <th  >Vendor Name</th>
-                                        <th  >Price</th>
-                                        <th  >Quantity</th>
-                                        <th  >Action</th>
-                                        <th  >Additional Info</th>
+                                        <th>Vendor Name</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Action</th>
+                                        <th>Additional Info</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($otherVendors as $vp)
                                         <tr>
-                                            <td><a
-                                                    href="{{ route('vendorProduct', ['slug' => $vp->vendor_id]) }}">{{ $vp->vendor->name ?? 'N/A' }}</a>
+                                            <td>
+                                                {{-- <a href="{{ route('vendorProduct', ['slug' => $vp->vendor_id]) }}">{{ $vp->vendor->name ?? 'N/A' }}</a> --}}
+                                                {{ $vp->vendor->name ?? 'N/A' }}
                                             </td>
                                             <td>₹{{ number_format($vp->price) }}</td>
                                             <td>{{ $vp->quantity }}</td>

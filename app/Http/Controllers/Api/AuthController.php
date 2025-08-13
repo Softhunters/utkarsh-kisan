@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\VendorProfile;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -358,6 +359,38 @@ class AuthController extends Controller
             'message' => 'Profile updated successfully'
         ], 200);
     }
+    public function profileUpdate2(Request $request)
+    {
+        $validateUser = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|string',
+                'email' => 'required|email|unique:users,email',
+            ]
+        );
+
+        if ($validateUser->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $validateUser->errors()
+            ], 200);
+        }
+
+        // User::where('id', Auth::id())->update(['email' => $request->email, 'name' => $request->name]);
+
+        $user = User::findOrFail(Auth::id());
+        $user->email = $request->email;
+        $user->name = $request->name;
+        $user->save();
+
+        event(new Registered($user));
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Profile updated successfully'
+        ], 200);
+    }
 
     public function ReverifyAccountOTP(Request $request)
     {
@@ -489,7 +522,15 @@ class AuthController extends Controller
             }
 
             $userc = User::where('phone', $request->number)->first();
+
+
             if (isset($userc)) {
+                if ($userc->utype != 'USR') {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Access denied. Your account is registered for the Vendor app and cannot be used to log in to the user app.'
+                    ], 200);
+                }
                 if ($userc->otp == $request->otp) {
                     Auth::login($userc);
                     if (Auth::user()->status == 0 || Auth::user()->is_active == 3) {
@@ -556,6 +597,7 @@ class AuthController extends Controller
                 'password' => ['required', 'string', 'min:8'],
                 'phone' => ['required', 'numeric', 'digits:10', 'unique:users'],
                 'device_token' => 'required',
+                'package' => 'required',
                 'utype' => 'required'
             ]);
             if (!$valid->passes()) {
@@ -567,6 +609,15 @@ class AuthController extends Controller
             } else {
 
                 event(new Registered($user = $this->create($request->all())));
+
+                if ($user->utype === 'VDR') {
+                    VendorProfile::create([
+                        'vendor_id' => $user->id,
+                        'package_id' => $request->package,
+                        'status' => 0
+                    ]);
+                }
+
                 return response()->json([
                     'status' => true,
                     'message' => 'User Created Successfully',
@@ -622,9 +673,13 @@ class AuthController extends Controller
                 if (!isset(Auth::user()->referral_code)) {
                     User::where('id', Auth::user()->id)->update(['referral_code' => $this->ticket_number()]);
                 }
+
                 $user = Auth::user();
+                $isVenPack = ($user->vendorPackage) ? true : false;
+
                 return response()->json([
                     'status' => true,
+                    'isSubscriptionBuy' => $isVenPack,
                     'message' => 'User Logged In Successfully',
                     'token' => $user->createToken("API TOKEN")->plainTextToken
                 ], 200);
@@ -652,9 +707,15 @@ class AuthController extends Controller
             $validateUser = Validator::make(
                 $request->all(),
                 [
-                    'number' => 'required'
+                    'number' => 'required|numeric|digits:10'
+                ],
+                [
+                    'number.required' => 'Please enter your phone number.',
+                    'number.numeric' => 'Phone number must contain only digits.',
+                    'number.digits' => 'Please enter a valid phone number.',
                 ]
             );
+
 
             if ($validateUser->fails()) {
                 return response()->json([
@@ -664,11 +725,19 @@ class AuthController extends Controller
                 ], 200);
             }
 
-            $user = User::where('phone', $request->number)->where('utype', 'VDR')->first();
+            $user = User::where('phone', $request->number)->first();
             if (isset($user)) {
+                if ($user->utype != 'VDR') {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Access Denied: This phone number is registered for the User Panel and cannot be used to log in to the Vendor Panel.'
+                    ], 200);
+                }
                 // $otp= rand(100000, 999999);
                 $otp = "123456";
-                User::where('phone', $request->number)->update(['otp' => $otp]);
+                User::where('phone', $request->number)->where('utype', 'VDR')->update(['otp' => $otp]);
+
+                // sendOtp($request->number, $otp);
 
                 return response()->json([
                     'status' => true,
@@ -680,7 +749,7 @@ class AuthController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'This Mobile is number not registor!'
+                    'message' => 'The mobile number you entered is not registered with us. Please check the number or sign up to create a new account.'
                 ], 200);
             }
 
@@ -698,12 +767,15 @@ class AuthController extends Controller
             $validateUser = Validator::make(
                 $request->all(),
                 [
-                    'number' => 'required'
+                    'number' => 'required|numeric|digits:10'
                 ],
                 [
-                    'number.required' => 'The phone number field is required.',
+                    'number.required' => 'Please enter your phone number.',
+                    'number.numeric' => 'Phone number must contain only digits.',
+                    'number.digits' => 'Please enter a valid phone number.',
                 ]
             );
+
 
             if ($validateUser->fails()) {
                 return response()->json([
@@ -715,9 +787,17 @@ class AuthController extends Controller
 
             $user = User::where('phone', $request->number)->first();
             if (isset($user)) {
-                // $otp= rand(100000, 999999);
+                if ($user->utype != 'USR') {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Access Denied: This phone number is registered for the Vendor Panel and cannot be used to log in to the User Panel.'
+                    ], 200);
+                }
+                // $otp = rand(100000, 999999);
                 $otp = "123456";
-                User::where('phone', $request->number)->update(['otp' => $otp]);
+                User::where('phone', $request->number)->where('utype', 'USR')->update(['otp' => $otp]);
+
+                // sendOtp($request->number, $otp);
 
                 return response()->json([
                     'status' => true,
@@ -733,9 +813,12 @@ class AuthController extends Controller
                     'password' => Hash::make($request->number),
                 ]);
 
-                // $otp= rand(100000, 999999);
-                $otp = "123456";
-                User::where('phone', $request->number)->update(['otp' => $otp]);
+                // $otp = rand(100000, 999999);
+                $otp = '123456';
+
+                User::where('phone', $request->number)->where('utype', 'USR')->update(['otp' => $otp]);
+
+                // sendOtp($request->number, $otp);
 
                 return response()->json([
                     'status' => true,
@@ -833,6 +916,12 @@ class AuthController extends Controller
 
             $userc = User::where('phone', $request->number)->where('utype', 'VDR')->first();
             if (isset($userc)) {
+                if ($userc->utype != 'VDR') {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Access denied. Your account is registered for the User app and cannot be used to log in to the Vendor app.'
+                    ], 200);
+                }
                 if ($userc->otp == $request->otp) {
                     Auth::login($userc);
 
@@ -841,8 +930,11 @@ class AuthController extends Controller
                         User::where('id', Auth::user()->id)->update(['referral_code' => $this->ticket_number()]);
                     }
                     $user = Auth::user();
+                    $isVenPack = ($user->vendorPackage) ? true : false;
+
                     return response()->json([
                         'status' => true,
+                        'isSubscriptionBuy' => $isVenPack,
                         'message' => 'You have successfully logged in',
                         'token' => $user->createToken("API TOKEN")->plainTextToken
                     ], 200);

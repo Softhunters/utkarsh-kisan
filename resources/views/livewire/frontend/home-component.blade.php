@@ -142,13 +142,15 @@
                     <div class="col-lg-3 col-md-3 col-6">
                         <div class="collection-card">
                             <div class="offer-card">
-                                <span>{{ $product->discount_value }}% Off</span>
+                                @if ($product->discount_value != 0)
+                                    <span>{{ $product->discount_value }}% Off</span>
+                                @endif
                             </div>
                             @if ($product->stock_status == 'outofstock')
                                 <span class=" bg-white rounded-sm inline-block text-center solded">Sold Out</span>
                             @endif
                             <div class="collection-img @if ($product->stock_status == 'outofstock') blured @endif">
-                                <a href="{{ route('product-details', ['slug' => $product->slug, 'vendor_id' => $product->bestSeller->vendor_id]) }}"><img
+                                <a href="{{ route('product-details', ['slug' => $product->slug]) }}"><img
                                         class="img-gluid"
                                         src="{{ asset('admin/product/feat') }}/{{ $product->image }}" alt=""
                                         height="136px" width="153px" /> </a>
@@ -157,7 +159,7 @@
                                     <div class="plus-icon">
                                         <i class="bi bi-plus"></i>
                                     </div>
-                                    <a href="{{ route('product-details', ['slug' => $product->slug, 'vendor_id' => $product->bestSeller->vendor_id]) }}">View
+                                    <a href="{{ route('product-details', ['slug' => $product->slug]) }}">View
                                         Details</a>
                                     {{-- <a href="#">View Details</a> --}}
                                 </div>
@@ -179,7 +181,7 @@
                                                     alt /></a>
                                         @else
                                             <a href="#"
-                                                wire:click.prevent="addToWishlist({{ $product->id }},{{ $product->bestSeller->price }})"><img
+                                                wire:click.prevent="addToWishlist({{ $product->id }},{{ $product->bestSeller->price }},{{ $product->bestSeller->vendor_id ?? '' }})"><img
                                                     src="{{ asset('assets/images/icon/Icon-favorites.svg') }}"
                                                     alt /></a>
                                         @endif
@@ -189,7 +191,7 @@
                             <div class="collection-content text-center">
                                 <p class="fixed">
                                     <a
-                                        href="{{ route('product-details', ['slug' => $product->slug, 'vendor_id' => $product->bestSeller->vendor_id]) }}">{{ $product->name }}</a>
+                                        href="{{ route('product-details', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                     {{-- <a href="#">{{$product->name}}</a> --}}
                                 </p>
                                 <div class="price priceds">
@@ -234,7 +236,7 @@
             <div class="row d-md-none d-block pt-30">
                 <div class="col-lg-12 d-flex justify-content-center">
                     <div class="h3-view-btn">
-                        <a href="{{route('shop')}}">View All Product<img
+                        <a href="{{ route('shop') }}">View All Product<img
                                 src="{{ asset('assets/images/icon/haf-button-2.svg') }}" alt /></a>
                     </div>
                 </div>
@@ -318,14 +320,16 @@
                                 <div class="swiper-slide">
                                     <div class="collection-card">
                                         <div class="offer-card">
-                                            <span>{{ $fproduct->discount_value }}% Off</span>
+                                            @if ($fproduct->discount_value != 0)
+                                                <span>{{ $fproduct->discount_value }}% Off</span>
+                                            @endif
                                         </div>
                                         @if ($fproduct->stock_status == 'outofstock')
                                             <span class=" bg-white rounded-sm inline-block text-center solded">Sold
                                                 Out</span>
                                         @endif
                                         <div class="collection-img @if ($fproduct->stock_status == 'outofstock') blured @endif">
-                                            <a href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}"><img
+                                            <a href="{{ route('product-details', ['slug' => $fproduct->slug]) }}"><img
                                                     class="img-gluid"
                                                     src="{{ asset('admin/product/feat') }}/{{ $fproduct->image }}"
                                                     alt height="136px" width="153px" /></a>
@@ -337,7 +341,7 @@
                                                 <div class="plus-icon">
                                                     <i class="bi bi-plus"></i>
                                                 </div>
-                                                <a href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}">View
+                                                <a href="{{ route('product-details', ['slug' => $fproduct->slug]) }}">View
                                                     Details</a>
                                                 {{-- <a href="#">View Details</a> --}}
                                             </div>
@@ -348,7 +352,6 @@
                                                     @else
                                                         <a href="#"
                                                             wire:click.prevent="AddtoCart({{ $fproduct->id }},{{ $fproduct->bestSeller->price }},{{ $fproduct->bestSeller->vendor_id ?? '' }})"><img
-
                                                                 src="{{ asset('assets/images/icon/Icon-cart3.svg') }}"
                                                                 alt /></a>
                                                     @endif
@@ -356,16 +359,12 @@
                                                 <li>
                                                     @if (in_array($fproduct->id, $wishp))
                                                         <a href="#"
-
                                                             wire:click.prevent="removeFromWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->vendor_id ?? '' }})"><img
-
                                                                 src="{{ asset('assets/images/icon/Icon-favorites3.svg') }}"
                                                                 alt /></a>
                                                     @else
                                                         <a href="#"
-
-                                                            wire:click.prevent="addToWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->price }})"><img
-
+                                                            wire:click.prevent="addToWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->price }},{{ $fproduct->bestSeller->vendor_id ?? '' }})"><img
                                                                 src="{{ asset('assets/images/icon/Icon-favorites.svg') }}"
                                                                 alt /></a>
                                                     @endif
@@ -375,7 +374,7 @@
                                         <div class="collection-content">
                                             <p class="fixed">
                                                 <a
-                                                    href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}">{{ $fproduct->name }}</a>
+                                                    href="{{ route('product-details', ['slug' => $fproduct->slug]) }}">{{ $fproduct->name }}</a>
                                                 {{-- <a href="#">{{ $fproduct->name }}</a> --}}
                                             </p>
                                             <div class="price priceds">
@@ -476,10 +475,12 @@
                                 <div class="swiper-slide">
                                     <div class="collection-card">
                                         <div class="offer-card">
-                                            <span>{{ $fproduct->discount_value }}% Off</span>
+                                            @if ($fproduct->discount_value != 0)
+                                                <span>{{ $fproduct->discount_value }}% Off</span>
+                                            @endif
                                         </div>
                                         <div class="collection-img">
-                                            <a href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}"><img
+                                            <a href="{{ route('product-details', ['slug' => $fproduct->slug]) }}"><img
                                                     class="img-gluid"
                                                     src="{{ asset('admin/product/feat') }}/{{ $fproduct->image }}"
                                                     alt height="136px" width="153px" /></a>
@@ -487,7 +488,7 @@
                                                 <div class="plus-icon">
                                                     <i class="bi bi-plus"></i>
                                                 </div>
-                                                <a href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}">View
+                                                <a href="{{ route('product-details', ['slug' => $fproduct->slug]) }}">View
                                                     Details</a>
                                             </div>
                                             <ul class="cart-icon-list">
@@ -496,7 +497,7 @@
                                                         <!--<a href="#"><img src="{{ asset('assets/images/icon/Icon-cart3.svg') }}" alt /></a>-->
                                                     @else
                                                         <a href="#"
-                                                            wire:click.prevent="AddtoCart({{ $fproduct->id }},{{ $fproduct->bestSeller->price }},{{ $product->bestSeller->vendor_id ?? '' }})"><img
+                                                            wire:click.prevent="AddtoCart({{ $fproduct->id }},{{ $fproduct->bestSeller->price }},{{ $fproduct->bestSeller->vendor_id ?? '' }})"><img
                                                                 src="{{ asset('assets/images/icon/Icon-cart3.svg') }}"
                                                                 alt /></a>
                                                     @endif
@@ -504,12 +505,12 @@
                                                 <li>
                                                     @if (in_array($fproduct->id, $wishp))
                                                         <a href="#"
-                                                            wire:click.prevent="removeFromWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->price }},{{ $product->bestSeller->vendor_id ?? '' }})"><img
+                                                            wire:click.prevent="removeFromWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->price }},{{ $fproduct->bestSeller->vendor_id ?? '' }})"><img
                                                                 src="{{ asset('assets/images/icon/Icon-favorites3.svg') }}"
                                                                 alt /></a>
                                                     @else
                                                         <a href="#"
-                                                            wire:click.prevent="addToWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->price }})"><img
+                                                            wire:click.prevent="addToWishlist({{ $fproduct->id }},{{ $fproduct->bestSeller->price }},{{ $fproduct->bestSeller->vendor_id ?? '' }})"><img
                                                                 src="{{ asset('assets/images/icon/Icon-favorites.svg') }}"
                                                                 alt /></a>
                                                     @endif
@@ -518,7 +519,7 @@
                                         </div>
                                         <div class="collection-content">
                                             <p class="fixed"><a
-                                                    href="{{ route('product-details', ['slug' => $fproduct->slug, 'vendor_id' => $fproduct->bestSeller->vendor_id]) }}">{{ $fproduct->name }}</a>
+                                                    href="{{ route('product-details', ['slug' => $fproduct->slug]) }}">{{ $fproduct->name }}</a>
                                             </p>
                                             <div class="price priceds">
                                                 <h6>₹{{ $fproduct->bestSeller->price }}</h6>

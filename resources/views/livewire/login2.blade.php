@@ -36,6 +36,7 @@
                                 </div>
 
                                 <div id="otp_msg" class="text-success mb-2"></div>
+                                <div id="otp_timer" class="text-success mb-2"></div>
 
                                 <div class="text-end mb-3">
                                     <a href="#" id="resendOtp" class="resend_otp">Resend OTP</a>
@@ -67,8 +68,8 @@
                         </form>
 
                         <div class="form-poicy-area mt-3">
-                            <p>By continuing, you agree to Utkarsh Kisan <a href="{{route('terms-and-conditions')}}">Terms & Conditions</a> & <a
-                                    href="{{route('privacy-policy')}}">Privacy Policy</a>.</p>
+                            <p>By continuing, you agree to Utkarsh Kisan <a href="{{ route('terms-and-conditions') }}">Terms
+                                    & Conditions</a> & <a href="{{ route('privacy-policy') }}">Privacy Policy</a>.</p>
                         </div>
 
                     </div>
@@ -105,12 +106,18 @@
                 const number = $('#number').val();
 
                 sendOtp(number, function(res) {
+
                     if (res.status) {
                         $('#login_msg').text(res.message);
                         $('#loginStep').hide();
                         $('#otpStep').removeClass('d-none');
+                        startOtpTimer();
                     } else {
-                        $('#login_msg').text(res.errors.number);
+                        if (!res.errors) {
+                            $('#login_msg').text(res.message);
+                        } else {
+                            $('#login_msg').text(res.errors.number[0]);
+                        }
                     }
                 });
             });
@@ -155,7 +162,7 @@
                                 window.location.href = "/";
                             }
                         } else {
-                            $('#otp_msg').text(res.errors.otp);
+                            $('#otp_msg').text(res.message);
                         }
                     }
                 });
@@ -166,7 +173,7 @@
                 const email = $('#email').val();
 
                 $.ajax({
-                    url: '/profile/update',
+                    url: '/profile/update2',
                     method: 'POST',
                     data: {
                         name: name,
@@ -178,8 +185,15 @@
                             $('#profile_msg').text("Profile updated. Redirecting...");
                             window.location.href = "/";
                         } else {
-                            $('#profile_name_msg').text(res.errors.name);
-                            $('#profile_email_msg').text(res.errors.email);
+                            $('#profile_name_msg').text('');
+                            $('#profile_email_msg').text('');
+
+                            if (res.errors.name) {
+                                $('#profile_name_msg').text(res.errors.name);
+                            }
+                            if (res.errors.email) {
+                                $('#profile_email_msg').text(res.errors.email);
+                            }
                         }
                     }
                 });
@@ -190,6 +204,27 @@
                     $(this).next('.otp-digit').focus();
                 }
             });
+
+            function startOtpTimer() {
+                const resendLink = $('#resendOtp');
+                const otpMsg = $('#otp_timer');
+
+                let timer = 60;
+                resendLink.hide();
+
+                const interval = setInterval(() => {
+                    let minutes = Math.floor(timer / 60);
+                    let seconds = timer % 60;
+                    otpMsg.text(`You can resend OTP in ${minutes}:${seconds.toString().padStart(2, '0')}`);
+                    timer--;
+
+                    if (timer < 0) {
+                        clearInterval(interval);
+                        otpMsg.text('');
+                        resendLink.show();
+                    }
+                }, 1000);
+            }
         </script>
     @endpush
 @endsection

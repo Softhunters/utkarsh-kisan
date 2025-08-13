@@ -198,7 +198,15 @@ class HomeComponent extends Component
             })
             ->inRandomOrder()
             ->take(8)
-            ->get();
+            ->get()
+            ->map(function ($product) {
+                $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                $discount = max($discount, 0);
+
+                $product->discount_value = (string) $discount;
+                return $product;
+            });
+      
 
         $fproducts = Product::whereHas('activeVendorProducts')
             ->with([
@@ -220,7 +228,14 @@ class HomeComponent extends Component
             })
             ->inRandomOrder()
             ->take(8)
-            ->get();
+            ->get()
+            ->map(function ($product) {
+                $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                $discount = max($discount, 0);
+
+                $product->discount_value = (string) $discount;
+                return $product;
+            });
 
         $oproducts = Product::whereHas('activeVendorProducts')
             ->with([
@@ -243,7 +258,14 @@ class HomeComponent extends Component
             })
             ->inRandomOrder()
             ->take(12)
-            ->get();
+            ->get()
+            ->map(function ($product) {
+                $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                $discount = max($discount, 0);
+
+                $product->discount_value = (string) $discount;
+                return $product;
+            });
 
         // // $products = Product::where('sale_price','>',0)->where('status',1)->where('featured',1)->where('stock_status','instock')->inRandomOrder()->get()->take(12);
         $testimonials = Testimonial::where('status', 1)->get();

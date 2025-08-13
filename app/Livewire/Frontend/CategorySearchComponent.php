@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend;
 
+use DB;
 use Livewire\Component;
 use App\Models\Brand;
 use App\Models\Breed;
@@ -40,7 +41,7 @@ class CategorySearchComponent extends Component
         $this->sorting = "default";
         $this->pagesize = "12";
         $this->category_slug = $category_slug;
-        $this->min = Product::where('status', 1)->min('regular_price');
+        $this->min = 0;
         $this->max = Product::where('status', 1)->max('regular_price');
         $this->min_price = $this->min;
         $this->max_price = $this->max;
@@ -89,35 +90,47 @@ class CategorySearchComponent extends Component
                     $q->select('id', 'product_id', 'vendor_id', 'price');
                 }
             ])
-            ->withMin('vendorProducts', 'price')
-            ->whereHas('vendorProducts', function ($q) {
+            ->whereHas('bestSeller', function ($q) {
                 $q->whereBetween('price', [$this->min_price, $this->max_price]);
-            })->where('status', 1)
-            ->whereNull('parent_id');
+            })
+            ->where('status', 1)
+            ->select('products.*', DB::raw('(SELECT MIN(price) FROM vendor_products WHERE vendor_products.product_id = products.id) AS best_seller_min_price'));
+        
+        
 
         if ($this->category_slug) {
-            $query = $query->where('category_id', $category->id);
+            $query = $query->where('products.category_id', $category->id);
         }
         if ($this->scategory_slug) {
-            $query = $query->where('subcategory_id', $scategory->id);
+            $query = $query->where('products.subcategory_id', $scategory->id);
         }
         if ($this->sorting == "date") {
-            $query = $query->orderBy('created_at', 'DESC');
+            $query = $query->orderBy('products.created_at', 'DESC');
         }
         if ($this->sorting == "price") {
-            $query = $query->orderBy('vendor_products_min_price', 'ASC');
+            $query = $query->orderBy('best_seller_min_price', 'ASC');
         }
         if ($this->sorting == "price-desc") {
-            $query = $query->orderBy('vendor_products_min_price', 'DESC');
+            $query = $query->orderBy('best_seller_min_price', 'DESC');
         }
         if ($this->brandtype != null) {
-            $query = $query->whereIn('brand_id', $this->brandtype);
+            $query = $query->whereIn('products.brand_id', $this->brandtype);
         }
         if ($this->discount != null) {
-            $query = $query->where('discount_value', '>=', (int) min($this->discount));
+            $query = $query->where('products.discount_value', '>=', (int) min($this->discount));
         }
-        $query = $query->distinct()->select('products.*');
         $products = $query->paginate($this->pagesize);
+
+        $products->getCollection()->transform(function ($product) {
+            $discount = 0;
+            if ($product->regular_price > 0 && isset($product->seller->price)) {
+                $discount = round((($product->regular_price - $product->seller->price) / $product->regular_price) * 100, 2);
+                $discount = max($discount, 0);
+            }
+
+            $product->discount_value = (string) $discount;
+            return $product;
+        });
 
         $categorys = Subcategory::where('category_id', $category_id)->where('status', 1)->get();
         $brands = Brand::where('status', 1)->get();

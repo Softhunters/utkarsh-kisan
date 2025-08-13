@@ -83,14 +83,53 @@ class CartComponent extends Component
             $this->totalamount = $taxtotalc + $subtotalc;
 
             $savelater = SaveForLater::where('user_id', Auth::user()->id)->get();
-// dd($item->regular_price);
+            // dd($item->regular_price);
             // dd($pricesoff);
         } else {
             if (Session::has('cart')) {
                 $cartlist = $request->session()->get('cart');
+                // // dd($cartlist);
                 // dd($cartlist);
                 $product_ids = array_keys($cartlist);
-                $cart = Product::whereIn('id', $product_ids)->get();
+                // $cart = Product::whereIn('products.id', $product_ids)
+                //     ->join('vendor_products', 'vendor_products.product_id', '=', 'products.id')
+                //     ->join('users', 'vendor_products.vendor_id', '=', 'users.id')
+                //     ->select(
+                //         'products.*',
+                //         'vendor_products.price as vendor_price',
+                //         'users.name as vendor_name'
+                //     )
+                //     ->get();
+
+                $combinations = collect($cartlist)->map(function ($item) {
+                    return [
+                        'product_id' => $item['product_id'],
+                        'quantity' => $item['quantity'],
+                    ];
+                })->values();
+
+                $cart = $combinations->map(function ($pair) {
+                    $product = Product::join('vendor_products', function ($join) use ($pair) {
+                        $join->on('vendor_products.product_id', '=', 'products.id');
+                    })
+                        ->join('users', 'vendor_products.vendor_id', '=', 'users.id')
+                        ->where('products.id', $pair['product_id'])
+                        ->select(
+                            'products.*',
+                            'vendor_products.price as vendor_price',
+                            'users.name as vendor_name',
+                            'vendor_products.vendor_id'
+                        )
+                        ->first();
+
+                    if ($product) {
+                        $product->quantity = $pair['quantity'];
+                    }
+
+                    return $product;
+                })->filter();
+
+
                 $catlistnumber = Product::whereIn('id', $product_ids)->pluck('category_id')->toArray();
                 $count = $cart->count();
                 $subtotalc = 0;
@@ -101,7 +140,7 @@ class CartComponent extends Component
                     $subtotalc = $subtotalc + $item->vendor_price * $cartlist[$item->id]['quantity'];
                     $taxtotalc = $taxtotalc + (($item->taxslab->value * $item->vendor_price) * ($cartlist[$item->id]['quantity']) / 100);
                     $item['qty'] = $cartlist[$item->id]['quantity'];
-                    $pricesoff = $pricesoff + (($item->product->regular_price - $item->vendor_price) * $cartlist[$item->id]['quantity']);
+                    $pricesoff = $pricesoff + (($item->regular_price - $item->vendor_price) * $cartlist[$item->id]['quantity']);
 
                 }
                 $this->taxvalue = $taxtotalc;

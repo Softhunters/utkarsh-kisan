@@ -22,9 +22,11 @@
                         </nav>
                         <h1 class="h3 m-0">Products</h1>
                     </div>
-                    <div class="col-auto d-flex">
-                        <a href="{{ route('vendor.addproduct') }}" class="btn btn-primary">Add New Product</a>
-                    </div>
+                    @if (auth()->user()->vendorPackage)
+                        <div class="col-auto d-flex">
+                            <a href="{{ route('vendor.addproduct') }}" class="btn btn-primary">Add New Product</a>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

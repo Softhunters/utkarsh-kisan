@@ -50,7 +50,7 @@
         <div class="sa-app__sidebar">
             <div class="sa-sidebar">
                 <div class="sa-sidebar__header">
-                    <a class="sa-sidebar__logo" href="{{ route('admin.dashboard') }}">
+                    <a class="sa-sidebar__logo" href="{{ route('vendor.dashboard') }}">
                         <!-- logo -->
                         <div class="sa-sidebar-logo text-center">
                             <img src="{{ asset('admin/logos/utkarsh_logo.png') }}" alt="images"
@@ -73,6 +73,13 @@
                                     </a>
                                 </li>
 
+                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
+                                    <a href="{{ route('vendor.package') }}" class="sa-nav__link side1 side2">
+                                        <i class="bi bi-box-seam"></i>
+                                        <span class="sa-nav__title">My Package</span>
+                                    </a>
+                                </li>
+
 
 
 
@@ -85,11 +92,13 @@
                                         <i class="fa fa-chevron-right"></i>
                                     </a>
                                     <ul class="sa-nav__menu sa-nav__menu--sub" data-sa-collapse-content="">
-                                        <li class="sa-nav__menu-item">
-                                            <a href="{{ route('vendor.addproduct') }}" class="sa-nav__link"><span
-                                                    class="sa-nav__menu-item-padding"></span><span
-                                                    class="sa-nav__title">Add Product</span></a>
-                                        </li>
+                                        @if (auth()->user()->vendorPackage)
+                                            <li class="sa-nav__menu-item">
+                                                <a href="{{ route('vendor.addproduct') }}" class="sa-nav__link"><span
+                                                        class="sa-nav__menu-item-padding"></span><span
+                                                        class="sa-nav__title">Add Product</span></a>
+                                            </li>
+                                        @endif
                                         <li class="sa-nav__menu-item">
                                             <a href="{{ route('vendor.products') }}" class="sa-nav__link"><span
                                                     class="sa-nav__menu-item-padding"></span><span
@@ -108,7 +117,7 @@
                                         <i class="fa fa-chevron-right"></i>
                                     </a>
                                     <ul class="sa-nav__menu sa-nav__menu--sub" data-sa-collapse-content="">
-                                     
+
                                         <li class="sa-nav__menu-item">
                                             <a href="{{ route('vendor.inventory') }}" class="sa-nav__link"><span
                                                     class="sa-nav__menu-item-padding"></span><span
@@ -272,7 +281,7 @@
 
 
 
-           {{$slot}}
+            {{ $slot }}
 
 
 

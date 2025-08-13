@@ -47,7 +47,7 @@
                                                         <div class="mb-4">
                                                             <label class="form-label">Category</label>
                                                             <select name="category_id" id="categoryDropdown"
-                                                                class="form-control" required>
+                                                                class="form-control" required disabled>
                                                                 <option value="">Select Category</option>
                                                                 @foreach ($categories as $cat)
                                                                     <option value="{{ $cat->id }}"
@@ -62,7 +62,7 @@
                                                         <div class="mb-4">
                                                             <label class="form-label">Subcategory</label>
                                                             <select name="subcategory_id" id="subcategoryDropdown"
-                                                                class="form-control" required>
+                                                                class="form-control" required disabled>
                                                                 <option value="{{ $product->subCategories->id }}">
                                                                     {{ $product->subCategories->name }}
                                                                 </option>
@@ -72,7 +72,7 @@
                                                         {{-- Brand --}}
                                                         <div class="mb-4">
                                                             <label class="form-label">Brand</label>
-                                                            <select name="brand_id" id="brandDropdown" class="form-control">
+                                                            <select name="brand_id" id="brandDropdown" class="form-control" disabled>
                                                                 <option value="">Select Brand</option>
                                                                 @foreach ($brands as $brand)
                                                                     <option value="{{ $brand->id }}"
@@ -85,9 +85,10 @@
 
                                                         {{-- Product --}}
                                                         <div class="mb-4">
+                                                            <input type="hidden" name="product_id" value="{{$vendorProduct->product_id}}">
                                                             <label class="form-label">Product</label>
-                                                            <select name="product_id" id="productDropdown"
-                                                                class="form-control" required>
+                                                            <select  id="productDropdown"
+                                                                class="form-control" required disabled>
                                                                 <option value="{{ $vendorProduct->product_id }}">
                                                                     {{ $product->name }}
                                                                 </option>

@@ -34,10 +34,11 @@ Route::get('/home', [ApiController::class, 'home']);
 Route::get('/category/{id}/{sid?}', [ApiController::class, 'CategoryData']);
 Route::get('/brand/{brand_slug}', [ApiController::class, 'BrandDetail']);
 Route::get('/product-detail/{id}', [ApiController::class, 'ProductData']);
+Route::get('/shop', [ApiController::class, 'Shop']);
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    
+
     Route::get('/vedndor-products/{vid}', [ApiController::class, 'vendorProducts']);
 
 
@@ -69,7 +70,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/clearwishlist', [ApiController::class, 'ClearWish']);
 
 
-    Route::get('/shop', [ApiController::class, 'Shop']);
 
     Route::get('/check-out', [ApiController::class, 'Checkout']);
     Route::post('/coupon-apply', [ApiController::class, 'CouponApply']);
@@ -78,10 +78,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/add-review/{id}', [ApiController::class, 'AddReview']);
     Route::post('/add-review', [ApiController::class, 'StoreReview']);
     Route::post('/order-place', [ApiController::class, 'OrderPlace']);
+    Route::post('/completepayment', [ApiController::class, 'completepayment']);
     Route::get('/order-cancel/{id}/{oid?}', [ApiController::class, 'OrderCancel']);
 
     Route::get('/referral_code/{rcode}', [AuthController::class, 'ApplyRcode']);
     Route::get('/wallet', [ApiController::class, 'Userwallet']);
+
 
 
 
@@ -95,12 +97,16 @@ Route::get('/vendor/websetting', [ApiController::class, 'WebSetting']);
 Route::post('/vendor/get-otp', [AuthController::class, 'VGenrateOtp']);
 Route::post('/vendor/mobile-login', [AuthController::class, 'VOtpLogin']);
 
+Route::get('package-list', [ApiController::class, 'packageList']);
+
 Route::middleware(['auth:sanctum'])->prefix('vendor')->group(function () {
     Route::get('/dashboard', [ApiVendorController::class, 'home']);
 
     Route::get('profile', [ApiVendorController::class, 'Profile']);
     Route::post('profile/update', [ApiVendorController::class, 'profileUpdate']);
 
+    Route::get('my-package', [ApiVendorController::class, 'myPackage']);
+    Route::post('completepayment', [ApiVendorController::class, 'completepayment']);
 
     Route::get('/variant', [ApiVendorController::class, 'variant']);
     Route::post('/variant/create', [ApiVendorController::class, 'addVariant']);

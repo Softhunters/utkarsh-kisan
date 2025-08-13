@@ -9,6 +9,8 @@ use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Package;
+use App\Models\PackagePurchase;
 use App\Models\Product;
 use App\Models\ProductHistory;
 use App\Models\Review;
@@ -18,6 +20,7 @@ use App\Models\Testimonial;
 use App\Models\User;
 use App\Models\VendorProduct;
 use App\Models\VendorProfile;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
@@ -161,18 +164,40 @@ class ApiVendorController extends Controller
         // $result['subcategorys'] = SubCategory::where('category_id',$request->id)->get();
         //  $result['cbanners'] = Banner::where('status',1)->where('for',$request->id)->get();
         $result['product'] = Product::where('slug', $request->id)->with(['questions', 'category', 'subCategories', 'brands', 'seller'])->withAvg('reviews', 'rating')->withAvg('wishlist', 'user_id')->withAvg('cart', 'user_id')->first();
+
+        $product = $result['product'];
+        $parentId = $product->parent_id ?: $product->id;
+
+        $result['varaiants'] = Product::with([
+            'bestSeller' => function ($q) {
+                $q->select('id', 'product_id', 'vendor_id', 'price');
+            }
+        ])
+            ->where(function ($query) use ($parentId) {
+                $query->where('parent_id', $parentId)
+                    ->orWhere('id', $parentId);
+            })
+            ->get()
+            ->map(function ($variant) {
+                return [
+                    'id' => $variant->id,
+                    'variant_detail' => $variant->variant_detail,
+                    'regular_price' => number_format($variant->regular_price, 2),
+                    'sale_price' => number_format($variant->bestSeller->price ?? $variant->sale_price, 2),
+                    'slug' => $variant->slug,
+                ];
+            });
+
         if ($result['product']) {
-            $discount = round((($result['product']->regular_price - $result['product']->seller->price) / $result['product']->regular_price) * 100, 2);
+            $price = (isset($result['product']->seller)) ? $result['product']->seller->price : $result['product']->sale_price;
+
+            $discount = round((($result['product']->regular_price - $price) / $result['product']->regular_price) * 100, 2);
             $discount = max($discount, 0);
 
             $result['product']->discount_value = (string) $discount;
-            $result['product']->sale_price = str($result['product']->seller->price);
+            $result['product']->sale_price = str($price);
         }
-        if ($result['product']->parent_id) {
-            $result['varaiants'] = Product::where('parent_id', $result['product']->parent_id)->orWhere('id', $result['product']->parent_id)->select('products.id', 'products.variant_detail', 'products.regular_price', 'products.sale_price', 'products.slug')->get();
-        } else {
-            $result['varaiants'] = Product::where('parent_id', $result['product']->id)->orWhere('id', $result['product']->id)->select('products.id', 'products.variant_detail', 'products.regular_price', 'products.sale_price', 'products.slug')->get();
-        }
+
         $result['shareButtons'] = \Share::page(route('product-details', ['slug' => $result['product']->slug]))->facebook()->twitter()->linkedin()->telegram()->whatsapp()->reddit();
         $result['reviews'] = Review::where('product_id', $result['product']->id)->with(['user'])->get();
         $result['seller_list'] = VendorProduct::leftJoin('users', 'vendor_products.vendor_id', '=', 'users.id')
@@ -186,8 +211,11 @@ class ApiVendorController extends Controller
 
         $isVendorExist = VendorProduct::where('product_id', $result['product']->id)->where('vendor_id', Auth::id())->first();
         $result['edit'] = isset($isVendorExist) ? 'yes' : 'no';
+        $isVenPack = (auth()->user()->vendorPackage) ? true : false;
+
         return response()->json([
             'status' => true,
+            'isSubscriptionBuy' => $isVenPack,
             'result' => $result
 
         ], 200);
@@ -215,13 +243,14 @@ class ApiVendorController extends Controller
                     'order_id' => $first->order_id,
                     'created_at' => $first->created_at,
                     'order_number' => $first->orderApi->order_number ?? null,
-                    'status' => $first->status,
+                    'status' => $first->orderApi->status,
                     'total_price' => $items->sum(function ($item) {
                         return ($item->price ?? 0) * ($item->quantity ?? 1);
                     }),
                     'total_products' => $items->count(),
                 ];
             })
+            ->sortByDesc('order_id')
             ->values();
 
         return response()->json([
@@ -231,7 +260,7 @@ class ApiVendorController extends Controller
     }
     public function orderList($id)
     {
-        $orders = OrderItem::where('order_id', $id)->where('seller_id', Auth::id())->with(['orderApi', 'productApi'])->get();
+        $orders = OrderItem::where('order_id', $id)->where('seller_id', Auth::id())->with(['orderApi', 'productApi'])->orderByDesc('id')->get();
 
         return response()->json([
             'status' => true,
@@ -353,7 +382,11 @@ class ApiVendorController extends Controller
 
         // Update order item status
         $order->status = 'accepted';
+        $order->rstatus = '3';
+        $order->canceled_date = DB::raw('CURRENT_DATE');
         $order->save();
+
+
 
         // Record product history
         ProductHistory::create([
@@ -363,6 +396,14 @@ class ApiVendorController extends Controller
             'type' => 'minus',
             'quantity' => $order->quantity,
         ]);
+
+        $allItems = OrderItem::where('order_id', $order->order_id)->get();
+        $acceptedCount = $allItems->where('status', 'accepted')->count();
+        $totalCount = $allItems->count();
+
+        if ($acceptedCount === $totalCount) {
+            Order::where('id', $order->order_id)->update(['status' => 'accepted']);
+        }
 
         return response()->json([
             'status' => true,
@@ -382,7 +423,17 @@ class ApiVendorController extends Controller
         }
 
         $order->status = 'rejected';
+        $order->rstatus = '2';
+        $order->canceled_date = DB::raw('CURRENT_DATE');
         $order->save();
+
+        $allItems = OrderItem::where('order_id', $order->order_id)->get();
+        $rejectedCount = $allItems->where('status', 'rejected')->count();
+        $totalCount = $allItems->count();
+
+        if ($rejectedCount === $totalCount) {
+            Order::where('id', $order->order_id)->update(['status' => 'rejected']);
+        }
 
         return response()->json([
             'status' => true,
@@ -472,5 +523,70 @@ class ApiVendorController extends Controller
             'status' => true,
             'result' => $result
         ], 200);
+    }
+
+    public function myPackage()
+    {
+        $id = Auth::id();
+
+        $vendor = User::with(['vendorProfile', 'vendorPackage'])->where('id', $id)->first();
+        $package = Package::where('id', $vendor->vendorProfile->package_id)->first();
+        $package_info = PackagePurchase::where('package_id', $package->id)->where('user_id', Auth::id())->first();
+
+        $package->status = $package_info->status ?? 0;
+        $package->up_to_date = $package_info->valid_upto ?? null;
+
+        return response()->json([
+            'status' => true,
+            'result' => $package
+        ], 200);
+    }
+
+    public function completepayment(Request $request)
+    {
+        try {
+            $valid = Validator::make($request->all(), [
+                'transaction_id' => 'required|string|min:8',
+                'package_id' => 'required|exists:packages,id',
+            ]);
+            if (!$valid->passes()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $valid->errors()
+                ], 200);
+            } else {
+
+                $package = Package::findOrFail($request->package_id);
+                $validUpto = now()->addDays($package->validity);
+
+                PackagePurchase::updateOrCreate(
+                    [
+                        'user_id' => auth()->id(),
+                        'package_id' => $package->id,
+                    ],
+                    [
+                        'transcation_id' => $request->transaction_id,
+                        'amonut' => $package->price,
+                        'status' => 1,
+                        'valid_upto' => $validUpto,
+                        'count' => $package->count,
+                    ]
+                );
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Payment has been completed Successfully',
+                ], 200);
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+
+
     }
 }
