@@ -16028,3 +16028,83 @@ color:var(--btn-hoverbg) !important;
     
 }
 
+
+
+ .download-section {
+  /* background-color: #000; */
+  color:#fffcfb;
+  color: white;
+  text-align: center;
+  padding: 60px 20px;
+  /* background-color: rgb(234, 45, 4);; */
+
+  /* background-color: rgb(0, 0, 0); */
+  background-color: #f7fff4 ;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  /* padding: 32px 20px; */
+  margin-bottom: 80px;
+}
+
+.download-section h2 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 40px;
+  position: relative;
+  display: inline-block;
+  color:var(--text-color2);
+  /* color: rgb(255, 255, 255); */
+  /* color:var(--primary-color3); */
+ }
+
+.download-section h2::after {
+  content: "";
+  display: block;
+  height: 3px;
+  width: 60px;
+  /* background-color: #ffd700; */
+  background-color: var(--primary-color3);
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+.app-cards {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
+}
+
+.app-card {
+  background-color: white;
+  color: black;
+  padding: 30px 20px;
+  border-radius: 12px;
+  width: 230px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.app-card:hover {
+  transform: translateY(-5px);
+  /* box-shadow: 0 12px 24px rgba(255, 215, 0, 0.4); */
+  box-shadow: 0 12px 24px rgba(0, 128, 0, 0.4);
+
+}
+
+.app-card img {
+  height: 80px;
+  /* width: 100%; */
+  margin-bottom: 20px;
+  object-fit: cover;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+  padding-bottom: 30px;
+  /* background-color: white; */
+}
