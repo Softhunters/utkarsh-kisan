@@ -815,16 +815,16 @@
             <div class="app-card">
               <img src="{{ asset('assets/images/logo/google-play.jpg') }}" alt="Utkarh Kart" />
               <p>
-                <strong>Utkarh Kart</strong>
-                
+                <strong class="download-text">Utkarh Kart</strong>
+                <br>
                 (User App)
                </p>
             </div>
             <div class="app-card">
               <img src="{{ asset('assets/images/logo/google-play.jpg') }}" alt="Utkarsh Kisan" />
               <p>
-                <strong>Utkarsh Kisan</strong>
-                
+                <strong class="download-text">Utkarsh Kisan</strong>
+                <br>
                  (Vendor App)
               </p>
             </div>
