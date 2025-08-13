@@ -807,6 +807,45 @@
         </div>
     </div>
 
+      <section id="download" class="download-section" ref={downloadRef}>
+          <div>
+            <h2>Download Now</h2>
+          </div>
+          <div class="app-cards">
+            <div class="app-card">
+              <img src="{{ asset('assets/images/logo/google-play.jpg') }}" alt="Utkarh Kart" />
+              <p>
+                <strong>Utkarh Kart</strong>
+                
+                (User App)
+               </p>
+            </div>
+            <div class="app-card">
+              <img src="{{ asset('assets/images/logo/google-play.jpg') }}" alt="Utkarsh Kisan" />
+              <p>
+                <strong>Utkarsh Kisan</strong>
+                
+                 (Vendor App)
+              </p>
+            </div>
+          </div>
+
+          {{-- <div className="social-icons d-flex  ">
+            <Link href="#">
+              {/* <img src="/x-icon.png" alt="X" /> */}
+              <FaXTwitter size={50} style={{ color: "#ea2d04" }} />
+            </Link>
+            <Link href="#">
+              {/* <img src="/youtube-icon.png" alt="YouTube" /> */}
+              <FaYoutube size={50} style={{ color: "#ea2d04" }} />
+            </Link>
+            <Link href="#">
+              {/* <img src="/instagram-icon.png" alt="Instagram" /> */}
+              <FaInstagram size={50} style={{ color: "#ea2d04" }} />
+            </Link>
+          </div> --}}
+        </section>
+
     <div class="home3-testimonial-area mb-40">
         <div class="container">
             <div class="row mb-60">
