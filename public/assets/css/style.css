@@ -16039,7 +16039,8 @@ color:var(--btn-hoverbg) !important;
   /* background-color: rgb(234, 45, 4);; */
 
   /* background-color: rgb(0, 0, 0); */
-  background-color: #f7fff4 ;
+  /* background-color: #f7fff4 ; */
+  background-color: var(--primary-color3);
   color: rgb(255, 255, 255);
   text-align: center;
   /* padding: 32px 20px; */
@@ -16055,6 +16056,7 @@ color:var(--btn-hoverbg) !important;
   color:var(--text-color2);
   /* color: rgb(255, 255, 255); */
   /* color:var(--primary-color3); */
+  color: var(--white);
  }
 
 .download-section h2::after {
@@ -16062,8 +16064,8 @@ color:var(--btn-hoverbg) !important;
   display: block;
   height: 3px;
   width: 60px;
-  /* background-color: #ffd700; */
-  background-color: var(--primary-color3);
+  background-color: #ffd700;
+  /* background-color: var(--primary-color3); */
   margin: 10px auto 0;
   border-radius: 2px;
 }
@@ -16079,7 +16081,7 @@ color:var(--btn-hoverbg) !important;
 .app-card {
   background-color: white;
   color: black;
-  padding: 30px 20px;
+  padding: 20px 10px;
   border-radius: 12px;
   width: 230px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -16095,9 +16097,9 @@ color:var(--btn-hoverbg) !important;
 }
 
 .app-card img {
-  height: 80px;
+  height: 100px;
   /* width: 100%; */
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   object-fit: cover;
 }
 
@@ -16107,4 +16109,9 @@ color:var(--btn-hoverbg) !important;
   gap: 100px;
   padding-bottom: 30px;
   /* background-color: white; */
+}
+
+
+.download-text{
+    color:var(--primary-color3);
 }
