@@ -1827,4 +1827,33 @@ class ApiController extends Controller
 
     }
 
+    public function userDetails()
+    {
+        $userDetails = User::where('id', Auth::id())->first();
+
+        return response()->json([
+            'status' => true,
+            'result' => $userDetails
+        ], 200);
+    }
+    public function accountDelete()
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 401);
+        }
+
+        $user->tokens()->delete();
+
+        $user->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Your account has been deleted successfully.'
+        ], 200);
+    }
+
 }

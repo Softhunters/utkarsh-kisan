@@ -85,6 +85,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/wallet', [ApiController::class, 'Userwallet']);
 
 
+    Route::get('/user-details', [ApiController::class, 'userDetails']);
+    Route::post('/account-delete', [ApiController::class, 'accountDelete']);
+
 
 
 });

@@ -733,11 +733,11 @@ class AuthController extends Controller
                         'message' => 'Access Denied: This phone number is registered for the User Panel and cannot be used to log in to the Vendor Panel.'
                     ], 200);
                 }
-                $otp= rand(100000, 999999);
-                // $otp = "123456";
+                // $otp= rand(100000, 999999);
+                $otp = "123456";
                 User::where('phone', $request->number)->where('utype', 'VDR')->update(['otp' => $otp]);
 
-                sendOtp($request->number, $otp);
+                // sendOtp($request->number, $otp);
 
                 return response()->json([
                     'status' => true,
@@ -793,11 +793,11 @@ class AuthController extends Controller
                         'message' => 'Access Denied: This phone number is registered for the Vendor Panel and cannot be used to log in to the User Panel.'
                     ], 200);
                 }
-                $otp = rand(100000, 999999);
-                // $otp = "123456";
+                // $otp = rand(100000, 999999);
+                $otp = "123456";
                 User::where('phone', $request->number)->where('utype', 'USR')->update(['otp' => $otp]);
 
-                sendOtp($request->number, $otp);
+                // sendOtp($request->number, $otp);
 
                 return response()->json([
                     'status' => true,
@@ -813,12 +813,12 @@ class AuthController extends Controller
                     'password' => Hash::make($request->number),
                 ]);
 
-                $otp = rand(100000, 999999);
-                // $otp = '123456';
+                // $otp = rand(100000, 999999);
+                $otp = '123456';
 
                 User::where('phone', $request->number)->where('utype', 'USR')->update(['otp' => $otp]);
 
-                sendOtp($request->number, $otp);
+                // sendOtp($request->number, $otp);
 
                 return response()->json([
                     'status' => true,

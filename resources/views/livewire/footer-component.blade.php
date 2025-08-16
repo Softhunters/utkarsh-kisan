@@ -58,21 +58,24 @@
                             </li>
                         </ul>
                         <div class="row mt-2">
-                            <div class="col-4">
+                            <div class="col-sm-6 col-md-4 col-6">
                                 <div class="text-center">
-                                    <a href="#"><img src="https://utkarshkisan.com/admin/logos/1752232312.png"
-                                            style="width:30px;" class="foot" alt /></a><br>
+                                    <a href="{{ asset('assets/file/Utkarsh_kart.apk') }}"><img
+                                            src="https://utkarshkisan.com/admin/logos/1752232312.png"
+                                            style="width:30px;" class="" alt /></a><br>
                                     <span>User app</span>
                                 </div>
                             </div>
-                            <div class="col-4">
+                            <div class=" col-sm-6 col-md-4 col-6">
                                 <div class="text-center">
-                                    <a href="#"><img src="https://utkarshkisan.com/admin/logos/1752232312.png"
-                                            style="width:30px;" class="foot" alt /></a><br>
+                                    <a href="{{ asset('assets/file/Utkarsh_kisan.apk') }}"><img
+                                            src="https://utkarshkisan.com/admin/logos/1752232312.png"
+                                            style="width:30px;" class="" alt /></a><br>
                                     <span>Vendor app</span>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
